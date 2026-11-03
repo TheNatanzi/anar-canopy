@@ -26,23 +26,38 @@
 </head>
 <body class="page-how">
 <a class="skip-link" href="#main">Skip to content</a>
+<!-- the brand's line icons (phone handset, WhatsApp bubble, envelope, Instagram), one inline sprite per page: used by the header, the drawer and the footer -->
+<svg hidden aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5.5 3h3.2l1.6 4.2-2.1 1.6a12.5 12.5 0 0 0 7 7l1.6-2.1 4.2 1.6v3.2a2 2 0 0 1-2 2A16.5 16.5 0 0 1 3.5 5a2 2 0 0 1 2-2z"/></symbol>
+  <symbol id="i-whatsapp" viewBox="0 0 24 24"><path d="M12 3.5a8.5 8.5 0 0 0-7.3 12.9L3.5 20.5l4.2-1.1A8.5 8.5 0 1 0 12 3.5z"/><path d="M9.2 8.3h1.3l.8 2-1 .9a6 6 0 0 0 2.5 2.5l.9-1 2 .8v1.3c0 .6-.5 1.1-1.1 1-3.3-.4-5.9-3-6.4-6.3a1 1 0 0 1 1-1.2z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="m3.5 7.5 8.5 5.5 8.5-5.5"/></symbol>
+  <symbol id="i-instagram" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r=".8" fill="currentColor" stroke="none"/></symbol>
+</svg>
 
 <header class="site-header site-header--solid">
   <div class="site-header__inner">
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span class="nav-toggle__bar"></span><span class="visually-hidden">Menu</span></button>
     <a class="nav-home" href="index.html" aria-label="Anar Events, home"><img src="assets/logo/logo-gold.svg" width="1600" height="552" alt=""></a>
     <nav class="site-nav" id="site-nav" aria-label="Main" data-lenis-prevent>
-      <ul>
+      <ul role="list">
         <li><a href="weddings.html">Weddings</a></li>
         <li><a href="how-we-work.html" aria-current="page">How we work</a></li>
         <li><a href="about.html">About</a></li>
-        <!-- phones only (CSS): the phone line (tel: and WhatsApp as two links) as the last drawer item, then the "فارسی · coming soon" note (the bar carries no فارسی label; the footer repeats the note) -->
-        <li class="site-nav__phone"><a href="tel:+19252639949">Call (925) 263-9949</a> · <a href="https://wa.me/19252639949" rel="noopener">WhatsApp</a></li>
+        <!-- phones only (CSS): the contact rows (phone, WhatsApp, email, each with its gold line icon) as the last drawer
+             items, then the "فارسی · coming soon" note (the bar carries no فارسی label; the footer repeats the note) -->
+        <li class="site-nav__contact">
+          <a href="tel:+19252639949"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg> Call (925) 263-9949</a>
+          <a href="https://wa.me/19252639949" rel="noopener"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg> WhatsApp</a>
+          <a href="mailto:hello@anarevents.com"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg> hello@anarevents.com</a>
+        </li>
         <li class="site-nav__fa"><span class="fa" lang="fa" dir="rtl">فارسی</span> · coming soon</li>
       </ul>
     </nav>
+    <!-- right of the nav, left of Inquire: a handset (tel:) and an envelope (mailto:) as gold line icons, 44px hit areas;
+         on phones the bar is full (toggle + Pause + logo + Inquire at 360px), so the drawer carries them instead -->
     <div class="nav-right">
-      <a class="nav-phone" href="tel:+19252639949">(925) 263-9949</a>
+      <a class="nav-icon" href="tel:+19252639949" title="Call (925) 263-9949"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span class="visually-hidden">Call (925) 263-9949</span></a>
+      <a class="nav-icon" href="mailto:hello@anarevents.com" title="Email hello@anarevents.com"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg><span class="visually-hidden">Email hello@anarevents.com</span></a>
       <a class="btn btn--sm" href="index.html#inquire">Inquire</a>
     </div>
     <!-- Pause motion / Play motion: a 36px round control in the bar (right, beside Inquire; beside the menu toggle on
@@ -55,6 +70,8 @@
 <main id="main" tabindex="-1" class="page-top">
 
   <section class="pageband" aria-labelledby="page-title">
+    <!-- one static crop of the painted tree, bottom right of the band (behind the text; hidden under 1000px) -->
+    <div class="leaf leaf--3 leaf--static" aria-hidden="true"></div>
     <div class="container">
       <p class="eyebrow">Five steps on one line</p>
       <div class="pageband__title">
@@ -71,29 +88,29 @@
       <p class="eyebrow reveal">Two ways to work with us</p>
       <h2 id="you-get-title" class="reveal" style="margin:8px 0 32px">One plan. One person to call.</h2>
       <!-- when support begins and the core scope of each stay visible; the operational bullets sit in a native <details> -->
-      <ul class="options stagger" aria-label="Two ways to work with us">
+      <ul class="options stagger" role="list" aria-label="Two ways to work with us">
         <li>
           <h3>Full planning</h3>
           <p class="option__when">Begins once your proposal is signed · the first conversation is free</p>
           <p class="option__scope">One plan from the first meeting to the thank-you card: the budget, the venue and vendors, the rituals in order, and every wedding day run.</p>
           <details class="option__more">
             <summary>What is included</summary>
-            <ul>
+            <ul role="list">
               <li>Your budget tracked, line by line, once planning begins.</li>
               <li>Venue and vendor shortlist, booking support, and contract review covering planning requirements and vendor logistics.</li>
               <li>Planning decisions scheduled ritual by ritual, with a short written summary after each meeting.</li>
-              <li>One written plan: the rituals in order, the days, the price and what is included, with a page for the parents in Persian, Dari, Pashto, Urdu, Hindi, Punjabi or the language your parents read. Written translation and spoken language support are confirmed with it, before booking.</li>
+              <li>One written plan: the rituals in order, the days, the price and what is included. Parents' pages in the language agreed in your proposal; translation and spoken support confirmed before booking.</li>
               <li>We run the events and hours agreed in your proposal: one timeline, called with the venue and every vendor; elders' seats held.</li>
             </ul>
           </details>
         </li>
         <li>
           <h3>Wedding-day coordination</h3>
-          <p class="option__when">Begins 6–8 weeks out · we run the days you have planned</p>
+          <p class="option__when">Begins 6–8 weeks before the first event · we run the days you have planned</p>
           <p class="option__scope">Your family has planned already; we read every booking, confirm every time and run the days.</p>
           <details class="option__more">
             <summary>What is included</summary>
-            <ul>
+            <ul role="list">
               <li>The events, hours and staffing we take on, named up front.</li>
               <li>The handover lists outstanding tasks and agrees who completes them, with a date.</li>
               <li>Every contract, contact and time in it read and confirmed with the venue and every vendor.</li>
@@ -113,7 +130,7 @@
       <div class="steps" data-track>
         <svg class="steps__line" viewBox="0 0 2 1000" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M1 0 V1000"/></svg>
         <svg class="steps__line track-line" viewBox="0 0 2 1000" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M1 0 V1000"/></svg>
-        <ol class="steps__list">
+        <ol class="steps__list" role="list">
         <li class="step reveal">
           <span class="step__dot track-dot" aria-hidden="true"></span>
           <span class="step__n">01 · Inquiry</span>
@@ -126,29 +143,37 @@
           <span class="step__n">02 · Consultation</span>
           <h3>First, we hear your priorities.</h3>
           <p class="fa" lang="fa" dir="rtl">مشاوره</p>
-          <p>We meet your family, greet the elders first, and listen. We ask how your family observes each tradition, and what the elders and guests will need: seating, mobility and quiet-space needs are planned from this meeting on. The couple tells us who joins each meeting and how much the parents decide, and we keep to it.</p>
+          <p>We meet your family, greet the elders first, and listen. We ask how your family observes each tradition.</p>
+          <ul class="step__points" role="list">
+            <li><strong>Guest needs:</strong> seating, mobility and quiet-space needs for the elders and guests, planned from this meeting on.</li>
+            <li><strong>Parent involvement:</strong> the couple tells us who joins each meeting and how much the parents decide, and we keep to it.</li>
+          </ul>
         </li>
         <li class="step reveal">
           <span class="step__dot track-dot" aria-hidden="true"></span>
           <span class="step__n">03 · Proposal</span>
           <h3>Here is the plan, the price, and what is included.</h3>
           <p class="fa" lang="fa" dir="rtl">پیشنهاد</p>
-          <p>A short proposal with the rituals in order, the days, the price and exactly what is included: the agreed scope names the events covered, the staffing, the hours and the fees, before anything is booked. Together, we agree who approves decisions, who approves spending, and which updates each family receives. A page for the parents, in Persian, Dari, Pashto, Urdu, Hindi, Punjabi or the language your parents read, agreed in your proposal.</p>
-          <p>A signed proposal and the deposit hold your dates; an inquiry or consultation does not.</p>
+          <p>A short proposal with the rituals in order, the days, the price and exactly what is included: the events covered, the staffing, the hours and the fees, before anything is booked.</p>
+          <ul class="step__points" role="list">
+            <li><strong>Decision approvals:</strong> together, we agree who approves decisions, who approves spending, and which updates each family receives.</li>
+            <li><strong>Parents' pages</strong> in the language agreed in your proposal; translation and spoken support confirmed before booking.</li>
+            <li><strong>Date reservation:</strong> a signed proposal and the deposit hold your dates; an inquiry or consultation does not.</li>
+          </ul>
         </li>
         <li class="step reveal">
           <span class="step__dot track-dot" aria-hidden="true"></span>
           <span class="step__n">04 · Planning</span>
           <h3>Ritual by ritual, as your family keeps it.</h3>
           <p class="fa" lang="fa" dir="rtl">برنامه‌ریزی</p>
-          <p>We plan each ceremony as your family keeps it: the ceremonies your family chooses, in the order agreed with your family. A short written summary follows every meeting, in English, with the page for the parents in their language. Parents and elders included at the level you choose.</p>
+          <p>We plan each ceremony as your family keeps it: the ceremonies your family chooses, in the order agreed with your family. A short written summary follows every meeting, in English, with the parents' page in the language agreed in your proposal. Parents and elders included at the level you choose.</p>
         </li>
         <li class="step reveal">
           <span class="step__dot track-dot" aria-hidden="true"></span>
           <span class="step__n">05 · The wedding days</span>
           <h3>Your ceremonies are ready. Your family is welcomed.</h3>
           <p class="fa" lang="fa" dir="rtl">روزهای عروسی</p>
-          <p>One timeline, called with the venue and every vendor. Elders' seats held, the officiant and family cued, every sign coordinated with your printer and the venue in your languages. When a sofreh is chosen, for example, the spread is checked against the sofreh key (a one-page guide naming each item on the spread, in those languages) before the elders are seated. Our staff are easy to find for every event and hour we run. You only have to be there. Afterwards: the thank-you card that follows, the files handed over, and one last call to close the plan.</p>
+          <p>One timeline, called with the venue and every vendor. Elders' seats held, the officiant and family cued, every sign named in your proposal coordinated with your printer and the venue. When a sofreh is chosen, for example, the spread is checked against the sofreh key (a one-page guide naming each item on the spread, in the languages named in your proposal) before the elders are seated. Our staff are easy to find for every event and hour we run. You only have to be there. Afterwards: the thank-you card, as named in your proposal, the files handed over, and one last call to close the plan.</p>
         </li>
         </ol>
       </div>
@@ -162,18 +187,18 @@
       <h2 id="either-title" class="reveal" style="margin:8px 0 32px">With either option</h2>
       <!-- how the hard days are handled: the procedures, not assurances (who decides, the next option on the list, the family lead, the named backup) -->
       <p class="eyebrow reveal" style="margin-bottom:24px">On the hard days</p>
-      <ul class="you-get stagger" aria-label="How the hard days are handled" style="margin-bottom:64px">
+      <ul class="you-get stagger" role="list" aria-label="How the hard days are handled" style="margin-bottom:64px">
         <li><strong>Decided before the day</strong><span>Priorities and spending approvals are agreed before anything is booked.</span></li>
         <li><strong>A venue that changes, a vendor who is late</strong><span>We call the next option on the list we built together and tell the family lead first.</span></li>
         <li><strong>A planner who is unwell</strong><span>The named backup planner, briefed on your plan, runs the day.</span></li>
         <li><strong>Two events at once</strong><span>Covered under the same plan, with the staffing for each named up front.</span></li>
       </ul>
       <p class="eyebrow reveal" style="margin-bottom:24px">Always included</p>
-      <ul class="you-get stagger">
+      <ul class="you-get stagger" role="list">
         <li><strong>One person to call</strong><span>Your planner, from the first message to the thank-you card.</span></li>
-        <li><strong>A page for the parents</strong><span>A summary they can read alone, in Persian, Dari, Pashto, Urdu, Hindi, Punjabi or the language your parents read, agreed in your proposal.</span></li>
+        <li><strong>A page for the parents</strong><span>A summary they can read alone. Parents' pages in the language agreed in your proposal; translation and spoken support confirmed before booking.</span></li>
         <li><strong>A summary after every meeting</strong><span>Short, written, the same day. Nothing to chase.</span></li>
-        <li><strong>Signage in your languages</strong><span>Welcome, sofreh key, wayfinding, seating and table numbers in your languages, coordinated with your printer and the venue.</span></li>
+        <li><strong>Signage in the languages agreed</strong><span>Welcome, sofreh key, wayfinding, seating and table numbers, as named in your proposal. We write and coordinate them with your printer and the venue; the printed pieces are supplied by your printer.</span></li>
         <li><strong>A reply within one business day</strong><span>Every time, from the first inquiry on.</span></li>
       </ul>
     </div>
@@ -191,7 +216,7 @@
         </details>
         <details>
           <summary>Do you plan the whole wedding, or only run the day?</summary>
-          <p class="faq__a">Both. Full planning begins once your proposal is signed and runs to the thank-you; the first conversation is free. Wedding-day coordination begins 6–8 weeks out: you have planned already, we run the days you have planned. We say which fits on the first call, with the price and what is included.</p>
+          <p class="faq__a">Both. Full planning begins once your proposal is signed and runs to the thank-you; the first conversation is free. Wedding-day coordination begins 6–8 weeks before the first event: you have planned already, we run the days you have planned. We say which fits on the first call, with the price and what is included.</p>
         </details>
         <details>
           <summary>How early should we write?</summary>
@@ -199,15 +224,15 @@
         </details>
         <details>
           <summary>Will you work with our parents directly?</summary>
-          <p class="faq__a">Yes. Parents and elders included at the level you choose. Elders are greeted first and asked, not told. The couple sets the level of parent involvement, and the proposal has a page for the parents in Persian, Dari, Pashto, Urdu, Hindi, Punjabi or the language your parents read, agreed in your proposal.</p>
+          <p class="faq__a">Yes. Parents and elders included at the level you choose. Elders are greeted first and asked, not told. The couple sets the level of parent involvement. Parents' pages in the language agreed in your proposal; translation and spoken support confirmed before booking.</p>
         </details>
         <details>
           <summary>Which languages do you plan in?</summary>
-          <p class="faq__a">Planning runs in English. Written pages for the parents are translated into the language you name. For calls and meetings in another language, tell us which one; we confirm who speaks it before booking.</p>
+          <p class="faq__a">Planning runs in English. Parents' pages in the language agreed in your proposal (Persian, Dari, Pashto, Urdu, Hindi, Punjabi or another you name); translation and spoken support confirmed before booking. For calls and meetings in another language, tell us which one.</p>
         </details>
         <details>
           <summary>Where do you work?</summary>
-          <p class="faq__a">The San Francisco Bay Area, from the city to the East Bay and the Peninsula. For a wedding further afield, write to us and we will tell you plainly whether we can.</p>
+          <p class="faq__a">The San Francisco Bay Area: the city, the East Bay and the Peninsula, the South Bay and Silicon Valley, and Wine Country (Napa and Sonoma). For a wedding further afield, write to us and we will tell you plainly whether we can.</p>
         </details>
         <details>
           <summary>What does it cost?</summary>
@@ -223,20 +248,28 @@
 <footer class="site-footer">
   <div class="container">
     <div class="site-footer__grid">
-      <div>
+      <div class="site-footer__brand">
         <a href="index.html" aria-label="Anar Events, home"><img class="site-footer__logo" src="assets/logo/logo-gold.svg" width="1600" height="552" alt="Anar Events" loading="lazy"></a>
+        <p class="site-footer__tag">Persian, Afghan and South Asian weddings · San Francisco Bay Area</p>
       </div>
-      <address>
-        <span>Anar Events · San Francisco Bay Area</span>
-        <a href="tel:+19252639949">(925) 263-9949</a>
-        <a href="https://wa.me/19252639949" rel="noopener">WhatsApp</a>
-        <a href="mailto:hello@anarevents.com">hello@anarevents.com</a>
-        <a href="https://instagram.com/anarevents" rel="noopener">Instagram · @anarevents</a>
+      <address class="site-footer__col">
+        <p class="site-footer__eyebrow">Contact</p>
+        <ul class="site-footer__list" role="list">
+          <li><a href="tel:+19252639949"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>(925) 263-9949</a></li>
+          <li><a href="https://wa.me/19252639949" rel="noopener"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg>WhatsApp</a></li>
+          <li><a href="mailto:hello@anarevents.com"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg>hello@anarevents.com</a></li>
+        </ul>
       </address>
-      <p class="site-footer__fa fa" lang="fa" dir="rtl">انار · برنامه‌ریزی عروسی و جشن</p>
+      <div class="site-footer__col">
+        <p class="site-footer__eyebrow">Follow</p>
+        <ul class="site-footer__list" role="list">
+          <li><a href="https://instagram.com/anarevents" rel="noopener"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-instagram"/></svg>@anarevents</a></li>
+        </ul>
+        <p class="site-footer__fa fa" lang="fa" dir="rtl">انار · برنامه‌ریزی عروسی و جشن</p>
+      </div>
     </div>
+    <div class="site-footer__bottom"><span>© 2026 Anar LLC</span><span>Timeless traditions, curated for the modern era.</span></div>
     <p class="site-footer__lang">English for everyone. Tell us your preferred language. We confirm written translation and spoken support before booking. <span class="site-footer__soon"><span class="fa" lang="fa" dir="rtl">فارسی</span> · coming soon</span></p>
-    <p class="site-footer__legal"><span>© 2026 Anar LLC · Persian, Afghan and South Asian weddings</span><span>Timeless traditions, curated for the modern era.</span></p>
   </div>
 </footer>
 
@@ -247,7 +280,7 @@
   <button class="hww-panel__close" type="button" aria-label="Close"><span aria-hidden="true">&times;</span></button>
   <p class="eyebrow">How we work · <span class="fa" lang="fa" dir="rtl">روش کار ما</span></p>
   <h2 id="hww-title">Five steps, one line</h2>
-  <ol class="hww-steps">
+  <ol class="hww-steps" role="list">
     <li><div><h3>Inquiry</h3><p>Write to us, or call. Tell us about your family and your dates.</p></div></li>
     <li><div><h3>Consultation</h3><p>We meet your family, greet the elders first, and listen. Parents and elders included at the level you choose.</p></div></li>
     <li><div><h3>Proposal</h3><p>The plan, the price, and what is included: the events covered, the staffing, the hours and the fees.</p></div></li>

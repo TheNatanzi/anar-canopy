@@ -13,9 +13,12 @@
      1. parallax (desktop only): the tree layer moves at 0.9× scroll from the end
         of screen 2 on (screens 1–2 stay registered with the statement; the band
         under the ground absorbs the drift)
-     2. sway: the canopy ±0.5° (7 s), two shrub sprigs ±0.5° (9 s / 11 s), paused off
-        screen; a scroll-velocity shake (x ±6px, ±0.8°) that eases back, its
-        timeline added to the context so Pause reverts it too
+     2. the layered canopy: four tonal slices parallaxed past each other over
+        the hero (×0.97 / .985 / 1 / 1.02 of the scroll), swayed about their
+        top (L1 ±0.2° / 11 s, L2 ±0.3° / 8 s, L3 ±0.45° / 6 s) and bounced on
+        every scroll move (a spring, −6 / −9 / −12px, one timeline restarted
+        per kick, ≤ 1 per 120 ms); two shrub sprigs ±0.3° about their base
+        (9 s / 11 s); all paused off screen and reverted on Pause
      3. the hero, owned here (site.js block 1 skips a hero inside main.canopy):
         the mark drifts down a little and .hero__fade goes to 0, the fade finished
         before the drifted text bounds reach the canopy's centre (art row 297,
@@ -26,6 +29,9 @@
         desktop only, the sprite is display:none on phones) and the fallen one
         rolling into place on the ground
      5. the ground rising 40px into place; the logo + line rising on load
+     6. the logo morph: the hero logo travels up and shrinks into the centre
+        of the header bar over the first 70 % of the hero and docks there
+        (one ScrollTrigger; html.logo-morphing / html.logo-docked)
    Leaves (.leaf), kashida draws (.kashida-draw) and reveals (.reveal / .stagger)
    are site.js blocks 8, 4 and 9.
    ========================================================= */
@@ -38,6 +44,7 @@
   if (!main || !hasGsap) { return; }
 
   var $ = function (s, c) { return (c || document).querySelector(s); };
+  var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
   var vh = function () { return window.innerHeight; };
   var phoneQuery = window.matchMedia('(max-width: 768px)');
   var isPhone = function () { return phoneQuery.matches; };
@@ -45,7 +52,6 @@
 
   var tree = $('.tree', main);
   var canopy = $('.tree__canopy', main);
-  var shake = $('.tree__shake', main);
   var sprigL = $('.tree__sprig--l', main);
   var sprigR = $('.tree__sprig--r', main);
   var hero = $('.hero', main);
@@ -59,16 +65,21 @@
   var ground = $('.ground-art', main);
   var roll = $('.fruit-roll', main);
   var treeImg = $('.tree__canopy img', main);
+  /* the logo morph (block 6): the fixed copy, the hero's own logo and the header slot's img */
+  var morph = $('.logo-morph');
+  var morphImg = morph ? $('img', morph) : null;
+  var heroLogo = $('.hero__logo img', main);
+  var navImg = $('.site-header .nav-home img');
 
   var ctx = null;
   var observers = [];
   var on = false;
   var failed = false;
   var risen = false;
-  /* the velocity shake: its timeline and state live here so kill() can reset them */
-  var shakeTl = null;
-  var shaking = false;
-  var lastShake = 0;
+  /* the scroll bounce of the canopy layers: ONE reusable timeline (built in buildAll, inside the context) and the
+     time of the last kick live here so kill() can reset them */
+  var bounceTl = null;
+  var lastBounce = 0;
   /* the last global ScrollTrigger.refresh() (site.js refreshes in initMotion, on load and when the fonts land):
      build() skips its own when one has just run, since triggers measure themselves on creation */
   var lastRefresh = 0;
@@ -130,39 +141,63 @@
         scrollTrigger: { start: parallaxStart, end: 'max', scrub: true, invalidateOnRefresh: true }
       });
     }
-    /* the shake: a fast flick (|velocity| > 2400 px/s) while the canopy is on screen nudges the canopy 6px / 0.8°
-       in the scroll direction and lets it spring back; at most one every 1.6 s. The timeline is created through
-       ctx.add() so the context records it and revert() (Pause, reduced motion) kills it with everything else */
-    if (shake && canopy) {
+    /* 2. the layered canopy (four tonal slices, .tree__layer--0..3; the static junction bark sits above them in CSS,
+          so nothing here moves a trunk). Three motions per layer, on two elements so no property is driven twice:
+          a. parallax: the outer div's y = (1 − m) × the page scroll over the hero (L0 ×0.97, L1 ×0.985, L2 ×1, L3
+             ×1.02 of the scroll), scrubbed from the top of the page to the hero's bottom and held after it, so the
+             layers slide a few px past each other while the canopy rises (27 / 13 / 0 / −18px at 1440×900);
+          b. sway: the outer div rotates about its top centre (L1 ±0.2° / 11 s, L2 ±0.3° / 8 s, L3 ±0.45° / 6 s, yoyo
+             sine; L0 still), paused off screen;
+          c. bounce: on every scroll update with |velocity| > 300 px/s the imgs spring up (−6 / −9 / −12px for L1 / L2
+             / L3, half on phones) and settle (elastic.out(1, .4), 1.2 s, 40 ms stagger): ONE timeline, built here in
+             the context and restarted per kick, at most once per 120 ms (overwrite: auto on the tweens) */
+    var layers = $$('.tree__layer', main);
+    if (canopy && layers.length === 4) {
+      var mult = [0.97, 0.985, 1, 1.02];
+      var sway = [null, [0.2, 5.5], [0.3, 4], [0.45, 3]];
+      var amp = isPhone() ? [0, 3, 4.5, 6] : [0, 6, 9, 12];
+      var layerImgs = layers.map(function (l) { return $('img', l); });
+      /* a. parallax, applied directly from the trigger's scroll (no tween, so the layers track the page exactly) */
+      var applyParallax = function (self) {
+        var s = Math.max(0, Math.min(self.scroll(), hero ? hero.offsetHeight : vh()));
+        layers.forEach(function (l, i) { gsap.set(l, { y: Math.round((1 - mult[i]) * s * 10) / 10 }); });
+      };
+      ScrollTrigger.create({
+        trigger: hero, start: 'top top', end: 'bottom top', invalidateOnRefresh: true,
+        onUpdate: applyParallax, onRefresh: applyParallax
+      });
+      /* b. sway */
+      layers.forEach(function (l, i) {
+        if (!sway[i]) { return; }
+        loopInView(l, gsap.fromTo(l, { rotation: -sway[i][0] }, { rotation: sway[i][0], duration: sway[i][1], ease: 'sine.inOut', yoyo: true, repeat: -1 }));
+      });
+      /* c. bounce */
+      bounceTl = gsap.timeline({ paused: true });
+      layerImgs.forEach(function (img, i) {
+        if (!amp[i] || !img) { return; }
+        bounceTl.fromTo(img, { y: -amp[i] }, { y: 0, duration: 1.2, ease: 'elastic.out(1, 0.4)', overwrite: 'auto' }, (i - 1) * 0.04);
+      });
       ScrollTrigger.create({
         start: 0, end: 'max',
         onUpdate: function (self) {
-          if (shaking || !ctx) { return; }
-          var v = self.getVelocity();
+          if (!bounceTl) { return; }
           var now = Date.now();
-          if (Math.abs(v) < 2400 || now - lastShake < 1600) { return; }
+          if (Math.abs(self.getVelocity()) < 300 || now - lastBounce < 120) { return; }
           var r = canopy.getBoundingClientRect();
           if (r.bottom < 0 || r.top > vh()) { return; }
-          shaking = true; lastShake = now;
-          var d = v > 0 ? 1 : -1;
-          ctx.add(function () {
-            shakeTl = gsap.timeline({ onComplete: function () { shaking = false; shakeTl = null; } })
-              .to(shake, { x: 6 * d, rotation: 0.8 * d, duration: 0.16, ease: 'power2.out' })
-              .to(shake, { x: 0, rotation: 0, duration: 1.3, ease: 'elastic.out(1, 0.35)' });
-          });
+          lastBounce = now;
+          bounceTl.restart();
         }
       });
     }
 
-    /* 2. sway: the canopy about its top centre (7 s period), the sprigs about the trunk edge (9 s / 11 s) */
-    if (canopy) {
-      loopInView(canopy, gsap.fromTo(canopy, { rotation: -0.5 }, { rotation: 0.5, duration: 3.5, ease: 'sine.inOut', yoyo: true, repeat: -1 }));
-    }
+    /* each shrub ±0.3° about the bottom of its crop at the trunk edge (9 s / 11 s: the tips move ~2px, the cut edges
+       stay still) */
     if (shown(sprigL)) {
-      loopInView(sprigL, gsap.fromTo(sprigL, { rotation: -0.5 }, { rotation: 0.5, duration: 4.5, ease: 'sine.inOut', yoyo: true, repeat: -1 }));
+      loopInView(sprigL, gsap.fromTo(sprigL, { rotation: -0.3 }, { rotation: 0.3, duration: 4.5, ease: 'sine.inOut', yoyo: true, repeat: -1 }));
     }
     if (shown(sprigR)) {
-      loopInView(sprigR, gsap.fromTo(sprigR, { rotation: 0.5 }, { rotation: -0.5, duration: 5.5, ease: 'sine.inOut', yoyo: true, repeat: -1 }));
+      loopInView(sprigR, gsap.fromTo(sprigR, { rotation: 0.3 }, { rotation: -0.3, duration: 5.5, ease: 'sine.inOut', yoyo: true, repeat: -1 }));
     }
 
     /* 3. the hero, scrubbed over its own height: the mark drifts down by heroDrift() (depth: it rises slower than the
@@ -216,6 +251,45 @@
       }
     }
 
+    /* 6. the logo morph: the hero logo travels up and shrinks into the centre of the header bar over the first 70 % of
+          the hero's height, and docks there. ONE ScrollTrigger (no tween: progress is applied directly, so the copy
+          tracks the page pixel for pixel). A = the hero logo's untransformed page rect, summed up the offsetParent
+          chain (the mark's drift / rise transforms ignored; its translateX(-50%) taken off); B = the header slot's
+          img rect (fixed, so viewport = page). At progress p the fixed copy sits at lerp(A in the viewport, B, p) with
+          scale lerp(1, B.w / A.w, p) about its top-left corner; at p = 0 the hero's own logo shows, between the ends
+          the copy (html.logo-morphing hides the hero img), at p = 1 the header logo (html.logo-docked) in the same
+          place. Re-measured on every refresh (resize, fonts) */
+    if (morph && morphImg && heroLogo && navImg && hero) {
+      var A = null, B = null;
+      var measureMorph = function () {
+        var el = heroLogo, left = 0, top = 0;
+        while (el && el !== main) { left += el.offsetLeft; top += el.offsetTop; el = el.offsetParent; }
+        left -= mark.offsetWidth / 2;
+        A = { left: left + main.offsetLeft, top: top + main.offsetTop, w: heroLogo.offsetWidth };
+        var r = navImg.getBoundingClientRect();
+        B = { left: r.left, top: r.top, w: r.width };
+        gsap.set(morphImg, { width: A.w });
+      };
+      var applyMorph = function (self) {
+        if (!A || !B) { return; }
+        var p = self.progress;
+        /* a straight line in the viewport from the hero logo's rect (where the hero logo is at scroll 0) to the slot:
+           the logo rises slower than the page (the line and the tag scroll away beneath it) and never overshoots the bar */
+        gsap.set(morph, {
+          x: A.left + (B.left - A.left) * p,
+          y: A.top + (B.top - A.top) * p,
+          scale: 1 + (B.w / A.w - 1) * p
+        });
+        html.classList.toggle('logo-morphing', p > 0 && p < 1);
+        html.classList.toggle('logo-docked', p >= 1);
+      };
+      measureMorph();
+      ScrollTrigger.create({
+        trigger: hero, start: 'top top', end: function () { return '+=' + Math.round(hero.offsetHeight * 0.7); },
+        onRefreshInit: measureMorph, onRefresh: applyMorph, onUpdate: applyMorph
+      });
+    }
+
     /* 5. the logo + line rise on load, once per page. The CSS holds .hero__rise at opacity 0 only under
           html.canopy-ready (added by build() with this context), and this fromTo sets the same start inside the
           context, so nothing paints and then snaps back and a revert restores the visible default; a rebuild (Play
@@ -257,9 +331,11 @@
     try { if (ctx) { ctx.revert(); ctx = null; } } catch (e) { /* ignore */ }
     observers.forEach(function (o) { o.disconnect(); });
     observers = [];
-    shakeTl = null; shaking = false; lastShake = 0;
+    bounceTl = null; lastBounce = 0;
     html.classList.remove('canopy-motion');
     html.classList.remove('canopy-ready');
+    html.classList.remove('logo-morphing');
+    html.classList.remove('logo-docked');
     if (heroBg) { heroBg.classList.remove('is-gone'); }
     /* the triggers that remain (site.js, still live on a breakpoint rebuild) re-measure after the revert */
     if (html.classList.contains('motion')) { ScrollTrigger.refresh(); }

@@ -398,8 +398,12 @@
      in view (the other filled buttons only ghost the header Inquire).
      --------------------------------------------------------- */
   var headerInquire = header ? $('.nav-right .btn', header) : null;
+  /* the tab hides for the whole #inquire section and the footer; the header Inquire goes ghost only while a FILLED
+     button is actually on screen: the form's own submit button (not the whole section, whose heading arrives a
+     viewport before the button), the footer, and every main .btn to #inquire */
   var hideFor = [$('#inquire'), $('.site-footer')].filter(Boolean);
-  var ghostFor = hideFor.concat($$('main .btn[href$="#inquire"]'));
+  var submitFor = [$('#inquire .form button[type="submit"]'), $('.site-footer')].filter(Boolean).concat($$('main .btn[href$="#inquire"]'));
+  var ghostFor = hideFor.concat(submitFor.filter(function (el) { return hideFor.indexOf(el) === -1; }));
   if ((headerInquire || syncTab) && ghostFor.length && 'IntersectionObserver' in window) {
     var ghostInView = new Map();
     var ghostObserver = new IntersectionObserver(function (entries) {
@@ -407,7 +411,7 @@
       hideAtDestination = false; filledInquire = false;
       ghostInView.forEach(function (v, el) {
         if (!v) { return; }
-        filledInquire = true;
+        if (submitFor.indexOf(el) !== -1) { filledInquire = true; }
         if (hideFor.indexOf(el) !== -1) { hideAtDestination = true; }
       });
       if (headerInquire && headerInquire.classList.contains('ghost') !== filledInquire) { headerInquire.classList.toggle('ghost', filledInquire); }
@@ -460,6 +464,21 @@
       }, 80);
     }
   }
+
+  /* a native <details> opening or closing (the options' "What is included", the FAQ) moves everything below it: the
+     scroll measurements (ScrollTrigger) and Lenis's page size are refreshed once the content has settled. `toggle`
+     does not bubble, so it is caught in the capture phase; 150 ms debounced, then in a frame */
+  var detailsTimer = null;
+  document.addEventListener('toggle', function (e) {
+    if (!e.target || e.target.tagName !== 'DETAILS') { return; }
+    clearTimeout(detailsTimer);
+    detailsTimer = setTimeout(function () {
+      requestAnimationFrame(function () {
+        if (lenis && lenis.resize) { lenis.resize(); }
+        if (hasGsap && motionOn) { ScrollTrigger.refresh(); }
+      });
+    }, 150);
+  }, true);
 
   /* the behaviour script is live (CSS may key no-JS fallbacks on html:not(.site-ready)) */
   html.classList.add('site-ready');
@@ -785,8 +804,9 @@
   function buildLeaves() {
     killLeaves();
     $$('.leaf').forEach(function (leaf, i) {
-      /* a leaf hidden by CSS (the canopy home on phones) gets no tween or trigger */
-      if (getComputedStyle(leaf).display === 'none') { return; }
+      /* a leaf hidden by CSS (the canopy home on phones) gets no tween or trigger; the inner pages' band crop
+         (.leaf--static) is a still piece of the painting */
+      if (leaf.classList.contains('leaf--static') || getComputedStyle(leaf).display === 'none') { return; }
       if (isDesktop()) {
         var drift = gsap.to(leaf, { y: '+=' + (18 + i * 6), x: '+=' + (i % 2 ? -10 : 10), rotation: '+=' + (i % 2 ? -3 : 3), duration: 6 + i * 1.5, ease: 'sine.inOut', yoyo: true, repeat: -1, paused: true });
         leafTweens.push(drift);

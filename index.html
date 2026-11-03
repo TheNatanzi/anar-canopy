@@ -15,11 +15,14 @@
 <link rel="preload" href="assets/fonts/TTRamillas-Bold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/NotoNaskhArabic-arabic.woff2" as="font" type="font/woff2" crossorigin>
 <!-- the poster is preloaded only under reduced motion (where it is the hero); otherwise the video's own poster fetch
-     suffices and the tree (the LCP image) and the two fonts keep the first connection -->
+     suffices and the tree (the LCP image, preloaded only without reduced motion so the two never compete) and the two
+     fonts keep the first connection -->
 <link rel="preload" href="assets/video/hero-poster-small.jpg" as="image" media="(prefers-reduced-motion: reduce)">
 <!-- the one painted tree (1536×3714, transparent): drawn in three layers from this file plus the tiled trunk band;
      three widths (768 / 1024 / 1536), so a 390px phone at DPR 2 (110vw = 858 device px) takes the 1024 file, not the 1536 -->
-<link rel="preload" href="assets/tree/tree-full.webp" as="image" imagesrcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" imagesizes="(max-width:768px) 110vw, 100vw" fetchpriority="high">
+<link rel="preload" href="assets/tree/tree-full.webp" as="image" imagesrcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" imagesizes="(max-width:768px) 110vw, 100vw" fetchpriority="high" media="(prefers-reduced-motion: no-preference)">
+<!-- the plain gold logo paints before the deferred bundles land on a cold load (it is the first thing on screen) -->
+<link rel="preload" href="assets/logo/logo-gold.svg" as="image" fetchpriority="high">
 <link rel="stylesheet" href="assets/css/site.css">
 <link rel="stylesheet" href="assets/css/canopy.css">
 <link rel="canonical" href="https://anarevents.com/">
@@ -34,6 +37,13 @@
 </head>
 <body class="page-index">
 <a class="skip-link" href="#main">Skip to content</a>
+<!-- the brand's line icons (phone handset, WhatsApp bubble, envelope, Instagram), one inline sprite per page: used by the header, the drawer and the footer -->
+<svg hidden aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5.5 3h3.2l1.6 4.2-2.1 1.6a12.5 12.5 0 0 0 7 7l1.6-2.1 4.2 1.6v3.2a2 2 0 0 1-2 2A16.5 16.5 0 0 1 3.5 5a2 2 0 0 1 2-2z"/></symbol>
+  <symbol id="i-whatsapp" viewBox="0 0 24 24"><path d="M12 3.5a8.5 8.5 0 0 0-7.3 12.9L3.5 20.5l4.2-1.1A8.5 8.5 0 1 0 12 3.5z"/><path d="M9.2 8.3h1.3l.8 2-1 .9a6 6 0 0 0 2.5 2.5l.9-1 2 .8v1.3c0 .6-.5 1.1-1.1 1-3.3-.4-5.9-3-6.4-6.3a1 1 0 0 1 1-1.2z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="m3.5 7.5 8.5 5.5 8.5-5.5"/></symbol>
+  <symbol id="i-instagram" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r=".8" fill="currentColor" stroke="none"/></symbol>
+</svg>
 
 <!-- Shared header: left links, right the phone number (wide desktops) + the one gold button; the فارسی note lives in the drawer and the footer only -->
 <header class="site-header">
@@ -41,16 +51,25 @@
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span class="nav-toggle__bar"></span><span class="visually-hidden">Menu</span></button>
     <a class="nav-home" href="index.html" aria-label="Anar Events, home"><img src="assets/logo/logo-gold.svg" width="1600" height="552" alt=""></a>
     <nav class="site-nav" id="site-nav" aria-label="Main" data-lenis-prevent>
-      <ul>
+      <ul role="list">
         <li><a href="weddings.html">Weddings</a></li>
         <li><a href="how-we-work.html">How we work</a></li>
         <li><a href="about.html">About</a></li>
-        <li class="site-nav__phone"><a href="tel:+19252639949">Call (925) 263-9949</a> · <a href="https://wa.me/19252639949" rel="noopener">WhatsApp</a></li>
+        <!-- phones only (CSS): the contact rows (phone, WhatsApp, email, each with its gold line icon) as the last drawer
+             items, then the "فارسی · coming soon" note (the bar carries no فارسی label; the footer repeats the note) -->
+        <li class="site-nav__contact">
+          <a href="tel:+19252639949"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg> Call (925) 263-9949</a>
+          <a href="https://wa.me/19252639949" rel="noopener"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg> WhatsApp</a>
+          <a href="mailto:hello@anarevents.com"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg> hello@anarevents.com</a>
+        </li>
         <li class="site-nav__fa"><span class="fa" lang="fa" dir="rtl">فارسی</span> · coming soon</li>
       </ul>
     </nav>
+    <!-- right of the nav, left of Inquire: a handset (tel:) and an envelope (mailto:) as gold line icons, 44px hit areas;
+         on phones the bar is full (toggle + Pause + logo + Inquire at 360px), so the drawer carries them instead -->
     <div class="nav-right">
-      <a class="nav-phone" href="tel:+19252639949">(925) 263-9949</a>
+      <a class="nav-icon" href="tel:+19252639949" title="Call (925) 263-9949"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span class="visually-hidden">Call (925) 263-9949</span></a>
+      <a class="nav-icon" href="mailto:hello@anarevents.com" title="Email hello@anarevents.com"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg><span class="visually-hidden">Email hello@anarevents.com</span></a>
       <a class="btn btn--sm" href="index.html#inquire">Inquire</a>
     </div>
     <!-- Pause motion / Play motion: a 36px round control in the bar (right, beside Inquire; beside the menu toggle on
@@ -60,10 +79,14 @@
   </div>
 </header>
 
+<!-- the morphing logo (canopy.js block 6): the same gold SVG as the hero and the header slot, fixed, transformed from the
+     hero logo's rect up into the centre of the bar over the first 70% of the hero's height; visible only mid-morph -->
+<div class="logo-morph" aria-hidden="true"><img src="assets/logo/logo-gold.svg" width="1600" height="552" alt="" decoding="async"></div>
+
 <!-- ONE tall painted tree (assets/tree/tree-full.webp), scrolled down over four screens. The art is absolutely
      positioned under the content (canopy.css: .tree = canopy + trunk shrubs + the tiled bare-trunk band, moved at
      0.9× scroll; .ground-art = the roots and the ground, on the footer). The screens are normal flow in the open
-     middle; the first starts under the canopy's underside (--at-1270), the last ends above the ground's fruit. -->
+     middle; the first starts under the canopy's underside (--at-under), the last ends above the ground's fruit. -->
 <main id="main" class="canopy" tabindex="-1">
 
   <!-- the hero video, behind everything: no src here, site.js block 0 appends the mp4 <source> after window 'load'
@@ -78,11 +101,23 @@
 
   <!-- the tree, screen 1 to screen 4 -->
   <div class="tree" aria-hidden="true">
-    <div class="tree__trunk"><img src="assets/tree/tree-full.webp" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>
+    <div class="tree__trunk tree__trunk--low"><img src="assets/tree/tree-full.webp" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>
     <div class="tree__band"></div>
     <div class="tree__sprig tree__sprig--l"><img src="assets/tree/tree-full.webp" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>
     <div class="tree__sprig tree__sprig--r"><img src="assets/tree/tree-full.webp" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>
-    <div class="tree__canopy"><div class="tree__shake"><img src="assets/tree/tree-full.webp" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" fetchpriority="high"></div></div>
+    <!-- the canopy as four tonal slices of tree-full rows 0–1300 (assets/tree/layers, same coordinate space): L0 the
+         soft darkened base (moves least), L1 dark leaves, L2 mid leaves, L3 bright leaves + every fruit (front). Each
+         layer is parallaxed, swayed and bounced by canopy.js block 2 (the outer div: parallax y + sway rotation about
+         its top centre; the img: the spring bounce), so the branches move around each other -->
+    <div class="tree__canopy">
+      <div class="tree__layer tree__layer--0"><img src="assets/tree/layers/canopy-L0.webp" width="1536" height="1300" alt="" fetchpriority="high"></div>
+      <div class="tree__layer tree__layer--1"><img src="assets/tree/layers/canopy-L1.webp" width="1536" height="1300" alt="" fetchpriority="high"></div>
+      <div class="tree__layer tree__layer--2"><img src="assets/tree/layers/canopy-L2.webp" width="1536" height="1300" alt="" decoding="async"></div>
+      <div class="tree__layer tree__layer--3"><img src="assets/tree/layers/canopy-L3.webp" width="1536" height="1300" alt="" decoding="async"></div>
+    </div>
+    <!-- the static bark at the canopy junction (rows 1000–1272, bark columns only), ABOVE the moving layers: the trunks
+         never move while the branches and leaves do -->
+    <div class="tree__bark"><img src="assets/tree/tree-full.webp" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>
     <img class="fruit-drop" src="assets/tree/fruit-drop.webp" width="82" height="91" alt="" loading="lazy" decoding="async">
   </div>
   <div class="ground-art" aria-hidden="true">
@@ -111,11 +146,11 @@
   <section class="screen screen--statement" aria-labelledby="statement-title">
     <div class="leaf leaf--1" aria-hidden="true"></div>
     <div class="screen__col">
-      <p class="eyebrow reveal"><span class="fa" lang="fa" dir="rtl">میراث، از نو</span></p>
+      <p class="eyebrow reveal"><span class="fa" lang="fa" dir="rtl">جشن‌هایی که از آنِ شماست</span></p>
       <h2 id="statement-title" class="reveal">Reimagined Heritage</h2>
       <svg class="kashida kashida--short kashida-draw" viewBox="0 0 320 2" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M160 1 H0"/><path d="M160 1 H320"/></svg>
       <p class="statement__one reveal">Bespoke Persian, Afghan and South Asian weddings, fluent in the traditions your family cherishes.</p>
-      <ol class="promises stagger" aria-label="Three things we always do">
+      <ol class="promises stagger" role="list" aria-label="Three things we always do">
         <li>Fluent in the unspoken details.</li>
         <li>The elders honored, your vision realized.</li>
         <li>Multi-day celebrations, run to the minute.</li>
@@ -123,8 +158,9 @@
     </div>
   </section>
 
-  <!-- 3. SCREEN THREE: bare trunks both sides; three photo slots in the open middle. Each photograph links to the same
-       weddings.html section as its title (aria-label names the ceremony; the global gold focus ring shows on the slot).
+  <!-- 3. SCREEN THREE: bare trunks both sides; three photo slots in the open middle. Each photograph is clickable to the
+       same weddings.html section as its title, but out of the tab order and the accessibility tree (tabindex -1,
+       aria-hidden): one link per destination, the title, so a keyboard user meets three stops, not six.
        PHOTO SLOTS: stand-ins until the real photos arrive (real families, with consent), portrait ~1500×2000 each -->
   <section class="screen screen--celebrations" aria-labelledby="celebrations-title">
     <div class="leaf leaf--3" aria-hidden="true"></div>
@@ -135,25 +171,24 @@
       <svg class="kashida kashida--short kashida-draw" viewBox="0 0 320 2" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M160 1 H0"/><path d="M160 1 H320"/></svg>
       <div class="cel stagger">
         <figure>
-          <a class="cel__slot" href="weddings.html#sofreh-aghd" aria-label="Sofreh Aghd, on the Weddings page"><img src="assets/img/pom-open-closeup.jpg" srcset="assets/img/pom-open-closeup-800.jpg 800w, assets/img/pom-open-closeup-1400.jpg 1400w, assets/img/pom-open-closeup.jpg 2000w" sizes="(max-width:768px) 100vw, 330px" width="2000" height="1123" alt="An opened pomegranate, seeds packed tight" loading="lazy" decoding="async"></a>
+          <a class="cel__slot" href="weddings.html#sofreh-aghd" tabindex="-1" aria-hidden="true"><img src="assets/img/pom-open-closeup.jpg" srcset="assets/img/pom-open-closeup-800.jpg 800w, assets/img/pom-open-closeup-1400.jpg 1400w, assets/img/pom-open-closeup.jpg 2000w" sizes="(max-width:768px) 100vw, 330px" width="2000" height="1123" alt="An opened pomegranate, seeds packed tight" loading="lazy" decoding="async"></a>
           <figcaption><span class="fa" lang="fa" dir="rtl">سفرهٔ عقد</span><h3><a href="weddings.html#sofreh-aghd">Sofreh Aghd</a></h3><p>The Persian ceremony, at the sofreh.</p></figcaption>
         </figure>
         <figure>
-          <a class="cel__slot" href="weddings.html#nikah" aria-label="Nikah, on the Weddings page"><img src="assets/img/pom-in-hand.jpg" srcset="assets/img/pom-in-hand-800.jpg 800w, assets/img/pom-in-hand-1400.jpg 1400w, assets/img/pom-in-hand.jpg 1500w" sizes="(max-width:768px) 100vw, 330px" width="1500" height="2000" alt="A pomegranate held in an open hand" loading="lazy" decoding="async"></a>
+          <a class="cel__slot" href="weddings.html#nikah" tabindex="-1" aria-hidden="true"><img src="assets/img/pom-in-hand.jpg" srcset="assets/img/pom-in-hand-800.jpg 800w, assets/img/pom-in-hand-1400.jpg 1400w, assets/img/pom-in-hand.jpg 1500w" sizes="(max-width:768px) 100vw, 330px" width="1500" height="2000" alt="A pomegranate held in an open hand" loading="lazy" decoding="async"></a>
           <figcaption><span class="fa" lang="fa" dir="rtl">نکاح</span><h3><a href="weddings.html#nikah">Nikah</a></h3><p>The contract, read before both families.</p></figcaption>
         </figure>
         <figure>
-          <a class="cel__slot" href="weddings.html#mehndi-sangeet" aria-label="Mehndi and Sangeet, on the Weddings page"><img src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night.jpg 1125w" sizes="(max-width:768px) 100vw, 330px" width="1125" height="2000" alt="A pomegranate tree at night" loading="lazy" decoding="async"></a>
+          <a class="cel__slot" href="weddings.html#mehndi-sangeet" tabindex="-1" aria-hidden="true"><img src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night.jpg 1125w" sizes="(max-width:768px) 100vw, 330px" width="1125" height="2000" alt="A pomegranate tree at night" loading="lazy" decoding="async"></a>
           <figcaption><span class="fa" lang="fa" dir="rtl">حنابندان · مهندی</span><h3><a href="weddings.html#mehndi-sangeet">Mehndi &amp; Sangeet</a></h3><p>Henna, blessings, music and dancing.</p></figcaption>
         </figure>
       </div>
-      <p class="cel__foot reveal"><a class="link" href="weddings.html">Haldi &amp; pheras, Anand Karaj, walima and the rukhsati: every ceremony, in its own words</a></p>
+      <p class="cel__foot reveal">Haldi &amp; pheras, Anand Karaj, walima, rukhsati: <a class="link" href="weddings.html">every ceremony on the Weddings page</a></p>
     </div>
   </section>
 
   <!-- 4. SCREEN FOUR: the roots and the ground; Inquire (names, email + optional phone, message) above the fallen fruit, the footer below the ground -->
   <section class="screen screen--inquire" id="inquire" aria-labelledby="inquire-title">
-    <div class="leaf leaf--3" aria-hidden="true"></div>
     <div class="screen__col">
       <p class="eyebrow reveal"><span class="fa" lang="fa" dir="rtl">شروع برنامه‌ریزی</span></p>
       <h2 id="inquire-title" class="reveal">Tell us about your family</h2>
@@ -162,13 +197,13 @@
       <form class="form" action="https://formspree.io/f/FORMSPREE_ID" method="POST" data-ajax>
         <input type="hidden" name="_subject" value="New inquiry from anarevents.com">
         <input type="text" name="_gotcha" class="visually-hidden" tabindex="-1" autocomplete="off" aria-hidden="true">
-        <div class="field"><label for="f-names">Your name(s)</label><p class="field__help" id="f-names-help">Couple or parent names</p><input id="f-names" name="names" type="text" autocomplete="name" required placeholder="Sara &amp; Omid" aria-describedby="f-names-help"></div>
+        <div class="field"><label for="f-names">Your name(s)</label><p class="field__help" id="f-names-help">Couple or parent names</p><input id="f-names" name="names" type="text" autocomplete="name" required placeholder="Sara &amp; Omid, or Mr &amp; Mrs Rahimi" aria-describedby="f-names-help"></div>
         <div class="form__row">
           <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
           <div class="field"><label for="f-phone">Phone / WhatsApp <span class="muted">(optional)</span></label><input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
         </div>
         <div class="field"><label for="f-message">Message <span class="muted">(optional)</span></label><p class="field__help" id="f-message-help">Your families, approximate dates and guest count, the rituals that matter most.</p><textarea id="f-message" name="message" aria-describedby="f-message-help"></textarea></div>
-        <div><button class="btn" type="submit">Begin the conversation</button></div>
+        <div class="form__submit"><button class="btn" type="submit">Begin the conversation</button></div>
         <p class="form__status" id="form-status" role="status" aria-live="polite" tabindex="-1"></p>
         <p class="form__note">We reply within one business day.</p>
       </form>
@@ -182,20 +217,28 @@
 <footer class="site-footer">
   <div class="container">
     <div class="site-footer__grid">
-      <div>
+      <div class="site-footer__brand">
         <a href="index.html" aria-label="Anar Events, home"><img class="site-footer__logo" src="assets/logo/logo-gold.svg" width="1600" height="552" alt="Anar Events" loading="lazy"></a>
+        <p class="site-footer__tag">Persian, Afghan and South Asian weddings · San Francisco Bay Area</p>
       </div>
-      <address>
-        <span>Anar Events · San Francisco Bay Area</span>
-        <a href="tel:+19252639949">(925) 263-9949</a>
-        <a href="https://wa.me/19252639949" rel="noopener">WhatsApp</a>
-        <a href="mailto:hello@anarevents.com">hello@anarevents.com</a>
-        <a href="https://instagram.com/anarevents" rel="noopener">Instagram · @anarevents</a>
+      <address class="site-footer__col">
+        <p class="site-footer__eyebrow">Contact</p>
+        <ul class="site-footer__list" role="list">
+          <li><a href="tel:+19252639949"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>(925) 263-9949</a></li>
+          <li><a href="https://wa.me/19252639949" rel="noopener"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg>WhatsApp</a></li>
+          <li><a href="mailto:hello@anarevents.com"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg>hello@anarevents.com</a></li>
+        </ul>
       </address>
-      <p class="site-footer__fa fa" lang="fa" dir="rtl">انار · برنامه‌ریزی عروسی و جشن</p>
+      <div class="site-footer__col">
+        <p class="site-footer__eyebrow">Follow</p>
+        <ul class="site-footer__list" role="list">
+          <li><a href="https://instagram.com/anarevents" rel="noopener"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-instagram"/></svg>@anarevents</a></li>
+        </ul>
+        <p class="site-footer__fa fa" lang="fa" dir="rtl">انار · برنامه‌ریزی عروسی و جشن</p>
+      </div>
     </div>
+    <div class="site-footer__bottom"><span>© 2026 Anar LLC</span><span>Timeless traditions, curated for the modern era.</span></div>
     <p class="site-footer__lang">English for everyone. Tell us your preferred language. We confirm written translation and spoken support before booking. <span class="site-footer__soon"><span class="fa" lang="fa" dir="rtl">فارسی</span> · coming soon</span></p>
-    <p class="site-footer__legal"><span>© 2026 Anar LLC · Persian, Afghan and South Asian weddings</span><span>Timeless traditions, curated for the modern era.</span></p>
   </div>
 </footer>
 
@@ -206,7 +249,7 @@
   <button class="hww-panel__close" type="button" aria-label="Close"><span aria-hidden="true">&times;</span></button>
   <p class="eyebrow">How we work · <span class="fa" lang="fa" dir="rtl">روش کار ما</span></p>
   <h2 id="hww-title">Five steps, one line</h2>
-  <ol class="hww-steps">
+  <ol class="hww-steps" role="list">
     <li><div><h3>Inquiry</h3><p>Write to us, or call. Tell us about your family and your dates.</p></div></li>
     <li><div><h3>Consultation</h3><p>We meet your family, greet the elders first, and listen. Parents and elders included at the level you choose.</p></div></li>
     <li><div><h3>Proposal</h3><p>The plan, the price, and what is included: the events covered, the staffing, the hours and the fees.</p></div></li>

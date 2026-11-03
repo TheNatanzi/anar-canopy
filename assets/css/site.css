@@ -53,6 +53,8 @@ html.reduced{scroll-behavior:auto}
 [id]{scroll-margin-top:calc(var(--header-h) + 16px)}
 body{margin:0;background:var(--night);color:var(--parch);font-family:var(--font-latin);font-weight:700;font-size:18px;line-height:28px;overflow-x:hidden}
 img,video,svg{display:block;max-width:100%}
+/* the hidden attribute always wins (the inline icon sprite is an svg[hidden]; the display:block above must not show it) */
+[hidden]{display:none}
 img{height:auto}
 h1,h2,h3,h4,p,ul,ol,figure,blockquote{margin:0}
 ul,ol{padding:0;list-style:none}
@@ -124,44 +126,55 @@ main > .on-light:last-child{border-bottom:0}
 /* ---------- Header (shared) ---------- */
 .site-header{position:absolute;top:0;left:0;right:0;z-index:50;height:var(--header-h);color:var(--parch);transition:background .4s,box-shadow .4s}
 .js .site-header{position:fixed}
-.site-header__inner{height:100%;display:flex;align-items:center;gap:var(--s2);padding-inline:clamp(16px,3vw,40px)}
-/* phones: a 12px gap and no logo margin, so toggle + Pause + logo + Inquire fit a 360px bar */
-@media (max-width:768px){.site-header__inner{gap:12px}.nav-home{margin-right:0;flex:0 1 120px;min-width:56px}.nav-right{min-width:0}}
-/* 320px (and enlarged text): the bar's fixed items (toggle 44 + Pause 36 + Inquire) leave the logo ~70px; the button loses 6px of padding and nothing clips */
-@media (max-width:360px){.site-header__inner{padding-inline:12px}.btn--sm{padding:10px 14px}}
-/* the small gold logo: fades in (.4s) once the page is scrolled, on every page; always on inner pages */
-.nav-home{display:block;width:120px;margin-right:var(--s2);flex:0 0 auto;opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s}
+.site-header__inner{position:relative;height:100%;display:flex;align-items:center;gap:var(--s2);padding-inline:clamp(16px,3vw,40px)}
+/* the small gold logo sits in the CENTRE of the bar on every page (nav links left, icons + Inquire right): absolutely
+   centred, so the flex row around it never pushes it. It fades in (.4s) once the page is scrolled; always on inner
+   pages. On the canopy home the hero logo morphs up into this slot (canopy.css / canopy.js block 6): the slot is
+   empty until the morph docks, then this logo shows in the same place */
+.nav-home{display:block;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:120px;opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s}
 .nav-home img{width:100%;height:auto}
 .site-header--solid .nav-home,.site-header.is-scrolled .nav-home{opacity:1;visibility:visible}
-/* the links are visible by default. On phones without JS (no html.js, set inline before paint) they sit in a
-   deep-night strip under the bar and only the toggle is hidden, so the navigation is always reachable. With JS they
-   are hidden from first paint (html.js:not(.nav-ready)) until site.js binds the toggle (html.nav-ready), then live in
-   the drawer: the deferred bundle lands after first paint on a slow phone, and the strip must not flash and snap.
-   Phone/desktop threshold: 769px here and in site.js desktopQuery. */
+/* phones: a 12px gap; the centred logo shrinks below 350px so toggle + Pause (left) and Inquire (right) never meet it
+   (320px: 90px logo, 115–205, the left group ends at 104 and Inquire starts at 244) */
+@media (max-width:768px){.site-header__inner{gap:12px}.nav-home{width:min(120px,calc(100vw - 230px))}.nav-right{min-width:0}}
+/* 320px (and enlarged text): the bar's fixed items (toggle 44 + Pause 36 + Inquire) leave the logo ~70px; the button loses 6px of padding and nothing clips */
+@media (max-width:360px){.site-header__inner{padding-inline:12px}.btn--sm{padding:10px 14px}}
+/* the links are visible by default, on every page and at every width. On phones they collapse into the drawer ONLY
+   once site.js has bound the toggle (html.nav-ready): until then (no JS, a failed or slow script request) they sit in
+   a deep-night strip under the bar with the toggle hidden (it has no handler yet), so the three inner pages are always
+   reachable; the inline html.js class alone never hides them. Phone/desktop threshold: 769px here and in site.js
+   desktopQuery. */
 .site-nav{display:block}
 .site-nav ul{display:flex;flex-wrap:wrap;gap:clamp(16px,2.4vw,36px)}
 @media (max-width:768px){
-  html:not(.js) .site-nav{position:absolute;top:var(--header-h);left:0;right:0;background:var(--deep);border-top:2px solid var(--gold);padding:var(--s2) var(--gutter)}
-  html:not(.js) .nav-toggle{visibility:hidden}
-  html.js:not(.nav-ready) .site-nav,html.nav-ready .site-nav{display:none}
+  html:not(.nav-ready) .site-nav{position:absolute;top:var(--header-h);left:0;right:0;background:var(--deep);border-top:2px solid var(--gold);padding:var(--s2) var(--gutter)}
+  html:not(.nav-ready) .nav-toggle{visibility:hidden}
+  html.nav-ready .site-nav{display:none}
 }
-/* phone-only drawer lines: the phone link and the "فارسی · coming soon" note (the bar carries no فارسی label at any width; the footer repeats the note) */
-.site-nav__phone,.site-nav__fa{display:none}
+/* ---------- Line icons: one inline SVG sprite per page (<symbol> phone / WhatsApp / mail / Instagram, 24-unit
+   boxes), drawn in the brand's simple line style: gold, 1.5 stroke, round joins; used in the header, the drawer and
+   the footer (no icon library) ---------- */
+.icon{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+/* phone-only drawer lines: the contact rows (phone, WhatsApp, email, each with its icon) and the "فارسی · coming soon"
+   note (the bar carries no فارسی label at any width; the footer repeats the note) */
+.site-nav__contact,.site-nav__fa{display:none}
 @media (max-width:768px){
-  .site-nav__phone,.site-nav__fa{display:block}
-  .site-header.nav-open .site-nav .site-nav__phone a{font-size:18px;margin-top:var(--s1)}
-  .site-nav__fa{color:var(--stone);font-size:16px;line-height:24px;margin-top:var(--s2)}
+  .site-nav__contact{display:grid;gap:var(--s1);margin-top:var(--s1)}
+  .site-nav .site-nav__contact a{display:inline-flex;align-items:center;gap:12px;font-size:18px;line-height:28px;color:var(--parch)}
+  .site-nav__contact .icon{color:var(--gold)}
+  .site-nav__fa{display:block;color:var(--stone);font-size:16px;line-height:24px;margin-top:var(--s2)}
   .site-nav__fa .fa{font-size:18px}
 }
 .site-nav a{display:inline-block;padding-block:4px;border-bottom:2px solid transparent;transition:border-color .3s,color .3s;letter-spacing:.02em}
 .site-nav a:hover,.site-nav a[aria-current="page"]{border-bottom-color:var(--gold)}
-.nav-right{margin-left:auto;display:flex;align-items:center;gap:clamp(12px,2vw,28px)}
-/* the phone number as a plain tel: link before the Inquire button, wide desktops only (phones carry it in the drawer) */
-.nav-phone{display:none}
-@media (min-width:1100px){
-  .nav-phone{display:inline-block;font-size:16px;line-height:24px;letter-spacing:.02em;padding-block:4px;border-bottom:2px solid transparent;transition:border-color .3s;white-space:nowrap}
-  .nav-phone:hover{border-bottom-color:var(--gold)}
-}
+.site-header.nav-open .site-nav .site-nav__contact a{font-size:18px}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:clamp(8px,1.5vw,20px)}
+/* the two gold line icons right of the nav, left of Inquire: a handset (tel:) and an envelope (mailto:), 20px glyphs
+   in 44px hit areas, parchment on hover / focus; the accessible name is the visually-hidden text (plus a title).
+   Phones: the bar (toggle + Pause + logo + Inquire) has no room for them at 360px, so they live in the drawer */
+.nav-icon{display:none;width:44px;height:44px;place-items:center;color:var(--gold);transition:color .3s;border-radius:50%}
+.nav-icon:hover,.nav-icon:focus-visible{color:var(--parch)}
+@media (min-width:769px){.nav-icon{display:inline-grid}.nav-icon + .nav-icon{margin-left:-6px}}
 .nav-toggle{width:44px;height:44px;display:grid;place-items:center;margin-left:-8px}
 .nav-toggle__bar{display:block;width:24px;height:2px;background:currentColor;position:relative;transition:background .2s}
 .nav-toggle__bar::before,.nav-toggle__bar::after{content:"";position:absolute;left:0;width:24px;height:2px;background:currentColor;transition:transform .3s}
@@ -175,8 +188,9 @@ main > .on-light:last-child{border-bottom:0}
 html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;top:var(--header-h);left:0;right:0;max-height:calc(100vh - var(--header-h));max-height:calc(100dvh - var(--header-h));overflow-y:auto;overscroll-behavior:contain;background:var(--deep);border-top:2px solid var(--gold);padding:var(--s3) var(--gutter) var(--s4)}
 .site-header.nav-open .site-nav ul{flex-direction:column;gap:var(--s2)}
 .site-header.nav-open .site-nav a{font-size:26px}
-/* solid once scrolled, and on inner pages */
-.site-header--solid,.site-header.is-scrolled{background:rgba(27,34,30,.96)}
+/* solid once scrolled, and on inner pages, with a 2px gold rule (.35) along its lower edge: the editorial edge where
+   the bar cuts across the painted canopy (a box-shadow, so the bar's height and the drawer's offset never change) */
+.site-header--solid,.site-header.is-scrolled{background:rgba(27,34,30,.96);box-shadow:0 2px 0 rgba(201,158,92,.35)}
 /* phones: fully solid once scrolled (no backdrop blur runs there, so the 4% bleed would show text ghosts behind the bar) */
 @media (max-width:768px){.site-header.is-scrolled{background:var(--night)}}
 /* the open drawer's bar is the same solid deep cypress as the drawer (after the scrolled rules, so it wins while scrolled) */
@@ -189,14 +203,22 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
   .nav-toggle{display:none}
   .nav-home{width:150px}
 }
+/* the morphing logo (canopy home): a fixed copy of the gold SVG, transformed by canopy.js from the hero logo's rect to
+   the header slot's rect (translate + scale about its top-left corner); shown only while the morph is between its
+   ends. Inner pages carry no .logo-morph */
+.logo-morph{position:fixed;left:0;top:0;z-index:51;pointer-events:none;visibility:hidden;transform-origin:0 0}
+.logo-morph img{display:block;height:auto;max-width:none}
+html.logo-morphing .logo-morph{visibility:visible;will-change:transform}
 .page-top{padding-top:var(--header-h)}
 
 /* ---------- HERO (index first screen, approved 02:05) ---------- */
 .hero{position:relative;height:100vh;height:100svh;min-height:600px;overflow:hidden;background:var(--night);color:var(--parch)}
 .hero__video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:var(--night)}
-/* the tint grades the loop toward the palette: cypress deepening downwards (.42 -> .72), plus a 10% warm gold wash (the logo stays readable; the mp4 is untouched) */
-.hero__tint{position:absolute;inset:0;background:linear-gradient(rgba(27,34,30,.42),rgba(27,34,30,.72));pointer-events:none}
-.hero__tint::after{content:"";position:absolute;inset:0;background:rgba(201,158,92,.10)}
+/* the tint grades the loop toward the palette: a lighter cypress wash deepening downwards (.34 -> .66) plus a 6% warm
+   gold wash, so the footage keeps its tonal separation; the contrast behind the logo and the descriptor comes from
+   the halo (.hero__halo, canopy.css), not from the whole frame (the mp4 is untouched) */
+.hero__tint{position:absolute;inset:0;background:linear-gradient(rgba(27,34,30,.34),rgba(27,34,30,.66));pointer-events:none}
+.hero__tint::after{content:"";position:absolute;inset:0;background:rgba(201,158,92,.06)}
 .hero__deepen{position:absolute;inset:0;background:var(--night);opacity:0;pointer-events:none}
 /* logo with the soft cypress halo behind it (a static radial gradient: no filter:blur) */
 .hero__mark{position:absolute;left:50%;top:28%;width:min(51vw,980px);transform:translateX(-50%)}
@@ -218,6 +240,9 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
   /* the tag pair sits on painted leaves: the same shadow as .hero__line */
   .hero__tag{bottom:calc(24px + env(safe-area-inset-bottom));text-shadow:0 1px 12px rgba(27,34,30,.9)}
   .hero__tag .fa{font-size:18px}
+  /* phones: a bottom cypress ramp to solid night, so the canopy's open middle sits on night, not on the footage
+     (the video's bright table and chairs showed through at the bottom of screen 1) */
+  .hero__tint{background:linear-gradient(rgba(27,34,30,.42) 0%,rgba(27,34,30,.72) 60%,var(--night) 100%)}
 }
 
 /* ---------- Floating leaves (two places; static under reduced motion) ---------- */
@@ -273,29 +298,38 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .form__status.is-error{border-top-color:var(--ruby)}
 .form__status.is-wait{color:var(--stone)}
 .form__status:focus{outline:none}
-/* no native resize grip (its bright diagonal broke the underline style); 150px is room for a first message */
-.field textarea{min-height:150px;resize:none}
+/* 150px is room for a first message; it can be pulled taller (vertical only) to review a longer one */
+.field textarea{min-height:150px;resize:vertical}
 .form__note{font-size:14px;line-height:20px;color:var(--stone)}
 .form__status a{color:var(--parch)}
 
-/* ---------- Footer (deep night band) ---------- */
-.site-footer{background:var(--deep);color:var(--parch);border-top:2px solid var(--gold);padding-block:var(--s4) var(--s3);position:relative;z-index:2}
-.site-footer__grid{display:grid;gap:var(--s3)}
-@media (min-width:768px){.site-footer__grid{grid-template-columns:1.2fr 1fr 1fr;align-items:start}}
-/* the footer mark is a quiet sign-off (240px): the hero is the one display-size appearance of the logo */
-.site-footer__logo{width:min(100%,240px);height:auto}
-.site-footer address{font-style:normal;display:grid;gap:4px}
-/* "Anar Events · San Francisco Bay Area" may wrap (never clipped at 320px or with enlarged text); balanced, so it breaks at the middle */
-.site-footer address > span{text-wrap:balance}
-.site-footer address a{border-bottom:2px solid transparent;transition:border-color .3s;width:max-content;max-width:100%}
-.site-footer address a:hover{border-color:var(--gold)}
-.site-footer__fa{font-size:20px;line-height:1.7;text-align:left;color:var(--gold)}
-@media (min-width:768px){.site-footer__fa{text-align:right}}
-.site-footer__lang{margin-top:var(--s2);font-size:14px;line-height:20px;color:var(--stone)}
-/* the one "فارسی · coming soon" line, under the language line */
-.site-footer__soon{display:block;margin-top:4px}
-.site-footer__soon .fa{font-size:16px}
-.site-footer__legal{margin-top:var(--s3);font-size:14px;line-height:20px;color:var(--stone);display:flex;flex-wrap:wrap;gap:var(--s2);justify-content:space-between}
+/* ---------- Footer (deep night band, owner's layout, round 3): three columns on one baseline at container width,
+   72px top / bottom, 48px gaps. 1 the wordmark + one line; 2 "Contact" with icon rows (phone, WhatsApp, email);
+   3 "Follow" (Instagram) + the Persian line right-aligned. Then a 1px gold rule (.3) and the two-column bottom row,
+   with the language line as one quiet centred line under it. Phones: one column, 32px gaps, 200px wordmark ---------- */
+.site-footer{background:var(--deep);color:var(--parch);border-top:2px solid var(--gold);padding-block:56px 40px;position:relative;z-index:2}
+.site-footer__grid{display:grid;gap:var(--s3);align-items:start}
+@media (min-width:768px){
+  .site-footer{padding-block:72px}
+  .site-footer__grid{grid-template-columns:1.2fr 1fr 1fr;gap:48px}
+}
+/* the footer mark is a quiet sign-off (240px, 200px on phones): the hero is the one display-size appearance of the logo */
+.site-footer__logo{width:min(100%,200px);height:auto}
+@media (min-width:768px){.site-footer__logo{width:min(100%,240px)}}
+.site-footer__tag{margin-top:var(--s2);font-size:13px;line-height:20px;letter-spacing:.04em;color:rgba(249,246,240,.8);text-wrap:balance;max-width:30em}
+.site-footer__eyebrow{font-size:12px;line-height:16px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:var(--s2)}
+.site-footer address{font-style:normal}
+.site-footer__list{display:grid;gap:12px}
+.site-footer__list a{display:inline-flex;align-items:center;gap:10px;font-size:16px;line-height:24px;transition:color .3s}
+.site-footer__list a:hover,.site-footer__list a:focus-visible{color:var(--gold)}
+.site-footer__list .icon{width:18px;height:18px;color:var(--gold)}
+/* the Persian line: one line, gold, right-aligned at every width */
+.site-footer__fa{margin-top:var(--s3);font-size:18px;line-height:1.7;color:var(--gold);text-align:right;white-space:nowrap}
+.site-footer__bottom{margin-top:48px;padding-top:var(--s3);border-top:1px solid rgba(201,158,92,.3);display:flex;flex-wrap:wrap;justify-content:space-between;gap:var(--s1) var(--s2);font-size:13px;line-height:20px;color:rgba(249,246,240,.7)}
+.site-footer__lang{margin-top:var(--s2);font-size:12px;line-height:18px;color:rgba(249,246,240,.6);text-align:center;text-wrap:balance}
+/* "فارسی · coming soon" rides the same quiet line */
+.site-footer__soon{display:inline;margin-left:6px;white-space:nowrap}
+.site-footer__soon .fa{font-size:14px}
 
 /* ---------- Ghost buttons: the "How we work +" tab, the header "Inquire" while another filled button is on screen, and "Pause motion" ---------- */
 .ghost{background:transparent;border:2px solid var(--gold);color:var(--parch);transition:background .3s,color .3s,border-color .3s,transform .3s var(--ease),opacity .3s}
@@ -356,7 +390,14 @@ html:not(.motion-ready) .motion-toggle{visibility:hidden}
 body.panel-open{overflow:hidden}
 
 /* ---------- Inner page band ---------- */
-.pageband{background:var(--deep);padding-block:clamp(56px,10vh,120px) clamp(40px,7vh,80px);border-bottom:2px solid var(--gold)}
+.pageband{position:relative;overflow:hidden;background:var(--deep);padding-block:clamp(56px,10vh,120px) clamp(40px,7vh,80px);border-bottom:2px solid var(--gold)}
+.pageband .container{position:relative;z-index:1}
+/* one static crop of the painted tree (leaf-3) hanging from the band's top-right corner on every inner page, behind
+   the text column and never over it: the eyebrow sits at the left and the Persian title (right-aligned) starts
+   below the crop's reach, and the "How we work +" tab (mid-viewport) never covers the corner; shown from 1000px
+   (hidden on phones and small tablets, where the title would meet it). site.js leaves .leaf--static alone */
+.pageband .leaf{display:none;left:auto;right:-50px;top:-40px;z-index:0;opacity:.8;transform:scale(.6) rotate(200deg);transform-origin:50% 50%}
+@media (min-width:1000px){.pageband .leaf{display:block}}
 .pageband__title{display:grid;gap:var(--s2)}
 @media (min-width:768px){.pageband__title{grid-template-columns:1fr 1fr;align-items:end}.pageband__title .fa{text-align:right}}
 .pageband .lede{margin-top:var(--s3);color:var(--stone)}
@@ -399,6 +440,12 @@ body.panel-open{overflow:hidden}
 .step h3{font-size:clamp(24px,3vw,34px)}
 .step .fa{text-align:left;color:var(--gold)}
 .step p{color:var(--parch)}
+/* the short labelled points under Consultation and Proposal (guest needs · parent involvement · decision approvals ·
+   date reservation): a gold label, the point in parchment, a gold dash at the left (the options' bullet device) */
+.step__points{display:grid;gap:var(--s1);margin-top:var(--s1)}
+.step__points li{position:relative;padding-left:18px;color:var(--parch)}
+.step__points li::before{content:"";position:absolute;left:0;top:13px;width:8px;height:2px;background:var(--gold)}
+.step__points strong{color:var(--gold)}
 .faq{display:grid;gap:var(--s1);border-top:2px solid var(--ruby);padding-top:var(--s2)}
 .faq summary{cursor:pointer;list-style:none;padding:var(--s2) 0;font-size:20px;line-height:28px;display:flex;justify-content:space-between;gap:var(--s2)}
 .faq summary::-webkit-details-marker{display:none}

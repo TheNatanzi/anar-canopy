@@ -26,23 +26,38 @@
 </head>
 <body class="page-weddings">
 <a class="skip-link" href="#main">Skip to content</a>
+<!-- the brand's line icons (phone handset, WhatsApp bubble, envelope, Instagram), one inline sprite per page: used by the header, the drawer and the footer -->
+<svg hidden aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5.5 3h3.2l1.6 4.2-2.1 1.6a12.5 12.5 0 0 0 7 7l1.6-2.1 4.2 1.6v3.2a2 2 0 0 1-2 2A16.5 16.5 0 0 1 3.5 5a2 2 0 0 1 2-2z"/></symbol>
+  <symbol id="i-whatsapp" viewBox="0 0 24 24"><path d="M12 3.5a8.5 8.5 0 0 0-7.3 12.9L3.5 20.5l4.2-1.1A8.5 8.5 0 1 0 12 3.5z"/><path d="M9.2 8.3h1.3l.8 2-1 .9a6 6 0 0 0 2.5 2.5l.9-1 2 .8v1.3c0 .6-.5 1.1-1.1 1-3.3-.4-5.9-3-6.4-6.3a1 1 0 0 1 1-1.2z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="m3.5 7.5 8.5 5.5 8.5-5.5"/></symbol>
+  <symbol id="i-instagram" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r=".8" fill="currentColor" stroke="none"/></symbol>
+</svg>
 
 <header class="site-header site-header--solid">
   <div class="site-header__inner">
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span class="nav-toggle__bar"></span><span class="visually-hidden">Menu</span></button>
     <a class="nav-home" href="index.html" aria-label="Anar Events, home"><img src="assets/logo/logo-gold.svg" width="1600" height="552" alt=""></a>
     <nav class="site-nav" id="site-nav" aria-label="Main" data-lenis-prevent>
-      <ul>
+      <ul role="list">
         <li><a href="weddings.html" aria-current="page">Weddings</a></li>
         <li><a href="how-we-work.html">How we work</a></li>
         <li><a href="about.html">About</a></li>
-        <!-- phones only (CSS): the phone line (tel: and WhatsApp as two links) as the last drawer item, then the "فارسی · coming soon" note (the bar carries no فارسی label; the footer repeats the note) -->
-        <li class="site-nav__phone"><a href="tel:+19252639949">Call (925) 263-9949</a> · <a href="https://wa.me/19252639949" rel="noopener">WhatsApp</a></li>
+        <!-- phones only (CSS): the contact rows (phone, WhatsApp, email, each with its gold line icon) as the last drawer
+             items, then the "فارسی · coming soon" note (the bar carries no فارسی label; the footer repeats the note) -->
+        <li class="site-nav__contact">
+          <a href="tel:+19252639949"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg> Call (925) 263-9949</a>
+          <a href="https://wa.me/19252639949" rel="noopener"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg> WhatsApp</a>
+          <a href="mailto:hello@anarevents.com"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg> hello@anarevents.com</a>
+        </li>
         <li class="site-nav__fa"><span class="fa" lang="fa" dir="rtl">فارسی</span> · coming soon</li>
       </ul>
     </nav>
+    <!-- right of the nav, left of Inquire: a handset (tel:) and an envelope (mailto:) as gold line icons, 44px hit areas;
+         on phones the bar is full (toggle + Pause + logo + Inquire at 360px), so the drawer carries them instead -->
     <div class="nav-right">
-      <a class="nav-phone" href="tel:+19252639949">(925) 263-9949</a>
+      <a class="nav-icon" href="tel:+19252639949" title="Call (925) 263-9949"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span class="visually-hidden">Call (925) 263-9949</span></a>
+      <a class="nav-icon" href="mailto:hello@anarevents.com" title="Email hello@anarevents.com"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg><span class="visually-hidden">Email hello@anarevents.com</span></a>
       <a class="btn btn--sm" href="index.html#inquire">Inquire</a>
     </div>
     <!-- Pause motion / Play motion: a 36px round control in the bar (right, beside Inquire; beside the menu toggle on
@@ -55,6 +70,8 @@
 <main id="main" tabindex="-1" class="page-top">
 
   <section class="pageband" aria-labelledby="page-title">
+    <!-- one static crop of the painted tree, bottom right of the band (behind the text; hidden under 1000px) -->
+    <div class="leaf leaf--3 leaf--static" aria-hidden="true"></div>
     <div class="container">
       <p class="eyebrow">Persian, Afghan and South Asian weddings · San Francisco Bay Area</p>
       <div class="pageband__title">
@@ -87,9 +104,9 @@
             <p class="fa fa--big" lang="fa" dir="rtl">سفرهٔ عقد</p>
           </div>
           <div class="stagger">
-            <p>The spread at the head of the room: mirror, candlesticks, honey, bread, coins, the pomegranate.</p>
+            <p>The Persian marriage ceremony, at the sofreh: we agree the ceremony wording, the responses and the family cues with the aghed and your family beforehand, then cue each one on the day.</p>
+            <p>The spread at the head of the room: mirror, candlesticks, honey, bread, coins, the pomegranate. The kaleh ghand, the sugar cones rubbed over the couple as the vows are read, is cued with the women your family names for it. We brief your sofreh designer and check the spread against the sofreh key (a one-page guide naming each item on the spread, in the languages listed in your proposal) before the elders are seated.</p>
             <p>If your family holds a bale-boroon or namzadi before the aghd, it goes in the programme and the elders are seated for it.</p>
-            <p>The Persian ceremony. We agree the ceremony wording, the responses and the family cues with the aghed and your family beforehand, then cue each one on the day. We brief your sofreh designer and check the spread against the sofreh key (a one-page guide naming each item on the spread, in the languages listed in your proposal) before the elders are seated.</p>
             <p>The key is coordinated with your printer and set out for the guests, so the other family learns each item at a glance.</p>
           </div>
         </div>
@@ -112,7 +129,7 @@
             <p class="fa fa--big" lang="fa" dir="rtl">نکاح</p>
           </div>
           <div class="stagger">
-            <p>The Islamic marriage contract, read before witnesses and both families; for Afghan families, with the shirni-khori sealed before it and the aina mosaf beside it.</p>
+            <p>The Islamic marriage contract, read before witnesses and both families; for Pakistani and Indian Muslim families with the mehndi before it and the rukhsati after. For Afghan families who observe the shirni-khori or the aina mosaf, we agree their place in the programme with your family.</p>
             <p>We cue the officiant and the family, and keep the room quiet and steady.</p>
             <p>If your family observes the aina mosaf (<span class="fa" lang="fa" dir="rtl">آینه‌مصحف</span>), as many Afghan families do, it has its own moment, at the nikah or at the reception under the shawl, as your family keeps it: the couple's first look in the mirror, the Quran open between them, the elders close. We cue the shawl, the mirror and the reading with your family, and nobody is hurried.</p>
             <p>A one-line programme, coordinated with your printer, explains the ritual so every guest can follow.</p>
@@ -143,7 +160,7 @@
           </div>
           <div class="stagger">
             <p>The henna gathering: hana-bandan for Persian families, khina for Afghan families, mehndi for South Asian families. Henna on the bride's hands, with the elders' blessing, as your family keeps it.</p>
-            <p>The sangeet: both families singing and dancing, with the dholki or the jaggo in the nights before if your family holds them.</p>
+            <p>The sangeet: both families singing and dancing. In the nights before, if your family holds them: the mayun, dholki or jaggo, or the gaye holud for Bengali families.</p>
             <p>Timing agreed around your family's customs.</p>
           </div>
         </div>
@@ -250,20 +267,28 @@
 <footer class="site-footer">
   <div class="container">
     <div class="site-footer__grid">
-      <div>
+      <div class="site-footer__brand">
         <a href="index.html" aria-label="Anar Events, home"><img class="site-footer__logo" src="assets/logo/logo-gold.svg" width="1600" height="552" alt="Anar Events" loading="lazy"></a>
+        <p class="site-footer__tag">Persian, Afghan and South Asian weddings · San Francisco Bay Area</p>
       </div>
-      <address>
-        <span>Anar Events · San Francisco Bay Area</span>
-        <a href="tel:+19252639949">(925) 263-9949</a>
-        <a href="https://wa.me/19252639949" rel="noopener">WhatsApp</a>
-        <a href="mailto:hello@anarevents.com">hello@anarevents.com</a>
-        <a href="https://instagram.com/anarevents" rel="noopener">Instagram · @anarevents</a>
+      <address class="site-footer__col">
+        <p class="site-footer__eyebrow">Contact</p>
+        <ul class="site-footer__list" role="list">
+          <li><a href="tel:+19252639949"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>(925) 263-9949</a></li>
+          <li><a href="https://wa.me/19252639949" rel="noopener"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg>WhatsApp</a></li>
+          <li><a href="mailto:hello@anarevents.com"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg>hello@anarevents.com</a></li>
+        </ul>
       </address>
-      <p class="site-footer__fa fa" lang="fa" dir="rtl">انار · برنامه‌ریزی عروسی و جشن</p>
+      <div class="site-footer__col">
+        <p class="site-footer__eyebrow">Follow</p>
+        <ul class="site-footer__list" role="list">
+          <li><a href="https://instagram.com/anarevents" rel="noopener"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-instagram"/></svg>@anarevents</a></li>
+        </ul>
+        <p class="site-footer__fa fa" lang="fa" dir="rtl">انار · برنامه‌ریزی عروسی و جشن</p>
+      </div>
     </div>
+    <div class="site-footer__bottom"><span>© 2026 Anar LLC</span><span>Timeless traditions, curated for the modern era.</span></div>
     <p class="site-footer__lang">English for everyone. Tell us your preferred language. We confirm written translation and spoken support before booking. <span class="site-footer__soon"><span class="fa" lang="fa" dir="rtl">فارسی</span> · coming soon</span></p>
-    <p class="site-footer__legal"><span>© 2026 Anar LLC · Persian, Afghan and South Asian weddings</span><span>Timeless traditions, curated for the modern era.</span></p>
   </div>
 </footer>
 
@@ -274,7 +299,7 @@
   <button class="hww-panel__close" type="button" aria-label="Close"><span aria-hidden="true">&times;</span></button>
   <p class="eyebrow">How we work · <span class="fa" lang="fa" dir="rtl">روش کار ما</span></p>
   <h2 id="hww-title">Five steps, one line</h2>
-  <ol class="hww-steps">
+  <ol class="hww-steps" role="list">
     <li><div><h3>Inquiry</h3><p>Write to us, or call. Tell us about your family and your dates.</p></div></li>
     <li><div><h3>Consultation</h3><p>We meet your family, greet the elders first, and listen. Parents and elders included at the level you choose.</p></div></li>
     <li><div><h3>Proposal</h3><p>The plan, the price, and what is included: the events covered, the staffing, the hours and the fees.</p></div></li>

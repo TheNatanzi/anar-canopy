@@ -122,9 +122,9 @@
         <article class="accordion__panel is-open">
           <!-- PHOTO SLOT · Sofreh Aghd: replace with the real sofreh photo (real family, with consent), landscape ~2000×1125 -->
           <div class="accordion__media"><img src="assets/img/pom-open-closeup.jpg" width="2000" height="1123" alt="An opened pomegranate, seeds packed tight" loading="lazy" decoding="async"></div>
-          <button class="accordion__trigger" type="button" aria-expanded="true"><span class="visually-hidden">Show Sofreh Aghd</span></button>
+          <button class="accordion__trigger" type="button" aria-controls="celebration-1" aria-expanded="true"><span class="visually-hidden">Show Sofreh Aghd</span></button>
           <span class="accordion__label" aria-hidden="true">Sofreh Aghd</span>
-          <div class="accordion__body">
+          <div class="accordion__body" id="celebration-1">
             <p class="fa" lang="fa" dir="rtl">سفرهٔ عقد</p>
             <h3>Sofreh Aghd</h3>
             <p>The Persian ceremony at the spread: the mirror, the candlesticks, the sugar above. We brief your sofreh designer and check the spread against your family's key before the elders are seated.</p>
@@ -133,9 +133,9 @@
         <article class="accordion__panel">
           <!-- PHOTO SLOT · Nikah: replace with the real nikah photo (real family, with consent), portrait ~1500×2000 -->
           <div class="accordion__media"><img src="assets/img/pom-pile.jpg" width="1411" height="2000" alt="A pile of pomegranates" loading="lazy" decoding="async"></div>
-          <button class="accordion__trigger" type="button" aria-expanded="false"><span class="visually-hidden">Show Nikah</span></button>
+          <button class="accordion__trigger" type="button" aria-controls="celebration-2" aria-expanded="false"><span class="visually-hidden">Show Nikah</span></button>
           <span class="accordion__label" aria-hidden="true">Nikah</span>
-          <div class="accordion__body">
+          <div class="accordion__body" id="celebration-2">
             <p class="fa" lang="fa" dir="rtl">نکاح</p>
             <h3>Nikah</h3>
             <p>The Islamic marriage contract, read before witnesses and both families. Quiet, exact, unhurried.</p>
@@ -144,9 +144,9 @@
         <article class="accordion__panel">
           <!-- PHOTO SLOT · Mehndi & Sangeet: replace with the real henna-night photo (real family, with consent), portrait ~1500×2000 -->
           <div class="accordion__media"><img src="assets/img/pom-in-hand.jpg" width="1500" height="2000" alt="A pomegranate held in an open hand" loading="lazy" decoding="async"></div>
-          <button class="accordion__trigger" type="button" aria-expanded="false"><span class="visually-hidden">Show Mehndi and Sangeet</span></button>
+          <button class="accordion__trigger" type="button" aria-controls="celebration-3" aria-expanded="false"><span class="visually-hidden">Show Mehndi and Sangeet</span></button>
           <span class="accordion__label" aria-hidden="true">Mehndi &amp; Sangeet</span>
-          <div class="accordion__body">
+          <div class="accordion__body" id="celebration-3">
             <p class="fa" lang="fa" dir="rtl">حنابندان</p>
             <h3>Mehndi &amp; Sangeet</h3>
             <p>The mehndi, the henna night. The sangeet, when both families sing and dance. The baraat, arriving with music. Each run to the minute.</p>
@@ -155,9 +155,9 @@
         <article class="accordion__panel">
           <!-- PHOTO SLOT · Reception & Walima: replace with the real reception photo (real family, with consent), portrait ~1500×2000 -->
           <div class="accordion__media"><img src="assets/img/pom-tree-night.jpg" width="1125" height="2000" alt="A pomegranate tree at night" loading="lazy" decoding="async"></div>
-          <button class="accordion__trigger" type="button" aria-expanded="false"><span class="visually-hidden">Show Reception and Walima</span></button>
+          <button class="accordion__trigger" type="button" aria-controls="celebration-4" aria-expanded="false"><span class="visually-hidden">Show Reception and Walima</span></button>
           <span class="accordion__label" aria-hidden="true">Reception &amp; Walima</span>
-          <div class="accordion__body">
+          <div class="accordion__body" id="celebration-4">
             <p class="fa" lang="fa" dir="rtl">جشن عروسی</p>
             <h3>Reception &amp; Walima</h3>
             <p>From the elders' blessing to the 2 AM dance floor: one timeline, called with the venue and every vendor.</p>
@@ -292,7 +292,7 @@
         </div>
         <div class="field"><label for="f-message">Message</label><textarea id="f-message" name="message" placeholder="Your families, your dates, the rituals that matter most."></textarea></div>
         <div><button class="btn" type="submit">Begin the conversation</button></div>
-        <p class="form__status" id="form-status" role="status" aria-live="polite" tabindex="-1" hidden></p>
+        <p class="form__status" id="form-status" role="status" aria-live="polite" tabindex="-1"></p>
         <p class="form__note">We reply within one business day. Parents and elders included at the level you choose.</p>
       </form>
       <p class="inquire__contact reveal"><span>Or write and call:</span> <a href="mailto:hello@anarevents.com">hello@anarevents.com</a> <a href="tel:+19252639949">(925) 263-9949</a> <a class="wa" href="https://wa.me/19252639949" rel="noopener">WhatsApp</a></p>

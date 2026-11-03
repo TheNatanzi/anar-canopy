@@ -43,6 +43,8 @@
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;background:var(--night)}
 html.lenis{scroll-behavior:auto}
+html.reduced{scroll-behavior:auto}
+[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
 body{margin:0;background:var(--night);color:var(--parch);font-family:var(--font-latin);font-weight:700;font-size:18px;line-height:28px;overflow-x:hidden}
 img,video,svg{display:block;max-width:100%}
 img{height:auto}
@@ -221,12 +223,12 @@ main{position:relative;z-index:2;display:block}
 .accordion__trigger[hidden]{display:none}
 .accordion__trigger:focus-visible{outline:2px solid var(--gold);outline-offset:-6px}
 .accordion__label{position:absolute;left:var(--s2);top:var(--s2);letter-spacing:.1em;text-transform:uppercase;font-size:14px;z-index:1;display:none;color:var(--gold)}
-.accordion__body{position:relative;z-index:1;padding:var(--s4) var(--s2) var(--s3);display:grid;gap:var(--s1);min-height:100%;align-content:end;pointer-events:none}
+.accordion__body{position:relative;z-index:3;padding:var(--s4) var(--s2) var(--s3);display:grid;gap:var(--s1);min-height:100%;align-content:end;pointer-events:none}
 .accordion__body h3{font-size:clamp(26px,3vw,38px)}
 .accordion__body .fa{color:var(--gold)}
 .accordion__body p:last-child{max-width:34em;color:var(--parch)}
 .accordion__more{pointer-events:auto;margin-top:var(--s1);justify-self:start}
-@media (min-width:768px){
+@media (min-width:769px){
   .accordion{display:flex;gap:var(--s1);height:min(70vh,640px)}
   .accordion__panel{flex:1 1 0;min-height:0;transition:flex .7s var(--ease)}
   .accordion__panel.is-open{flex:6 1 0}
@@ -300,7 +302,7 @@ main{position:relative;z-index:2;display:block}
 .form{display:grid;gap:var(--s3);background:rgba(18,23,20,.78);border:0;border-top:2px solid var(--gold);padding:clamp(20px,4vw,48px)}
 .form__row{display:grid;gap:var(--s3)}
 @media (min-width:600px){.form__row{grid-template-columns:1fr 1fr}}
-.field{display:grid;gap:var(--s1)}
+.field{display:grid;gap:var(--s1);min-width:0}
 .field label,.fieldset legend{font-size:16px;line-height:22px;color:var(--parch)}
 .field input,.field textarea,.field select{font:inherit;font-weight:700;color:var(--parch);background:transparent;border:1px solid var(--stone);border-radius:2px;padding:12px 14px;width:100%;min-height:48px}
 /* placeholders in stone (#B9B3A6 on the deep input ground: ~8:1) */
@@ -312,11 +314,12 @@ main{position:relative;z-index:2;display:block}
 /* success / error region (aria-live) */
 .form__status{font-size:16px;line-height:24px;padding:var(--s2);border-top:2px solid var(--gold);color:var(--parch)}
 .form__status[hidden]{display:none}
+.form__status:empty{padding:0;border:0;height:0;margin-top:calc(-1 * var(--s3))}
 .form__status.is-error{border-top-color:var(--ruby)}
 .form__status.is-wait{color:var(--stone)}
 .form__status:focus{outline:none}
 .field textarea{min-height:150px;resize:vertical}
-.fieldset{border:0;padding:0;margin:0;display:grid;gap:var(--s1)}
+.fieldset{border:0;padding:0;margin:0;min-width:0;display:grid;gap:var(--s1)}
 .checks{display:grid;gap:var(--s1) var(--s2);grid-template-columns:1fr 1fr}
 @media (min-width:600px){.checks{grid-template-columns:repeat(3,1fr)}}
 .check{display:flex;gap:10px;align-items:center;font-size:16px;line-height:22px;min-height:32px}
@@ -444,6 +447,12 @@ body.panel-open{overflow:hidden}
 .reduced .reveal,.reduced .stagger > *{opacity:1;transform:none}
 .reduced .reveal-img{transform:none}
 .reduced .teaser__strips i{transform:none}
+.reduced *, .reduced *::before, .reduced *::after{transition-duration:.01ms!important;animation-duration:.01ms!important}
+/* Keep all celebrations readable if the behavior script is unavailable. */
+html:not(.site-ready) .accordion{display:grid;height:auto}
+html:not(.site-ready) .accordion__panel{min-height:360px}
+html:not(.site-ready) .accordion__body{opacity:1;visibility:visible}
+html:not(.site-ready) .accordion__trigger,html:not(.site-ready) .accordion__label{display:none}
 
 /* ---------- Reduced motion: everything visible, nothing scrubs ---------- */
 @media (prefers-reduced-motion:reduce){

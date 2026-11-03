@@ -18,7 +18,8 @@
   var rmq = window.matchMedia('(prefers-reduced-motion: reduce)');
   var reduced = rmq.matches;
   var hasGsap = typeof window.gsap !== 'undefined' && typeof window.ScrollTrigger !== 'undefined';
-  var isDesktop = function () { return window.matchMedia('(min-width: 768px)').matches; };
+  var desktopQuery = window.matchMedia('(min-width: 769px)');
+  var isDesktop = function () { return desktopQuery.matches; };
   var vh = function () { return window.innerHeight; };
   var $ = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
@@ -50,7 +51,7 @@
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (entries) {
         entries.forEach(function (en) {
-          if (en.isIntersecting && !userPaused) { heroVideo.play().catch(function () {}); } else { heroVideo.pause(); }
+          if (en.isIntersecting && !userPaused && !reduced) { heroVideo.play().catch(function () {}); } else { heroVideo.pause(); }
         });
       }, { threshold: 0.05 }).observe(heroVideo);
     }
@@ -64,19 +65,29 @@
      Smooth scroll (Lenis) wired to the GSAP ticker
      --------------------------------------------------------- */
   var lenis = null;
-  if (hasGsap && !reduced && typeof window.Lenis !== 'undefined') {
+  var lenisTick = function (t) { if (lenis) { lenis.raf(t * 1000); } };
+  function startSmoothScroll() {
+  if (!lenis && hasGsap && !reduced && !userPaused && typeof window.Lenis !== 'undefined') {
     try {
       lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
       lenis.on('scroll', function () { ScrollTrigger.update(); });
-      gsap.ticker.add(function (t) { lenis.raf(t * 1000); });
+      gsap.ticker.add(lenisTick);
       gsap.ticker.lagSmoothing(0);
       html.classList.add('lenis');
     } catch (e) { lenis = null; }
   }
+  }
+  function stopSmoothScroll() {
+    if (lenis) { gsap.ticker.remove(lenisTick); lenis.destroy(); lenis = null; }
+    html.classList.remove('lenis');
+  }
+  startSmoothScroll();
   function headerOffset() { var h = $('.site-header'); return -(h ? h.offsetHeight : 0); }
   function scrollToEl(el) {
+    if (!el.hasAttribute('tabindex')) { el.setAttribute('tabindex', '-1'); }
+    el.focus({ preventScroll: true });
     if (lenis) { lenis.scrollTo(el, { offset: headerOffset(), duration: 1.4 }); }
-    else { el.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' }); }
+    else { el.scrollIntoView({ behavior: reduced || userPaused ? 'auto' : 'smooth', block: 'start' }); }
   }
 
   /* Skip link: move focus INTO <main> (main carries tabindex="-1") */
@@ -100,7 +111,7 @@
     if (!header) { return; }
     header.classList.toggle('is-scrolled', (window.scrollY || window.pageYOffset) > 40);
   }
-  if (lenis) { lenis.on('scroll', onScrollState); } else { window.addEventListener('scroll', onScrollState, { passive: true }); }
+  window.addEventListener('scroll', onScrollState, { passive: true });
   onScrollState();
   function closeNav() {
     if (!header || !navToggle) { return; }
@@ -112,7 +123,9 @@
       var open = header.classList.toggle('nav-open');
       navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeNav(); } });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && header.classList.contains('nav-open')) { closeNav(); navToggle.focus(); }
+    });
   }
 
   /* ---------------------------------------------------------
@@ -128,46 +141,67 @@
     var closeBtn = $('.hww-panel__close', panel);
     var lastFocus = null;
     var closeTimer = null;
+    var openFrame = null;
+    var panelOpen = false;
+    var outsideState = [];
     var outside = function () {
       return $$('body > *').filter(function (el) { return el !== panel && el !== backdrop && el.tagName !== 'SCRIPT'; });
     };
     var setInert = function (on) {
-      outside().forEach(function (el) {
-        if ('inert' in el) { el.inert = on; }
-        if (on) { el.setAttribute('aria-hidden', 'true'); } else { el.removeAttribute('aria-hidden'); }
-      });
+      if (on) {
+        outsideState = outside().map(function (el) {
+          var state = { el: el, inert: el.inert, hidden: el.getAttribute('aria-hidden') };
+          el.inert = true;
+          el.setAttribute('aria-hidden', 'true');
+          return state;
+        });
+      } else {
+        outsideState.forEach(function (s) {
+          s.el.inert = s.inert;
+          if (s.hidden === null) { s.el.removeAttribute('aria-hidden'); } else { s.el.setAttribute('aria-hidden', s.hidden); }
+        });
+        outsideState = [];
+      }
     };
     var focusables = function () {
-      return $$('a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])', panel)
-        .filter(function (el) { return el.offsetParent !== null; });
+      return $$('a[href], button, input, select, textarea, [tabindex]', panel)
+        .filter(function (el) { return !el.disabled && el.tabIndex >= 0 && el.offsetParent !== null && !el.closest('[inert]'); });
     };
     var openPanel = function () {
+      if (panelOpen) { return; }
+      panelOpen = true;
       if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
       lastFocus = document.activeElement;
       panel.hidden = false; backdrop.hidden = false;
-      requestAnimationFrame(function () { panel.classList.add('is-open'); backdrop.classList.add('is-on'); });
+      panel.inert = false;
+      panel.removeAttribute('aria-hidden');
+      openFrame = requestAnimationFrame(function () { panel.classList.add('is-open'); backdrop.classList.add('is-on'); openFrame = null; });
       tab.setAttribute('aria-expanded', 'true');
       body.classList.add('panel-open');
+      (closeBtn || panel).focus({ preventScroll: true });
       setInert(true);
       if (lenis) { lenis.stop(); }
-      setTimeout(function () { (closeBtn || panel).focus(); }, 80);
     };
     closePanel = function () {
-      if (panel.hidden) { return; }
+      if (!panelOpen) { return; }
+      panelOpen = false;
+      if (openFrame !== null) { cancelAnimationFrame(openFrame); openFrame = null; }
       panel.classList.remove('is-open'); backdrop.classList.remove('is-on');
       tab.setAttribute('aria-expanded', 'false');
       body.classList.remove('panel-open');
       setInert(false);
       if (lenis) { lenis.start(); }
       if (closeTimer) { clearTimeout(closeTimer); }
-      closeTimer = setTimeout(function () { panel.hidden = true; backdrop.hidden = true; closeTimer = null; }, reduced ? 0 : 560);
-      if (lastFocus && lastFocus.focus) { lastFocus.focus(); }
+      closeTimer = setTimeout(function () { panel.hidden = true; backdrop.hidden = true; closeTimer = null; }, reduced || userPaused ? 0 : 560);
+      if (lastFocus && lastFocus.focus) { lastFocus.focus({ preventScroll: true }); }
+      panel.inert = true;
+      panel.setAttribute('aria-hidden', 'true');
     };
     tab.addEventListener('click', openPanel);
     if (closeBtn) { closeBtn.addEventListener('click', closePanel); }
     backdrop.addEventListener('click', closePanel);
     document.addEventListener('keydown', function (e) {
-      if (panel.hidden) { return; }
+      if (!panelOpen) { return; }
       if (e.key === 'Escape') { closePanel(); return; }
       if (e.key === 'Tab') {
         var f = focusables(); if (!f.length) { e.preventDefault(); panel.focus(); return; }
@@ -175,6 +209,9 @@
         if (e.shiftKey && (document.activeElement === first || document.activeElement === panel)) { e.preventDefault(); last.focus(); }
         else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
       }
+    });
+    document.addEventListener('focusin', function (e) {
+      if (panelOpen && !panel.contains(e.target)) { (closeBtn || panel).focus(); }
     });
     /* hide the tab while the Inquire ground or the footer is in view */
     var hideFor = [$('#inquire'), $('.site-footer')].filter(Boolean);
@@ -196,9 +233,10 @@
      the panel and the drawer close first, then the scroll. */
   $$('a[href*="#"]').forEach(function (a) {
     a.addEventListener('click', function (e) {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || a.target === '_blank') { return; }
       var url = new URL(a.getAttribute('href'), location.href);
       var norm = function (p) { return p.replace(/\/index\.html$/, '/'); };
-      if (norm(url.pathname) !== norm(location.pathname) || !url.hash) { return; }
+      if (url.origin !== location.origin || norm(url.pathname) !== norm(location.pathname) || !url.hash) { return; }
       var target = document.getElementById(url.hash.slice(1));
       if (!target) { return; }
       e.preventDefault();
@@ -228,6 +266,8 @@
         p.classList.toggle('is-open', on);
         var btn = $('.accordion__trigger', p);
         if (btn) { btn.setAttribute('aria-expanded', on ? 'true' : 'false'); }
+        var content = $('.accordion__body', p);
+        if (content) { content.inert = !on; content.setAttribute('aria-hidden', on ? 'false' : 'true'); }
       });
     }
     panels.forEach(function (p, i) {
@@ -235,7 +275,7 @@
       var bodyEl = $('.accordion__body', p);
       if (bodyEl && !bodyEl.id) { bodyEl.id = 'acc-' + ai + '-' + i; }
       if (btn && bodyEl) { btn.setAttribute('aria-controls', bodyEl.id); }
-      if (hoverable) { p.addEventListener('mouseenter', function () { if (isDesktop()) { open(p); } }); }
+      if (hoverable) { p.addEventListener('mouseenter', function () { if (isDesktop() && !acc.contains(document.activeElement)) { open(p); } }); }
       if (btn) {
         btn.addEventListener('click', function () { if (isDesktop()) { open(p); } });
         btn.addEventListener('focus', function () { if (isDesktop()) { open(p); } });
@@ -245,6 +285,10 @@
       var mobile = !isDesktop();
       panels.forEach(function (p) {
         var btn = $('.accordion__trigger', p);
+        var content = $('.accordion__body', p);
+        var visible = mobile || p.classList.contains('is-open');
+        if (!mobile && content && content.contains(document.activeElement)) { open(p); visible = true; }
+        if (content) { content.inert = !visible; content.setAttribute('aria-hidden', visible ? 'false' : 'true'); }
         if (!btn) { return; }
         btn.hidden = mobile;
         if (mobile) { btn.setAttribute('aria-expanded', 'true'); }
@@ -252,8 +296,9 @@
       });
     };
     syncMobile();
-    window.matchMedia('(min-width: 768px)').addEventListener('change', syncMobile);
+    desktopQuery.addEventListener('change', syncMobile);
   });
+  html.classList.add('site-ready');
 
   /* ---------------------------------------------------------
      Inquiry form: posts to Formspree with fetch when available;
@@ -271,13 +316,17 @@
       status.textContent = text;
     };
     form.addEventListener('submit', function (e) {
-      if (/FORMSPREE_ID/.test(form.action)) { return; } /* placeholder endpoint: let the browser post as before */
       e.preventDefault();
       if (!form.checkValidity()) { form.reportValidity(); return; }
+      if (/FORMSPREE_ID/.test(form.action)) {
+        say('error', 'Online inquiries are not connected yet. Your entries are still here. Please write to hello@anarevents.com or WhatsApp us.');
+        return;
+      }
+      if (submitBtn && submitBtn.disabled) { return; }
       if (submitBtn) { submitBtn.disabled = true; }
       say('wait', 'Sending…');
       fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } })
-        .then(function (r) { if (!r.ok) { throw new Error('bad status'); } return r.json(); })
+        .then(function (r) { if (!r.ok) { throw new Error('bad status'); } })
         .then(function () {
           say('ok', 'Thank you. Your message is on its way; we reply within one business day.');
           form.reset();
@@ -312,6 +361,8 @@
       motionOn = true;
       ScrollTrigger.refresh();
     } catch (err) {
+      killMotion();
+      stopSmoothScroll();
       /* nothing stays hidden if init fails */
       html.classList.remove('anim-ready');
       html.classList.remove('motion');
@@ -323,14 +374,15 @@
   }
 
   function killMotion() {
-    if (!hasGsap) { return; }
     try {
+      if (hasGsap) {
       ScrollTrigger.getAll().forEach(function (st) { st.kill(); });
       leafTweens.forEach(function (t) { t.kill(); });
       leafTweens = [];
       gsap.globalTimeline.clear();
       $$('.reveal, .reveal-img, .stagger > *, .hero__mark, .hero__canopy, .hero__deepen, .hero__scroll, .hero__tag, .descend__trunks img, .teaser__strips i, .leaf, .ground__roots, .track-dot, .kashida-draw path, .track-line path')
         .forEach(function (el) { gsap.set(el, { clearProps: 'all' }); });
+      }
     } catch (e) { /* ignore */ }
     html.classList.remove('anim-ready');
     html.classList.remove('motion');
@@ -470,22 +522,26 @@
      --------------------------------------------------------- */
   var toggle = $('.motion-toggle');
   function pauseAll(remember) {
-    userPaused = true;
+    if (remember) { userPaused = true; }
     if (remember) { try { sessionStorage.setItem('anar-motion', 'paused'); } catch (e) { /* ignore */ } }
     killMotion();
+    stopSmoothScroll();
     if (heroVideo && !heroVideo.paused) { heroVideo.pause(); }
     if (toggle) { toggle.setAttribute('aria-pressed', 'true'); toggle.textContent = 'Play motion'; }
   }
   function playAll(remember) {
     userPaused = false;
     if (remember) { try { sessionStorage.removeItem('anar-motion'); } catch (e) { /* ignore */ } }
-    if (!reduced) { initMotion(); }
-    if (heroVideo) { if (!videoLoaded) { loadHeroVideo(); } else { heroVideo.play().catch(function () {}); } }
+    if (reduced) { pauseAll(false); return; }
+    startSmoothScroll();
+    if (body.classList.contains('panel-open') && lenis) { lenis.stop(); }
+    initMotion();
+    if (heroVideo) { if (!videoLoaded) { loadHeroVideo(); } else if (heroVideo.getBoundingClientRect().bottom > 0) { heroVideo.play().catch(function () {}); } }
     if (toggle) { toggle.setAttribute('aria-pressed', 'false'); toggle.textContent = 'Pause motion'; }
   }
   if (toggle) {
     toggle.hidden = !hasGsap && !heroVideo;
-    toggle.addEventListener('click', function () { if (userPaused) { playAll(true); } else { pauseAll(true); } });
+    toggle.addEventListener('click', function () { if (userPaused || reduced) { playAll(true); } else { pauseAll(true); } });
   }
   var onReduceChange = function (e) {
     reduced = e.matches;

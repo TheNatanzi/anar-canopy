@@ -1,0 +1,42 @@
+{
+ "model": "astra",
+ "role": "brand",
+ "score": 7,
+ "blocking": [
+  "The descending tree ends in visibly flat, floating trunk cuts; the transition breaks the premium illustrated-world effect.",
+  "The desktop journey compresses nine descriptions into tiny, densely wrapped columns.",
+  "Repeated boxed sections and oversized text blocks make the middle of the site feel heavier and more templated than the hero."
+ ],
+ "fixes": [
+  {
+   "where": "assets/css/site.css — .descend__trunks and .descend__trunk",
+   "what": "Carry the trunks through the section boundary or mask their bottom ends into cypress; eliminate the exposed horizontal cuts visible above The celebrations.",
+   "why": "The tree should feel continuous, not like two cropped image strips."
+  },
+  {
+   "where": "index.html — #journey; assets/css/site.css — .journey__stops",
+   "what": "Keep nine dots and short titles on the desktop line, but move descriptions into a generously sized detail area selected by each stop; use at least 16px description text.",
+   "why": "The current 13px, nine-column treatment reads like a compressed process chart rather than a premium wedding experience."
+  },
+  {
+   "where": "assets/css/site.css — .pillars and .card",
+   "what": "Remove the dark rectangular backgrounds from the three promises, reduce horizontal padding to 16px, and retain their gold accents and existing wording.",
+   "why": "Wider text measures reduce awkward heading wraps and let the promises belong to the open tree-framed composition."
+  },
+  {
+   "where": "index.html — .quote; assets/css/site.css — .quote blockquote",
+   "what": "Give 'Keep the soul. Redefine the style.' the primary display treatment; set the surrounding founder sentences at 24–28px on desktop with deliberate paragraph spacing instead of making every sentence a display line.",
+   "why": "The parchment interlude currently presents a wall of equally emphatic text with insufficient hierarchy."
+  },
+  {
+   "where": "assets/css/site.css — mobile .hero__mark, .hero__line and .hww-tab",
+   "what": "Reserve a clear right-side gutter for the persistent tab and reflow the hero descriptor inside that safe area while preserving the approved logo and canopy composition.",
+   "why": "At 390px the tab sits tightly beside the descriptor, making the central brand introduction feel crowded."
+  },
+  {
+   "where": "index.html — #how-teaser",
+   "what": "Keep the two service options as the main content, move the repeated Plan and Run the day explanations to the existing detail page, and reduce the three animated gold strips to one kashida.",
+   "why": "A shorter, more restrained section restores editorial rhythm and gives the signature line greater distinction."
+  }
+ ]
+}

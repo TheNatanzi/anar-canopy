@@ -1,5 +1,5 @@
 /* =========================================================
-   Anar Events — site.js (v2.2, night palette, round-2 fixes, 3 Nov 2026)
+   Anar Events — site.js (v2.3, night palette, round-3 fixes, 3 Nov 2026)
    Loaded (defer, pinned) before this file:
      GSAP 3.12.5 + ScrollTrigger (cdnjs), Lenis 1.1.18 (unpkg)
    Content is visible by default. Reveal targets are hidden only
@@ -59,6 +59,12 @@
   if (heroVideo) {
     if (document.readyState === 'complete') { loadHeroVideo(); }
     else { window.addEventListener('load', loadHeroVideo, { once: true }); }
+    /* hidden tab: pause; back in view: resume only while motion is on and the hero is still on screen */
+    document.addEventListener('visibilitychange', function () {
+      if (!videoLoaded) { return; }
+      if (document.hidden) { heroVideo.pause(); return; }
+      if (!userPaused && !reduced && heroVideo.getBoundingClientRect().bottom > 0) { heroVideo.play().catch(function () {}); }
+    });
   }
 
   /* ---------------------------------------------------------
@@ -126,6 +132,9 @@
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && header.classList.contains('nav-open')) { closeNav(); navToggle.focus(); }
     });
+    /* the drawer closes when a link is activated and when the viewport grows past the phone breakpoint */
+    $$('.site-nav a', header).forEach(function (a) { a.addEventListener('click', closeNav); });
+    desktopQuery.addEventListener('change', function (e) { if (e.matches) { closeNav(); } });
     /* the links are visible by default (CSS); only now, with the toggle wired, do they collapse into the drawer */
     html.classList.add('nav-ready');
   }
@@ -552,11 +561,16 @@
     }
 
     /* -------------------------------------------------------
-       8. Floating leaves drift slowly (two places).
+       8. Floating leaves (two places): desktop runs the slow
+          yoyo drift loop; phones get the scroll-scrub drift
+          instead. Never both: the same `y` is driven once.
        ------------------------------------------------------- */
     $$('.leaf').forEach(function (leaf, i) {
-      leafTweens.push(gsap.to(leaf, { y: 18 + i * 6, x: i % 2 ? -10 : 10, rotation: i % 2 ? -3 : 3, duration: 6 + i * 1.5, ease: 'sine.inOut', yoyo: true, repeat: -1 }));
-      gsap.to(leaf, { y: '+=' + (40 + i * 10), ease: 'none', scrollTrigger: { trigger: leaf.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } });
+      if (isDesktop()) {
+        leafTweens.push(gsap.to(leaf, { y: 18 + i * 6, x: i % 2 ? -10 : 10, rotation: i % 2 ? -3 : 3, duration: 6 + i * 1.5, ease: 'sine.inOut', yoyo: true, repeat: -1 }));
+      } else {
+        gsap.to(leaf, { y: '+=' + (40 + i * 10), ease: 'none', scrollTrigger: { trigger: leaf.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } });
+      }
     });
 
     /* -------------------------------------------------------

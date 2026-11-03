@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anar Events · Persian, Afghan and South Asian weddings · San Francisco Bay Area</title>
+<meta name="description" content="Anar Events plans and runs weddings for Persian, Afghan and South Asian families in the Bay Area. We plan with the whole family, ritual by ritual.">
+<meta name="theme-color" content="#1B221E">
+<meta property="og:title" content="Anar Events · Reimagined Heritage">
+<meta property="og:description" content="Bespoke Persian, Afghan & South Asian weddings. Deeply fluent in the traditions your family cherishes; obsessed with the modern aesthetic you actually want.">
+<meta property="og:image" content="https://anarevents.com/assets/video/hero-poster.jpg">
+<meta property="og:url" content="https://anarevents.com/">
+<meta property="og:type" content="website">
+<script>document.documentElement.classList.add('js')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
+<link rel="preload" href="assets/fonts/TTRamillas-Bold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/video/hero-poster-small.jpg" as="image">
+<link rel="preload" href="assets/tree/canopy-u3.webp" as="image">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;700&display=swap">
+<link rel="stylesheet" href="assets/css/site.css">
+<link rel="icon" href="assets/logo/logo-gold.svg" type="image/svg+xml">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" crossorigin="anonymous"></script>
+<script defer src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js" crossorigin="anonymous"></script>
+<script defer src="assets/js/site.js"></script>
+</head>
+<body class="page-index">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- Shared header: left links, centre nothing, right فارسی (inert for now) + the one gold button -->
+<header class="site-header">
+  <div class="site-header__inner">
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span class="nav-toggle__bar"></span><span class="visually-hidden">Menu</span></button>
+    <a class="nav-home" href="index.html" aria-label="Anar Events, home"><img src="assets/logo/logo-gold.svg" width="1600" height="552" alt=""></a>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="weddings.html">Weddings</a></li>
+        <li><a href="how-we-work.html">How we work</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </nav>
+    <div class="nav-right">
+      <span class="nav-fa" lang="fa" dir="rtl">فارسی <span class="nav-fa__soon" aria-hidden="true">· به‌زودی</span><span class="visually-hidden" lang="en" dir="ltr"> (Persian site, coming soon)</span></span>
+      <a class="btn btn--sm" href="index.html#inquire">Inquire</a>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+  <!-- 1. HERO: full-bleed looping video under a cypress tint, the plain gold logo on a soft halo,
+       the canopy-u3 piece rising from the bottom. Motion: site.js block 1 and 2. -->
+  <section class="hero" aria-label="Anar Events">
+    <!-- no src here: site.js block 0 appends the mp4 <source> after window 'load', and only without
+         prefers-reduced-motion and Save-Data. The poster shows until then. -->
+    <video class="hero__video" muted loop playsinline preload="none" poster="assets/video/hero-poster-small.jpg" width="1920" height="1080" aria-hidden="true" tabindex="-1" data-src-desktop="assets/video/hero-1080-loop.mp4" data-src-mobile="assets/video/hero-720-loop.mp4"></video>
+    <div class="hero__tint" aria-hidden="true"></div>
+    <div class="hero__deepen" aria-hidden="true"></div>
+    <img class="hero__canopy" src="assets/tree/canopy-u3.webp" width="2752" height="1536" alt="" aria-hidden="true" decoding="async">
+    <div class="hero__mark">
+      <div class="hero__halo" aria-hidden="true"></div>
+      <h1 class="hero__logo"><img src="assets/logo/logo-gold.svg" width="1600" height="552" alt="Anar Events" fetchpriority="high"></h1>
+      <p class="hero__line">Wedding planning and coordination for Persian, Afghan and South Asian families · San Francisco Bay Area</p>
+    </div>
+    <p class="hero__scroll" aria-hidden="true">Scroll <span aria-hidden="true">&darr;</span></p>
+    <p class="hero__tag fa" lang="fa" dir="rtl">میراث، از نو</p>
+  </section>
+
+  <!-- 3. DESCEND THE TREE: two transparent edge strips (trunk-left / trunk-right) scroll past at 0.8x
+       (site.js block 3), masked at the column edge; the statement and the three pillars sit in the open centre.
+       Higher-res strips with the same names may replace these files: update width/height then. -->
+  <section class="descend" aria-labelledby="statement-title">
+    <div class="descend__trunks" aria-hidden="true">
+      <img class="descend__trunk descend__trunk--l" src="assets/tree/trunk-left.webp" width="552" height="2752" alt="" loading="lazy" decoding="async">
+      <img class="descend__trunk descend__trunk--r" src="assets/tree/trunk-right.webp" width="553" height="2752" alt="" loading="lazy" decoding="async">
+    </div>
+    <div class="leaf leaf--1" aria-hidden="true"></div>
+    <div class="descend__content">
+      <div class="container container--text">
+        <div class="statement">
+          <p class="eyebrow reveal">Reimagined Heritage</p>
+          <svg class="kashida kashida--short kashida-draw" viewBox="0 0 320 2" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 1 H320"/></svg>
+          <h2 id="statement-title" class="statement__text reveal">
+            <span class="statement__line">Bespoke Persian, Afghan</span>
+            <span class="statement__line">&amp; South Asian weddings.</span>
+            <span class="statement__line">Deeply fluent in the traditions</span>
+            <span class="statement__line">your family cherishes;</span>
+            <span class="statement__line">obsessed with the modern</span>
+            <span class="statement__line">aesthetic you actually want.</span>
+          </h2>
+          <p class="statement__sub reveal">Anar Events plans and runs weddings for Persian, Afghan and South Asian families in the San Francisco Bay Area. We plan with the whole family, ritual by ritual.</p>
+        </div>
+
+        <ol class="pillars stagger" aria-label="Three things we always do">
+          <li class="card">
+            <span class="card__n">01 · We are always</span>
+            <h3>Fluent in the unspoken details</h3>
+            <p class="muted">Names, dates and rituals, right, as your family keeps them.</p>
+          </li>
+          <li class="card">
+            <span class="card__n">02 · We always</span>
+            <h3>Honor the elders' legacy while bringing your modern vision to life</h3>
+            <p class="muted">Elders greeted first, and asked, not told. Parents and elders included at the level you choose. Keep the soul. Redefine the style.</p>
+          </li>
+          <li class="card">
+            <span class="card__n">03 · We always</span>
+            <h3>Run multi-day cultural productions, seamlessly</h3>
+            <p class="muted">From the engagement to the walima: one timeline, one plan, one person to call.</p>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. THE CELEBRATIONS: one open wide panel + narrow blurred strips (site.js accordion block). -->
+  <section class="section" id="celebrations" aria-labelledby="celebrations-title">
+    <div class="container">
+      <div class="section__head">
+        <p class="eyebrow reveal"><span class="fa" lang="fa" dir="rtl">جشن‌ها</span></p>
+        <h2 id="celebrations-title" class="reveal">The celebrations</h2>
+        <svg class="kashida kashida--short kashida-draw" viewBox="0 0 320 2" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 1 H320"/></svg>
+      </div>
+      <div class="accordion reveal" data-accordion>
+        <article class="accordion__panel is-open">
+          <!-- PHOTO SLOT · Sofreh Aghd: replace with the real sofreh photo (real family, with consent), landscape ~2000×1125 -->
+          <div class="accordion__media"><img src="assets/img/pom-open-closeup.jpg" width="2000" height="1123" alt="An opened pomegranate, seeds packed tight" loading="lazy" decoding="async"></div>
+          <button class="accordion__trigger" type="button" aria-controls="celebration-1" aria-expanded="true"><span class="visually-hidden">Show Sofreh Aghd</span></button>
+          <span class="accordion__label" aria-hidden="true">Sofreh Aghd</span>
+          <div class="accordion__body" id="celebration-1">
+            <p class="fa" lang="fa" dir="rtl">سفرهٔ عقد</p>
+            <h3>Sofreh Aghd</h3>
+            <p>The Persian ceremony at the spread: the mirror, the candlesticks, the sugar above. We brief your sofreh designer and check the spread against the sofreh key (a one-page guide naming each item on the spread, in both scripts) before the elders are seated.</p>
+          </div>
+        </article>
+        <article class="accordion__panel">
+          <!-- PHOTO SLOT · Nikah: replace with the real nikah photo (real family, with consent), portrait ~1500×2000 -->
+          <div class="accordion__media"><img src="assets/img/pom-pile.jpg" width="1411" height="2000" alt="A pile of pomegranates" loading="lazy" decoding="async"></div>
+          <button class="accordion__trigger" type="button" aria-controls="celebration-2" aria-expanded="false"><span class="visually-hidden">Show Nikah</span></button>
+          <span class="accordion__label" aria-hidden="true">Nikah</span>
+          <div class="accordion__body" id="celebration-2">
+            <p class="fa" lang="fa" dir="rtl">نکاح</p>
+            <h3>Nikah</h3>
+            <p>The Islamic marriage contract, read before witnesses and both families. Quiet, exact, unhurried.</p>
+          </div>
+        </article>
+        <article class="accordion__panel">
+          <!-- PHOTO SLOT · Mehndi & Sangeet: replace with the real henna-night photo (real family, with consent), portrait ~1500×2000 -->
+          <div class="accordion__media"><img src="assets/img/pom-in-hand.jpg" width="1500" height="2000" alt="A pomegranate held in an open hand" loading="lazy" decoding="async"></div>
+          <button class="accordion__trigger" type="button" aria-controls="celebration-3" aria-expanded="false"><span class="visually-hidden">Show Mehndi and Sangeet</span></button>
+          <span class="accordion__label" aria-hidden="true">Mehndi &amp; Sangeet</span>
+          <div class="accordion__body" id="celebration-3">
+            <p class="fa" lang="fa" dir="rtl">حنابندان</p>
+            <h3>Mehndi &amp; Sangeet</h3>
+            <p>The mehndi, the henna night. The sangeet, when both families sing and dance. The baraat, arriving with music. Each run to the minute.</p>
+          </div>
+        </article>
+        <article class="accordion__panel">
+          <!-- PHOTO SLOT · Haldi, Pheras & Anand Karaj: replace with the real mandap or gurdwara photo (real family, with consent), portrait ~1500×2000 -->
+          <div class="accordion__media"><img src="assets/img/pom-pile.jpg" width="1411" height="2000" alt="A pile of pomegranates" loading="lazy" decoding="async"></div>
+          <button class="accordion__trigger" type="button" aria-controls="celebration-5" aria-expanded="false"><span class="visually-hidden">Show Haldi, Pheras and Anand Karaj</span></button>
+          <span class="accordion__label" aria-hidden="true">Haldi, Pheras &amp; Anand Karaj</span>
+          <div class="accordion__body" id="celebration-5">
+            <p class="fa" lang="fa" dir="rtl">عروسی هندو و سیک</p>
+            <h3>Haldi, Pheras &amp; Anand Karaj</h3>
+            <p>The haldi, the pheras around the sacred fire under the mandap, or the Anand Karaj before the Guru Granth Sahib. We cue the pandit or the granthi and both families, and hold the elders' seats. A one-line programme explains each ritual so every guest can follow.</p>
+          </div>
+        </article>
+        <article class="accordion__panel">
+          <!-- PHOTO SLOT · Reception & Walima: replace with the real reception photo (real family, with consent), portrait ~1500×2000 -->
+          <div class="accordion__media"><img src="assets/img/pom-tree-night.jpg" width="1125" height="2000" alt="A pomegranate tree at night" loading="lazy" decoding="async"></div>
+          <button class="accordion__trigger" type="button" aria-controls="celebration-4" aria-expanded="false"><span class="visually-hidden">Show Reception and Walima</span></button>
+          <span class="accordion__label" aria-hidden="true">Reception &amp; Walima</span>
+          <div class="accordion__body" id="celebration-4">
+            <p class="fa" lang="fa" dir="rtl">جشن عروسی</p>
+            <h3>Reception &amp; Walima</h3>
+            <p>From the elders' blessing to the 2 AM dance floor: one timeline, called with the venue and every vendor.</p>
+          </div>
+        </article>
+      </div>
+      <p class="center reveal" style="margin-top:32px"><a class="link" href="weddings.html">Every tradition, in its own words</a></p>
+    </div>
+  </section>
+
+  <!-- 4b. PROOF SLOT (OWNER INPUT): hidden until Medi supplies a real testimonial (family name, with consent)
+       and one proof line (e.g. weddings planned since YEAR). Remove the `hidden` attribute and replace the
+       bracketed lines; it is styled as the real thing (.proof). Nothing here is invented. -->
+  <section class="section proof" data-owner-input="proof" aria-labelledby="proof-title" hidden>
+    <div class="container container--text">
+      <p class="eyebrow reveal">From the families</p>
+      <h2 id="proof-title" class="reveal visually-hidden">What families say</h2>
+      <figure class="proof__quote reveal">
+        <blockquote><p>[Medi: one short testimonial, in the family's own words, with their consent]</p></blockquote>
+        <figcaption class="proof__by">[Family name · the celebration · the year]</figcaption>
+      </figure>
+      <p class="proof__line reveal">[one proof line, e.g. weddings planned since YEAR · families in the Bay Area]</p>
+    </div>
+  </section>
+
+  <!-- 5. FOUNDER QUOTE: the light interlude, on parchment. Only "Keep the soul. Redefine the style." is display size (ruby). -->
+  <section class="section quote on-light" aria-label="A letter from the founder">
+    <div class="container container--text">
+      <figure class="reveal">
+        <p class="eyebrow" style="margin-bottom:24px">Why I started Anar</p>
+        <blockquote>
+          <p>
+            <span>In our families, a wedding is never two people.</span>
+            <span>It is parents, grandparents, the whole table.</span>
+            <span>I started Anar so those families can plan in calm.</span>
+          </p>
+          <p class="quote__key">Keep the soul. Redefine the style.</p>
+          <p>
+            <span>We ask how your family observes each tradition.</span>
+            <span>On the day, you only have to be there.</span>
+          </p>
+        </blockquote>
+        <figcaption class="eyebrow quote__by">Medi, founder</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 6. HOW WE WORK teaser: two cards on a plain deep-cypress band with one soft gold glow, gold kashida strips slide in (site.js block 6), then the two service options -->
+  <section class="section teaser band band--glow" id="how-teaser" aria-labelledby="how-teaser-title">
+    <div class="container">
+      <div class="section__head">
+        <p class="eyebrow reveal"><span class="fa" lang="fa" dir="rtl">روش کار ما</span></p>
+        <h2 id="how-teaser-title" class="reveal">How we work</h2>
+      </div>
+      <div class="teaser__strips" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="teaser__grid stagger">
+        <article class="card">
+          <span class="card__n">01 · <span class="fa" lang="fa" dir="rtl">برنامه</span></span>
+          <h3>Plan</h3>
+          <p>Ritual by ritual, as your family keeps it. One plan with the price and what is included, Persian and Dari pages for the parents, and a written summary after every meeting.</p>
+        </article>
+        <article class="card">
+          <span class="card__n">02 · <span class="fa" lang="fa" dir="rtl">روز عروسی</span></span>
+          <h3>Run the day</h3>
+          <p>The timeline called with the venue and every vendor. Elders' seats held, the sofreh checked against the key, staff easy to find. You only have to be there.</p>
+        </article>
+      </div>
+      <ul class="options stagger" aria-label="Two ways to work with us">
+        <li>
+          <h3>Full planning</h3>
+          <p class="option__when">Begins at the first conversation · ends at the thank-you</p>
+          <ul>
+            <li>Your budget held and tracked, line by line, from the first conversation.</li>
+            <li>Venue and vendor shortlist, booking support and contract review.</li>
+            <li>Planning decisions scheduled ritual by ritual, with a short written summary after each meeting.</li>
+            <li>One written plan: the rituals in order, the days, the price and what is included, with Persian and Dari pages for the parents.</li>
+            <li>Every wedding day run: one timeline, called with the venue and every vendor; elders' seats held.</li>
+          </ul>
+        </li>
+        <li>
+          <h3>Wedding-day coordination</h3>
+          <p class="option__when">Begins 6–8 weeks out · we take over your finished plan and run the days</p>
+          <ul>
+            <li>Starts 6–8 weeks out: your family has planned already; we take over the finished plan.</li>
+            <li>Every contract, contact and time in it read and confirmed with the venue and every vendor.</li>
+            <li>One timeline for every day, with the sofreh key or the programme checked against your family's wishes.</li>
+            <li>On the days: elders greeted first, the officiant and family cued, our staff easy to find. You only have to be there.</li>
+          </ul>
+        </li>
+      </ul>
+      <p class="teaser__foot reveal">Replies within one business day · <a class="link" href="how-we-work.html">All five steps and what you get</a></p>
+    </div>
+  </section>
+
+  <!-- 7. THE JOURNEY: the five planning stages on one line. The sage base line and all five dots are there at once;
+       the gold .track-line overlay draws across with scroll and turns each dot gold (site.js block 5).
+       Beneath it, a loose group of the celebrations a family may choose (gold-outlined pills, no line, no numbering). -->
+  <section class="section journey" id="journey" aria-labelledby="journey-title">
+    <div class="leaf leaf--3" aria-hidden="true"></div>
+    <div class="container">
+      <div class="section__head">
+        <p class="eyebrow reveal">Five steps on one line</p>
+        <h2 id="journey-title" class="reveal">The journey</h2>
+      </div>
+      <p class="journey__order reveal">Planning runs in this order. Your wedding celebrations come in the order your family chooses.</p>
+      <div class="journey__track" data-track>
+        <svg class="journey__line journey__line--h" viewBox="0 0 1200 2" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 1 H1200"/></svg>
+        <svg class="journey__line journey__line--v" viewBox="0 0 2 1000" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M1 0 V1000"/></svg>
+        <svg class="journey__line journey__line--h track-line" viewBox="0 0 1200 2" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 1 H1200"/></svg>
+        <svg class="journey__line journey__line--v track-line" viewBox="0 0 2 1000" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M1 0 V1000"/></svg>
+        <ol class="journey__stops">
+          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Enquiry</span><span class="journey__fa fa" lang="fa" dir="rtl">درخواست</span><span class="journey__note">Thank you for writing. Tell us about your family. We reply within one business day.</span></li>
+          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Consultation</span><span class="journey__fa fa" lang="fa" dir="rtl">مشاوره</span><span class="journey__note">First, we hear your priorities. Parents and elders included at the level you choose.</span></li>
+          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Proposal</span><span class="journey__fa fa" lang="fa" dir="rtl">پیشنهاد</span><span class="journey__note">The plan, the price, and what is included. A page for the parents, in Persian or Dari.</span></li>
+          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Planning</span><span class="journey__fa fa" lang="fa" dir="rtl">برنامه‌ریزی</span><span class="journey__note">Ritual by ritual, as your family keeps it. A short written summary after every meeting.</span></li>
+          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">The wedding days</span><span class="journey__fa fa" lang="fa" dir="rtl">روزهای عروسی</span><span class="journey__note">One timeline, called with the venue and every vendor. You only have to be there.</span></li>
+        </ol>
+      </div>
+      <div class="journey__extras reveal">
+        <p class="eyebrow">Celebrations your family may choose</p>
+        <ul class="pills" aria-label="Celebrations your family may choose">
+          <li class="pill">Bale-boroon <span class="fa" lang="fa" dir="rtl">بله‌برون</span></li>
+          <li class="pill">Mehndi / Henna <span class="fa" lang="fa" dir="rtl">حنابندان</span></li>
+          <li class="pill">Sangeet</li>
+          <li class="pill">Haldi</li>
+          <li class="pill">Aghd <span class="fa" lang="fa" dir="rtl">عقد</span></li>
+          <li class="pill">Nikah <span class="fa" lang="fa" dir="rtl">نکاح</span></li>
+          <li class="pill">Pheras</li>
+          <li class="pill">Anand Karaj</li>
+          <li class="pill">Reception / Walima <span class="fa" lang="fa" dir="rtl">جشن عروسی</span></li>
+          <li class="pill">Nowruz / Yalda</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 + 9. THE ROOTS rise in as the floor (site.js block 7); INQUIRE sits on the ground. -->
+  <section class="ground" id="inquire" aria-labelledby="inquire-title">
+    <img class="ground__roots" src="assets/tree/roots-floor.webp" width="1376" height="768" alt="" aria-hidden="true" loading="lazy" decoding="async">
+    <div class="container container--text inquire">
+      <div class="pair reveal">
+        <p class="eyebrow">Inquire</p>
+        <p class="fa" lang="fa" dir="rtl">شروع برنامه‌ریزی</p>
+      </div>
+      <h2 id="inquire-title" class="reveal" style="margin:8px 0 16px">Tell us about your family</h2>
+      <p class="reveal measure muted" style="margin-bottom:40px">Thank you for writing. We reply within one business day.</p>
+      <!-- Formspree: replace FORMSPREE_ID with the real form id (also noted in docs/BUILD-NOTES.md) -->
+      <!-- the form carries no reveal class: it is never hidden by the motion -->
+      <form class="form" action="https://formspree.io/f/FORMSPREE_ID" method="POST" data-ajax>
+        <input type="hidden" name="_subject" value="New enquiry from anarevents.com">
+        <input type="text" name="_gotcha" class="visually-hidden" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="form__row">
+          <div class="field"><label for="f-names">Your name(s)</label><input id="f-names" name="names" type="text" autocomplete="name" required placeholder="Sara &amp; Omid"></div>
+          <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
+        </div>
+        <div class="form__row">
+          <div class="field"><label for="f-role">You are writing as</label>
+            <select id="f-role" name="writing_as">
+              <option value="the couple">The couple</option>
+              <option value="a parent">A parent</option>
+              <option value="another family member">Another family member</option>
+            </select>
+          </div>
+          <div class="field"><label for="f-lang">Reply in</label>
+            <select id="f-lang" name="reply_in">
+              <option value="English">English</option>
+              <option value="Persian">Persian</option>
+              <option value="Dari">Dari</option>
+              <option value="Urdu">Urdu</option>
+              <option value="Hindi">Hindi</option>
+              <option value="Punjabi">Punjabi</option>
+            </select>
+          </div>
+        </div>
+        <div class="form__row">
+          <div class="field"><label for="f-help">Help needed</label>
+            <select id="f-help" name="help_needed">
+              <option value="">Choose one</option>
+              <option value="Full planning">Full planning</option>
+              <option value="Wedding-day coordination">Wedding-day coordination</option>
+              <option value="Not sure yet">Not sure yet</option>
+            </select>
+          </div>
+          <div class="field"><label for="f-days">Which days <span class="muted">(optional)</span></label>
+            <select id="f-days" name="which_days">
+              <option value="">Choose one</option>
+              <option value="Engagement">Engagement</option>
+              <option value="Mehndi / Henna">Mehndi / Henna</option>
+              <option value="Aghd / Nikah">Aghd / Nikah</option>
+              <option value="Pheras / Anand Karaj">Pheras / Anand Karaj</option>
+              <option value="Reception / Walima">Reception / Walima</option>
+              <option value="Not sure yet">Not sure yet</option>
+            </select>
+          </div>
+        </div>
+        <div class="form__row">
+          <div class="field"><label for="f-phone">Phone</label><input id="f-phone" name="phone" type="tel" autocomplete="tel"></div>
+          <div class="field"><label for="f-date">First wedding date (or season)</label><input id="f-date" name="wedding_date" type="text" autocomplete="off" placeholder="14 June 2027, or spring 2027"></div>
+        </div>
+        <div class="form__row">
+          <div class="field"><label for="f-place">City or venue <span class="muted">(optional)</span></label><input id="f-place" name="city_or_venue" type="text" autocomplete="off" placeholder="Fremont, or the venue if you have one"></div>
+          <div class="field"><label for="f-guests">Guest count</label><input id="f-guests" name="guest_count" type="number" min="1" inputmode="numeric" placeholder="250"></div>
+        </div>
+        <fieldset class="fieldset">
+          <legend>Traditions</legend>
+          <div class="checks">
+            <label class="check"><input type="checkbox" name="traditions" value="Sofreh Aghd"> Sofreh Aghd</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Nikah"> Nikah</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Mehndi / Henna"> Mehndi / Henna</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Sangeet"> Sangeet</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Haldi"> Haldi</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Pheras / Mandap"> Pheras / Mandap</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Anand Karaj"> Anand Karaj</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Reception"> Reception</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Walima"> Walima</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Nowruz / Yalda"> Nowruz / Yalda</label>
+          </div>
+        </fieldset>
+        <div class="form__row">
+          <div class="field"><label for="f-budget">Budget range <span class="muted">(optional)</span></label>
+            <select id="f-budget" name="budget_range">
+              <option value="">Choose one</option>
+              <option value="Under $50k">Under $50k</option>
+              <option value="$50–100k">$50–100k</option>
+              <option value="$100–200k">$100–200k</option>
+              <option value="$200k+">$200k+</option>
+              <option value="Prefer not to say">Prefer not to say</option>
+            </select>
+          </div>
+        </div>
+        <div class="field"><label for="f-message">Message</label><textarea id="f-message" name="message" placeholder="Your families, your dates, the rituals that matter most."></textarea></div>
+        <div><button class="btn" type="submit">Begin the conversation</button></div>
+        <p class="form__status" id="form-status" role="status" aria-live="polite" tabindex="-1"></p>
+        <p class="form__note">We reply within one business day. Parents and elders included at the level you choose.</p>
+      </form>
+      <p class="inquire__contact reveal"><span>Or write and call:</span> <a href="mailto:hello@anarevents.com">hello@anarevents.com</a> <a href="tel:+19252639949">(925) 263-9949</a> <a class="wa" href="https://wa.me/19252639949" rel="noopener">WhatsApp</a></p>
+    </div>
+  </section>
+
+</main>
+
+<!-- 10. Shared footer: deep night band -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__grid">
+      <div>
+        <a href="index.html" aria-label="Anar Events, home"><img class="site-footer__logo" src="assets/logo/logo-gold.svg" width="1600" height="552" alt="Anar Events" loading="lazy"></a>
+      </div>
+      <address>
+        <span>Anar Events · San Francisco Bay Area</span>
+        <a href="tel:+19252639949">(925) 263-9949</a>
+        <a href="https://wa.me/19252639949" rel="noopener">WhatsApp</a>
+        <a href="mailto:hello@anarevents.com">hello@anarevents.com</a>
+        <a href="https://instagram.com/anarevents" rel="noopener">Instagram · @anarevents</a>
+      </address>
+      <p class="site-footer__fa fa" lang="fa" dir="rtl">انار · برنامه‌ریزی عروسی و جشن</p>
+    </div>
+    <p class="site-footer__lang">Persian and Dari pages for the parents; English for everyone.</p>
+    <p class="site-footer__legal"><span>© 2026 Anar LLC · Persian, Afghan and South Asian weddings</span><span>Timeless traditions, curated for the modern era.</span></p>
+  </div>
+</footer>
+
+<!-- Persistent "How we work +" tab and slide-out panel (site.js panel block) -->
+<button class="hww-tab ghost" type="button" aria-controls="hww-panel" aria-expanded="false">How we work <span aria-hidden="true">+</span></button>
+<button class="motion-toggle ghost" type="button" aria-label="Motion" aria-pressed="false"><span class="motion-toggle__text">Pause motion</span></button>
+<div class="hww-backdrop" hidden></div>
+<aside class="hww-panel" id="hww-panel" role="dialog" aria-modal="true" aria-labelledby="hww-title" tabindex="-1" data-lenis-prevent hidden>
+  <button class="hww-panel__close" type="button" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  <p class="eyebrow">How we work · <span class="fa" lang="fa" dir="rtl">روش کار ما</span></p>
+  <h2 id="hww-title">Five steps, one line</h2>
+  <ol class="hww-steps">
+    <li><div><h3>Enquiry &amp; consultation</h3><p>Write to us. We meet your family, greet the elders first, and listen.</p></div></li>
+    <li><div><h3>Proposal</h3><p>The plan, the price, and what is included. A page for the parents, in Persian or Dari.</p></div></li>
+    <li><div><h3>Planning</h3><p>Ritual by ritual, as your family keeps it. Persian and Dari pages for the parents; English for everyone. A short written summary after every meeting.</p></div></li>
+    <li><div><h3>The wedding days</h3><p>From the engagement to the walima: aghd or nikah, mehndi and sangeet, reception. One timeline, one person to call.</p></div></li>
+    <li><div><h3>Thank-you</h3><p>What the family keeps, and how we say goodbye.</p></div></li>
+  </ol>
+  <p class="hww-panel__foot"><a class="btn" href="index.html#inquire">Begin the conversation</a> <a class="link" href="how-we-work.html">Read more</a></p>
+</aside>
+</body>
+</html>

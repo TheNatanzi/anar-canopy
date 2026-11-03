@@ -1,0 +1,42 @@
+{
+ "model": "astra",
+ "role": "planner",
+ "score": 6,
+ "blocking": [
+  "The combined Hindu/Sikh caption says 'Both families, one fire' even though the accompanying text describes Anand Karaj before the Guru Granth Sahib. This undermines the central promise of cultural fluency.",
+  "The nine-stop journey presents different families' ceremonies as one wedding itinerary; the qualifying sentence does not resolve the visual message.",
+  "Full planning lacks enough concrete scope for a paying family to distinguish it confidently from coordination."
+ ],
+ "fixes": [
+  {
+   "where": "weddings.html #haldi-pheras-anand-karaj; index.html #celebration-5",
+   "what": "Give Hindu ceremonies and Anand Karaj separate sections and captions. Remove 'Both families, one fire.' Replace blanket ceremony instructions with a commitment to confirm the sequence and requirements with the family's officiant.",
+   "why": "Distinct religious traditions need distinct treatment to earn parents' trust."
+  },
+  {
+   "where": "index.html #journey and shared .hww-steps",
+   "what": "Use the five planning stages for the main timeline. Place optional celebrations beneath 'The wedding days' without a connecting sequence, including Hindu and Sikh ceremonies. Identify Bale-boroon and Shirini-khori separately rather than making one the explanation of the other.",
+   "why": "Families should recognize their own celebration without appearing to inherit another culture's itinerary."
+  },
+  {
+   "where": "index.html .journey__stop consultation; shared .hww-steps consultation",
+   "what": "Replace 'First meeting with parents and grandparents. Elders first.' with 'First, we hear your priorities. Invite parents and elders at the level you choose.' Carry that choice into the panel introduction.",
+   "why": "The current consultation language makes family participation sound mandatory despite the more reassuring language elsewhere."
+  },
+  {
+   "where": "index.html .options; how-we-work.html #you-get",
+   "what": "State the confirmed responsibilities for budget management, venue and vendor selection, booking support, and planning decisions under Full planning. Specify how covered event days, staffing and hours are agreed for both services.",
+   "why": "A timeline and meeting summaries do not explain what a family is purchasing or who does the remaining work."
+  },
+  {
+   "where": "index.html #inquire form",
+   "what": "Remove the single-select 'Which days' field and consolidate event choices into one optional checkbox group with engagement, 'Other' and 'Not sure yet'. Label the budget 'Estimated total budget across all wedding events' and state 'Only name and email are required.'",
+   "why": "The current form duplicates ceremony questions, limits multi-day selection and leaves the meaning of budget unclear."
+  },
+  {
+   "where": "index.html #f-lang; how-we-work.html #faq language answer",
+   "what": "Make the reply-language options match the languages the team can actually support. Distinguish translated planning documents from spoken consultation support, and use identical language across the form and FAQ.",
+   "why": "The form promises six reply languages while the service explanation establishes only English, Persian and Dari."
+  }
+ ]
+}

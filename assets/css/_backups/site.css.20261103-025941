@@ -126,12 +126,23 @@ main{position:relative;z-index:2;display:block}
 .nav-home{display:block;width:120px;margin-right:var(--s2);flex:0 0 auto;opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s}
 .nav-home img{width:100%;height:auto}
 .site-header--solid .nav-home,.site-header.is-scrolled .nav-home{opacity:1;visibility:visible}
-.site-nav{display:none}
-.site-nav ul{display:flex;gap:clamp(16px,2.4vw,36px)}
+/* the links are visible by default; on phones they collapse into the drawer only once site.js has bound
+   the toggle (html.nav-ready). Until then they sit in a deep-night strip under the bar and the toggle is hidden. */
+.site-nav{display:block}
+.site-nav ul{display:flex;flex-wrap:wrap;gap:clamp(16px,2.4vw,36px)}
+@media (max-width:767px){
+  html:not(.nav-ready) .site-nav{position:absolute;top:var(--header-h);left:0;right:0;background:var(--deep);border-top:2px solid var(--gold);padding:var(--s2) var(--gutter)}
+  html:not(.nav-ready) .nav-toggle{visibility:hidden}
+  html.nav-ready .site-nav{display:none}
+}
 .site-nav a{display:inline-block;padding-block:4px;border-bottom:2px solid transparent;transition:border-color .3s,color .3s;letter-spacing:.02em}
 .site-nav a:hover,.site-nav a[aria-current="page"]{border-bottom-color:var(--gold)}
 .nav-right{margin-left:auto;display:flex;align-items:center;gap:clamp(12px,2vw,28px)}
-.nav-fa{font-size:20px;line-height:1;color:var(--parch);opacity:.9;cursor:default}
+/* فارسی · به‌زودی: an inert stone label (no title / aria-label); the "soon" drops under the word on phones */
+.nav-fa{font-size:20px;line-height:1;color:var(--stone);cursor:default;text-align:center}
+.nav-fa__soon{font-size:14px}
+@media (max-width:767px){.nav-fa{font-size:18px}.nav-fa__soon{display:block;font-size:12px;line-height:1.3;margin-top:2px}}
+@media (max-width:480px){.nav-fa__soon{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}}
 .nav-toggle{width:44px;height:44px;display:grid;place-items:center;margin-left:-8px}
 .nav-toggle__bar{display:block;width:24px;height:2px;background:currentColor;position:relative;transition:background .2s}
 .nav-toggle__bar::before,.nav-toggle__bar::after{content:"";position:absolute;left:0;width:24px;height:2px;background:currentColor;transition:transform .3s}
@@ -141,14 +152,13 @@ main{position:relative;z-index:2;display:block}
 .nav-toggle[aria-expanded="true"] .nav-toggle__bar::after{transform:translateY(-8px) rotate(-45deg)}
 /* mobile drawer */
 .site-header.nav-open{background:var(--deep)}
-.site-header.nav-open .site-nav{display:block;position:absolute;top:var(--header-h);left:0;right:0;background:var(--deep);border-top:2px solid var(--gold);padding:var(--s3) var(--gutter) var(--s4)}
+html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;top:var(--header-h);left:0;right:0;background:var(--deep);border-top:2px solid var(--gold);padding:var(--s3) var(--gutter) var(--s4)}
 .site-header.nav-open .site-nav ul{flex-direction:column;gap:var(--s2)}
 .site-header.nav-open .site-nav a{font-size:26px}
 /* solid once scrolled, and on inner pages */
-.site-header--solid,.site-header.is-scrolled{background:rgba(27,34,30,.92)}
+.site-header--solid,.site-header.is-scrolled{background:rgba(27,34,30,.96)}
 @supports (backdrop-filter:blur(8px)){.site-header--solid,.site-header.is-scrolled{backdrop-filter:blur(8px)}}
 @media (min-width:768px){
-  .site-nav{display:block}
   .nav-toggle{display:none}
   .nav-home{width:150px}
 }
@@ -156,7 +166,7 @@ main{position:relative;z-index:2;display:block}
 
 /* ---------- HERO (index first screen, approved 02:05) ---------- */
 .hero{position:relative;height:100vh;height:100svh;min-height:600px;overflow:hidden;background:var(--night);color:var(--parch)}
-.hero__video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:var(--night) url("../video/hero-poster-small.jpg") center/cover}
+.hero__video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:var(--night)}
 .hero__tint{position:absolute;inset:0;background:var(--tint);pointer-events:none}
 .hero__deepen{position:absolute;inset:0;background:var(--night);opacity:0;pointer-events:none}
 /* the ONE tree piece: anchored low, width 100vw (or 140vh on tall screens), top at ~35% so the canopy
@@ -175,8 +185,9 @@ main{position:relative;z-index:2;display:block}
   .hero__canopy{width:140vw;top:auto;bottom:-4%}
   .hero__mark{width:78vw;top:30%}
   .hero__line{font-size:12px;letter-spacing:.06em;padding-inline:4px}
-  /* the "How we work +" tab sits bottom-right on phones: lift the tagline too */
-  .hero__tag{bottom:calc(clamp(14px,2.6vh,28px) + 64px)}
+  .hero__scroll{bottom:calc(16px + env(safe-area-inset-bottom) + 4px);left:64px;font-size:12px}
+  .hero__tag{font-size:18px;bottom:calc(16px + env(safe-area-inset-bottom) + 2px)}
+  /* the "How we work +" tab is now a mid-height edge tab on phones too: the tagline stays at the bottom */
 }
 
 /* ---------- Floating leaves (two places; static under reduced motion) ---------- */
@@ -187,18 +198,19 @@ main{position:relative;z-index:2;display:block}
 
 /* ---------- DESCEND THE TREE ---------- */
 .descend{position:relative;background:var(--night);overflow:clip;--descend-col:880px}
-.descend__trunks{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;pointer-events:none;z-index:0}
+.descend__trunks{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;pointer-events:none;z-index:0;-webkit-mask-image:linear-gradient(to bottom,#000 78%,transparent);mask-image:linear-gradient(to bottom,#000 78%,transparent)}
 /* two edge strips (trunk-left / trunk-right, transparent webp), never behind the centre column:
    20vw each from 1024px, 26vw at 769-1023px, phones keep only the left strip at 34vw.
-   The paint reaches inward across most of each strip, so above 768px the mask fades out exactly at
-   the column edge, max((100vw - 880px)/2, gutter): no painted art under the text at any width. */
+   The paint is clipped at the column edge, max((100vw - 880px)/2, gutter),
+   and at the gutter on phones: no painted art under the text at any width. */
 .descend__trunk{position:absolute;top:0;width:20vw;max-width:20vw;height:auto;min-height:100%;object-fit:cover;will-change:transform}
 .descend__trunk--l{left:0;object-position:left top;-webkit-mask-image:linear-gradient(to right,#000 70%,transparent);mask-image:linear-gradient(to right,#000 70%,transparent)}
 .descend__trunk--r{right:0;object-position:right top;-webkit-mask-image:linear-gradient(to left,#000 70%,transparent);mask-image:linear-gradient(to left,#000 70%,transparent)}
-@media (min-width:769px){
-  .descend__trunk--l{-webkit-mask-image:linear-gradient(to right,#000 min(70%,calc(max((100vw - var(--descend-col)) / 2,var(--gutter)) - 32px)),transparent min(100%,calc(max((100vw - var(--descend-col)) / 2,var(--gutter)))));mask-image:linear-gradient(to right,#000 min(70%,calc(max((100vw - var(--descend-col)) / 2,var(--gutter)) - 32px)),transparent min(100%,calc(max((100vw - var(--descend-col)) / 2,var(--gutter)))))}
-  .descend__trunk--r{-webkit-mask-image:linear-gradient(to left,#000 min(70%,calc(max((100vw - var(--descend-col)) / 2,var(--gutter)) - 32px)),transparent min(100%,calc(max((100vw - var(--descend-col)) / 2,var(--gutter)))));mask-image:linear-gradient(to left,#000 min(70%,calc(max((100vw - var(--descend-col)) / 2,var(--gutter)) - 32px)),transparent min(100%,calc(max((100vw - var(--descend-col)) / 2,var(--gutter)))))}
-}
+/* Clip independently of mask support; paint cannot enter the reading column. */
+.descend{--edge-space:var(--gutter)}
+@media (min-width:769px){.descend{--edge-space:max(calc((100vw - var(--descend-col))/2),var(--gutter))}}
+.descend__trunk--l{clip-path:inset(0 max(0px,calc(100% - var(--edge-space))) 0 0)}
+.descend__trunk--r{clip-path:inset(0 0 0 max(0px,calc(100% - var(--edge-space))))}
 @media (min-width:769px) and (max-width:1023px){.descend__trunk{width:26vw;max-width:26vw}}
 @media (max-width:768px){.descend__trunk{width:34vw;max-width:34vw}.descend__trunk--r{display:none}}
 .descend__content{position:relative;z-index:1;margin-top:-100vh;margin-top:-100svh;padding-block:clamp(72px,14vh,170px) clamp(72px,12vh,150px)}
@@ -253,11 +265,22 @@ main{position:relative;z-index:2;display:block}
 .quote blockquote{font-size:clamp(22px,3vw,36px);line-height:1.3;max-width:30em;margin-inline:auto;text-wrap:balance}
 .quote blockquote span{display:block}
 .quote blockquote .quote__key{color:var(--ruby)}
-/* "Medi, founder" as a gold eyebrow line (no drawn signature) */
-.quote figcaption.quote__by{margin-top:var(--s3);color:var(--gold)}
+/* "Medi, founder" as an eyebrow line in ruby (the founder attribution on parchment; no drawn signature) */
+.quote figcaption.quote__by{margin-top:var(--s3);color:var(--ruby)}
 
-/* ---------- How we work teaser (termeh 8%, gold strips, two cards) ---------- */
+/* ---------- How we work teaser (glow band, gold strips, two cards, two service options) ---------- */
 .teaser{overflow:hidden}
+/* the two service options (index teaser and How we work "What you get"): 2px gold top rule, when support begins, three responsibilities */
+.options{display:grid;gap:var(--s3)}
+@media (min-width:768px){.options{grid-template-columns:1fr 1fr;gap:var(--s4)}}
+.teaser .options{margin-top:var(--s4)}
+.options > li{border-top:2px solid var(--gold);padding-top:var(--s2);display:grid;gap:var(--s1);align-content:start}
+.options h3{font-size:clamp(20px,2.2vw,24px)}
+.options .option__when{color:var(--gold);font-size:14px;line-height:20px;letter-spacing:.06em;text-transform:uppercase}
+.options p,.options ul{color:var(--stone);font-size:16px;line-height:24px}
+.options ul{display:grid;gap:4px}
+.options ul li{padding-left:18px;position:relative}
+.options ul li::before{content:"";position:absolute;left:0;top:11px;width:8px;height:2px;background:var(--gold)}
 .teaser__strips{position:relative;height:2px;margin-block:var(--s3) var(--s4);display:grid;gap:0}
 .teaser__strips i{position:absolute;left:0;right:0;height:2px;background:var(--gold);transform-origin:right center}
 .teaser__strips i:nth-child(1){top:-14px;opacity:.9}
@@ -272,26 +295,28 @@ main{position:relative;z-index:2;display:block}
 /* ---------- The journey: nine stops on one gold line ---------- */
 .journey{position:relative}
 .journey .leaf--3{left:2vw;top:8vh;z-index:0}
+.journey__order{text-align:center;color:var(--stone);font-size:16px;line-height:24px;max-width:38em;margin:calc(-1 * clamp(16px,3vh,40px)) auto clamp(32px,6vh,72px);text-wrap:balance}
 .journey__track{position:relative;z-index:1}
 .journey__line{position:absolute;pointer-events:none}
-.journey__line path{fill:none;stroke:var(--gold);stroke-width:2;vector-effect:non-scaling-stroke}
+/* the full line is there at once in sage at 35%; the gold .track-line overlay draws across it with scroll */
+.journey__line path{fill:none;stroke:var(--sage);stroke-opacity:.35;stroke-width:2;vector-effect:non-scaling-stroke}
+.journey__line.track-line path{stroke:var(--gold);stroke-opacity:1}
 .journey__line--h{display:none}
 .journey__line--v{left:11px;top:0;width:2px;height:100%}
 .journey__stops{display:grid;gap:var(--s3);padding-left:40px}
 .journey__stop{position:relative;display:grid;gap:2px}
-.journey__dot{position:absolute;left:-40px;top:10px;width:14px;height:14px;border-radius:50%;background:var(--gold);transform-origin:center}
-.journey__fa{font-size:20px;line-height:1.5;text-align:left;direction:rtl}
-.journey__en{color:var(--parch)}
-.journey__note{font-size:14px;line-height:20px;color:var(--stone)}
+/* all nine dots show at once (sage); site.js block 5 turns each gold as the line reaches it */
+.journey__dot{position:absolute;left:-40px;top:10px;width:14px;height:14px;border-radius:50%;background:var(--sage);transform-origin:center}
+.journey__en{color:var(--parch);font-size:15px;line-height:20px;text-wrap:balance}
+.journey__fa{font-size:16px;line-height:1.6;text-align:left;direction:rtl;color:var(--stone)}
+.journey__note{font-size:13px;line-height:18px;color:var(--stone)}
 @media (min-width:900px){
   .journey__line--h{display:block;left:0;right:0;top:7px;width:100%;height:2px}
   .journey__line--v{display:none}
-  .journey__stops{grid-template-columns:repeat(9,1fr);gap:var(--s1);padding-left:0;padding-top:var(--s4)}
+  .journey__stops{grid-template-columns:repeat(9,minmax(0,1fr));gap:var(--s1);padding-left:0;padding-top:var(--s4)}
   .journey__stop{text-align:center;justify-items:center}
   .journey__dot{left:50%;top:-64px;margin-left:-7px}
   .journey__fa{text-align:center}
-  .journey__en{font-size:16px;line-height:22px}
-  .journey__note{display:none}
 }
 
 /* ---------- The roots and the floor; Inquire sits on the ground ---------- */
@@ -351,22 +376,30 @@ main{position:relative;z-index:2;display:block}
 .ghost{background:transparent;border:2px solid var(--gold);color:var(--parch);transition:background .3s,color .3s,border-color .3s,transform .3s var(--ease),opacity .3s}
 .ghost:hover,.ghost:focus-visible{background:var(--ruby);border-color:var(--ruby);color:var(--parch)}
 .ghost:focus-visible{outline:2px solid var(--parch);outline-offset:3px}
-/* the tab: bottom-right on phones (above the safe area), vertical at the right edge on wider screens;
+/* the tab: one slim vertical tab at the right edge, mid-height, on every screen size; a solid night
+   fill (so it reads as a night object over the parchment sections too) with the 2px gold border;
    hidden (slides out + fades) while #inquire or the footer is in view */
-.hww-tab{position:fixed;z-index:60;right:var(--s2);bottom:calc(16px + env(safe-area-inset-bottom));letter-spacing:.06em;padding:10px 18px;border-radius:999px;background-color:rgba(27,34,30,.7)}
-html:not(.js) .hww-tab{display:none}
-.hww-tab.is-hidden{transform:translateY(140%);opacity:0;pointer-events:none}
-@media (min-width:768px){
-  .hww-tab{right:0;bottom:auto;top:50%;writing-mode:vertical-rl;transform:translateY(-50%) rotate(180deg);padding:20px 12px;border-radius:0 2px 2px 0;border-left:0}
-  .hww-tab.is-hidden{transform:translate(110%,-50%) rotate(180deg)}
+.hww-tab{position:fixed;z-index:60;right:0;top:50%;writing-mode:vertical-rl;transform:translateY(-50%) rotate(180deg);letter-spacing:.06em;padding:20px 12px;border-radius:0 2px 2px 0;border-left:0;background-color:var(--night)}
+html:not(.panel-ready) .hww-tab{display:none}
+.hww-tab.is-hidden{transform:translate(110%,-50%) rotate(180deg);opacity:0;pointer-events:none}
+@media (max-width:768px){.hww-tab{padding:14px 8px;font-size:13px;line-height:16px}}
+/* Pause motion / Play motion: bottom-left. Phones: a small pill that hides once the hero has scrolled
+   out (site.js adds .is-hidden). Desktop: a 40px round icon-only button; the accessible name is the
+   fixed aria-label "Motion" and aria-pressed carries the state, so the name never changes. */
+.motion-toggle{position:fixed;z-index:60;left:var(--s2);bottom:calc(16px + env(safe-area-inset-bottom));font-size:13px;line-height:18px;letter-spacing:.06em;padding:8px 14px;border-radius:999px;background-color:var(--night)}
+.motion-toggle[hidden],html:not(.motion-ready) .motion-toggle{display:none}
+@media (max-width:768px){.motion-toggle.is-hidden{transform:translateY(140%);opacity:0;pointer-events:none}}
+@media (min-width:0){
+  .motion-toggle{width:40px;height:40px;padding:0;border-radius:50%;display:grid;place-items:center;font-family:Georgia,"Segoe UI Symbol","Apple Symbols",serif;font-size:14px;line-height:1;letter-spacing:0}
+  .motion-toggle::before{content:"\23F8\FE0E"}
+  .motion-toggle[aria-pressed="true"]::before{content:"\25B6\FE0E";padding-left:2px}
+  .motion-toggle__text{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 }
-/* Pause motion / Play motion: bottom-left, small */
-.motion-toggle{position:fixed;z-index:60;left:var(--s2);bottom:calc(16px + env(safe-area-inset-bottom));font-size:13px;line-height:18px;letter-spacing:.06em;padding:8px 14px;border-radius:999px;background-color:rgba(27,34,30,.7)}
-.motion-toggle[hidden],html:not(.js) .motion-toggle{display:none}
 .hww-backdrop{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.55);opacity:0;transition:opacity .4s}
 .hww-backdrop[hidden]{display:none}
 .hww-backdrop.is-on{opacity:1}
-.hww-panel{position:fixed;z-index:80;left:0;right:0;bottom:0;max-height:88vh;overflow:auto;background:var(--night);color:var(--parch);padding:var(--s3) var(--s3) var(--s4);border-top:2px solid var(--gold);border-radius:12px 12px 0 0;transform:translateY(100%);transition:transform .55s var(--ease)}
+/* the panel is the scrollable element: data-lenis-prevent (HTML) keeps Lenis off its wheel/touch events, overscroll-behavior:contain keeps the page still */
+.hww-panel{position:fixed;z-index:80;left:0;right:0;bottom:0;max-height:88vh;overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;background:var(--night);color:var(--parch);padding:var(--s3) var(--s3) var(--s4);border-top:2px solid var(--gold);border-radius:12px 12px 0 0;transform:translateY(100%);transition:transform .55s var(--ease)}
 .hww-panel[hidden]{display:none}
 .hww-panel.is-open{transform:translateY(0)}
 @media (min-width:768px){
@@ -411,9 +444,11 @@ body.panel-open{overflow:hidden}
 .steps{position:relative;padding-left:44px}
 .steps__list{display:grid;gap:var(--s4)}
 .steps__line{position:absolute;left:11px;top:0;width:2px;height:100%}
-.steps__line path{fill:none;stroke:var(--gold);stroke-width:2;vector-effect:non-scaling-stroke}
+/* same device as the journey: a sage base line at once, the gold .track-line overlay draws with scroll */
+.steps__line path{fill:none;stroke:var(--sage);stroke-opacity:.35;stroke-width:2;vector-effect:non-scaling-stroke}
+.steps__line.track-line path{stroke:var(--gold);stroke-opacity:1}
 .step{position:relative;display:grid;gap:var(--s1)}
-.step__dot{position:absolute;left:-44px;top:10px;width:14px;height:14px;border-radius:50%;background:var(--gold);transform-origin:center}
+.step__dot{position:absolute;left:-44px;top:10px;width:14px;height:14px;border-radius:50%;background:var(--sage);transform-origin:center}
 .step__n{font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
 .step h3{font-size:clamp(24px,3vw,34px)}
 .step .fa{text-align:left;color:var(--gold)}
@@ -432,7 +467,10 @@ body.panel-open{overflow:hidden}
 
 /* ---------- About page ---------- */
 .letter{font-size:clamp(20px,2.4vw,28px);line-height:1.45;display:grid;gap:var(--s2)}
-.letter__sign{color:var(--sage);font-size:18px}
+.letter__sign{color:var(--ruby);font-size:18px}
+/* the founder bio slot under the letter (owner input: bracketed placeholders until Medi writes the lines) */
+.letter__bio{margin-top:var(--s3);padding-top:var(--s2);border-top:2px solid var(--ruby);max-width:34em;display:grid;gap:var(--s1);font-size:18px;line-height:28px;color:var(--night)}
+.letter__bio .letter__proof{color:var(--ruby);font-size:16px;line-height:24px}
 .story__photos{display:grid;gap:var(--s3);margin-top:var(--s3)}
 @media (min-width:768px){.story__photos{grid-template-columns:repeat(3,1fr);align-items:end}}
 .story__photos figure{margin:0}
@@ -455,6 +493,11 @@ body.panel-open{overflow:hidden}
 .reduced .reveal,.reduced .stagger > *{opacity:1;transform:none}
 .reduced .reveal-img{transform:none}
 .reduced .teaser__strips i{transform:none}
+/* keyboard focus inside a reveal target: site.js marks the animated ancestors .is-revealed at once */
+.anim-ready .reveal.is-revealed,.anim-ready .reveal-img.is-revealed,.anim-ready .stagger.is-revealed > *,.anim-ready .stagger > .is-revealed{opacity:1!important;transform:none!important}
+/* without motion the track is complete: gold line, gold dots */
+.reduced .track-line path,html:not(.anim-ready) .track-line path{stroke-dashoffset:0!important}
+.reduced .track-dot,html:not(.anim-ready) .track-dot{background:var(--gold)}
 .reduced *, .reduced *::before, .reduced *::after{transition-duration:.01ms!important;animation-duration:.01ms!important}
 /* Keep all celebrations readable if the behavior script is unavailable. */
 html:not(.site-ready) .accordion{display:grid;height:auto}
@@ -469,4 +512,6 @@ html:not(.site-ready) .accordion__trigger,html:not(.site-ready) .accordion__labe
   .anim-ready .reveal,.anim-ready .stagger > *{opacity:1;transform:none}
   .anim-ready .reveal-img{transform:none}
   .anim-ready .teaser__strips i{transform:none}
+  .track-line path{stroke-dashoffset:0!important}
+  .track-dot{background:var(--gold)}
 }

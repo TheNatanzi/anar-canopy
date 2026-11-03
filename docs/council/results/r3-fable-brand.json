@@ -1,0 +1,40 @@
+{
+ "model": "fable",
+ "role": "brand",
+ "score": 7,
+ "blocking": [
+  "The painted trunks are sliced by a hard horizontal edge where .descend ends (desktop-1 at ~y630, phone-1 top-left brown sliver): the tree art looks like a cropped rectangle, not a tree that frames the page."
+ ],
+ "fixes": [
+  {
+   "where": "assets/css/site.css · .descend__trunks (after the .descend__trunk--r rule)",
+   "what": "Add `.descend__trunks::after{content:\"\";position:absolute;left:0;right:0;bottom:0;height:180px;background:linear-gradient(to bottom,rgba(27,34,30,0),var(--night));pointer-events:none}` so the strips dissolve into cypress before the section boundary cuts them.",
+   "why": "A flat cut line through painted art reads as a layout bug and breaks the 'tree frames the edges' idea."
+  },
+  {
+   "where": "assets/css/site.css · @media (max-width:768px) hero block",
+   "what": "Add `.hero__halo{width:190%;height:270%;background:radial-gradient(closest-side,rgba(27,34,30,.8),transparent 72%)}` and `.hero__line{text-shadow:0 1px 12px rgba(27,34,30,.9)}`.",
+   "why": "On the phone the uppercase tagline sits directly over pale roses (phone-0); the logo is safe, the line is not."
+  },
+  {
+   "where": "assets/js/site.js tabObserver + site.css .site-header",
+   "what": "In the #inquire IntersectionObserver also toggle `header.classList.toggle('is-at-inquire', inquireInView)`; CSS: `.site-header.is-at-inquire .btn--sm{background:transparent;color:var(--parch)}`.",
+   "why": "Desktop-4 shows two gold-filled buttons on one screen (header Inquire + Begin the conversation), against the brand's own one-gold-button rule."
+  },
+  {
+   "where": "assets/css/site.css · @media (min-width:900px) journey rules",
+   "what": "Set `.journey .container{max-width:1320px}`, `.journey__note{font-size:14px;line-height:20px}`, `.journey__fa{color:var(--gold)}`.",
+   "why": "Nine columns at 1140px with 13px notes feel cramped and diagrammatic (desktop-3); Persian in stone here contradicts the gold Persian used everywhere else."
+  },
+  {
+   "where": "assets/css/site.css · .journey",
+   "what": "Add `.journey{padding-top:clamp(40px,7vh,88px)}` and drop the negative margin on .journey__order to a plain `margin:0 auto clamp(32px,6vh,72px)`.",
+   "why": "Desktop-3 has ~200px of dead space (deep band then night) between the teaser and 'The journey'; the rhythm sags."
+  },
+  {
+   "where": "assets/css/site.css · .motion-toggle @media (min-width:0) block",
+   "what": "Replace the Georgia ⏸/▶ glyphs with an inline SVG background (two 2px gold bars / a gold triangle) via `background-image` and remove the `font-family` line.",
+   "why": "Georgia is the only non-brand Latin face on the site, and a system symbol glyph renders differently per OS."
+  }
+ ]
+}

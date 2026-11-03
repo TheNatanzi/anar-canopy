@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "dev",
+ "score": 7,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "assets/css/site.css — .descend{--edge-space:var(--gutter)} + .descend__trunk--l clip-path (≈ line 230-236)",
+   "what": "On ≤768px the left trunk (34vw) is clip-path'd to the 20px gutter, so a 20px bark sliver hangs at the top-left of the celebrations section (index-phone-1.jpg). Either set `@media (max-width:768px){.descend{--edge-space:34vw}}` so the strip shows as designed, or `display:none` the left trunk on phones too.",
+   "why": "A 20px slice of brown art reads as a rendering glitch on every phone."
+  },
+  {
+   "where": "assets/css/site.css — .quote blockquote / .hww-tab on phones",
+   "what": "At 390px the fixed 'How we work +' tab (≈32px wide, mid-height) sits over the quote's longest line 'Keep the soul. Redefine the style.' (index-phone-2.jpg). Add `@media (max-width:768px){.quote blockquote{padding-right:36px}}` or raise the phone gutter to 36px for .section containers.",
+   "why": "Fixed chrome must never cover body text; the ruby key line is the one the reader is meant to see."
+  },
+  {
+   "where": "assets/js/site.js scrollToEl() + site.css :focus-visible",
+   "what": "scrollToEl gives #inquire / #celebrations tabindex=-1 and focuses them; after a keyboard Enter on 'Inquire' Chrome draws the 2px gold :focus-visible outline around the whole section (and around <main> after the skip link). Add `main:focus-visible,section:focus-visible,[tabindex='-1']:not(input,textarea,select,button,a,p):focus-visible{outline:none}` or focus the section's h2 instead.",
+   "why": "A viewport-sized gold rectangle is a visible defect for every keyboard user."
+  },
+  {
+   "where": "index.html accordion <img> + weddings/about slots",
+   "what": "pom-pile.jpg (441KB, 1411×2000) is loaded twice, pom-in-hand.jpg 297KB, etc.; five full-size JPEGs (~1.6MB) for panels that render 350px wide on phones. Export webp at 800/1600 widths and add `srcset`/`sizes` (same for the tradition and story slots so the real photos drop into a ready pattern).",
+   "why": "The hero video is already 1.2–2.5MB; the accordion doubles the page weight on mobile for no visible gain."
+  },
+  {
+   "where": "index.html <head> (all four pages)",
+   "what": "Three third-party scripts from cdnjs + unpkg with `crossorigin` but no `integrity`, and no `<link rel=preconnect>` for either host. Add SRI hashes, preconnect both, or self-host gsap/ScrollTrigger/lenis next to site.js (≈90KB total).",
+   "why": "unpkg is the slowest and least reliable of the big CDNs; a missing script silently runs the site in the 'reduced' fallback with every CSS transition killed (.reduced * {transition-duration:.01ms})."
+  },
+  {
+   "where": "index.html <head> preload / video poster",
+   "what": "The LCP candidate is the full-bleed poster hero-poster-small.jpg, yet only canopy-u3.webp (378KB) is preloaded and both canopy and logo carry fetchpriority=high. Preload the poster (`<link rel=preload as=image href=assets/video/hero-poster-small.jpg fetchpriority=high>`), drop fetchpriority=high from the canopy.",
+   "why": "Priority is spent on the decorative tree while the largest paint waits for normal parse order."
+  }
+ ]
+}

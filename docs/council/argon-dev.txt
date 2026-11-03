@@ -41,7 +41,10 @@ THE CODE:
 <script>document.documentElement.classList.add('js')</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
 <link rel="preload" href="assets/fonts/TTRamillas-Bold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/video/hero-poster-small.jpg" as="image">
 <link rel="preload" href="assets/tree/canopy-u3.webp" as="image">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;700&display=swap">
 <link rel="stylesheet" href="assets/css/site.css">
@@ -83,7 +86,7 @@ THE CODE:
     <video class="hero__video" muted loop playsinline preload="none" poster="assets/video/hero-poster-small.jpg" width="1920" height="1080" aria-hidden="true" tabindex="-1" data-src-desktop="assets/video/hero-1080-loop.mp4" data-src-mobile="assets/video/hero-720-loop.mp4"></video>
     <div class="hero__tint" aria-hidden="true"></div>
     <div class="hero__deepen" aria-hidden="true"></div>
-    <img class="hero__canopy" src="assets/tree/canopy-u3.webp" width="2752" height="1536" alt="" aria-hidden="true" decoding="async" fetchpriority="high">
+    <img class="hero__canopy" src="assets/tree/canopy-u3.webp" width="2752" height="1536" alt="" aria-hidden="true" decoding="async">
     <div class="hero__mark">
       <div class="hero__halo" aria-hidden="true"></div>
       <h1 class="hero__logo"><img src="assets/logo/logo-gold.svg" width="1600" height="552" alt="Anar Events" fetchpriority="high"></h1>
@@ -122,7 +125,7 @@ THE CODE:
           <li class="card">
             <span class="card__n">01 · We are always</span>
             <h3>Fluent in the unspoken details</h3>
-            <p class="muted">Names, dates and rituals, right. We ask how your family observes each tradition.</p>
+            <p class="muted">Names, dates and rituals, right, as your family keeps them.</p>
           </li>
           <li class="card">
             <span class="card__n">02 · We always</span>
@@ -208,18 +211,37 @@ THE CODE:
     </div>
   </section>
 
-  <!-- 5. FOUNDER QUOTE: the light interlude, on parchment -->
+  <!-- 4b. PROOF SLOT (OWNER INPUT): hidden until Medi supplies a real testimonial (family name, with consent)
+       and one proof line (e.g. weddings planned since YEAR). Remove the `hidden` attribute and replace the
+       bracketed lines; it is styled as the real thing (.proof). Nothing here is invented. -->
+  <section class="section proof" data-owner-input="proof" aria-labelledby="proof-title" hidden>
+    <div class="container container--text">
+      <p class="eyebrow reveal">From the families</p>
+      <h2 id="proof-title" class="reveal visually-hidden">What families say</h2>
+      <figure class="proof__quote reveal">
+        <blockquote><p>[Medi: one short testimonial, in the family's own words, with their consent]</p></blockquote>
+        <figcaption class="proof__by">[Family name · the celebration · the year]</figcaption>
+      </figure>
+      <p class="proof__line reveal">[one proof line, e.g. weddings planned since YEAR · families in the Bay Area]</p>
+    </div>
+  </section>
+
+  <!-- 5. FOUNDER QUOTE: the light interlude, on parchment. Only "Keep the soul. Redefine the style." is display size (ruby). -->
   <section class="section quote on-light" aria-label="A letter from the founder">
     <div class="container container--text">
       <figure class="reveal">
         <p class="eyebrow" style="margin-bottom:24px">Why I started Anar</p>
         <blockquote>
-          <span>In our families, a wedding is never two people.</span>
-          <span>It is parents, grandparents, the whole table.</span>
-          <span>I started Anar so those families can plan in calm.</span>
-          <span>We ask how your family observes each tradition.</span>
-          <span class="quote__key">Keep the soul. Redefine the style.</span>
-          <span>On the day, you only have to be there.</span>
+          <p>
+            <span>In our families, a wedding is never two people.</span>
+            <span>It is parents, grandparents, the whole table.</span>
+            <span>I started Anar so those families can plan in calm.</span>
+          </p>
+          <p class="quote__key">Keep the soul. Redefine the style.</p>
+          <p>
+            <span>We ask how your family observes each tradition.</span>
+            <span>On the day, you only have to be there.</span>
+          </p>
         </blockquote>
         <figcaption class="eyebrow quote__by">Medi, founder</figcaption>
       </figure>
@@ -238,7 +260,7 @@ THE CODE:
         <article class="card">
           <span class="card__n">01 · <span class="fa" lang="fa" dir="rtl">برنامه</span></span>
           <h3>Plan</h3>
-          <p>We ask how your family observes each tradition. Then one plan with the price and what is included, Persian and Dari pages for the parents, and a written summary after every meeting.</p>
+          <p>Ritual by ritual, as your family keeps it. One plan with the price and what is included, Persian and Dari pages for the parents, and a written summary after every meeting.</p>
         </article>
         <article class="card">
           <span class="card__n">02 · <span class="fa" lang="fa" dir="rtl">روز عروسی</span></span>
@@ -250,25 +272,37 @@ THE CODE:
         <li>
           <h3>Full planning</h3>
           <p class="option__when">Begins at the first conversation · ends at the thank-you</p>
-          <p>One written plan with the rituals in order, the days, the price and what is included, with Persian and Dari pages for the parents. Planning meetings ritual by ritual, with a short written summary after each one. Every wedding day run: one timeline, called with the venue and every vendor.</p>
+          <ul>
+            <li>Your budget held and tracked, line by line, from the first conversation.</li>
+            <li>Venue and vendor shortlist, booking support and contract review.</li>
+            <li>Planning decisions scheduled ritual by ritual, with a short written summary after each meeting.</li>
+            <li>One written plan: the rituals in order, the days, the price and what is included, with Persian and Dari pages for the parents.</li>
+            <li>Every wedding day run: one timeline, called with the venue and every vendor; elders' seats held.</li>
+          </ul>
         </li>
         <li>
           <h3>Wedding-day coordination</h3>
-          <p class="option__when">Begins 6–8 weeks out · we take over your plan and run the days</p>
-          <p>Every contract, contact and time in your plan read and confirmed with the venue and every vendor. One timeline for every day, with the sofreh key or the programme checked against your family's wishes. On the days: elders greeted first, the officiant and family cued, our staff easy to find.</p>
+          <p class="option__when">Begins 6–8 weeks out · we take over your finished plan and run the days</p>
+          <ul>
+            <li>Starts 6–8 weeks out: your family has planned already; we take over the finished plan.</li>
+            <li>Every contract, contact and time in it read and confirmed with the venue and every vendor.</li>
+            <li>One timeline for every day, with the sofreh key or the programme checked against your family's wishes.</li>
+            <li>On the days: elders greeted first, the officiant and family cued, our staff easy to find. You only have to be there.</li>
+          </ul>
         </li>
       </ul>
       <p class="teaser__foot reveal">Replies within one business day · <a class="link" href="how-we-work.html">All five steps and what you get</a></p>
     </div>
   </section>
 
-  <!-- 7. THE JOURNEY: nine stops on one line. The sage base line and all nine dots are there at once;
-       the gold .track-line overlay draws across with scroll and turns each dot gold (site.js block 5) -->
+  <!-- 7. THE JOURNEY: the five planning stages on one line. The sage base line and all five dots are there at once;
+       the gold .track-line overlay draws across with scroll and turns each dot gold (site.js block 5).
+       Beneath it, a loose group of the celebrations a family may choose (gold-outlined pills, no line, no numbering). -->
   <section class="section journey" id="journey" aria-labelledby="journey-title">
     <div class="leaf leaf--3" aria-hidden="true"></div>
     <div class="container">
       <div class="section__head">
-        <p class="eyebrow reveal">Nine stops on one line</p>
+        <p class="eyebrow reveal">Five steps on one line</p>
         <h2 id="journey-title" class="reveal">The journey</h2>
       </div>
       <p class="journey__order reveal">Planning runs in this order. Your wedding celebrations come in the order your family chooses.</p>
@@ -278,16 +312,27 @@ THE CODE:
         <svg class="journey__line journey__line--h track-line" viewBox="0 0 1200 2" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 1 H1200"/></svg>
         <svg class="journey__line journey__line--v track-line" viewBox="0 0 2 1000" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M1 0 V1000"/></svg>
         <ol class="journey__stops">
-          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Enquiry</span><span class="journey__fa fa" lang="fa" dir="rtl">درخواست</span><span class="journey__note">Thank you for writing. Tell us about your family.</span></li>
-          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Consultation</span><span class="journey__fa fa" lang="fa" dir="rtl">مشاوره</span><span class="journey__note">First meeting with parents and grandparents. Elders first.</span></li>
-          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Proposal</span><span class="journey__fa fa" lang="fa" dir="rtl">پیشنهاد</span><span class="journey__note">The plan, the price, and what is included.</span></li>
-          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Planning</span><span class="journey__fa fa" lang="fa" dir="rtl">برنامه‌ریزی</span><span class="journey__note">Ritual by ritual. Persian and Dari pages for the parents.</span></li>
-          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Bale-boroon</span><span class="journey__fa fa" lang="fa" dir="rtl">بله‌برون</span><span class="journey__note">Shirini-khori, the engagement: both families say yes, over sweets.</span></li>
-          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Aghd / Nikah</span><span class="journey__fa fa" lang="fa" dir="rtl">عقد / نکاح</span><span class="journey__note">The aghd at the sofreh, or the nikah read before witnesses.</span></li>
-          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Mehndi / Sangeet</span><span class="journey__fa fa" lang="fa" dir="rtl">حنابندان</span><span class="journey__note">The henna night, the singing night, the baraat arriving with music.</span></li>
-          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Reception</span><span class="journey__fa fa" lang="fa" dir="rtl">جشن عروسی</span><span class="journey__note">Reception or walima, to the last dance.</span></li>
-          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Thank-you</span><span class="journey__fa fa" lang="fa" dir="rtl">سپاس</span><span class="journey__note">What the family keeps, and how we say goodbye.</span></li>
+          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Enquiry</span><span class="journey__fa fa" lang="fa" dir="rtl">درخواست</span><span class="journey__note">Thank you for writing. Tell us about your family. We reply within one business day.</span></li>
+          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Consultation</span><span class="journey__fa fa" lang="fa" dir="rtl">مشاوره</span><span class="journey__note">First, we hear your priorities. Parents and elders included at the level you choose.</span></li>
+          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Proposal</span><span class="journey__fa fa" lang="fa" dir="rtl">پیشنهاد</span><span class="journey__note">The plan, the price, and what is included. A page for the parents, in Persian or Dari.</span></li>
+          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Planning</span><span class="journey__fa fa" lang="fa" dir="rtl">برنامه‌ریزی</span><span class="journey__note">Ritual by ritual, as your family keeps it. A short written summary after every meeting.</span></li>
+          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">The wedding days</span><span class="journey__fa fa" lang="fa" dir="rtl">روزهای عروسی</span><span class="journey__note">One timeline, called with the venue and every vendor. You only have to be there.</span></li>
         </ol>
+      </div>
+      <div class="journey__extras reveal">
+        <p class="eyebrow">Celebrations your family may choose</p>
+        <ul class="pills" aria-label="Celebrations your family may choose">
+          <li class="pill">Bale-boroon <span class="fa" lang="fa" dir="rtl">بله‌برون</span></li>
+          <li class="pill">Mehndi / Henna <span class="fa" lang="fa" dir="rtl">حنابندان</span></li>
+          <li class="pill">Sangeet</li>
+          <li class="pill">Haldi</li>
+          <li class="pill">Aghd <span class="fa" lang="fa" dir="rtl">عقد</span></li>
+          <li class="pill">Nikah <span class="fa" lang="fa" dir="rtl">نکاح</span></li>
+          <li class="pill">Pheras</li>
+          <li class="pill">Anand Karaj</li>
+          <li class="pill">Reception / Walima <span class="fa" lang="fa" dir="rtl">جشن عروسی</span></li>
+          <li class="pill">Nowruz / Yalda</li>
+        </ul>
       </div>
     </div>
   </section>
@@ -324,9 +369,7 @@ THE CODE:
               <option value="English">English</option>
               <option value="Persian">Persian</option>
               <option value="Dari">Dari</option>
-              <option value="Urdu">Urdu</option>
-              <option value="Hindi">Hindi</option>
-              <option value="Punjabi">Punjabi</option>
+              <option value="Other">Other (say which in the message)</option>
             </select>
           </div>
         </div>
@@ -339,42 +382,14 @@ THE CODE:
               <option value="Not sure yet">Not sure yet</option>
             </select>
           </div>
-          <div class="field"><label for="f-days">Which days <span class="muted">(optional)</span></label>
-            <select id="f-days" name="which_days">
-              <option value="">Choose one</option>
-              <option value="Engagement">Engagement</option>
-              <option value="Mehndi / Henna">Mehndi / Henna</option>
-              <option value="Aghd / Nikah">Aghd / Nikah</option>
-              <option value="Pheras / Anand Karaj">Pheras / Anand Karaj</option>
-              <option value="Reception / Walima">Reception / Walima</option>
-              <option value="Not sure yet">Not sure yet</option>
-            </select>
-          </div>
-        </div>
-        <div class="form__row">
           <div class="field"><label for="f-phone">Phone</label><input id="f-phone" name="phone" type="tel" autocomplete="tel"></div>
+        </div>
+        <div class="form__row">
           <div class="field"><label for="f-date">First wedding date (or season)</label><input id="f-date" name="wedding_date" type="text" autocomplete="off" placeholder="14 June 2027, or spring 2027"></div>
-        </div>
-        <div class="form__row">
           <div class="field"><label for="f-place">City or venue <span class="muted">(optional)</span></label><input id="f-place" name="city_or_venue" type="text" autocomplete="off" placeholder="Fremont, or the venue if you have one"></div>
-          <div class="field"><label for="f-guests">Guest count</label><input id="f-guests" name="guest_count" type="number" min="1" inputmode="numeric" placeholder="250"></div>
         </div>
-        <fieldset class="fieldset">
-          <legend>Traditions</legend>
-          <div class="checks">
-            <label class="check"><input type="checkbox" name="traditions" value="Sofreh Aghd"> Sofreh Aghd</label>
-            <label class="check"><input type="checkbox" name="traditions" value="Nikah"> Nikah</label>
-            <label class="check"><input type="checkbox" name="traditions" value="Mehndi / Henna"> Mehndi / Henna</label>
-            <label class="check"><input type="checkbox" name="traditions" value="Sangeet"> Sangeet</label>
-            <label class="check"><input type="checkbox" name="traditions" value="Haldi"> Haldi</label>
-            <label class="check"><input type="checkbox" name="traditions" value="Pheras / Mandap"> Pheras / Mandap</label>
-            <label class="check"><input type="checkbox" name="traditions" value="Anand Karaj"> Anand Karaj</label>
-            <label class="check"><input type="checkbox" name="traditions" value="Reception"> Reception</label>
-            <label class="check"><input type="checkbox" name="traditions" value="Walima"> Walima</label>
-            <label class="check"><input type="checkbox" name="traditions" value="Nowruz / Yalda"> Nowruz / Yalda</label>
-          </div>
-        </fieldset>
         <div class="form__row">
+          <div class="field"><label for="f-guests">Guest count</label><input id="f-guests" name="guest_count" type="number" min="1" inputmode="numeric" placeholder="250"></div>
           <div class="field"><label for="f-budget">Budget range <span class="muted">(optional)</span></label>
             <select id="f-budget" name="budget_range">
               <option value="">Choose one</option>
@@ -386,6 +401,24 @@ THE CODE:
             </select>
           </div>
         </div>
+        <fieldset class="fieldset">
+          <legend>Traditions</legend>
+          <div class="checks">
+            <label class="check"><input type="checkbox" name="traditions" value="Engagement"> Engagement</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Sofreh Aghd"> Sofreh Aghd</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Nikah"> Nikah</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Mehndi / Henna"> Mehndi / Henna</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Sangeet"> Sangeet</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Haldi"> Haldi</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Pheras / Mandap"> Pheras / Mandap</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Anand Karaj"> Anand Karaj</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Reception"> Reception</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Walima"> Walima</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Nowruz / Yalda"> Nowruz / Yalda</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Other"> Other</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Not sure yet"> Not sure yet</label>
+          </div>
+        </fieldset>
         <div class="field"><label for="f-message">Message</label><textarea id="f-message" name="message" placeholder="Your families, your dates, the rituals that matter most."></textarea></div>
         <div><button class="btn" type="submit">Begin the conversation</button></div>
         <p class="form__status" id="form-status" role="status" aria-live="polite" tabindex="-1"></p>
@@ -456,6 +489,8 @@ THE CODE:
 <script>document.documentElement.classList.add('js')</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
 <link rel="preload" href="assets/fonts/TTRamillas-Bold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;700&display=swap">
 <link rel="stylesheet" href="assets/css/site.css">
@@ -495,7 +530,7 @@ THE CODE:
         <h1 id="page-title" class="h-display">Weddings</h1>
         <p class="fa fa--title" lang="fa" dir="rtl">عروسی</p>
       </div>
-      <p class="lede measure">Our celebrations are built on centuries of poetry, hospitality and sacred tradition, and they deserve more than a cookie-cutter approach. We honor the deep soul of your heritage while stripping away the stress and the outdated tropes.</p>
+      <p class="lede measure">Our celebrations are built on centuries of poetry, hospitality and sacred tradition, and they deserve more than a cookie-cutter approach. We honor the deep soul of your heritage while stripping away the stress, never the meaning.</p>
     </div>
   </section>
 
@@ -589,7 +624,7 @@ THE CODE:
         <figure class="tradition__media reveal">
           <!-- PHOTO SLOT · Haldi, Pheras & Anand Karaj: the pheras under the mandap, or the laavan (real family, with consent), portrait 4:5 -->
           <div class="slot"><img class="reveal-img" src="assets/img/pom-tree-night.jpg" width="1125" height="2000" alt="A pomegranate tree at night" loading="lazy" decoding="async"></div>
-          <figcaption class="caption">Seven circuits, or four laavan. Both families, one fire.</figcaption>
+          <figcaption class="caption">Seven circuits under the mandap, or four laavan before the Guru Granth Sahib.</figcaption>
         </figure>
       </div>
     </div>
@@ -692,6 +727,8 @@ THE CODE:
 <script>document.documentElement.classList.add('js')</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
 <link rel="preload" href="assets/fonts/TTRamillas-Bold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;700&display=swap">
 <link rel="stylesheet" href="assets/css/site.css">
@@ -748,7 +785,7 @@ THE CODE:
           <span class="step__n">01 · Enquiry &amp; consultation</span>
           <h3>Thank you for writing. Tell us about your family.</h3>
           <p class="fa" lang="fa" dir="rtl">درخواست و مشاوره</p>
-          <p>Write to us, or call. We reply within one business day, then meet your family. Parents and elders included at the level you choose. We greet the elders first, ask how your family observes each tradition, and listen.</p>
+          <p>Write to us, or call. We reply within one business day, then meet your family. We ask how your family observes each tradition, and listen. Parents and elders included at the level you choose.</p>
         </li>
         <li class="step reveal">
           <span class="step__dot track-dot" aria-hidden="true"></span>
@@ -794,16 +831,19 @@ THE CODE:
           <h3>Full planning</h3>
           <p class="option__when">Begins at the first conversation · ends at the thank-you</p>
           <ul>
+            <li>Your budget held and tracked, line by line, from the first conversation.</li>
+            <li>Venue and vendor shortlist, booking support and contract review.</li>
+            <li>Planning decisions scheduled ritual by ritual, with a short written summary after each meeting.</li>
             <li>One written plan: the rituals in order, the days, the price and what is included, with Persian and Dari pages for the parents.</li>
-            <li>Planning meetings ritual by ritual, with a short written summary after each one.</li>
             <li>Every wedding day run: one timeline, called with the venue and every vendor; elders' seats held.</li>
           </ul>
         </li>
         <li>
           <h3>Wedding-day coordination</h3>
-          <p class="option__when">Begins 6–8 weeks out · we take over your plan and run the days</p>
+          <p class="option__when">Begins 6–8 weeks out · we take over your finished plan and run the days</p>
           <ul>
-            <li>Every contract, contact and time in your plan read and confirmed with the venue and every vendor.</li>
+            <li>Starts 6–8 weeks out: your family has planned already; we take over the finished plan.</li>
+            <li>Every contract, contact and time in it read and confirmed with the venue and every vendor.</li>
             <li>One timeline for every day, with the sofreh key or the programme checked against your family's wishes.</li>
             <li>On the days: elders greeted first, the officiant and family cued, our staff easy to find. You only have to be there.</li>
           </ul>
@@ -847,7 +887,7 @@ THE CODE:
         </details>
         <details>
           <summary>Which languages do you plan in?</summary>
-          <p class="faq__a">Persian and Dari pages for the parents; English for everyone. The plan and the programme are written in English; the parents' pages come in Persian or Dari, with Persian digits where they belong. Say which you want in the form, and we reply in that language.</p>
+          <p class="faq__a">Persian and Dari pages for the parents; English for everyone. The plan and the programme are written in English; the planning pages for the parents come in Persian and Dari, with Persian digits where they belong. Other languages on request: say which in the form, and we reply in that language where we can.</p>
         </details>
         <details>
           <summary>Where do you work?</summary>
@@ -916,6 +956,8 @@ THE CODE:
 <script>document.documentElement.classList.add('js')</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
 <link rel="preload" href="assets/fonts/TTRamillas-Bold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;700&display=swap">
 <link rel="stylesheet" href="assets/css/site.css">
@@ -1129,6 +1171,8 @@ a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
 :focus{outline:none}
 :focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+/* sections focused programmatically by scrollToEl() / the skip link (tabindex="-1") show no ring; the skip link itself keeps its focus style */
+[tabindex="-1"]:focus{outline:none}
 .on-light :focus-visible,.on-light:focus-visible{outline-color:var(--ruby)}
 .visually-hidden{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 .skip-link{position:absolute;left:var(--s2);top:-80px;z-index:100;background:var(--gold);color:var(--night);padding:var(--s1) var(--s2);border-radius:999px}
@@ -1259,7 +1303,8 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 @media (max-width:768px){
   .hero__canopy{width:140vw;top:auto;bottom:-4%}
   .hero__mark{width:78vw;top:30%}
-  .hero__line{font-size:12px;letter-spacing:.06em;padding-inline:4px}
+  .hero__halo{width:170%;height:250%}
+  .hero__line{font-size:12px;letter-spacing:.06em;padding-inline:4px;text-shadow:0 1px 12px rgba(27,34,30,.9)}
   .hero__scroll{bottom:calc(16px + env(safe-area-inset-bottom) + 4px);left:64px;font-size:12px}
   .hero__tag{font-size:18px;bottom:calc(16px + env(safe-area-inset-bottom) + 2px)}
   /* the "How we work +" tab is now a mid-height edge tab on phones too: the tagline stays at the bottom */
@@ -1273,7 +1318,7 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 
 /* ---------- DESCEND THE TREE ---------- */
 .descend{position:relative;background:var(--night);overflow:clip;--descend-col:880px}
-.descend__trunks{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;pointer-events:none;z-index:0}
+.descend__trunks{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;pointer-events:none;z-index:0;-webkit-mask-image:linear-gradient(to bottom,#000 78%,transparent);mask-image:linear-gradient(to bottom,#000 78%,transparent)}
 /* two edge strips (trunk-left / trunk-right, transparent webp), never behind the centre column:
    20vw each from 1024px, 26vw at 769-1023px, phones keep only the left strip at 34vw.
    The paint is clipped at the column edge, max((100vw - 880px)/2, gutter),
@@ -1288,7 +1333,10 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .descend__trunk--r{clip-path:inset(0 0 0 max(0px,calc(100% - var(--edge-space))))}
 @media (min-width:769px) and (max-width:1023px){.descend__trunk{width:26vw;max-width:26vw}}
 @media (max-width:768px){.descend__trunk{width:34vw;max-width:34vw}.descend__trunk--r{display:none}}
+.descend::after{content:"";position:absolute;left:0;right:0;bottom:0;height:220px;background:linear-gradient(to bottom,rgba(18,23,20,0),var(--night) 85%);pointer-events:none;z-index:0}
 .descend__content{position:relative;z-index:1;margin-top:-100vh;margin-top:-100svh;padding-block:clamp(72px,14vh,170px) clamp(72px,12vh,150px)}
+/* phones: no trunk strips at all (a clean phone; the sliver at the top of #celebrations is gone), so the content no longer pulls up over the sticky frame */
+@media (max-width:768px){.descend__trunks{display:none}.descend__content{margin-top:0}}
 .descend__content .container--text{max-width:calc(var(--descend-col) + 2*var(--gutter))}
 .descend .leaf--1{right:4vw;top:12vh;z-index:1}
 .statement{text-align:center}
@@ -1307,6 +1355,9 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .card__n .fa{display:inline;font-size:18px;color:var(--parch);letter-spacing:0}
 .card p{color:var(--parch)}
 .card p.muted{color:var(--stone);font-size:16px;line-height:24px}
+/* the three pillars are lighter than the teaser cards: no box fill, the gold top rule only, narrower sides, h3 24-26px */
+.pillars .card{background:transparent;padding:var(--s3) clamp(16px,2vw,24px)}
+.pillars .card h3{font-size:clamp(24px,2.2vw,26px)}
 
 /* ---------- The celebrations: accordion ---------- */
 .accordion{display:grid;gap:var(--s2)}
@@ -1335,11 +1386,21 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
   .accordion__body{padding:var(--s4) var(--s4) var(--s4)}
 }
 
+/* ---------- Proof slot (owner input, hidden until the real testimonial arrives): styled like the real thing ---------- */
+.proof[hidden]{display:none}
+.proof{text-align:center}
+.proof .eyebrow{margin-bottom:var(--s3)}
+.proof__quote{display:grid;gap:var(--s2);max-width:30em;margin-inline:auto}
+.proof__quote blockquote p{font-size:clamp(22px,2.8vw,32px);line-height:1.3;text-wrap:balance}
+.proof__by{font-size:14px;line-height:20px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.proof__line{margin-top:var(--s4);padding-top:var(--s2);border-top:2px solid var(--gold);display:inline-block;color:var(--stone);font-size:16px;line-height:24px}
+
 /* ---------- Founder quote: the light interlude (parchment) ---------- */
 .quote{text-align:center}
-.quote blockquote{font-size:clamp(22px,3vw,36px);line-height:1.3;max-width:30em;margin-inline:auto;text-wrap:balance}
+/* two paragraphs at 24-28px; only "Keep the soul. Redefine the style." is display size (36px desktop, ruby) */
+.quote blockquote{font-size:clamp(24px,2.6vw,28px);line-height:1.35;max-width:30em;margin-inline:auto;text-wrap:balance;display:grid;gap:var(--s3)}
 .quote blockquote span{display:block}
-.quote blockquote .quote__key{color:var(--ruby)}
+.quote blockquote .quote__key{color:var(--ruby);font-size:clamp(28px,3.4vw,36px);line-height:1.2}
 /* "Medi, founder" as an eyebrow line in ruby (the founder attribution on parchment; no drawn signature) */
 .quote figcaption.quote__by{margin-top:var(--s3);color:var(--ruby)}
 
@@ -1367,10 +1428,11 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .teaser .card h3{font-size:clamp(28px,3.4vw,40px)}
 .teaser__foot{margin-top:var(--s4);text-align:center;color:var(--stone);font-size:16px;line-height:24px}
 
-/* ---------- The journey: nine stops on one gold line ---------- */
-.journey{position:relative}
+/* ---------- The journey: the five planning stages on one gold line, then the celebrations as loose pills ---------- */
+.journey{position:relative;padding-top:clamp(40px,7vh,88px)}
 .journey .leaf--3{left:2vw;top:8vh;z-index:0}
-.journey__order{text-align:center;color:var(--stone);font-size:16px;line-height:24px;max-width:38em;margin:calc(-1 * clamp(16px,3vh,40px)) auto clamp(32px,6vh,72px);text-wrap:balance}
+@media (max-width:768px){.journey .leaf--3{top:0;opacity:.4}}
+.journey__order{text-align:center;color:var(--stone);font-size:16px;line-height:24px;max-width:38em;margin:0 auto clamp(32px,6vh,72px);text-wrap:balance}
 .journey__track{position:relative;z-index:1}
 .journey__line{position:absolute;pointer-events:none}
 /* the full line is there at once in sage at 35%; the gold .track-line overlay draws across it with scroll */
@@ -1380,19 +1442,28 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .journey__line--v{left:11px;top:0;width:2px;height:100%}
 .journey__stops{display:grid;gap:var(--s3);padding-left:40px}
 .journey__stop{position:relative;display:grid;gap:2px}
-/* all nine dots show at once (sage); site.js block 5 turns each gold as the line reaches it */
+/* all five dots show at once (sage); site.js block 5 turns each gold as the line reaches it */
 .journey__dot{position:absolute;left:-40px;top:10px;width:14px;height:14px;border-radius:50%;background:var(--sage);transform-origin:center}
-.journey__en{color:var(--parch);font-size:15px;line-height:20px;text-wrap:balance}
+.journey__en{color:var(--parch);font-size:18px;line-height:24px;text-wrap:balance}
 .journey__fa{font-size:16px;line-height:1.6;text-align:left;direction:rtl;color:var(--stone)}
-.journey__note{font-size:13px;line-height:18px;color:var(--stone)}
+.journey__note{font-size:15px;line-height:22px;color:var(--stone);max-width:30em}
 @media (min-width:900px){
+  .journey .container{max-width:1320px}
   .journey__line--h{display:block;left:0;right:0;top:7px;width:100%;height:2px}
   .journey__line--v{display:none}
-  .journey__stops{grid-template-columns:repeat(9,minmax(0,1fr));gap:var(--s1);padding-left:0;padding-top:var(--s4)}
-  .journey__stop{text-align:center;justify-items:center}
+  .journey__stops{grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--s3);padding-left:0;padding-top:var(--s4)}
+  .journey__stop{text-align:center;justify-items:center;gap:4px}
   .journey__dot{left:50%;top:-64px;margin-left:-7px}
+  .journey__en{font-size:20px;line-height:26px}
   .journey__fa{text-align:center}
+  .journey__note{font-size:16px;line-height:24px}
 }
+/* the celebrations a family may choose: a loose group under the line, no connecting line, no numbering */
+.journey__extras{margin-top:clamp(48px,8vh,96px);text-align:center}
+.journey__extras .eyebrow{margin-bottom:var(--s2)}
+.pills{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--s1) 12px}
+.pill{display:inline-flex;align-items:baseline;gap:10px;border:2px solid var(--gold);border-radius:999px;padding:8px 18px;font-size:15px;line-height:20px;color:var(--parch);white-space:nowrap}
+.pill .fa{font-size:14px;line-height:1.4;color:var(--stone)}
 
 /* ---------- The roots and the floor; Inquire sits on the ground ---------- */
 .ground{position:relative;overflow:hidden;background:var(--night)}
@@ -1458,6 +1529,13 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 html:not(.panel-ready) .hww-tab{display:none}
 .hww-tab.is-hidden{transform:translate(110%,-50%) rotate(180deg);opacity:0;pointer-events:none}
 @media (max-width:768px){.hww-tab{padding:14px 8px;font-size:13px;line-height:16px}}
+/* phones: the tab is ~34px wide at mid-height; text keeps clear of it (the container's right padding grows to 44px,
+   the stacked celebration bodies and the founder quote clear it further) */
+@media (max-width:768px){
+  .container{padding-right:max(var(--gutter),44px)}
+  .accordion__body{padding-right:56px}
+  .quote blockquote{padding-right:40px}
+}
 /* Pause motion / Play motion: bottom-left. Phones: a small pill that hides once the hero has scrolled
    out (site.js adds .is-hidden). Desktop: a 40px round icon-only button; the accessible name is the
    fixed aria-label "Motion" and aria-pressed carries the state, so the name never changes. */
@@ -1465,9 +1543,10 @@ html:not(.panel-ready) .hww-tab{display:none}
 .motion-toggle[hidden],html:not(.motion-ready) .motion-toggle{display:none}
 @media (max-width:768px){.motion-toggle.is-hidden{transform:translateY(140%);opacity:0;pointer-events:none}}
 @media (min-width:0){
-  .motion-toggle{width:40px;height:40px;padding:0;border-radius:50%;display:grid;place-items:center;font-family:Georgia,"Segoe UI Symbol","Apple Symbols",serif;font-size:14px;line-height:1;letter-spacing:0}
-  .motion-toggle::before{content:"\23F8\FE0E"}
-  .motion-toggle[aria-pressed="true"]::before{content:"\25B6\FE0E";padding-left:2px}
+  .motion-toggle{width:40px;height:40px;padding:0;border-radius:50%;display:grid;place-items:center;line-height:1;letter-spacing:0}
+  /* the glyph is an inline SVG background (two gold bars = pause, a gold triangle = play), never a font glyph */
+  .motion-toggle::before{content:"";width:14px;height:14px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Crect x='2' y='1' width='3.6' height='12' fill='%23C99E5C'/%3E%3Crect x='8.4' y='1' width='3.6' height='12' fill='%23C99E5C'/%3E%3C/svg%3E") center/contain no-repeat}
+  .motion-toggle[aria-pressed="true"]::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M3 1.2 12.6 7 3 12.8z' fill='%23C99E5C'/%3E%3C/svg%3E");margin-left:2px}
   .motion-toggle__text{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 }
 .hww-backdrop{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.55);opacity:0;transition:opacity .4s}
@@ -1594,7 +1673,7 @@ html:not(.site-ready) .accordion__trigger,html:not(.site-ready) .accordion__labe
 
 ===== assets/js/site.js =====
 /* =========================================================
-   Anar Events — site.js (v2.2, night palette, round-2 fixes, 3 Nov 2026)
+   Anar Events — site.js (v2.3, night palette, round-3 fixes, 3 Nov 2026)
    Loaded (defer, pinned) before this file:
      GSAP 3.12.5 + ScrollTrigger (cdnjs), Lenis 1.1.18 (unpkg)
    Content is visible by default. Reveal targets are hidden only
@@ -1654,6 +1733,12 @@ html:not(.site-ready) .accordion__trigger,html:not(.site-ready) .accordion__labe
   if (heroVideo) {
     if (document.readyState === 'complete') { loadHeroVideo(); }
     else { window.addEventListener('load', loadHeroVideo, { once: true }); }
+    /* hidden tab: pause; back in view: resume only while motion is on and the hero is still on screen */
+    document.addEventListener('visibilitychange', function () {
+      if (!videoLoaded) { return; }
+      if (document.hidden) { heroVideo.pause(); return; }
+      if (!userPaused && !reduced && heroVideo.getBoundingClientRect().bottom > 0) { heroVideo.play().catch(function () {}); }
+    });
   }
 
   /* ---------------------------------------------------------
@@ -1721,6 +1806,9 @@ html:not(.site-ready) .accordion__trigger,html:not(.site-ready) .accordion__labe
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && header.classList.contains('nav-open')) { closeNav(); navToggle.focus(); }
     });
+    /* the drawer closes when a link is activated and when the viewport grows past the phone breakpoint */
+    $$('.site-nav a', header).forEach(function (a) { a.addEventListener('click', closeNav); });
+    desktopQuery.addEventListener('change', function (e) { if (e.matches) { closeNav(); } });
     /* the links are visible by default (CSS); only now, with the toggle wired, do they collapse into the drawer */
     html.classList.add('nav-ready');
   }
@@ -2147,11 +2235,16 @@ html:not(.site-ready) .accordion__trigger,html:not(.site-ready) .accordion__labe
     }
 
     /* -------------------------------------------------------
-       8. Floating leaves drift slowly (two places).
+       8. Floating leaves (two places): desktop runs the slow
+          yoyo drift loop; phones get the scroll-scrub drift
+          instead. Never both: the same `y` is driven once.
        ------------------------------------------------------- */
     $$('.leaf').forEach(function (leaf, i) {
-      leafTweens.push(gsap.to(leaf, { y: 18 + i * 6, x: i % 2 ? -10 : 10, rotation: i % 2 ? -3 : 3, duration: 6 + i * 1.5, ease: 'sine.inOut', yoyo: true, repeat: -1 }));
-      gsap.to(leaf, { y: '+=' + (40 + i * 10), ease: 'none', scrollTrigger: { trigger: leaf.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } });
+      if (isDesktop()) {
+        leafTweens.push(gsap.to(leaf, { y: 18 + i * 6, x: i % 2 ? -10 : 10, rotation: i % 2 ? -3 : 3, duration: 6 + i * 1.5, ease: 'sine.inOut', yoyo: true, repeat: -1 }));
+      } else {
+        gsap.to(leaf, { y: '+=' + (40 + i * 10), ease: 'none', scrollTrigger: { trigger: leaf.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } });
+      }
     });
 
     /* -------------------------------------------------------

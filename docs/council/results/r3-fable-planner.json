@@ -1,0 +1,43 @@
+{
+ "model": "fable",
+ "role": "planner",
+ "score": 7,
+ "blocking": [
+  "weddings.html Haldi/Pheras/Anand Karaj caption says 'Both families, one fire': the Anand Karaj has no fire (the laavan circle the Guru Granth Sahib); a Sikh family reads this as costume",
+  "index.html journey puts Mehndi/Sangeet AFTER Aghd/Nikah and has no stop for Pheras/Anand Karaj at all; Hindu and Sikh families see their ceremony missing and the henna night in the wrong place, and the 'order your family chooses' disclaimer does not rescue it",
+  "Inquire form offers 'Reply in Urdu/Hindi/Punjabi' while every page promises parents' pages only in Persian and Dari; South Asian parents will notice the promise is not for them",
+  "Phone: the fixed 'How we work +' tab covers the Persian label سفرهٔ عقد inside the open Sofreh Aghd panel (index-phone-1)"
+ ],
+ "fixes": [
+  {
+   "where": "weddings.html, #haldi-pheras-anand-karaj figcaption",
+   "what": "Change 'Seven circuits, or four laavan. Both families, one fire.' to 'Seven circuits of the fire, or four laavan before the Guru Granth Sahib. Both families, one blessing.'",
+   "why": "No fire in a Sikh wedding; this one line undoes the fluency claim for every Sikh parent"
+  },
+  {
+   "where": "index.html, .journey__stops (stops 6 and 7)",
+   "what": "Move 'Mehndi / Sangeet' before 'Aghd / Nikah'; rename that stop 'Aghd / Nikah / Pheras' with note 'The aghd at the sofreh, the nikah before witnesses, or the pheras and the Anand Karaj.'",
+   "why": "Henna and sangeet nights precede the ceremony in every tradition served; Hindu/Sikh rites are otherwise absent from the journey"
+  },
+  {
+   "where": "index.html, select#f-lang + every 'Persian and Dari pages for the parents' line",
+   "what": "Either drop Urdu/Hindi/Punjabi from 'Reply in' or add 'Urdu' to the parents'-pages promise (teaser, journey, footer, how-we-work, FAQ); keep whichever the studio can actually deliver",
+   "why": "A promise to South Asian parents that the rest of the site contradicts is a trust leak at the moment of inquiry"
+  },
+  {
+   "where": "assets/css/site.css, @media (max-width:768px) accordion rules",
+   "what": "Add .accordion__body{padding-right:56px} (phones only) so the Persian label and the text stop short of the fixed hww-tab",
+   "why": "index-phone-1 shows the tab sitting on سفرهٔ عقد; the Persian accent is the first thing a parent looks for"
+  },
+  {
+   "where": "index.html, between #celebrations and the founder quote",
+   "what": "Add a marked proof slot: one parent testimonial (data-owner-input=\"testimonial\") and one proof line ('weddings planned since YEAR'), styled as the real thing",
+   "why": "The home page has zero proof and no slot for it; the about page bio slot is not where parents decide"
+  },
+  {
+   "where": "weddings.html, .pageband .lede",
+   "what": "Replace 'stripping away the stress and the outdated tropes' with 'stripping away the stress, never the meaning'; also cut 'We ask how your family observes each tradition' to one use on index (it appears four times)",
+   "why": "Parents who pay read 'outdated' as aimed at their traditions; repeated mantras read as a template, not a person"
+  }
+ ]
+}

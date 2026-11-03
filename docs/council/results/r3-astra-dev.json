@@ -1,0 +1,41 @@
+{
+ "model": "astra",
+ "role": "dev",
+ "score": 7,
+ "blocking": [
+  "On mobile, the motion control disappears below the hero while indefinitely animated leaves remain active farther down the page.",
+  "The mobile side tab occupies about 34px, but ordinary content reserves only a 20px gutter; it can obscure text and controls when it reappears."
+ ],
+ "fixes": [
+  {
+   "where": "assets/js/site.js: syncToggle; assets/css/site.css: .motion-toggle.is-hidden",
+   "what": "Keep the pause control available throughout the page wherever continuous animation remains. Use the stable accessible label 'Pause motion' with aria-pressed=true meaning paused.",
+   "why": "Visitors must be able to stop ongoing motion without returning to the hero; 'Motion, pressed' communicates the current behavior poorly."
+  },
+  {
+   "where": "assets/css/site.css: mobile .hww-tab and content gutters",
+   "what": "Reserve at least 44px on the content's right edge at mobile widths, or place the tab in a dedicated rail outside the reading column.",
+   "why": "The tab returns after 700ms of inactivity, precisely when visitors stop scrolling to read."
+  },
+  {
+   "where": "assets/js/site.js: mobile navigation setup",
+   "what": "Close the mobile navigation when crossing the 768px header breakpoint, and close it when focus leaves the header or a navigation link is activated.",
+   "why": "The nav-open class currently survives desktop resizing, retaining an absolute dropdown and enlarged vertical links after its toggle disappears."
+  },
+  {
+   "where": "assets/js/site.js: buildTweens block 8",
+   "what": "Apply scroll translation to a leaf wrapper and looping drift to its child; do not animate the same leaf's y property with two independent tweens.",
+   "why": "The scrubbed animation and infinite animation currently compete for the same transform component, producing inconsistent motion."
+  },
+  {
+   "where": "assets/css/site.css: desktop .accordion and .accordion__panel",
+   "what": "Allow the expanded panel's text to determine its minimum height, with a stacked layout for short viewports. Verify the longest ceremony description at 200% zoom.",
+   "why": "A fixed height capped at 640px, substantial padding, and overflow:hidden can clip descriptions as available height or text width decreases."
+  },
+  {
+   "where": "assets/js/site.js: loadHeroVideo and playAll",
+   "what": "Gate video loading and playback on hero visibility, and pause on document visibilitychange; resume only when visible and motion is enabled.",
+   "why": "Direct inquiry links currently initiate a video download before the observer pauses playback, wasting bandwidth for visitors who never view the hero."
+  }
+ ]
+}

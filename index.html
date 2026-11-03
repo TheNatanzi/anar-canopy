@@ -14,7 +14,10 @@
 <script>document.documentElement.classList.add('js')</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
 <link rel="preload" href="assets/fonts/TTRamillas-Bold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/video/hero-poster-small.jpg" as="image">
 <link rel="preload" href="assets/tree/canopy-u3.webp" as="image">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;700&display=swap">
 <link rel="stylesheet" href="assets/css/site.css">
@@ -56,7 +59,7 @@
     <video class="hero__video" muted loop playsinline preload="none" poster="assets/video/hero-poster-small.jpg" width="1920" height="1080" aria-hidden="true" tabindex="-1" data-src-desktop="assets/video/hero-1080-loop.mp4" data-src-mobile="assets/video/hero-720-loop.mp4"></video>
     <div class="hero__tint" aria-hidden="true"></div>
     <div class="hero__deepen" aria-hidden="true"></div>
-    <img class="hero__canopy" src="assets/tree/canopy-u3.webp" width="2752" height="1536" alt="" aria-hidden="true" decoding="async" fetchpriority="high">
+    <img class="hero__canopy" src="assets/tree/canopy-u3.webp" width="2752" height="1536" alt="" aria-hidden="true" decoding="async">
     <div class="hero__mark">
       <div class="hero__halo" aria-hidden="true"></div>
       <h1 class="hero__logo"><img src="assets/logo/logo-gold.svg" width="1600" height="552" alt="Anar Events" fetchpriority="high"></h1>
@@ -95,7 +98,7 @@
           <li class="card">
             <span class="card__n">01 · We are always</span>
             <h3>Fluent in the unspoken details</h3>
-            <p class="muted">Names, dates and rituals, right. We ask how your family observes each tradition.</p>
+            <p class="muted">Names, dates and rituals, right, as your family keeps them.</p>
           </li>
           <li class="card">
             <span class="card__n">02 · We always</span>
@@ -181,18 +184,37 @@
     </div>
   </section>
 
-  <!-- 5. FOUNDER QUOTE: the light interlude, on parchment -->
+  <!-- 4b. PROOF SLOT (OWNER INPUT): hidden until Medi supplies a real testimonial (family name, with consent)
+       and one proof line (e.g. weddings planned since YEAR). Remove the `hidden` attribute and replace the
+       bracketed lines; it is styled as the real thing (.proof). Nothing here is invented. -->
+  <section class="section proof" data-owner-input="proof" aria-labelledby="proof-title" hidden>
+    <div class="container container--text">
+      <p class="eyebrow reveal">From the families</p>
+      <h2 id="proof-title" class="reveal visually-hidden">What families say</h2>
+      <figure class="proof__quote reveal">
+        <blockquote><p>[Medi: one short testimonial, in the family's own words, with their consent]</p></blockquote>
+        <figcaption class="proof__by">[Family name · the celebration · the year]</figcaption>
+      </figure>
+      <p class="proof__line reveal">[one proof line, e.g. weddings planned since YEAR · families in the Bay Area]</p>
+    </div>
+  </section>
+
+  <!-- 5. FOUNDER QUOTE: the light interlude, on parchment. Only "Keep the soul. Redefine the style." is display size (ruby). -->
   <section class="section quote on-light" aria-label="A letter from the founder">
     <div class="container container--text">
       <figure class="reveal">
         <p class="eyebrow" style="margin-bottom:24px">Why I started Anar</p>
         <blockquote>
-          <span>In our families, a wedding is never two people.</span>
-          <span>It is parents, grandparents, the whole table.</span>
-          <span>I started Anar so those families can plan in calm.</span>
-          <span>We ask how your family observes each tradition.</span>
-          <span class="quote__key">Keep the soul. Redefine the style.</span>
-          <span>On the day, you only have to be there.</span>
+          <p>
+            <span>In our families, a wedding is never two people.</span>
+            <span>It is parents, grandparents, the whole table.</span>
+            <span>I started Anar so those families can plan in calm.</span>
+          </p>
+          <p class="quote__key">Keep the soul. Redefine the style.</p>
+          <p>
+            <span>We ask how your family observes each tradition.</span>
+            <span>On the day, you only have to be there.</span>
+          </p>
         </blockquote>
         <figcaption class="eyebrow quote__by">Medi, founder</figcaption>
       </figure>
@@ -211,7 +233,7 @@
         <article class="card">
           <span class="card__n">01 · <span class="fa" lang="fa" dir="rtl">برنامه</span></span>
           <h3>Plan</h3>
-          <p>We ask how your family observes each tradition. Then one plan with the price and what is included, Persian and Dari pages for the parents, and a written summary after every meeting.</p>
+          <p>Ritual by ritual, as your family keeps it. One plan with the price and what is included, Persian and Dari pages for the parents, and a written summary after every meeting.</p>
         </article>
         <article class="card">
           <span class="card__n">02 · <span class="fa" lang="fa" dir="rtl">روز عروسی</span></span>
@@ -223,25 +245,37 @@
         <li>
           <h3>Full planning</h3>
           <p class="option__when">Begins at the first conversation · ends at the thank-you</p>
-          <p>One written plan with the rituals in order, the days, the price and what is included, with Persian and Dari pages for the parents. Planning meetings ritual by ritual, with a short written summary after each one. Every wedding day run: one timeline, called with the venue and every vendor.</p>
+          <ul>
+            <li>Your budget held and tracked, line by line, from the first conversation.</li>
+            <li>Venue and vendor shortlist, booking support and contract review.</li>
+            <li>Planning decisions scheduled ritual by ritual, with a short written summary after each meeting.</li>
+            <li>One written plan: the rituals in order, the days, the price and what is included, with Persian and Dari pages for the parents.</li>
+            <li>Every wedding day run: one timeline, called with the venue and every vendor; elders' seats held.</li>
+          </ul>
         </li>
         <li>
           <h3>Wedding-day coordination</h3>
-          <p class="option__when">Begins 6–8 weeks out · we take over your plan and run the days</p>
-          <p>Every contract, contact and time in your plan read and confirmed with the venue and every vendor. One timeline for every day, with the sofreh key or the programme checked against your family's wishes. On the days: elders greeted first, the officiant and family cued, our staff easy to find.</p>
+          <p class="option__when">Begins 6–8 weeks out · we take over your finished plan and run the days</p>
+          <ul>
+            <li>Starts 6–8 weeks out: your family has planned already; we take over the finished plan.</li>
+            <li>Every contract, contact and time in it read and confirmed with the venue and every vendor.</li>
+            <li>One timeline for every day, with the sofreh key or the programme checked against your family's wishes.</li>
+            <li>On the days: elders greeted first, the officiant and family cued, our staff easy to find. You only have to be there.</li>
+          </ul>
         </li>
       </ul>
       <p class="teaser__foot reveal">Replies within one business day · <a class="link" href="how-we-work.html">All five steps and what you get</a></p>
     </div>
   </section>
 
-  <!-- 7. THE JOURNEY: nine stops on one line. The sage base line and all nine dots are there at once;
-       the gold .track-line overlay draws across with scroll and turns each dot gold (site.js block 5) -->
+  <!-- 7. THE JOURNEY: the five planning stages on one line. The sage base line and all five dots are there at once;
+       the gold .track-line overlay draws across with scroll and turns each dot gold (site.js block 5).
+       Beneath it, a loose group of the celebrations a family may choose (gold-outlined pills, no line, no numbering). -->
   <section class="section journey" id="journey" aria-labelledby="journey-title">
     <div class="leaf leaf--3" aria-hidden="true"></div>
     <div class="container">
       <div class="section__head">
-        <p class="eyebrow reveal">Nine stops on one line</p>
+        <p class="eyebrow reveal">Five steps on one line</p>
         <h2 id="journey-title" class="reveal">The journey</h2>
       </div>
       <p class="journey__order reveal">Planning runs in this order. Your wedding celebrations come in the order your family chooses.</p>
@@ -251,16 +285,27 @@
         <svg class="journey__line journey__line--h track-line" viewBox="0 0 1200 2" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 1 H1200"/></svg>
         <svg class="journey__line journey__line--v track-line" viewBox="0 0 2 1000" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M1 0 V1000"/></svg>
         <ol class="journey__stops">
-          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Enquiry</span><span class="journey__fa fa" lang="fa" dir="rtl">درخواست</span><span class="journey__note">Thank you for writing. Tell us about your family.</span></li>
-          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Consultation</span><span class="journey__fa fa" lang="fa" dir="rtl">مشاوره</span><span class="journey__note">First meeting with parents and grandparents. Elders first.</span></li>
-          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Proposal</span><span class="journey__fa fa" lang="fa" dir="rtl">پیشنهاد</span><span class="journey__note">The plan, the price, and what is included.</span></li>
-          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Planning</span><span class="journey__fa fa" lang="fa" dir="rtl">برنامه‌ریزی</span><span class="journey__note">Ritual by ritual. Persian and Dari pages for the parents.</span></li>
-          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Bale-boroon</span><span class="journey__fa fa" lang="fa" dir="rtl">بله‌برون</span><span class="journey__note">Shirini-khori, the engagement: both families say yes, over sweets.</span></li>
-          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Aghd / Nikah</span><span class="journey__fa fa" lang="fa" dir="rtl">عقد / نکاح</span><span class="journey__note">The aghd at the sofreh, or the nikah read before witnesses.</span></li>
-          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Mehndi / Sangeet</span><span class="journey__fa fa" lang="fa" dir="rtl">حنابندان</span><span class="journey__note">The henna night, the singing night, the baraat arriving with music.</span></li>
-          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Reception</span><span class="journey__fa fa" lang="fa" dir="rtl">جشن عروسی</span><span class="journey__note">Reception or walima, to the last dance.</span></li>
-          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Thank-you</span><span class="journey__fa fa" lang="fa" dir="rtl">سپاس</span><span class="journey__note">What the family keeps, and how we say goodbye.</span></li>
+          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Enquiry</span><span class="journey__fa fa" lang="fa" dir="rtl">درخواست</span><span class="journey__note">Thank you for writing. Tell us about your family. We reply within one business day.</span></li>
+          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Consultation</span><span class="journey__fa fa" lang="fa" dir="rtl">مشاوره</span><span class="journey__note">First, we hear your priorities. Parents and elders included at the level you choose.</span></li>
+          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Proposal</span><span class="journey__fa fa" lang="fa" dir="rtl">پیشنهاد</span><span class="journey__note">The plan, the price, and what is included. A page for the parents, in Persian or Dari.</span></li>
+          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Planning</span><span class="journey__fa fa" lang="fa" dir="rtl">برنامه‌ریزی</span><span class="journey__note">Ritual by ritual, as your family keeps it. A short written summary after every meeting.</span></li>
+          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">The wedding days</span><span class="journey__fa fa" lang="fa" dir="rtl">روزهای عروسی</span><span class="journey__note">One timeline, called with the venue and every vendor. You only have to be there.</span></li>
         </ol>
+      </div>
+      <div class="journey__extras reveal">
+        <p class="eyebrow">Celebrations your family may choose</p>
+        <ul class="pills" aria-label="Celebrations your family may choose">
+          <li class="pill">Bale-boroon <span class="fa" lang="fa" dir="rtl">بله‌برون</span></li>
+          <li class="pill">Mehndi / Henna <span class="fa" lang="fa" dir="rtl">حنابندان</span></li>
+          <li class="pill">Sangeet</li>
+          <li class="pill">Haldi</li>
+          <li class="pill">Aghd <span class="fa" lang="fa" dir="rtl">عقد</span></li>
+          <li class="pill">Nikah <span class="fa" lang="fa" dir="rtl">نکاح</span></li>
+          <li class="pill">Pheras</li>
+          <li class="pill">Anand Karaj</li>
+          <li class="pill">Reception / Walima <span class="fa" lang="fa" dir="rtl">جشن عروسی</span></li>
+          <li class="pill">Nowruz / Yalda</li>
+        </ul>
       </div>
     </div>
   </section>
@@ -297,9 +342,7 @@
               <option value="English">English</option>
               <option value="Persian">Persian</option>
               <option value="Dari">Dari</option>
-              <option value="Urdu">Urdu</option>
-              <option value="Hindi">Hindi</option>
-              <option value="Punjabi">Punjabi</option>
+              <option value="Other">Other (say which in the message)</option>
             </select>
           </div>
         </div>
@@ -312,42 +355,14 @@
               <option value="Not sure yet">Not sure yet</option>
             </select>
           </div>
-          <div class="field"><label for="f-days">Which days <span class="muted">(optional)</span></label>
-            <select id="f-days" name="which_days">
-              <option value="">Choose one</option>
-              <option value="Engagement">Engagement</option>
-              <option value="Mehndi / Henna">Mehndi / Henna</option>
-              <option value="Aghd / Nikah">Aghd / Nikah</option>
-              <option value="Pheras / Anand Karaj">Pheras / Anand Karaj</option>
-              <option value="Reception / Walima">Reception / Walima</option>
-              <option value="Not sure yet">Not sure yet</option>
-            </select>
-          </div>
-        </div>
-        <div class="form__row">
           <div class="field"><label for="f-phone">Phone</label><input id="f-phone" name="phone" type="tel" autocomplete="tel"></div>
+        </div>
+        <div class="form__row">
           <div class="field"><label for="f-date">First wedding date (or season)</label><input id="f-date" name="wedding_date" type="text" autocomplete="off" placeholder="14 June 2027, or spring 2027"></div>
-        </div>
-        <div class="form__row">
           <div class="field"><label for="f-place">City or venue <span class="muted">(optional)</span></label><input id="f-place" name="city_or_venue" type="text" autocomplete="off" placeholder="Fremont, or the venue if you have one"></div>
-          <div class="field"><label for="f-guests">Guest count</label><input id="f-guests" name="guest_count" type="number" min="1" inputmode="numeric" placeholder="250"></div>
         </div>
-        <fieldset class="fieldset">
-          <legend>Traditions</legend>
-          <div class="checks">
-            <label class="check"><input type="checkbox" name="traditions" value="Sofreh Aghd"> Sofreh Aghd</label>
-            <label class="check"><input type="checkbox" name="traditions" value="Nikah"> Nikah</label>
-            <label class="check"><input type="checkbox" name="traditions" value="Mehndi / Henna"> Mehndi / Henna</label>
-            <label class="check"><input type="checkbox" name="traditions" value="Sangeet"> Sangeet</label>
-            <label class="check"><input type="checkbox" name="traditions" value="Haldi"> Haldi</label>
-            <label class="check"><input type="checkbox" name="traditions" value="Pheras / Mandap"> Pheras / Mandap</label>
-            <label class="check"><input type="checkbox" name="traditions" value="Anand Karaj"> Anand Karaj</label>
-            <label class="check"><input type="checkbox" name="traditions" value="Reception"> Reception</label>
-            <label class="check"><input type="checkbox" name="traditions" value="Walima"> Walima</label>
-            <label class="check"><input type="checkbox" name="traditions" value="Nowruz / Yalda"> Nowruz / Yalda</label>
-          </div>
-        </fieldset>
         <div class="form__row">
+          <div class="field"><label for="f-guests">Guest count</label><input id="f-guests" name="guest_count" type="number" min="1" inputmode="numeric" placeholder="250"></div>
           <div class="field"><label for="f-budget">Budget range <span class="muted">(optional)</span></label>
             <select id="f-budget" name="budget_range">
               <option value="">Choose one</option>
@@ -359,6 +374,24 @@
             </select>
           </div>
         </div>
+        <fieldset class="fieldset">
+          <legend>Traditions</legend>
+          <div class="checks">
+            <label class="check"><input type="checkbox" name="traditions" value="Engagement"> Engagement</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Sofreh Aghd"> Sofreh Aghd</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Nikah"> Nikah</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Mehndi / Henna"> Mehndi / Henna</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Sangeet"> Sangeet</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Haldi"> Haldi</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Pheras / Mandap"> Pheras / Mandap</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Anand Karaj"> Anand Karaj</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Reception"> Reception</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Walima"> Walima</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Nowruz / Yalda"> Nowruz / Yalda</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Other"> Other</label>
+            <label class="check"><input type="checkbox" name="traditions" value="Not sure yet"> Not sure yet</label>
+          </div>
+        </fieldset>
         <div class="field"><label for="f-message">Message</label><textarea id="f-message" name="message" placeholder="Your families, your dates, the rituals that matter most."></textarea></div>
         <div><button class="btn" type="submit">Begin the conversation</button></div>
         <p class="form__status" id="form-status" role="status" aria-live="polite" tabindex="-1"></p>

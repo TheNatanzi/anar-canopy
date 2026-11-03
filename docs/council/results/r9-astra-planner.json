@@ -1,0 +1,36 @@
+{
+ "model": "astra",
+ "role": "planner",
+ "score": 8,
+ "blocking": [
+  "Language support is qualified on the services page but promised broadly at inquiry and proposal points; parents could reasonably expect spoken support that has not been confirmed.",
+  "Coordination requires a 'finished plan' without explaining whether Anar identifies gaps during the 6–8-week handover or who resolves them."
+ ],
+ "fixes": [
+  {
+   "where": "index.html #inquire, .journey; shared footer and How we work panel",
+   "what": "Add: 'Tell us your preferred language. We confirm written translation and spoken support before booking.' Qualify each 'in their language' promise with 'as agreed in your proposal.'",
+   "why": "Parents need to distinguish translated documents from someone who can speak with them."
+  },
+  {
+   "where": "index.html #how-teaser; how-we-work.html #you-get",
+   "what": "Replace 'finished plan' with 'existing bookings and plans'; state that the handover identifies outstanding tasks and agrees who completes them, with additional planning scoped separately.",
+   "why": "Families seeking coordination need reassurance that planning gaps will be identified without assuming unlimited planning support."
+  },
+  {
+   "where": "index.html #celebrations; weddings.html page introduction",
+   "what": "Move the mixed-heritage welcome beside the introduction: 'Two heritages, different levels of observance, or celebrations not listed here? Tell us what matters to each of you.'",
+   "why": "The current welcome is buried after a long ceremony catalogue, making families outside its examples work to establish fit."
+  },
+  {
+   "where": "index.html .accordion; assets/css/site.css desktop accordion labels",
+   "what": "Add a horizontal, clearly labeled ceremony selector above the desktop panels, with the selected ceremony visibly indicated.",
+   "why": "Five narrow vertical labels make parents rotate their reading direction to find their ceremony."
+  },
+  {
+   "where": "how-we-work.html #you-get and #faq",
+   "what": "Place the existing explanation of staffing, backup, simultaneous events and delays directly beside the two service options, using short labeled statements.",
+   "why": "These practical assurances demonstrate planning competence more convincingly than repeated ritual descriptions."
+  }
+ ]
+}

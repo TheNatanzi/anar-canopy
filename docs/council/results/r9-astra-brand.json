@@ -1,0 +1,33 @@
+{
+ "model": "astra",
+ "role": "brand",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "assets/css/site.css — .accordion__body; assets/js/site.js — syncRead",
+   "what": "Keep operational descriptions behind a visible 'Read more' control on desktop too; show the ceremony title, Persian accent and introductory sentence by default.",
+   "why": "The expanded panel reads as a dense text card; photography needs more breathing room to deliver a premium impression."
+  },
+  {
+   "where": "assets/js/site.js — accordion open/settle; assets/css/site.css — .is-settling",
+   "what": "Shorten panel expansion to approximately 350ms and begin the text fade as sufficient width becomes available, instead of hiding it for 720ms before a further 600ms fade.",
+   "why": "The programmed delay makes browsing feel staged rather than fluid."
+  },
+  {
+   "where": "assets/css/site.css — mobile .hero__canopy",
+   "what": "Adjust the mobile crop and bottom offset so portions of both edge trunks remain visible while retaining the connected canopy and open center.",
+   "why": "At 390px the tree becomes a dense foliage strip; the framing structure visible on desktop is lost."
+  },
+  {
+   "where": "index.html — .journey__extras",
+   "what": "Move the full celebration-name list to Weddings and leave a short contextual sentence plus the existing Weddings link beneath the planning timeline.",
+   "why": "The tightly packed bilingual list competes with the five-step hierarchy and repeats the celebrations section."
+  },
+  {
+   "where": "assets/css/site.css — .form",
+   "what": "Reduce the form panel's background opacity and retain its gold top rule and distinct input fills.",
+   "why": "The large rectangular dark slab interrupts the painted roots composition; a quieter surface would integrate the inquiry area with the brand."
+  }
+ ]
+}

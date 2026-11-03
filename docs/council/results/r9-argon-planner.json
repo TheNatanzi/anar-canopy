@@ -1,0 +1,11 @@
+{
+ "model": "argon",
+ "role": "planner",
+ "score": 9,
+ "blocking": [],
+ "fixes": [
+  {"where": "index.html teaser section", "what": "Add one explicit line of parental reassurance about multi-generational decision-making.", "why": "Builds immediate trust with the parents who decide."},
+  {"where": "weddings.html ceremony sections", "what": "State elder priority seating / guest seating logistics under each ceremony.", "why": "Makes elder respect visibly part of the protocol."}
+ ],
+ "note": "Captured from the Gemini web app (4 Argon) on the pass-8 build."
+}

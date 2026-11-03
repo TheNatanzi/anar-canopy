@@ -1,0 +1,11 @@
+{
+ "model": "argon",
+ "role": "brand",
+ "score": 9,
+ "blocking": [],
+ "fixes": [
+  {"where": "assets/css/site.css cards", "what": "Keep every card free of grid hairlines; rely on gold top rules and spacing only.", "why": "Brand book hierarchy."},
+  {"where": "index.html hero", "what": "Verify the plain gold logo and kashida alignment against the video loop.", "why": "The core signature must stay uncompromised."}
+ ],
+ "note": "Captured from the Gemini web app (4 Argon) on the pass-8 build."
+}

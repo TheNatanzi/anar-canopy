@@ -1,5 +1,5 @@
 /* =========================================================
-   Anar Events — site.css (v2.8, night palette, round-8 fixes, 3 Nov 2026)
+   Anar Events — site.css (v2.9, night palette, round-9 fixes, 3 Nov 2026)
    One file. Mobile first. No grid hairlines anywhere.
    Latin: TT Ramillas Bold only (TRIAL font: buy before launch).
    Persian: Noto Naskh Arabic (self-hosted, Arabic subset), never italic/tracked/caps.
@@ -112,8 +112,6 @@ main > .on-light:last-child{border-bottom:0}
 .kashida path{fill:none;stroke:var(--gold);stroke-width:2;vector-effect:non-scaling-stroke;stroke-linecap:butt}
 .kashida--short{width:min(320px,70vw)}
 .on-light .kashida path{stroke:var(--ruby)}
-.rule{height:2px;background:var(--gold);width:100%;border:0;margin:0}
-.on-light .rule{background:var(--ruby)}
 /* the glow band: plain deep cypress with one soft radial gold glow at 10%, biased upward behind the heading (the lattice tile read as a grid and is gone) */
 .band--glow{position:relative;isolation:isolate}
 .band--glow::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 50% 30%,rgba(201,158,92,.10),rgba(201,158,92,0) 70%)}
@@ -148,7 +146,7 @@ main > .on-light:last-child{border-bottom:0}
   html:not(.nav-ready) .nav-toggle{visibility:hidden}
   html.nav-ready .site-nav{display:none}
 }
-/* phone-only drawer lines: the phone link and the inert "فارسی · coming soon" note (the bar carries no فارسی label on phones) */
+/* phone-only drawer lines: the phone link and the "فارسی · coming soon" note (the bar carries no فارسی label at any width; the footer repeats the note) */
 .site-nav__phone,.site-nav__fa{display:none}
 @media (max-width:768px){
   .site-nav__phone,.site-nav__fa{display:block}
@@ -165,10 +163,6 @@ main > .on-light:last-child{border-bottom:0}
   .nav-phone{display:inline-block;font-size:16px;line-height:24px;letter-spacing:.02em;padding-block:4px;border-bottom:2px solid transparent;transition:border-color .3s;white-space:nowrap}
   .nav-phone:hover{border-bottom-color:var(--gold)}
 }
-/* فارسی · به‌زودی: an inert stone label (no title / aria-label) on desktop only; phones carry the note at the end of the drawer */
-.nav-fa{font-size:20px;line-height:1;color:var(--stone);cursor:default;text-align:center;white-space:nowrap}
-.nav-fa__soon{font-size:14px}
-@media (max-width:768px){.nav-fa{display:none}}
 .nav-toggle{width:44px;height:44px;display:grid;place-items:center;margin-left:-8px}
 .nav-toggle__bar{display:block;width:24px;height:2px;background:currentColor;position:relative;transition:background .2s}
 .nav-toggle__bar::before,.nav-toggle__bar::after{content:"";position:absolute;left:0;width:24px;height:2px;background:currentColor;transition:transform .3s}
@@ -199,9 +193,9 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 /* ---------- HERO (index first screen, approved 02:05) ---------- */
 .hero{position:relative;height:100vh;height:100svh;min-height:600px;overflow:hidden;background:var(--night);color:var(--parch)}
 .hero__video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:var(--night)}
-/* the tint grades the loop toward the palette: cypress deepening downwards, plus a 6% warm gold wash (the logo stays readable; the mp4 is untouched) */
-.hero__tint{position:absolute;inset:0;background:linear-gradient(rgba(27,34,30,.42),rgba(27,34,30,.66));pointer-events:none}
-.hero__tint::after{content:"";position:absolute;inset:0;background:rgba(201,158,92,.06)}
+/* the tint grades the loop toward the palette: cypress deepening downwards (.42 -> .72), plus a 10% warm gold wash (the logo stays readable; the mp4 is untouched) */
+.hero__tint{position:absolute;inset:0;background:linear-gradient(rgba(27,34,30,.42),rgba(27,34,30,.72));pointer-events:none}
+.hero__tint::after{content:"";position:absolute;inset:0;background:rgba(201,158,92,.10)}
 .hero__deepen{position:absolute;inset:0;background:var(--night);opacity:0;pointer-events:none}
 /* the ONE tree piece: anchored by the BOTTOM (bottom:-4%), width 100vw capped at 165vh, at most 62vh tall
    (object-fit:cover from the top), so the canopy rises ~35% at the sides, the middle stays open and the top
@@ -212,17 +206,24 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .hero__halo{position:absolute;left:50%;top:50%;width:150%;height:220%;transform:translate(-50%,-50%);background:radial-gradient(closest-side,rgba(27,34,30,.6),transparent 70%);pointer-events:none}
 .hero__logo{position:relative;margin:0;line-height:0}
 .hero__logo img{width:100%;height:auto}
-.hero__line{position:relative;margin:clamp(12px,1.6vh,20px) auto 0;text-align:center;color:var(--parch);font-size:clamp(14px,1.15vw,16px);line-height:1.5;letter-spacing:.04em;opacity:.92;text-wrap:balance}
+/* the soft night shadow at every width: the line sits on moving video, and a bright frame can pass under it */
+.hero__line{position:relative;margin:clamp(12px,1.6vh,20px) auto 0;text-align:center;color:var(--parch);font-size:clamp(14px,1.15vw,16px);line-height:1.5;letter-spacing:.04em;opacity:.92;text-wrap:balance;text-shadow:0 1px 12px rgba(27,34,30,.9)}
 .hero__place{display:block}
 /* no SCROLL cue anywhere: on desktop it printed over the painted foliage, on phones it read as the Pause button's label; the canopy draws the eye down */
-.hero__tag{position:absolute;right:clamp(16px,3vw,40px);bottom:clamp(14px,2.6vh,28px);font-size:22px;line-height:1.4;color:var(--parch);text-align:right}
+/* the brand line paired with its Persian twin, bottom right: English in Ramillas 14px caps (.12em), the Persian beside it in parchment */
+.hero__tag{position:absolute;right:clamp(16px,3vw,40px);bottom:clamp(14px,2.6vh,28px);display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:baseline;gap:4px 14px;color:var(--parch);text-align:right}
+.hero__tag > span:first-child{font-size:14px;line-height:20px;letter-spacing:.12em;text-transform:uppercase}
+.hero__tag .fa{font-size:22px;line-height:1.4}
 @media (max-width:768px){
-  .hero__canopy{width:175vw;top:auto;bottom:-8%;max-height:none}
+  /* the canopy at 112vw (the trunks sit at the art's own edges, so anything much wider than the viewport crops them off):
+     slivers of both edge trunks stay in the frame with the middle open, the owner's desktop composition at phone size */
+  .hero__canopy{width:150vw;top:auto;bottom:-8%;max-height:none}
   .hero__mark{width:78vw;top:30%}
   .hero__halo{width:170%;height:250%}
-  .hero__line{font-size:14px;padding-inline:4px;text-shadow:0 1px 12px rgba(27,34,30,.9)}
-  /* the Persian tagline sits on painted leaves: the same shadow as .hero__line, 24px up clear of the densest foliage */
-  .hero__tag{font-size:18px;bottom:calc(24px + env(safe-area-inset-bottom));text-shadow:0 1px 12px rgba(27,34,30,.9)}
+  .hero__line{font-size:14px;padding-inline:4px}
+  /* the tag pair sits on painted leaves: the same shadow as .hero__line, 24px up clear of the densest foliage */
+  .hero__tag{bottom:calc(24px + env(safe-area-inset-bottom));text-shadow:0 1px 12px rgba(27,34,30,.9)}
+  .hero__tag .fa{font-size:18px}
   /* the "How we work +" tab is now a mid-height edge tab on phones too: the tagline stays at the bottom */
 }
 
@@ -286,7 +287,8 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .accordion{display:grid;gap:var(--s2)}
 .accordion__panel{position:relative;overflow:hidden;background:var(--deep);color:var(--parch);border-radius:2px;min-height:360px}
 .accordion__media{position:absolute;inset:0}
-.accordion__media img{width:100%;height:100%;object-fit:cover;transition:filter .6s var(--ease),transform .6s var(--ease)}
+/* the lazy image fills the panel (the panel's min-height reserves the box); the 16/9 ratio is the fallback should its height ever resolve to auto */
+.accordion__media img{width:100%;height:100%;object-fit:cover;aspect-ratio:16/9;transition:filter .6s var(--ease),transform .6s var(--ease)}
 .accordion__media::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(18,23,20,.92) 0%,rgba(18,23,20,.45) 50%,rgba(27,34,30,.25) 100%)}
 .accordion__trigger{position:absolute;inset:0;width:100%;text-align:left;z-index:2}
 .accordion__trigger[hidden]{display:none}
@@ -303,30 +305,28 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 /* stacked (under 1100px) the trigger button is gone, so the body takes the pointer (the native Read more must toggle) */
 @media (max-width:1099px){.accordion__body{pointer-events:auto}}
 .accordion__body h3{font-size:clamp(26px,3vw,38px)}
-/* the gold Persian accent can land on a bright part of the photo: a soft night shadow keeps it legible */
-.accordion__body .fa{color:var(--gold);text-shadow:0 1px 10px rgba(18,23,20,.95)}
+/* the gold Persian accent sits directly above the h3 (left-aligned like .journey__fa and .step .fa; the span keeps direction:rtl);
+   it can land on a bright part of the photo: a soft night shadow keeps it legible */
+.accordion__body .fa{color:var(--gold);text-shadow:0 1px 10px rgba(18,23,20,.95);text-align:left;justify-self:start}
 /* one intro sentence always visible (parchment, 18px); the operational text sits behind the native <details> "Read more"
-   at every width in stone 16px, so the hierarchy reads headline / bright intro / receding detail
-   (site.js opens every one above 768px, where the summary is hidden; on phones every one starts closed) */
+   at every width in stone 16px, closed by default (site.js closes every one at start), so the hierarchy reads
+   headline / bright intro / Read more */
 .accordion__intro,.accordion__read p{max-width:34em;color:var(--parch);margin-top:var(--s1)}
 .accordion__read p{color:var(--stone);font-size:16px;line-height:24px}
 .accordion__read summary{cursor:pointer;list-style:none;display:inline-flex;gap:8px;align-items:baseline;color:var(--gold);font-size:14px;line-height:20px;letter-spacing:.1em;text-transform:uppercase;padding:4px 0}
 .accordion__read summary::-webkit-details-marker{display:none}
 .accordion__read summary::after{content:"+"}
 .accordion__read[open] summary::after{content:"\2013"}
-/* above 768px every details is forced open by site.js: the toggle would be dead UI, so it goes (no-JS keeps it) */
-@media (min-width:769px){html.site-ready .accordion__read[open] summary{display:none}}
 /* the closing line under the celebrations: the Weddings link and the first in-page CTA side by side */
 .accordion__foot{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:var(--s2) var(--s3);margin-top:var(--s3)}
-.accordion__more{pointer-events:auto;margin-top:var(--s1);justify-self:start}
 /* the wide layout (one open panel + narrow strips) only from 1100px; below that every panel is stacked and readable.
    No fixed height: the row is at least min(70vh,640px) and grows to fit the open body. The open body is in flow once
-   the .7s flex transition has settled (site.js adds .is-settling for that moment, so the still-narrow text never
+   the .35s flex transition has settled (site.js adds .is-settling for that moment, so the still-narrow text never
    spikes the row height); collapsed bodies are out of flow. */
 @media (min-width:1100px){
   /* --acc-min: the tallest expanded body at the current width (site.js measures every body after fonts load and on resize), so the row never jumps between hovers */
   .accordion{display:flex;gap:var(--s1);min-height:max(min(70vh,640px),var(--acc-min,0px))}
-  .accordion__panel{flex:1 1 0;min-height:0;transition:flex .7s var(--ease)}
+  .accordion__panel{flex:1 1 0;min-height:0;transition:flex .35s var(--ease)}
   .accordion__panel.is-open{flex:5 1 0}
   /* collapsed strips keep their image texture (blur 3px, brightness .95) under a deeper overlay (.85 -> .45) so the gold labels hold on bright image areas: five photographs waiting to open, not dark bars */
   .accordion__panel:not(.is-open) .accordion__media img{filter:blur(3px) brightness(.95);transform:scale(1.08)}
@@ -334,9 +334,9 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
   .accordion__panel:not(.is-open) .accordion__body,.accordion__panel.is-settling .accordion__body{position:absolute;inset:0}
   /* collapsed bodies leave the accessibility tree (visibility:hidden after the fade) */
   .accordion__panel:not(.is-open) .accordion__body{opacity:0;visibility:hidden;transition:opacity .25s,visibility 0s .25s}
-  /* the opening body stays invisible while the row is still settling (.is-settling, .7s) and fades in only once the panel can hold it; the open body takes the pointer so its text can be selected */
-  .accordion__panel.is-open .accordion__body{opacity:1;visibility:visible;transition:opacity .6s,visibility 0s;pointer-events:auto}
-  .accordion__panel.is-open.is-settling .accordion__body{opacity:0;transition:none}
+  /* the opening body fades in as the width arrives: the .3s opacity transition starts .14s in (40% of the .35s flex transition),
+     so the text is never hidden for a beat and never shown at strip width; the open body takes the pointer so its text can be selected */
+  .accordion__panel.is-open .accordion__body{opacity:1;visibility:visible;transition:opacity .3s .14s,visibility 0s;pointer-events:auto}
   /* the vertical gold label never runs into the strip edge (nowrap, ellipsis within the panel height minus 64px); a 2px gold rule sits under it
      (border-top in the element's own frame: the 180deg turn puts it at the visual bottom, below the start of the text) */
   .accordion__panel:not(.is-open) .accordion__label{display:block;writing-mode:vertical-rl;left:auto;right:50%;top:auto;bottom:24px;transform:translateX(50%) rotate(180deg);max-height:calc(100% - 64px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border-top:2px solid var(--gold);padding-top:10px}
@@ -361,13 +361,12 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 /* "Medi, founder" as an eyebrow line in ruby (the founder attribution on parchment; no drawn signature) */
 .quote figcaption.quote__by{margin-top:var(--s3);color:var(--ruby)}
 
-/* ---------- How we work teaser (glow band, gold strips, two cards, two service options) ---------- */
-.teaser{overflow:hidden}
+/* ---------- How we work teaser (glow band, the section kashida, two service options) ---------- */
 /* the two service options (index teaser and How we work "What you get"): no top rules (the section kashida is the one gold line); spacing carries the structure */
 .options{display:grid;gap:var(--s3)}
 @media (min-width:768px){.options{grid-template-columns:1fr 1fr;gap:var(--s4)}}
-/* one explicit spacing sequence under the teaser heading: head 24px -> kashida strip -> 32px -> options (56px in all) */
-.teaser .section__head{margin-bottom:24px}
+/* one explicit spacing sequence under the teaser heading: h2 -> 16px -> kashida -> 16px -> intro line -> 32px -> options */
+.teaser .section__head{margin-bottom:var(--s3)}
 .teaser .options{margin-top:0}
 .options > li{display:grid;gap:var(--s1);align-content:start}
 .options h3{font-size:clamp(20px,2.2vw,24px)}
@@ -376,12 +375,6 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .options ul{display:grid;gap:4px}
 .options ul li{padding-left:18px;position:relative}
 .options ul li::before{content:"";position:absolute;left:0;top:11px;width:8px;height:2px;background:var(--gold)}
-.teaser__strips{position:relative;height:2px;margin:0 0 var(--s3)}
-/* ONE 2px gold kashida line sliding in through GSAP only (block 6: xPercent 102 -> 0 with x:0); no CSS translate to compound */
-.teaser__strips i{position:absolute;left:0;right:0;top:0;height:2px;background:var(--gold);transform-origin:right center}
-.teaser__grid{display:grid;gap:var(--s3)}
-@media (min-width:768px){.teaser__grid{grid-template-columns:1fr 1fr;gap:var(--s4)}}
-.teaser .card h3{font-size:clamp(28px,3.4vw,40px)}
 .teaser__foot{margin-top:var(--s4);text-align:center;color:var(--stone);font-size:16px;line-height:24px}
 
 /* ---------- The journey: the five planning stages on one gold line, then the celebrations as loose pills ---------- */
@@ -444,25 +437,29 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .inquire__contact a:hover{border-color:var(--gold)}
 .inquire__contact a.wa{user-select:auto;-webkit-user-select:auto}
 
-/* ---------- Form: a 2px gold top rule only ---------- */
-.form{display:grid;gap:var(--s3);background:rgba(18,23,20,.78);border:0;border-top:2px solid var(--gold);padding:clamp(20px,4vw,48px)}
+/* ---------- Form: a 2px gold top rule only; a quiet .55 night surface so the roots composition shows through ---------- */
+.form{display:grid;gap:var(--s3);background:rgba(18,23,20,.55);border:0;border-top:2px solid var(--gold);padding:clamp(20px,4vw,48px)}
 .form__row{display:grid;gap:var(--s3)}
 @media (min-width:600px){.form__row{grid-template-columns:1fr 1fr}}
-/* the first row: names / email / phone side by side from 768px (two columns at 600-767, phone wraps alone) */
-@media (min-width:768px){.form__row--3{grid-template-columns:1fr 1fr 1fr}}
+/* the first row: names / email / phone side by side from 768px (two columns at 600-767, phone wraps alone); the names field is twice as wide so its placeholder never clips */
+@media (min-width:768px){.form__row--3{grid-template-columns:2fr 1fr 1fr}}
 .field{display:grid;gap:var(--s1);min-width:0}
 .field label,.fieldset legend{font-size:16px;line-height:22px;color:var(--parch)}
 /* inputs in the underline style (editorial, like the kashida): no perimeter box, a 2px gold rule at .7 (opaque enough to read against the night fill) under a soft night fill; focus = the full gold underline (no 1px hairlines anywhere) */
 .field input,.field textarea,.field select{font:inherit;font-weight:700;color:var(--parch);background:rgba(27,34,30,.55);border:0;border-bottom:2px solid rgba(201,158,92,.7);border-radius:2px 2px 0 0;padding:12px 14px;width:100%;min-height:48px;transition:border-color .3s,background-color .3s}
-/* placeholders in stone (#B9B3A6 on the deep input ground: ~8:1) */
+/* placeholders in stone (#B9B3A6 on the deep input ground: ~8:1); the one-line inputs carry theirs at 16px, like the other secondary text */
 .field input::placeholder,.field textarea::placeholder{color:var(--stone);opacity:1}
-.field input:focus-visible,.field textarea:focus-visible,.field select:focus-visible{outline:none;border-bottom-color:var(--gold);background:rgba(27,34,30,.8)}
-.field input[type="date"],.field select{color-scheme:dark}
+.field input::placeholder{font-size:16px}
+/* keyboard focus: a visible 2px gold ring 3px out (the global ring, kept), plus the full gold underline and the deeper fill */
+.field input:focus-visible,.field textarea:focus-visible,.field select:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-bottom-color:var(--gold);background:rgba(27,34,30,.8)}
+.field select{color-scheme:dark}
 .field select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%);background-position:calc(100% - 22px) 50%,calc(100% - 16px) 50%;background-size:6px 6px,6px 6px;background-repeat:no-repeat;padding-right:44px;cursor:pointer}
 .field select option{background:var(--deep);color:var(--parch)}
 /* success / error region (aria-live) */
 .form__status{font-size:16px;line-height:24px;padding:var(--s2);border-top:2px solid var(--gold);color:var(--parch)}
-.form__status[hidden],.form__status:empty{display:none}
+/* the live region stays rendered while empty (padding and rule off), so it is in the accessibility tree before its text lands */
+.form__status[hidden]{display:none}
+.form__status:empty{padding:0;border:0}
 .form__status.is-error{border-top-color:var(--ruby)}
 .form__status.is-wait{color:var(--stone)}
 .form__status:focus{outline:none}
@@ -501,6 +498,9 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .site-footer__fa{font-size:20px;line-height:1.7;text-align:left;color:var(--gold)}
 @media (min-width:768px){.site-footer__fa{text-align:right}}
 .site-footer__lang{margin-top:var(--s2);font-size:14px;line-height:20px;color:var(--stone)}
+/* the one "فارسی · coming soon" line, under the language line */
+.site-footer__soon{display:block;margin-top:4px}
+.site-footer__soon .fa{font-size:16px}
 .site-footer__legal{margin-top:var(--s3);font-size:14px;line-height:20px;color:var(--stone);display:flex;flex-wrap:wrap;gap:var(--s2);justify-content:space-between}
 
 /* ---------- Ghost buttons: the "How we work +" tab and "Pause motion" (one gold-filled button per screen) ---------- */
@@ -528,9 +528,8 @@ html:not(.panel-ready) .hww-tab{display:none}
 /* Pause motion / Play motion: bottom-left on every screen size and visible the whole page (round, icon-only:
    36px on phones, 40px on desktop). The accessible name is the fixed aria-label "Pause motion" and
    aria-pressed="true" means paused, so the name never changes. */
-.motion-toggle{position:fixed;z-index:60;left:var(--s2);bottom:calc(16px + env(safe-area-inset-bottom));font-size:13px;line-height:18px;letter-spacing:.06em;padding:8px 14px;border-radius:999px;background-color:var(--night)}
+.motion-toggle{position:fixed;z-index:60;left:var(--s2);bottom:calc(16px + env(safe-area-inset-bottom));width:40px;height:40px;padding:0;border-radius:50%;display:grid;place-items:center;font-size:13px;line-height:1;letter-spacing:0;background-color:var(--night)}
 .motion-toggle[hidden],html:not(.motion-ready) .motion-toggle{display:none}
-.motion-toggle{width:40px;height:40px;padding:0;border-radius:50%;display:grid;place-items:center;line-height:1;letter-spacing:0}
 /* the glyph is an inline SVG background (two gold bars = pause, a gold triangle = play), never a font glyph */
 .motion-toggle::before{content:"";width:14px;height:14px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Crect x='2' y='1' width='3.6' height='12' fill='%23C99E5C'/%3E%3Crect x='8.4' y='1' width='3.6' height='12' fill='%23C99E5C'/%3E%3C/svg%3E") center/contain no-repeat}
 .motion-toggle[aria-pressed="true"]::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M3 1.2 12.6 7 3 12.8z' fill='%23C99E5C'/%3E%3C/svg%3E");margin-left:2px}
@@ -580,7 +579,8 @@ body.panel-open{overflow:hidden}
 .tradition__text p+p{margin-top:var(--s2)}
 .tradition__media{margin:0}
 .tradition__media .slot{overflow:hidden;background:var(--deep);max-width:480px;margin-inline:auto;aspect-ratio:4/5}
-.tradition__media .slot img{width:100%;height:100%;object-fit:cover}
+/* lazy images reserve their box on phones: the slot carries the ratio, and the img repeats it as a fallback should its height ever resolve to auto */
+.tradition__media .slot img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/5}
 .tradition__media figcaption{margin-top:var(--s1);text-align:center}
 .seasonal{border-top:2px solid var(--gold);background:rgba(18,23,20,.6);padding:var(--s3)}
 .seasonal p+p{margin-top:var(--s2)}
@@ -622,7 +622,7 @@ body.panel-open{overflow:hidden}
 @media (min-width:768px){.story__photos{grid-template-columns:repeat(3,1fr);align-items:end}}
 .story__photos figure{margin:0}
 .story__photos .slot{overflow:hidden;background:var(--deep);aspect-ratio:3/4}
-.story__photos img{width:100%;height:100%;object-fit:cover}
+.story__photos img{width:100%;height:100%;object-fit:cover;aspect-ratio:3/4}
 .story__photos figcaption{margin-top:var(--s1)}
 /* the three promises: no top rules (the gold numbers and the spacing carry the structure) */
 .promise{display:grid;gap:var(--s3)}

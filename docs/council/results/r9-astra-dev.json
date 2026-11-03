@@ -1,0 +1,30 @@
+{
+ "model": "astra",
+ "role": "dev",
+ "score": 8,
+ "blocking": [
+  "Optional-field validation can strand submission when JavaScript or fetch is unavailable: an invalid field inside the closed planning-details section cannot reliably receive focus."
+ ],
+ "fixes": [
+  {
+   "where": "index.html — .form__more; assets/js/site.js — inquiry form initialization",
+   "what": "Render optional planning details open by default; close them only after installing the invalid-field expansion handler. Install that handler independently of fetch support.",
+   "why": "Native submission must remain usable when an invalid optional number is hidden inside collapsed details."
+  },
+  {
+   "where": "assets/js/site.js — form submit success handler",
+   "what": "Capture submitted values and preserve subsequent edits; reset only if the current form still matches the submitted snapshot, or temporarily lock its fields while submitting.",
+   "why": "The current unconditional form.reset() erases edits made while the request is pending."
+  },
+  {
+   "where": "assets/css/site.css — .field input:focus-visible, textarea:focus-visible, select:focus-visible",
+   "what": "Add a clearly visible 2px gold outline with an offset instead of removing the outline and only brightening the existing underline.",
+   "why": "The subtle underline and background changes make keyboard focus unnecessarily difficult to locate."
+  },
+  {
+   "where": "assets/js/site.js — buildLeaves() desktop animation branch",
+   "what": "Pause repeating leaf tweens when their sections leave the viewport and resume them when visible; retain the existing reduced-motion cleanup.",
+   "why": "Both infinite animations currently keep updating offscreen decorative elements throughout the visit."
+  }
+ ]
+}

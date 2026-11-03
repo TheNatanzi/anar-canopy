@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "planner",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "how-we-work.html #faq (add a seventh <details> after \"Where do you work?\")",
+   "what": "Add: <summary>What does it cost?</summary><p class=\"faq__a\">Every proposal is priced to the events, days and staffing it covers. Full planning and wedding-day coordination are quoted separately, and the price sits on the first page of the proposal, before anything is booked. If you have a budget in mind, say so in the form and we tell you plainly what it covers.</p>",
+   "why": "Parents who pay ask the price first; a site that never says the word cost reads as expensive and evasive."
+  },
+  {
+   "where": "index.html #celebrations, Mehndi & Sangeet .accordion__intro",
+   "what": "Replace \"The henna gathering and the sangeet, each as your family keeps it.\" with \"Henna on the bride's hands and the elders' blessing one night; both families singing and dancing the next.\"",
+   "why": "The thinnest of the six intros says nothing a family can picture, while the other five do."
+  },
+  {
+   "where": "index.html: teaser coordination bullet 3, journey 'The wedding days' note, hww-panel step 5",
+   "what": "Cut the refrains: 'you only have to be there' appears 4 times and 'one timeline, one person to call' 5 times on the home page. Keep them in the founder quote and the inquiry copy only; end the teaser bullet at 'the officiant and family cued.' and write the journey note as 'The venue and every vendor called to the minute; your parents are hosted, not working.'",
+   "why": "By the third repeat the phrase reads as a script, and scripted copy undercuts the fluency the site claims."
+  },
+  {
+   "where": "index.html .quote figure, after <figcaption class=\"eyebrow quote__by\">",
+   "what": "Add <p class=\"center\" style=\"margin-top:24px\"><a class=\"link\" href=\"about.html#letter\">Read the whole letter</a></p>",
+   "why": "Medi's name appears once on the home page and leads nowhere; parents want a path to the person before they write."
+  },
+  {
+   "where": "index.html #f-names placeholder",
+   "what": "Change placeholder=\"Sara &amp; Omid\" to placeholder=\"Sara &amp; Omid, or a parent's name\"",
+   "why": "The only example is a Persian couple on a site for three communities where parents also inquire."
+  },
+  {
+   "where": "index.html .pills (before Pheras) and the Traditions .checks (after Haldi)",
+   "what": "Add <li class=\"pill\">Baraat</li> and <label class=\"check\"><input type=\"checkbox\" name=\"traditions\" value=\"Baraat\"> Baraat</label>",
+   "why": "For South Asian families the baraat is a staged event with its own timing; it is in the prose but missing from the two lists a parent scans."
+  }
+ ]
+}

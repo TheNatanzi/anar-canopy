@@ -1,5 +1,5 @@
 /* =========================================================
-   Anar Events — site.js (v2.8, night palette, round-8 fixes, 3 Nov 2026)
+   Anar Events — site.js (v2.9, night palette, round-9 fixes, 3 Nov 2026)
    Loaded (defer, self-hosted in assets/js/vendor/) before this file:
      GSAP 3.12.5 + ScrollTrigger, Lenis 1.1.18
    Content is visible by default. Reveal targets are hidden only
@@ -190,12 +190,17 @@
   }
   scrollFns.push(onScrollState);
   onScrollState();
-  /* the toggle's aria-expanded and the inert <main> always follow the drawer's class (also re-synced on resize) */
+  /* the toggle's aria-expanded, the inert page (main, footer, the fixed tab and the Pause button), the scroll lock
+     (body.panel-open, shared with the How we work panel) and Lenis always follow the drawer's class (also re-synced on resize) */
+  var drawerInert = function () { return [mainEl, $('.site-footer'), $('.hww-tab'), $('.motion-toggle')].filter(Boolean); };
   function syncNav() {
     if (!header || !navToggle) { return; }
     var open = header.classList.contains('nav-open');
     navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-    if (mainEl) { mainEl.inert = open; }
+    drawerInert().forEach(function (el) { el.inert = open; });
+    /* panelOpen (the How we work panel, below) keeps its own lock and Lenis stop while it is open */
+    body.classList.toggle('panel-open', open || !!panelOpen);
+    if (lenis) { if (open) { lenis.stop(); } else if (!panelOpen) { lenis.start(); } }
   }
   function closeNav() {
     if (!header || !navToggle) { return; }
@@ -416,9 +421,21 @@
       history.pushState(null, '', url.hash);
     });
   });
+  /* a hash landing: the browser has already jumped to the fragment, so measure first. Within a header height of the top:
+     focus and settle only; otherwise an immediate (not glided) scroll to the header offset, so the page never slides twice */
   if (location.hash) {
     var landing = document.getElementById(location.hash.slice(1));
-    if (landing) { setTimeout(function () { scrollToEl(landing); }, 80); }
+    if (landing) {
+      setTimeout(function () {
+        var top = landing.getBoundingClientRect().top;
+        var headerH = -headerOffset();
+        if (!landing.hasAttribute('tabindex')) { landing.setAttribute('tabindex', '-1'); }
+        landing.focus({ preventScroll: true });
+        if (Math.abs(top) <= headerH + 16) { settleReveals(); return; }
+        if (lenis) { lenis.scrollTo(landing, { offset: headerOffset(), immediate: true, onComplete: settleReveals }); }
+        else { landing.scrollIntoView({ behavior: 'auto', block: 'start' }); setTimeout(settleReveals, 50); }
+      }, 80);
+    }
   }
 
   /* ---------------------------------------------------------
@@ -426,15 +443,15 @@
      devices, click/focus expands (touch, keyboard). Each trigger
      controls its body (aria-controls / id). Under 1100px every body
      is shown stacked and the triggers are removed (CSS + here).
-     While the .7s flex transition runs the opening panel carries
-     .is-settling (its body stays out of flow and invisible, CSS) and
-     the row keeps its height; once settled (transitionend, or the
-     .7s timer) the body is in flow, fades in, the row grows to fit
-     its text and ScrollTrigger is refreshed. A ResizeObserver on the
-     accordion refreshes on any later height change (debounced).
-     Phones: each description sits in a native <details> "Read more",
-     every one closed at first; wider screens open every one (the
-     summary is hidden there, CSS). Collapsed bodies carry
+     While the .35s flex transition runs the opening panel carries
+     .is-settling (its body stays out of flow, CSS, and fades in from
+     40% of the transition) and the row keeps its height; once settled
+     (transitionend, or the .36s timer) the body is in flow, the row
+     grows to fit its text and ScrollTrigger is refreshed. A
+     ResizeObserver on the accordion refreshes on any later height
+     change (debounced). At every width each description sits in a
+     native <details> "Read more", closed at start (the title, the
+     Persian accent and the intro stay visible). Collapsed bodies carry
      aria-hidden="true" + inert at every breakpoint; a shown body
      carries neither (setBodyShown).
      Wide screens also reserve the row height: every body is measured
@@ -443,7 +460,6 @@
      a short description to a long one never moves the sections below.
      --------------------------------------------------------- */
   var refreshTriggers = function () { if (hasGsap && motionOn) { ScrollTrigger.refresh(); } };
-  var compactQuery = window.matchMedia('(max-width: 768px)');
   var setBodyShown = function (content, shown) {
     if (!content) { return; }
     content.inert = !shown;
@@ -476,7 +492,7 @@
         setBodyShown($('.accordion__body', p), on);
       });
       settling = target;
-      settleTimer = setTimeout(settle, reduced || userPaused ? 0 : 720);
+      settleTimer = setTimeout(settle, reduced || userPaused ? 0 : 360);
     }
     acc.addEventListener('transitionend', function (e) {
       if (settling && e.target === settling && /flex/.test(e.propertyName)) { settle(); }
@@ -528,12 +544,11 @@
       });
       refreshTriggers();
     };
-    /* the native "Read more": open everywhere above 768px (the summary is hidden there, CSS); on phones every one starts closed */
+    /* the native "Read more": closed at start on every width (the summary stays visible; a reader opens the one they want) */
     var syncRead = function () {
-      var compact = compactQuery.matches;
       panels.forEach(function (p) {
         var d = $('.accordion__read', p);
-        if (d) { d.open = !compact; }
+        if (d) { d.open = false; }
       });
     };
     /* the tallest expanded body at the open panel's width (flex 5 of 5+(n-1), minus the 8px gaps) -> --acc-min */
@@ -559,21 +574,40 @@
     syncRead();
     reserveHeight();
     onMQ(wideQuery, function () { syncMobile(); reserveSoon(); });
-    onMQ(compactQuery, syncRead);
-    window.addEventListener('resize', reserveSoon, { passive: true });
+    /* height-only resizes (the mobile URL bar) change no body width: only a width change re-measures */
+    var lastWidth = window.innerWidth;
+    window.addEventListener('resize', function () {
+      if (window.innerWidth === lastWidth) { return; }
+      lastWidth = window.innerWidth;
+      reserveSoon();
+    }, { passive: true });
     if (document.fonts && document.fonts.ready) { document.fonts.ready.then(reserveSoon); }
     window.addEventListener('load', reserveSoon, { once: true });
   });
   html.classList.add('site-ready');
 
   /* ---------------------------------------------------------
-     Inquiry form: posts to Formspree with fetch when available;
-     12 s AbortController timeout; entered values stay on every
-     error (timeout included); the submit button is restored in
-     finally; the aria-live region reports success / error.
-     Without fetch the form submits normally.
+     Inquiry form. First, before any other form logic and with or
+     without fetch: the invalid-field handler (a field that fails
+     validation inside the optional <details> opens it, so the
+     browser can show the message); only once it is installed does
+     the <details> close (the HTML renders it open for no-JS users).
+     Then: posts to Formspree with fetch when available; 12 s
+     AbortController timeout; entered values stay on every error
+     (timeout included); on success the form is reset only if its
+     values still match the submitted snapshot (edits made while
+     the request was pending are kept); the submit button is
+     restored in finally; the aria-live region reports success /
+     error. Without fetch the form submits normally.
      --------------------------------------------------------- */
   var form = $('.form[data-ajax]');
+  if (form) {
+    form.addEventListener('invalid', function (e) {
+      var more = e.target && e.target.closest ? e.target.closest('details') : null;
+      if (more && !more.open) { more.open = true; }
+    }, true);
+    $$('.form__more', form).forEach(function (more) { more.open = false; });
+  }
   if (form && window.fetch && window.FormData) {
     var status = $('.form__status', form) || $('#form-status');
     var submitBtn = $('button[type="submit"]', form);
@@ -599,16 +633,16 @@
       if (links) { status.appendChild(contactLinks()); }
     };
     var restoreSubmit = function () { if (submitBtn) { submitBtn.disabled = false; } };
-    /* a field inside the closed "Share your dates, guest count & traditions" that fails validation opens it first, so the browser can show the message */
-    form.addEventListener('invalid', function (e) {
-      var more = e.target && e.target.closest ? e.target.closest('details') : null;
-      if (more && !more.open) { more.open = true; }
-    }, true);
+    /* the form's values as one string (no file fields here): compared before the reset after a successful send */
+    var snapshot = function () {
+      try { return new URLSearchParams(new FormData(form)).toString(); } catch (err) { return null; }
+    };
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       if (!form.checkValidity()) { form.reportValidity(); return; }
       if (/FORMSPREE_ID/.test(form.action)) {
         say('error', 'Online inquiries are not connected yet. Your entries are still here. Please', true);
+        if (status) { status.focus(); }
         return;
       }
       if (submitBtn && submitBtn.disabled) { return; }
@@ -624,13 +658,15 @@
           reject(new Error('timeout'));
         }, 12000);
       });
+      var sent = snapshot();
       var options = { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } };
       if (controller) { options.signal = controller.signal; }
       var request = Promise.race([timeout, Promise.resolve().then(function () { return fetch(form.action, options); })])
         .then(function (r) { if (!r.ok) { throw new Error('bad status'); } })
         .then(function () {
           say('ok', 'Thank you. Your message is on its way; we reply within one business day.');
-          form.reset();
+          /* reset only what was sent: an edit made while the request was pending stays in place */
+          if (sent !== null && snapshot() === sent) { form.reset(); }
           if (status) { status.focus(); }
         })
         .catch(function () {
@@ -658,6 +694,12 @@
   var motionOn = false;
   var motionCtx = null;
   var leafTweens = [];
+  /* the IntersectionObservers that pause / resume the desktop leaf loops off screen (block 8) */
+  var leafObservers = [];
+  var disconnectLeafObservers = function () {
+    leafObservers.forEach(function (o) { o.disconnect(); });
+    leafObservers = [];
+  };
   /* the once-only reveal tweens with their trigger elements (block 9), for settleReveals() */
   var revealTweens = [];
   var trunkImgs = $$('.descend__trunks img');
@@ -698,7 +740,8 @@
     if (!hasGsap || motionOn) { return motionOn; }
     try {
       gsap.registerPlugin(ScrollTrigger);
-      ScrollTrigger.config({ limitCallbacks: true });
+      /* ignoreMobileResize: the iOS address-bar collapse fires resize; the hero and trunk scrubs read vh(), so a refresh there would jump the logo */
+      ScrollTrigger.config({ limitCallbacks: true, ignoreMobileResize: true });
       html.classList.add('anim-ready');
       html.classList.add('motion');
       html.classList.remove('reduced');
@@ -726,6 +769,7 @@
       /* revert() kills every tween / ScrollTrigger recorded in the context and restores the inline styles each
          target had before (authored inline styles stay); other GSAP users on the page are untouched */
       if (motionCtx) { motionCtx.revert(); motionCtx = null; }
+      disconnectLeafObservers();
       leafTweens = [];
       revealTweens = [];
     } catch (e) { /* ignore */ }
@@ -833,16 +877,9 @@
     });
 
     /* -------------------------------------------------------
-       6. How we work teaser: ONE gold kashida strip (<i>) slides in
-          from the right as the section arrives, then the options.
+       6. (gone, round 9) The teaser's gold line is the same
+          .kashida-draw as under the statement: block 4 draws it.
        ------------------------------------------------------- */
-    var teaser = $('.teaser');
-    if (teaser) {
-      var strips = $$('.teaser__strips i', teaser);
-      /* GSAP alone positions the strips (no CSS translate to compound with xPercent) */
-      gsap.timeline({ scrollTrigger: { trigger: teaser, start: 'top 75%', end: 'top 20%', scrub: true } })
-        .fromTo(strips, { xPercent: 102, x: 0 }, { xPercent: 0, x: 0, ease: 'power1.inOut', duration: 0.6, stagger: 0.15 }, 0);
-    }
 
     /* -------------------------------------------------------
        7. The roots: roots-floor rises in as the floor while the
@@ -891,14 +928,18 @@
 
   /* -------------------------------------------------------
      8. Floating leaves (two places): desktop runs the slow
-        yoyo drift loop; phones get the scroll-scrub drift
-        instead. Never both: the same `y` is driven once, and
-        relative (+=) so a CSS translate on the leaf is kept.
-        Crossing the 769px breakpoint kills the old tweens
-        (and their triggers) and builds the other kind, inside
-        motionCtx so a later killMotion() reverts them too.
+        yoyo drift loop, paused while its leaf is off screen
+        (IntersectionObserver) and resumed when it is back;
+        phones get the scroll-scrub drift instead. Never both:
+        the same `y` is driven once, and relative (+=) so a CSS
+        translate on the leaf is kept. Crossing the 769px
+        breakpoint kills the old tweens (and their triggers and
+        observers) and builds the other kind, inside motionCtx so
+        a later killMotion() reverts them too (the reduced-motion
+        cleanup is unchanged).
      ------------------------------------------------------- */
   function killLeaves() {
+    disconnectLeafObservers();
     leafTweens.forEach(function (t) { t.revert(); });
     leafTweens = [];
   }
@@ -906,7 +947,16 @@
     killLeaves();
     $$('.leaf').forEach(function (leaf, i) {
       if (isDesktop()) {
-        leafTweens.push(gsap.to(leaf, { y: '+=' + (18 + i * 6), x: '+=' + (i % 2 ? -10 : 10), rotation: '+=' + (i % 2 ? -3 : 3), duration: 6 + i * 1.5, ease: 'sine.inOut', yoyo: true, repeat: -1 }));
+        var drift = gsap.to(leaf, { y: '+=' + (18 + i * 6), x: '+=' + (i % 2 ? -10 : 10), rotation: '+=' + (i % 2 ? -3 : 3), duration: 6 + i * 1.5, ease: 'sine.inOut', yoyo: true, repeat: -1, paused: true });
+        leafTweens.push(drift);
+        /* the loop only runs while the leaf is in (or within 10% of) the viewport */
+        if ('IntersectionObserver' in window) {
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (en) { if (en.isIntersecting) { drift.play(); } else { drift.pause(); } });
+          }, { rootMargin: '10% 0px' });
+          io.observe(leaf);
+          leafObservers.push(io);
+        } else { drift.play(); }
       } else {
         leafTweens.push(gsap.to(leaf, { y: '+=' + (40 + i * 10), ease: 'none', scrollTrigger: { trigger: leaf.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } }));
       }

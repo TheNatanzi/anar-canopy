@@ -1,0 +1,11 @@
+{
+ "model": "argon",
+ "role": "dev",
+ "score": 9,
+ "blocking": [],
+ "fixes": [
+  {"where": "assets/css/site.css lazy-loaded images on phones", "what": "Reserve explicit height (aspect-ratio from width/height attributes) for lazy-loaded assets at 390px.", "why": "Keeps CLS near zero on phones."},
+  {"where": "assets/js/site.js ScrollTrigger refresh", "what": "Refresh after document.fonts.ready and on font-load adjustments.", "why": "Prevents misaligned triggers on high-density displays."}
+ ],
+ "note": "Captured from the Gemini web app (4 Argon) on the pass-8 build."
+}

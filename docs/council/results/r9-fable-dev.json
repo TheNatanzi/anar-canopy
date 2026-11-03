@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "dev",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "assets/css/site.css `.form__status[hidden],.form__status:empty{display:none}` + site.js say()",
+   "what": "Keep the status region rendered at all times: change to `.form__status[hidden]{display:none}` and `.form__status:empty{padding:0;border:0}` so the element never leaves the accessibility tree before text lands.",
+   "why": "A polite live region that is display:none in the same frame its text is set is not announced by NVDA/VoiceOver, and the FORMSPREE_ID placeholder error path never calls status.focus() as a fallback."
+  },
+  {
+   "where": "assets/js/site.js initMotion() `ScrollTrigger.config({ limitCallbacks: true })` and the `resize` -> reserveSoon listener",
+   "what": "Add `ignoreMobileResize: true` to the config, and in reserveSoon early-return unless `window.innerWidth` changed since the last call (height-only resizes are the mobile URL bar).",
+   "why": "On iOS the address-bar collapse fires resize -> ScrollTrigger.refresh; the hero and trunk scrubs recompute from innerHeight via vh() and the logo visibly jumps during the first scroll."
+  },
+  {
+   "where": "assets/js/site.js `if (location.hash) { ... setTimeout(scrollToEl(landing), 80) }`",
+   "what": "On a hash landing, measure first: if `landing.getBoundingClientRect().top` is already within ±header height of 0, only focus and run settleReveals; otherwise use `lenis.scrollTo(el, { immediate: true, offset })` instead of the 1.4 s glide.",
+   "why": "The browser has already jumped to the fragment; a second animated scroll 80 ms after paint slides the page again (deep links to #inquire from the inner pages)."
+  },
+  {
+   "where": "assets/css/site.css `.hero__line` (base rule; the shadow exists only in the ≤768px block)",
+   "what": "Move `text-shadow:0 1px 12px rgba(27,34,30,.9)` into the base `.hero__line` rule so desktop gets it too.",
+   "why": "14–16px parchment at .92 opacity sits on moving video; when a bright frame (the chandelier, white florals) passes under it the contrast drops below 4.5:1 and the halo gradient alone does not cover the two-line width."
+  },
+  {
+   "where": "assets/js/site.js syncNav() / closeNav() (mobile drawer)",
+   "what": "While `nav-open`: add `body.panel-open` (reuses `overflow:hidden`), call `lenis.stop()`, and set `inert` on the footer, `.hww-tab` and `.motion-toggle` as well as `main`; reverse all of it in closeNav.",
+   "why": "With the drawer open the page still scrolls under it and a screen reader can leave the drawer into the footer and the fixed buttons; only <main> is inert today."
+  },
+  {
+   "where": "assets/css/site.css dead rules + assets/tree/trunks-tall.webp + the pom-tree-night srcsets",
+   "what": "Delete `.teaser__grid`, `.teaser .card`, `.accordion__more`, `.rule`, `.field input[type=\"date\"]` and the first (overridden) `.motion-toggle` padding block; drop trunks-tall.webp (361 KB, unreferenced) from the deploy; add `pom-tree-night-1400.jpg 1400w` to the three srcsets that only list 800w and 1125w.",
+   "why": "Unreferenced CSS and a 361 KB orphan file are launch debris, and the 1400w variant already exists on disk but is never offered to the browser."
+  }
+ ]
+}

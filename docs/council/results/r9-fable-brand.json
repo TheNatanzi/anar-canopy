@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "brand",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "index.html hero, <p class=\"hero__tag\"> (and .hero__tag in site.css)",
+   "what": "Pair the Persian tag with its English twin on screen one: <p class=\"hero__tag\"><span>Reimagined Heritage</span> <span class=\"fa\" lang=\"fa\" dir=\"rtl\">میراث، از نو</span></p>, English first in Ramillas 14px caps/.14em, Persian after in gold; drop the 14px eyebrow use of the same line in .statement or keep it as the kashida-topped eyebrow only.",
+   "why": "The brand line is the og:title and the owner's headline idea, yet on the first screen it exists only as an untranslated Persian tag; an English-only site should never show Persian without its English on the hero."
+  },
+  {
+   "where": "assets/css/site.css .accordion__body .fa (celebrations panels)",
+   "what": "Add text-align:left;justify-self:start so the gold Persian accent sits directly above the h3, matching .journey__fa and .step .fa (direction:rtl currently right-aligns it to the far edge of the panel, 330px away from 'Sofreh Aghd' at 1440 and at the right edge on phones).",
+   "why": "Every other Persian accent is anchored to its English title; the floating one in the open panel reads as a stray label, not a pair."
+  },
+  {
+   "where": "index.html (and the three inner pages) header .nav-fa 'فارسی · به‌زودی'",
+   "what": "Remove the inert stone 'coming soon' label from the masthead (keep the drawer note and add one line in .site-footer__lang instead); the top bar holds links, phone and the one gold button only.",
+   "why": "A dead 'coming soon' note beside the only CTA on the hero is the least premium element on the page and promises a product that does not exist yet."
+  },
+  {
+   "where": "index.html #how-teaser .teaser__strips + site.js block 6",
+   "what": "Replace the <i> strip that slides in from the right with the same <svg class=\"kashida kashida-draw\"> device used under the statement and the celebrations head, drawn left-to-right; or make block 6 a once-only tween (toggleActions:'play none none none') instead of scrub.",
+   "why": "With scrub, a reader who stops mid-section sees a 2px line hanging unanchored off the right edge (desktop shot 1); the kashida draw-on is the brand's one line device and should be the only one."
+  },
+  {
+   "where": "index.html section heads: .statement eyebrow, #how-teaser, #celebrations, #journey, #inquire .pair",
+   "what": "Pick one eyebrow device and use it for all five: either Persian eyebrow over the English h2 (as celebrations and the teaser do) or the .pair row from #inquire (English eyebrow left, Persian right). The journey currently carries an English-only eyebrow, the statement an English-only one, the teaser and celebrations Persian-only.",
+   "why": "The Persian accent is a brand signature; applied to three heads and skipped on two it reads as accidental rather than a system."
+  },
+  {
+   "where": "assets/css/site.css .hero__tint::after (rgba(201,158,92,.06))",
+   "what": "Raise the gold wash to .10 and the lower tint stop to rgba(27,34,30,.72) so the loop grades toward cypress/gold; verify the logo still clears 4.5:1 over the brightest frame.",
+   "why": "At .06 the stand-in's lavender and white linens still dominate the first screen and pull the palette off night-first; the tint is the brand's control over any footage that arrives."
+  }
+ ]
+}

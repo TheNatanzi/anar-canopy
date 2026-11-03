@@ -38,7 +38,7 @@
       </ul>
     </nav>
     <div class="nav-right">
-      <span class="nav-fa fa" lang="fa" dir="rtl" title="Persian site, coming soon" aria-label="Persian site, coming soon">فارسی</span>
+      <span class="nav-fa" lang="fa" dir="rtl">فارسی <span class="nav-fa__soon">· به‌زودی</span></span>
       <a class="btn btn--sm" href="index.html#inquire">Inquire</a>
     </div>
   </div>
@@ -70,6 +70,12 @@
         <p>Keep the soul. Redefine the style.</p>
         <p>On the day, you only have to be there.</p>
         <p class="letter__sign">Medi, founder</p>
+      </div>
+      <!-- OWNER INPUT · founder bio: Medi replaces the two bracketed lines below with facts (who leads the
+           planning, his experience, one proof line). Nothing here is invented; the slot is styled as the real thing. -->
+      <div class="letter__bio reveal" data-owner-input="founder-bio">
+        <p>[Medi: two lines on who leads the planning and your experience]</p>
+        <p class="letter__proof">[one proof line, e.g. weddings planned since YEAR]</p>
       </div>
     </div>
   </section>
@@ -145,9 +151,9 @@
 </footer>
 
 <button class="hww-tab ghost" type="button" aria-controls="hww-panel" aria-expanded="false">How we work <span aria-hidden="true">+</span></button>
-<button class="motion-toggle ghost" type="button" aria-pressed="false">Pause motion</button>
+<button class="motion-toggle ghost" type="button" aria-label="Motion" aria-pressed="false"><span class="motion-toggle__text">Pause motion</span></button>
 <div class="hww-backdrop" hidden></div>
-<aside class="hww-panel" id="hww-panel" role="dialog" aria-modal="true" aria-labelledby="hww-title" tabindex="-1" hidden>
+<aside class="hww-panel" id="hww-panel" role="dialog" aria-modal="true" aria-labelledby="hww-title" tabindex="-1" data-lenis-prevent hidden>
   <button class="hww-panel__close" type="button" aria-label="Close"><span aria-hidden="true">&times;</span></button>
   <p class="eyebrow">How we work · <span class="fa" lang="fa" dir="rtl">روش کار ما</span></p>
   <h2 id="hww-title">Five steps, one line</h2>

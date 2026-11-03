@@ -43,6 +43,8 @@
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;background:var(--night)}
 html.lenis{scroll-behavior:auto}
+html.reduced{scroll-behavior:auto}
+[id]{scroll-margin-top:calc(var(--header-h) + 16px)}
 body{margin:0;background:var(--night);color:var(--parch);font-family:var(--font-latin);font-weight:700;font-size:18px;line-height:28px;overflow-x:hidden}
 img,video,svg{display:block;max-width:100%}
 img{height:auto}
@@ -101,10 +103,9 @@ main{position:relative;z-index:2;display:block}
 .on-light .kashida path{stroke:var(--ruby)}
 .rule{height:2px;background:var(--gold);width:100%;border:0;margin:0}
 .on-light .rule{background:var(--ruby)}
-/* the lattice: a fine diamond tile (320px, 1px gold at .06) that only shows at the edges,
-   under a cypress radial fade (the termeh.svg weave rendered as broken streaks and is gone) */
-.termeh{position:relative;isolation:isolate}
-.termeh::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at center,var(--deep) 28%,rgba(18,23,20,0) 82%),url("../patterns/lattice.svg") center/320px repeat}
+/* the glow band: plain deep cypress with one soft radial gold glow at 6% (the lattice tile read as a grid and is gone) */
+.band--glow{position:relative;isolation:isolate}
+.band--glow::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at center,rgba(201,158,92,.06),rgba(201,158,92,0) 70%)}
 
 /* ---------- Buttons: ONE gold button, ruby on hover ---------- */
 .btn{display:inline-block;padding:14px 30px;border:2px solid var(--gold);background:var(--gold);color:var(--night);font-weight:700;line-height:1;letter-spacing:.02em;border-radius:999px;transition:transform .3s var(--ease),background .3s,color .3s,border-color .3s;white-space:nowrap}
@@ -185,14 +186,23 @@ main{position:relative;z-index:2;display:block}
 @media (max-width:768px){.leaf{transform:scale(.6);transform-origin:top left}}
 
 /* ---------- DESCEND THE TREE ---------- */
-.descend{position:relative;background:var(--night);overflow:clip}
+.descend{position:relative;background:var(--night);overflow:clip;--descend-col:880px}
 .descend__trunks{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;pointer-events:none;z-index:0}
-/* trunks at 124vw centred: each trunk sits further out, clear of the 880px text column */
-.descend__trunks img{position:absolute;left:50%;top:0;width:124vw;max-width:none;height:auto;transform:translateX(-50%);will-change:transform;min-height:100%}
-/* phones: a single trunk at the left edge only */
-@media (max-width:768px){.descend__trunks img{left:0;width:190vw;transform:none}}
+/* two edge strips (trunk-left / trunk-right, transparent webp), never behind the centre column:
+   20vw each from 1024px, 26vw at 769-1023px, phones keep only the left strip at 34vw.
+   The paint reaches inward across most of each strip, so above 768px the mask fades out exactly at
+   the column edge, max((100vw - 880px)/2, gutter): no painted art under the text at any width. */
+.descend__trunk{position:absolute;top:0;width:20vw;max-width:20vw;height:auto;min-height:100%;object-fit:cover;will-change:transform}
+.descend__trunk--l{left:0;object-position:left top;-webkit-mask-image:linear-gradient(to right,#000 70%,transparent);mask-image:linear-gradient(to right,#000 70%,transparent)}
+.descend__trunk--r{right:0;object-position:right top;-webkit-mask-image:linear-gradient(to left,#000 70%,transparent);mask-image:linear-gradient(to left,#000 70%,transparent)}
+@media (min-width:769px){
+  .descend__trunk--l{-webkit-mask-image:linear-gradient(to right,#000 min(70%,calc(max((100vw - var(--descend-col)) / 2,var(--gutter)) - 32px)),transparent min(100%,calc(max((100vw - var(--descend-col)) / 2,var(--gutter)))));mask-image:linear-gradient(to right,#000 min(70%,calc(max((100vw - var(--descend-col)) / 2,var(--gutter)) - 32px)),transparent min(100%,calc(max((100vw - var(--descend-col)) / 2,var(--gutter)))))}
+  .descend__trunk--r{-webkit-mask-image:linear-gradient(to left,#000 min(70%,calc(max((100vw - var(--descend-col)) / 2,var(--gutter)) - 32px)),transparent min(100%,calc(max((100vw - var(--descend-col)) / 2,var(--gutter)))));mask-image:linear-gradient(to left,#000 min(70%,calc(max((100vw - var(--descend-col)) / 2,var(--gutter)) - 32px)),transparent min(100%,calc(max((100vw - var(--descend-col)) / 2,var(--gutter)))))}
+}
+@media (min-width:769px) and (max-width:1023px){.descend__trunk{width:26vw;max-width:26vw}}
+@media (max-width:768px){.descend__trunk{width:34vw;max-width:34vw}.descend__trunk--r{display:none}}
 .descend__content{position:relative;z-index:1;margin-top:-100vh;margin-top:-100svh;padding-block:clamp(72px,14vh,170px) clamp(72px,12vh,150px)}
-.descend__content .container--text{max-width:calc(880px + 2*var(--gutter))}
+.descend__content .container--text{max-width:calc(var(--descend-col) + 2*var(--gutter))}
 .descend .leaf--1{right:4vw;top:12vh;z-index:1}
 .statement{text-align:center}
 .statement .kashida--short{margin:var(--s2) auto var(--s3)}
@@ -221,12 +231,12 @@ main{position:relative;z-index:2;display:block}
 .accordion__trigger[hidden]{display:none}
 .accordion__trigger:focus-visible{outline:2px solid var(--gold);outline-offset:-6px}
 .accordion__label{position:absolute;left:var(--s2);top:var(--s2);letter-spacing:.1em;text-transform:uppercase;font-size:14px;z-index:1;display:none;color:var(--gold)}
-.accordion__body{position:relative;z-index:1;padding:var(--s4) var(--s2) var(--s3);display:grid;gap:var(--s1);min-height:100%;align-content:end;pointer-events:none}
+.accordion__body{position:relative;z-index:3;padding:var(--s4) var(--s2) var(--s3);display:grid;gap:var(--s1);min-height:100%;align-content:end;pointer-events:none}
 .accordion__body h3{font-size:clamp(26px,3vw,38px)}
 .accordion__body .fa{color:var(--gold)}
 .accordion__body p:last-child{max-width:34em;color:var(--parch)}
 .accordion__more{pointer-events:auto;margin-top:var(--s1);justify-self:start}
-@media (min-width:768px){
+@media (min-width:769px){
   .accordion{display:flex;gap:var(--s1);height:min(70vh,640px)}
   .accordion__panel{flex:1 1 0;min-height:0;transition:flex .7s var(--ease)}
   .accordion__panel.is-open{flex:6 1 0}
@@ -246,8 +256,14 @@ main{position:relative;z-index:2;display:block}
 /* "Medi, founder" as a gold eyebrow line (no drawn signature) */
 .quote figcaption.quote__by{margin-top:var(--s3);color:var(--gold)}
 
-/* ---------- How we work teaser (termeh 8%, gold strips, two cards) ---------- */
+/* ---------- How we work teaser (glow band, gold strips, two cards, two service options) ---------- */
 .teaser{overflow:hidden}
+.teaser__options{display:grid;gap:var(--s3);margin-top:var(--s4)}
+@media (min-width:768px){.teaser__options{grid-template-columns:1fr 1fr;gap:var(--s4)}}
+.teaser__options li{border-top:2px solid var(--gold);padding-top:var(--s2);display:grid;gap:var(--s1)}
+.teaser__options h3{font-size:clamp(20px,2.2vw,24px)}
+.teaser__options .option__when{color:var(--gold);font-size:14px;line-height:20px;letter-spacing:.06em;text-transform:uppercase}
+.teaser__options p{color:var(--stone);font-size:16px;line-height:24px}
 .teaser__strips{position:relative;height:2px;margin-block:var(--s3) var(--s4);display:grid;gap:0}
 .teaser__strips i{position:absolute;left:0;right:0;height:2px;background:var(--gold);transform-origin:right center}
 .teaser__strips i:nth-child(1){top:-14px;opacity:.9}
@@ -262,26 +278,28 @@ main{position:relative;z-index:2;display:block}
 /* ---------- The journey: nine stops on one gold line ---------- */
 .journey{position:relative}
 .journey .leaf--3{left:2vw;top:8vh;z-index:0}
+.journey__order{text-align:center;color:var(--stone);font-size:16px;line-height:24px;max-width:38em;margin:calc(-1 * clamp(16px,3vh,40px)) auto clamp(32px,6vh,72px);text-wrap:balance}
 .journey__track{position:relative;z-index:1}
 .journey__line{position:absolute;pointer-events:none}
-.journey__line path{fill:none;stroke:var(--gold);stroke-width:2;vector-effect:non-scaling-stroke}
+/* the full line is there at once in sage at 35%; the gold .track-line overlay draws across it with scroll */
+.journey__line path{fill:none;stroke:var(--sage);stroke-opacity:.35;stroke-width:2;vector-effect:non-scaling-stroke}
+.journey__line.track-line path{stroke:var(--gold);stroke-opacity:1}
 .journey__line--h{display:none}
 .journey__line--v{left:11px;top:0;width:2px;height:100%}
 .journey__stops{display:grid;gap:var(--s3);padding-left:40px}
 .journey__stop{position:relative;display:grid;gap:2px}
-.journey__dot{position:absolute;left:-40px;top:10px;width:14px;height:14px;border-radius:50%;background:var(--gold);transform-origin:center}
-.journey__fa{font-size:20px;line-height:1.5;text-align:left;direction:rtl}
-.journey__en{color:var(--parch)}
-.journey__note{font-size:14px;line-height:20px;color:var(--stone)}
+/* all nine dots show at once (sage); site.js block 5 turns each gold as the line reaches it */
+.journey__dot{position:absolute;left:-40px;top:10px;width:14px;height:14px;border-radius:50%;background:var(--sage);transform-origin:center}
+.journey__en{color:var(--parch);font-size:15px;line-height:20px;text-wrap:balance}
+.journey__fa{font-size:16px;line-height:1.6;text-align:left;direction:rtl;color:var(--stone)}
+.journey__note{font-size:13px;line-height:18px;color:var(--stone)}
 @media (min-width:900px){
   .journey__line--h{display:block;left:0;right:0;top:7px;width:100%;height:2px}
   .journey__line--v{display:none}
-  .journey__stops{grid-template-columns:repeat(9,1fr);gap:var(--s1);padding-left:0;padding-top:var(--s4)}
+  .journey__stops{grid-template-columns:repeat(9,minmax(0,1fr));gap:var(--s1);padding-left:0;padding-top:var(--s4)}
   .journey__stop{text-align:center;justify-items:center}
   .journey__dot{left:50%;top:-64px;margin-left:-7px}
   .journey__fa{text-align:center}
-  .journey__en{font-size:16px;line-height:22px}
-  .journey__note{display:none}
 }
 
 /* ---------- The roots and the floor; Inquire sits on the ground ---------- */
@@ -300,7 +318,7 @@ main{position:relative;z-index:2;display:block}
 .form{display:grid;gap:var(--s3);background:rgba(18,23,20,.78);border:0;border-top:2px solid var(--gold);padding:clamp(20px,4vw,48px)}
 .form__row{display:grid;gap:var(--s3)}
 @media (min-width:600px){.form__row{grid-template-columns:1fr 1fr}}
-.field{display:grid;gap:var(--s1)}
+.field{display:grid;gap:var(--s1);min-width:0}
 .field label,.fieldset legend{font-size:16px;line-height:22px;color:var(--parch)}
 .field input,.field textarea,.field select{font:inherit;font-weight:700;color:var(--parch);background:transparent;border:1px solid var(--stone);border-radius:2px;padding:12px 14px;width:100%;min-height:48px}
 /* placeholders in stone (#B9B3A6 on the deep input ground: ~8:1) */
@@ -312,11 +330,12 @@ main{position:relative;z-index:2;display:block}
 /* success / error region (aria-live) */
 .form__status{font-size:16px;line-height:24px;padding:var(--s2);border-top:2px solid var(--gold);color:var(--parch)}
 .form__status[hidden]{display:none}
+.form__status:empty{padding:0;border:0;height:0;margin-top:calc(-1 * var(--s3))}
 .form__status.is-error{border-top-color:var(--ruby)}
 .form__status.is-wait{color:var(--stone)}
 .form__status:focus{outline:none}
 .field textarea{min-height:150px;resize:vertical}
-.fieldset{border:0;padding:0;margin:0;display:grid;gap:var(--s1)}
+.fieldset{border:0;padding:0;margin:0;min-width:0;display:grid;gap:var(--s1)}
 .checks{display:grid;gap:var(--s1) var(--s2);grid-template-columns:1fr 1fr}
 @media (min-width:600px){.checks{grid-template-columns:repeat(3,1fr)}}
 .check{display:flex;gap:10px;align-items:center;font-size:16px;line-height:22px;min-height:32px}
@@ -333,17 +352,25 @@ main{position:relative;z-index:2;display:block}
 .site-footer address a:hover{border-color:var(--gold)}
 .site-footer__fa{font-size:20px;line-height:1.7;text-align:left;color:var(--gold)}
 @media (min-width:768px){.site-footer__fa{text-align:right}}
+.site-footer__lang{margin-top:var(--s2);font-size:14px;line-height:20px;color:var(--stone)}
 .site-footer__legal{margin-top:var(--s3);font-size:14px;line-height:20px;color:var(--stone);display:flex;flex-wrap:wrap;gap:var(--s2);justify-content:space-between}
 
-/* ---------- "How we work +" tab and slide-out panel ---------- */
-.hww-tab{position:fixed;z-index:60;right:var(--s2);bottom:var(--s2);background:var(--gold);color:var(--night);letter-spacing:.06em;padding:12px 18px;border-radius:999px;box-shadow:0 4px 18px rgba(0,0,0,.35);transition:transform .3s var(--ease),background .3s,color .3s}
-.hww-tab:hover{background:var(--ruby);color:var(--parch)}
-.hww-tab:focus-visible{outline:2px solid var(--parch);outline-offset:3px}
+/* ---------- Ghost buttons: the "How we work +" tab and "Pause motion" (one gold-filled button per screen) ---------- */
+.ghost{background:transparent;border:2px solid var(--gold);color:var(--parch);transition:background .3s,color .3s,border-color .3s,transform .3s var(--ease),opacity .3s}
+.ghost:hover,.ghost:focus-visible{background:var(--ruby);border-color:var(--ruby);color:var(--parch)}
+.ghost:focus-visible{outline:2px solid var(--parch);outline-offset:3px}
+/* the tab: bottom-right on phones (above the safe area), vertical at the right edge on wider screens;
+   hidden (slides out + fades) while #inquire or the footer is in view */
+.hww-tab{position:fixed;z-index:60;right:var(--s2);bottom:calc(16px + env(safe-area-inset-bottom));letter-spacing:.06em;padding:10px 18px;border-radius:999px;background-color:rgba(27,34,30,.7)}
 html:not(.js) .hww-tab{display:none}
+.hww-tab.is-hidden{transform:translateY(140%);opacity:0;pointer-events:none}
 @media (min-width:768px){
-  .hww-tab{right:0;bottom:auto;top:50%;writing-mode:vertical-rl;transform:translateY(-50%) rotate(180deg);padding:20px 12px;border-radius:0 2px 2px 0;box-shadow:none}
-  .hww-tab:hover{transform:translateY(-50%) rotate(180deg)}
+  .hww-tab{right:0;bottom:auto;top:50%;writing-mode:vertical-rl;transform:translateY(-50%) rotate(180deg);padding:20px 12px;border-radius:0 2px 2px 0;border-left:0}
+  .hww-tab.is-hidden{transform:translate(110%,-50%) rotate(180deg)}
 }
+/* Pause motion / Play motion: bottom-left, small */
+.motion-toggle{position:fixed;z-index:60;left:var(--s2);bottom:calc(16px + env(safe-area-inset-bottom));font-size:13px;line-height:18px;letter-spacing:.06em;padding:8px 14px;border-radius:999px;background-color:rgba(27,34,30,.7)}
+.motion-toggle[hidden],html:not(.js) .motion-toggle{display:none}
 .hww-backdrop{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.55);opacity:0;transition:opacity .4s}
 .hww-backdrop[hidden]{display:none}
 .hww-backdrop.is-on{opacity:1}
@@ -358,7 +385,7 @@ html:not(.js) .hww-tab{display:none}
 .hww-panel__close:hover{background:rgba(201,158,92,.14)}
 .hww-panel h2{margin:var(--s1) 0 var(--s3)}
 .hww-steps{display:grid;gap:var(--s2);counter-reset:step;margin-bottom:var(--s3)}
-.hww-steps li{display:grid;grid-template-columns:44px 1fr;gap:var(--s2);border-top:1px solid rgba(201,158,92,.4);padding-top:var(--s2)}
+.hww-steps li{display:grid;grid-template-columns:44px 1fr;gap:var(--s2);padding-top:var(--s1)}
 .hww-steps li::before{counter-increment:step;content:"0" counter(step);color:var(--gold)}
 .hww-steps h3{font-size:20px;line-height:26px;margin-bottom:4px}
 .hww-steps p{font-size:16px;line-height:24px;color:var(--stone)}
@@ -372,7 +399,7 @@ body.panel-open{overflow:hidden}
 .pageband .lede{margin-top:var(--s3);color:var(--stone)}
 
 /* ---------- Weddings page ---------- */
-.tradition{border-top:1px solid rgba(201,158,92,.3)}
+.tradition+.tradition{padding-top:clamp(48px,8vh,100px)}
 .tradition__grid{display:grid;gap:var(--s3)}
 @media (min-width:900px){
   .tradition__grid{grid-template-columns:1fr 1fr;align-items:start;gap:var(--s4)}
@@ -385,7 +412,7 @@ body.panel-open{overflow:hidden}
 .tradition__media .slot{overflow:hidden;background:var(--deep);max-width:480px;margin-inline:auto;aspect-ratio:4/5}
 .tradition__media .slot img{width:100%;height:100%;object-fit:cover}
 .tradition__media figcaption{margin-top:var(--s1);text-align:center}
-.seasonal{border:1px solid var(--gold);padding:var(--s3)}
+.seasonal{border-top:2px solid var(--gold);background:rgba(18,23,20,.6);padding:var(--s3)}
 .seasonal p+p{margin-top:var(--s2)}
 
 /* ---------- How we work page ---------- */
@@ -399,16 +426,15 @@ body.panel-open{overflow:hidden}
 .step h3{font-size:clamp(24px,3vw,34px)}
 .step .fa{text-align:left;color:var(--gold)}
 .step p{color:var(--parch)}
-.faq{display:grid;gap:0;border-top:2px solid var(--ruby)}
-.faq details{border-bottom:1px solid rgba(67,38,23,.35)}
+.faq{display:grid;gap:var(--s1);border-top:2px solid var(--ruby);padding-top:var(--s2)}
 .faq summary{cursor:pointer;list-style:none;padding:var(--s2) 0;font-size:20px;line-height:28px;display:flex;justify-content:space-between;gap:var(--s2)}
 .faq summary::-webkit-details-marker{display:none}
 .faq summary::after{content:"+";color:var(--ruby);flex:0 0 auto}
 .faq details[open] summary::after{content:"\2013"}
 .faq .faq__a{padding:0 0 var(--s3);max-width:38em}
-.you-get{display:grid;gap:var(--s2)}
+.you-get{display:grid;gap:var(--s3) var(--s3)}
 @media (min-width:768px){.you-get{grid-template-columns:1fr 1fr}}
-.you-get li{border-top:1px solid rgba(201,158,92,.4);padding-top:var(--s1)}
+.you-get li{padding-top:0}
 .you-get li strong{display:block;color:var(--gold)}
 .you-get li span{color:var(--stone);font-size:16px;line-height:24px}
 
@@ -426,22 +452,29 @@ body.panel-open{overflow:hidden}
 .promise li b{color:var(--gold)}
 .behaviour{display:grid;gap:var(--s2);grid-template-columns:1fr 1fr;margin-top:var(--s4)}
 @media (min-width:768px){.behaviour{grid-template-columns:repeat(4,1fr)}}
-.behaviour li{font-size:16px;line-height:24px;border-top:1px solid rgba(201,158,92,.4);padding-top:var(--s1);color:var(--stone)}
+.behaviour li{font-size:16px;line-height:24px;padding-top:0;color:var(--stone)}
 .behaviour li strong{display:block;color:var(--parch)}
 
-/* ---------- Reveal (hidden only when html.js is present; motion-only tweens) ---------- */
-.js .reveal{opacity:0;transform:translateY(24px)}
-.js .reveal-img{transform:scale(1.02)}
-.js .stagger > *{opacity:0;transform:translateY(16px)}
-.js.reduced .reveal,.js.reduced .stagger > *{opacity:1;transform:none}
-.js.reduced .reveal-img{transform:none}
-.js.reduced .teaser__strips i{transform:none}
+/* ---------- Reveal: content is visible by default. Targets are hidden ONLY under html.anim-ready,
+   which site.js adds after GSAP + ScrollTrigger initialised; if that init throws, nothing is hidden. ---------- */
+.anim-ready .reveal{opacity:0;transform:translateY(24px)}
+.anim-ready .reveal-img{transform:scale(1.02)}
+.anim-ready .stagger > *{opacity:0;transform:translateY(16px)}
+.reduced .reveal,.reduced .stagger > *{opacity:1;transform:none}
+.reduced .reveal-img{transform:none}
+.reduced .teaser__strips i{transform:none}
+.reduced *, .reduced *::before, .reduced *::after{transition-duration:.01ms!important;animation-duration:.01ms!important}
+/* Keep all celebrations readable if the behavior script is unavailable. */
+html:not(.site-ready) .accordion{display:grid;height:auto}
+html:not(.site-ready) .accordion__panel{min-height:360px}
+html:not(.site-ready) .accordion__body{opacity:1;visibility:visible}
+html:not(.site-ready) .accordion__trigger,html:not(.site-ready) .accordion__label{display:none}
 
 /* ---------- Reduced motion: everything visible, nothing scrubs ---------- */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}
-  .js .reveal,.js .stagger > *{opacity:1;transform:none}
-  .js .reveal-img{transform:none}
-  .motion .teaser__strips i{transform:none}
+  .anim-ready .reveal,.anim-ready .stagger > *{opacity:1;transform:none}
+  .anim-ready .reveal-img{transform:none}
+  .anim-ready .teaser__strips i{transform:none}
 }

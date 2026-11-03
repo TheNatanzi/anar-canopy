@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320">
-  <!-- Anar Events: fine diamond lattice tile, 320px, 1px zaffaran-gold lines at .06 opacity. Cells 80px. -->
-  <defs>
-    <pattern id="cell" width="80" height="80" patternUnits="userSpaceOnUse">
-      <path d="M0 40 L40 0 L80 40 L40 80 Z" fill="none" stroke="#C99E5C" stroke-opacity=".06" stroke-width="1" vector-effect="non-scaling-stroke"/>
-    </pattern>
-  </defs>
-  <rect width="320" height="320" fill="url(#cell)"/>
-</svg>

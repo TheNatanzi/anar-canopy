@@ -1,0 +1,41 @@
+{
+ "model": "fable",
+ "role": "brand",
+ "score": 7,
+ "blocking": [
+  "Desktop descend section (index-desktop-1): the trunks-tall art crosses the centre column — a pomegranate and leaves sit directly behind the statement sub-line 'Anar Events plans and runs weddings…'. That breaks the 'edges and bottom only, middle open' rule on the one section after the hero that should prove it.",
+  "Phone (index-phone-1, index-phone-3): two fixed pills ('Pause motion' bottom-left, 'How we work +' bottom-right) cover live content — the Sofreh Aghd heading and its Persian line, and the Mehndi / Sangeet stop. On a 390px screen they eat ~70px of every viewport and collide with the brand's own type."
+ ],
+ "fixes": [
+  {
+   "where": "assets/css/site.css .descend__trunks img (≈'trunks at 124vw centred')",
+   "what": "At min-width 1024px set width:150vw (or add a centre mask: mask-image:linear-gradient(to right,#000 22%,transparent 38%,transparent 62%,#000 78%)) so no branch or fruit sits behind the 880px text column.",
+   "why": "Hard rule: tree frames edges and bottom, the middle stays open — desktop-1 shows fruit behind the statement."
+  },
+  {
+   "where": "assets/css/site.css .hww-tab mobile block (right:var(--s2);bottom:…)",
+   "what": "On ≤768px make it the same slim vertical edge tab as desktop (right:0; top:50%; writing-mode:vertical-rl; padding:14px 8px; font-size:13px) instead of a full pill in the bottom-right corner.",
+   "why": "Phone-1/phone-3: the pill covers 'سفرهٔ عقد' and 'Mehndi / Sangeet'; an edge tab never sits on content and matches the white-desert reference the owner chose."
+  },
+  {
+   "where": "assets/css/site.css .motion-toggle + site.js onScrollState",
+   "what": "On phones hide the toggle once the hero has scrolled out (add .is-hidden via the existing IntersectionObserver pattern, or move it into the header drawer); on desktop reduce to a 36px icon-only round button with aria-label.",
+   "why": "A utilitarian control pinned on every screen reads as a dev tool, not a luxury studio; on phone-1 it overlaps the Sofreh Aghd h3."
+  },
+  {
+   "where": "assets/video/hero-1080-loop.mp4 / hero-720-loop.mp4 (index-desktop-0)",
+   "what": "Replace the loop: the current footage shows St Peter's dome, Rome. Use a loop with no recognisable foreign landmark (garden/tent/golden-hour Bay Area or anonymous estate), or re-crop the frame below the skyline.",
+   "why": "A Bay Area Persian studio opening on the Vatican skyline is a tell that undercuts the 'real, not costume' promise."
+  },
+  {
+   "where": "assets/css/site.css .ghost / .hww-tab over .on-light (index-desktop-2, phone-2)",
+   "what": "Give the tab a solid var(--night) fill (drop the .7 alpha) so it stays a night-palette object over parchment, or toggle a class when an .on-light section is in view that swaps to parchment fill + ruby border.",
+   "why": "Over the parchment quote the translucent fill renders as a muddy grey smudge beside ruby type."
+  },
+  {
+   "where": "assets/css/site.css .journey__stops @media (min-width:900px) and index.html journey stop 5",
+   "what": "Set grid-template-columns:repeat(9,minmax(0,1fr)); .journey__en{font-size:15px;text-wrap:balance}; shorten the English to 'Bale-boroon' and put 'Shirini-khori' in the note.",
+   "why": "Desktop-3: that one label wraps to three lines and the nine stops lose their shared baseline on the 'one line' device."
+  }
+ ]
+}

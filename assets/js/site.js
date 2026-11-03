@@ -1,5 +1,5 @@
 /* =========================================================
-   Anar Events — site.js (v2.1, night palette, round-1 fixes, 3 Nov 2026)
+   Anar Events — site.js (v2.2, night palette, round-2 fixes, 3 Nov 2026)
    Loaded (defer, pinned) before this file:
      GSAP 3.12.5 + ScrollTrigger (cdnjs), Lenis 1.1.18 (unpkg)
    Content is visible by default. Reveal targets are hidden only
@@ -27,6 +27,12 @@
 
   var userPaused = false;
   try { userPaused = sessionStorage.getItem('anar-motion') === 'paused'; } catch (e) { /* storage blocked: ignore */ }
+
+  /* true while the visitor is moving focus with the keyboard (Tab); any mousedown clears it.
+     The accordion's hover guard only yields to a keyboard-placed focus. */
+  var usingKeyboard = false;
+  document.addEventListener('keydown', function (e) { if (e.key === 'Tab') { usingKeyboard = true; } }, true);
+  document.addEventListener('mousedown', function () { usingKeyboard = false; }, true);
 
   /* ---------------------------------------------------------
      0. Hero video: the src is set only after window 'load',
@@ -126,6 +132,8 @@
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && header.classList.contains('nav-open')) { closeNav(); navToggle.focus(); }
     });
+    /* the links are visible by default (CSS); only now, with the toggle wired, do they collapse into the drawer */
+    html.classList.add('nav-ready');
   }
 
   /* ---------------------------------------------------------
@@ -275,7 +283,8 @@
       var bodyEl = $('.accordion__body', p);
       if (bodyEl && !bodyEl.id) { bodyEl.id = 'acc-' + ai + '-' + i; }
       if (btn && bodyEl) { btn.setAttribute('aria-controls', bodyEl.id); }
-      if (hoverable) { p.addEventListener('mouseenter', function () { if (isDesktop() && !acc.contains(document.activeElement)) { open(p); } }); }
+      /* hover opens unless the keyboard placed focus inside the accordion (a click also focuses, and must not disable hover) */
+      if (hoverable) { p.addEventListener('mouseenter', function () { if (isDesktop() && !(usingKeyboard && acc.contains(document.activeElement))) { open(p); } }); }
       if (btn) {
         btn.addEventListener('click', function () { if (isDesktop()) { open(p); } });
         btn.addEventListener('focus', function () { if (isDesktop()) { open(p); } });
@@ -302,8 +311,10 @@
 
   /* ---------------------------------------------------------
      Inquiry form: posts to Formspree with fetch when available;
-     entered values stay on error; the aria-live region reports
-     success / error. Without fetch the form submits normally.
+     12 s AbortController timeout; entered values stay on every
+     error (timeout included); the submit button is restored in
+     finally; the aria-live region reports success / error.
+     Without fetch the form submits normally.
      --------------------------------------------------------- */
   var form = $('.form[data-ajax]');
   if (form && window.fetch && window.FormData) {
@@ -315,6 +326,7 @@
       status.className = 'form__status is-' + kind;
       status.textContent = text;
     };
+    var restoreSubmit = function () { if (submitBtn) { submitBtn.disabled = false; } };
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       if (!form.checkValidity()) { form.reportValidity(); return; }
@@ -325,7 +337,12 @@
       if (submitBtn && submitBtn.disabled) { return; }
       if (submitBtn) { submitBtn.disabled = true; }
       say('wait', 'Sending…');
-      fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } })
+      var controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+      var timedOut = false;
+      var timer = setTimeout(function () { timedOut = true; if (controller) { controller.abort(); } }, 12000);
+      var options = { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } };
+      if (controller) { options.signal = controller.signal; }
+      var request = fetch(form.action, options)
         .then(function (r) { if (!r.ok) { throw new Error('bad status'); } })
         .then(function () {
           say('ok', 'Thank you. Your message is on its way; we reply within one business day.');
@@ -333,10 +350,15 @@
           if (status) { status.focus(); }
         })
         .catch(function () {
-          say('error', 'Your message did not send. Nothing you typed was lost: please try again, or write to hello@anarevents.com or WhatsApp us.');
+          if (timedOut) {
+            say('error', 'The connection timed out before your message was sent. Nothing you typed was lost: please try again in a moment, or write to hello@anarevents.com or WhatsApp us.');
+          } else {
+            say('error', 'Your message did not send. Nothing you typed was lost: please try again, or write to hello@anarevents.com or WhatsApp us.');
+          }
           if (status) { status.focus(); }
-        })
-        .then(function () { if (submitBtn) { submitBtn.disabled = false; } });
+        });
+      var done = function () { clearTimeout(timer); restoreSubmit(); };
+      if (request.finally) { request.finally(done); } else { request.then(done, done); }
     });
   }
 
@@ -348,7 +370,22 @@
      ========================================================= */
   var motionOn = false;
   var leafTweens = [];
-  var trunksImg = $('.descend__trunks img');
+  var trunkImgs = $$('.descend__trunks img');
+
+  /* Keyboard focus inside a reveal target: mark every animated ancestor
+     .is-revealed at once (CSS forces it visible) so nobody tabs into
+     invisible content. The inquiry form carries no reveal class at all. */
+  document.addEventListener('focusin', function (e) {
+    var node = e.target;
+    if (!node || !node.closest || !html.classList.contains('anim-ready')) { return; }
+    while (node && node !== body) {
+      if (node.classList.contains('reveal') || node.classList.contains('reveal-img') || node.classList.contains('stagger') ||
+          (node.parentElement && node.parentElement.classList.contains('stagger'))) {
+        node.classList.add('is-revealed');
+      }
+      node = node.parentElement;
+    }
+  });
 
   function initMotion() {
     if (!hasGsap || motionOn) { return motionOn; }
@@ -409,20 +446,24 @@
     }
 
     /* -------------------------------------------------------
-       3. DESCEND THE TREE: the trunks sit in a sticky, viewport-
-          high frame and scroll past at 0.8x while the statement
-          and the pillars (normal flow) pass at 1x.
+       3. DESCEND THE TREE: the two edge strips (trunk-left /
+          trunk-right) sit in a sticky, viewport-high frame and
+          scroll past at 0.8x while the statement and the pillars
+          (normal flow) pass at 1x. Travel is clamped to each
+          strip's spare height so no gap opens at the bottom.
        ------------------------------------------------------- */
     var descend = $('.descend');
-    if (descend && trunksImg) {
-      gsap.to(trunksImg, {
-        y: function () {
-          var travel = Math.max(0, descend.offsetHeight - vh()) * 0.8;
-          var room = Math.max(0, trunksImg.offsetHeight - vh());
-          return -Math.min(travel, room);
-        },
-        ease: 'none',
-        scrollTrigger: { trigger: descend, start: 'top top', end: 'bottom bottom', scrub: true, invalidateOnRefresh: true }
+    if (descend && trunkImgs.length) {
+      trunkImgs.forEach(function (img) {
+        gsap.to(img, {
+          y: function () {
+            var travel = Math.max(0, descend.offsetHeight - vh()) * 0.8;
+            var room = Math.max(0, img.offsetHeight - vh());
+            return -Math.min(travel, room);
+          },
+          ease: 'none',
+          scrollTrigger: { trigger: descend, start: 'top top', end: 'bottom bottom', scrub: true, invalidateOnRefresh: true }
+        });
       });
     }
 
@@ -443,7 +484,10 @@
     /* -------------------------------------------------------
        5. The journey (and the steps line on How we work):
           [data-track] holds .track-line path(s) and .track-dot(s).
-          ONE gold line draws across the section; each dot pops.
+          The sage base line and all the dots are there from the
+          start (CSS: no empty state); the gold .track-line overlay
+          draws across with scroll and each dot turns gold, with a
+          small pulse, as the line reaches it.
        ------------------------------------------------------- */
     $$('[data-track]').forEach(function (track) {
       var paths = $$('.track-line path', track);
@@ -459,7 +503,9 @@
         tl.to(p, { strokeDashoffset: 0, ease: 'none', duration: 1 }, 0);
       });
       dots.forEach(function (d, i) {
-        tl.fromTo(d, { scale: 0 }, { scale: 1, ease: 'back.out(2)', duration: 0.06 }, Math.max(0, (i + 0.5) / dots.length - 0.04));
+        var at = Math.max(0, (i + 0.5) / dots.length - 0.04);
+        tl.fromTo(d, { backgroundColor: '#5D625F' }, { backgroundColor: '#C99E5C', ease: 'none', duration: 0.05 }, at);
+        tl.fromTo(d, { scale: 1 }, { scale: 1.35, ease: 'power1.inOut', duration: 0.03, yoyo: true, repeat: 1 }, at);
       });
     });
 
@@ -521,13 +567,21 @@
      the prefers-reduced-motion change event.
      --------------------------------------------------------- */
   var toggle = $('.motion-toggle');
+  /* the visible text lives in .motion-toggle__text (hidden on desktop, where CSS draws the glyph);
+     the accessible name is the fixed aria-label "Motion" and is never changed here */
+  var toggleText = toggle ? ($('.motion-toggle__text', toggle) || toggle) : null;
+  var setToggle = function (pressed) {
+    if (!toggle) { return; }
+    toggle.setAttribute('aria-pressed', pressed ? 'true' : 'false');
+    toggleText.textContent = pressed ? 'Play motion' : 'Pause motion';
+  };
   function pauseAll(remember) {
     if (remember) { userPaused = true; }
     if (remember) { try { sessionStorage.setItem('anar-motion', 'paused'); } catch (e) { /* ignore */ } }
     killMotion();
     stopSmoothScroll();
     if (heroVideo && !heroVideo.paused) { heroVideo.pause(); }
-    if (toggle) { toggle.setAttribute('aria-pressed', 'true'); toggle.textContent = 'Play motion'; }
+    setToggle(true);
   }
   function playAll(remember) {
     userPaused = false;
@@ -537,11 +591,19 @@
     if (body.classList.contains('panel-open') && lenis) { lenis.stop(); }
     initMotion();
     if (heroVideo) { if (!videoLoaded) { loadHeroVideo(); } else if (heroVideo.getBoundingClientRect().bottom > 0) { heroVideo.play().catch(function () {}); } }
-    if (toggle) { toggle.setAttribute('aria-pressed', 'false'); toggle.textContent = 'Pause motion'; }
+    setToggle(false);
   }
   if (toggle) {
     toggle.hidden = !hasGsap && !heroVideo;
+    if (!toggle.hasAttribute('aria-label')) { toggle.setAttribute('aria-label', 'Motion'); }
     toggle.addEventListener('click', function () { if (userPaused || reduced) { playAll(true); } else { pauseAll(true); } });
+    /* phones: the toggle hides (CSS .is-hidden under 768px) once the hero (or the inner-page band) has scrolled out */
+    var heroEl = $('.hero') || $('.pageband');
+    if (heroEl && 'IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) { toggle.classList.toggle('is-hidden', !en.isIntersecting); });
+      }, { threshold: 0 }).observe(heroEl);
+    }
   }
   var onReduceChange = function (e) {
     reduced = e.matches;
@@ -552,7 +614,7 @@
   /* ---- start ---- */
   if (!hasGsap || reduced || userPaused) {
     html.classList.add('reduced');
-    if (toggle && (userPaused || reduced)) { toggle.setAttribute('aria-pressed', 'true'); toggle.textContent = 'Play motion'; }
+    if (toggle && (userPaused || reduced)) { setToggle(true); }
   } else {
     initMotion();
   }
@@ -561,6 +623,6 @@
   if (hasGsap) {
     window.addEventListener('load', function () { if (motionOn) { ScrollTrigger.refresh(); } });
     if (document.fonts && document.fonts.ready) { document.fonts.ready.then(function () { if (motionOn) { ScrollTrigger.refresh(); } }); }
-    if (trunksImg && !trunksImg.complete) { trunksImg.addEventListener('load', function () { if (motionOn) { ScrollTrigger.refresh(); } }); }
+    trunkImgs.forEach(function (img) { if (!img.complete) { img.addEventListener('load', function () { if (motionOn) { ScrollTrigger.refresh(); } }); } });
   }
 })();

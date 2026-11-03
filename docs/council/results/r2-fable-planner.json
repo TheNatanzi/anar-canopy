@@ -1,0 +1,41 @@
+{
+ "model": "fable",
+ "role": "planner",
+ "score": 7,
+ "blocking": [
+  "\"South Asian\" is claimed everywhere (title, hero line, statement, form) but only Muslim South Asian rituals exist: nikah, walima, mehndi, sangeet, baraat. Hindu and Sikh families (haldi, pheras under the mandap, Anand Karaj) find nothing and no Hindi/Punjabi reply option. Narrow the claim or add the rituals before launch.",
+  "The hero loop shows Rome (St Peter's dome is visible in index-desktop-0). Bay Area Persian and Afghan parents will recognise it as a stock Italian wedding, which undercuts the 'we know your families' pitch."
+ ],
+ "fixes": [
+  {
+   "where": "index.html #celebrations + weddings.html + index.html #inquire fieldset/select#f-lang",
+   "what": "Either (a) add a Hindu/Sikh panel ('Haldi, Pheras & Anand Karaj') to the celebrations and weddings page, add checkboxes 'Haldi', 'Pheras / Mandap', 'Anand Karaj', and add 'Hindi' and 'Punjabi' to the Reply-in select; or (b) change every 'South Asian' to 'Pakistani and Afghan' and keep the current rituals.",
+   "why": "The site promises a breadth it does not deliver; a Gujarati or Punjabi mother sees no sign her wedding is understood."
+  },
+  {
+   "where": "assets/video/hero-1080-loop.mp4 and hero-720-loop.mp4",
+   "what": "Replace the loop with footage that has no identifiable foreign landmark (a Bay Area estate, a sofreh being set, hands with henna, candle-lit tables), or crop so the skyline is out of frame.",
+   "why": "A Rome skyline reads as stock and breaks the local, family-fluent story in the first second."
+  },
+  {
+   "where": "index.html header .nav-fa (all four pages)",
+   "what": "Remove the inert فارسی item until the Persian site exists, or render it as 'فارسی · به‌زودی' in stone with the 'coming soon' visible, not only in a title tooltip.",
+   "why": "Persian-speaking parents tap it, nothing happens, and the footer meanwhile promises 'Persian and Dari pages'; that looks broken, not pending."
+  },
+  {
+   "where": "assets/css/site.css .journey (min-width:900px) .journey__note{display:none}",
+   "what": "Show the one-line notes on desktop too (two rows of stops, or note under each label at 13px), and rename the first stop from 'پرسش' to 'درخواست'.",
+   "why": "On desktop a parent sees bare words like 'Bale-boroon / Shirini-khori' and 'Thank-you' with no explanation; پرسش means 'question', not an enquiry."
+  },
+  {
+   "where": "index.html Sofreh Aghd accordion body and #how-teaser 'Run the day' card",
+   "what": "Define the jargon on first use: 'the sofreh key (a one-page guide naming each item on the spread, in both scripts)' and then use 'key' freely after.",
+   "why": "'Checked against the key' appears five times across the site and no family will know what the key is."
+  },
+  {
+   "where": "index.html #inquire form: label[for=f-date] and after #f-guests",
+   "what": "Relabel 'Wedding date' as 'First wedding date (or season)' and add an optional select 'Which days' (Engagement, Mehndi/Henna, Aghd/Nikah, Reception/Walima, Not sure yet) plus an optional 'Budget range' select.",
+   "why": "These are multi-day weddings; a single date field and no budget question make the first reply slower and the form feel generic to parents who expect to be asked."
+  }
+ ]
+}

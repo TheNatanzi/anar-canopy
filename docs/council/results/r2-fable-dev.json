@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "dev",
+ "score": 7.5,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "site.css .hww-tab / .motion-toggle (phone, ≤768px) and index-phone-1.jpg, index-phone-3.jpg",
+   "what": "On phones the two fixed pills permanently cover the bottom ~70px of an 844px viewport on every scroll point (they sit over the 'Sofreh Aghd' h3 and the 'Mehndi / Sangeet' stop in the shots). Hide .motion-toggle after the hero leaves view on phones (reuse the IntersectionObserver), and auto-hide .hww-tab while scrolling down, re-show on scroll-up or idle; keep the 'is-hidden' aria/tabindex sync you already have.",
+   "why": "Two always-on floating controls on a 390px screen steal content and are the only real mobile layout defect."
+  },
+  {
+   "where": "site.js accordion block, mouseenter handler",
+   "what": "The hover guard `!acc.contains(document.activeElement)` disables hover for the whole accordion after any mouse click on a trigger (the clicked button keeps focus). Guard on keyboard focus only: `var a=document.activeElement; if(isDesktop() && !(acc.contains(a) && a.matches(':focus-visible'))) open(p);`",
+   "why": "Click one strip, then hover others: nothing happens until focus leaves the accordion."
+  },
+  {
+   "where": "assets/tree/trunks-tall.webp (768×1376) and .descend__trunks img{width:124vw} / phone 190vw",
+   "what": "The trunk image is 768px wide but rendered at ~1785px on a 1440 desktop and ~1480 device px on a 2× phone (visibly soft in index-phone-1.jpg). Export a 1600–2000px wide WebP (the 1380 KB PNG source suggests the art exists at higher res) and serve it with srcset/sizes, or use the new trunk-left/right pieces at native size.",
+   "why": "A 2.3× upscale is the one blurry asset on an otherwise sharp page."
+  },
+  {
+   "where": "index.html hero <video> + site.js block 0",
+   "what": "hero-1080-loop.mp4 is 4.0 MB and hero-720-loop.mp4 1.7 MB. Add a WebM/AV1 or H.265 encode (target ≤1.5 MB for 1080) via a second <source> after the mp4, and drop the duplicate poster: the CSS background on .hero__video repeats the poster attribute, so the 141 KB jpg is fine but declared twice.",
+   "why": "Video is the heaviest thing on the site; a 4 MB loop on a cellular laptop tether is the main perf cost after load."
+  },
+  {
+   "where": "index.html header, `<span class=\"nav-fa\" aria-label=…>`",
+   "what": "aria-label is prohibited on a generic span and is ignored by most screen readers; the title tooltip is not reachable by touch. Render it as `<span class=\"nav-fa\" lang=\"fa\" dir=\"rtl\">فارسی<span class=\"visually-hidden\"> (Persian site, coming soon)</span></span>` with aria-label and title removed, or make it a disabled-looking link with the same hidden text.",
+   "why": "Screen-reader users hear only 'فارسی' with no hint that it does nothing."
+  },
+  {
+   "where": "site.js pauseAll/playAll, .motion-toggle",
+   "what": "The toggle changes both its label ('Pause motion' ↔ 'Play motion') and aria-pressed, so assistive tech announces 'Play motion, pressed'. Keep a fixed accessible name ('Motion') with aria-pressed, or keep the swapping label and remove aria-pressed.",
+   "why": "A toggle button must change either its label or its pressed state, not both."
+  }
+ ]
+}

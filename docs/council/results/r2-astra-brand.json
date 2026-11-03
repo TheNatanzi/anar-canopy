@@ -1,0 +1,41 @@
+{
+ "model": "astra",
+ "role": "brand",
+ "score": 6,
+ "blocking": [
+  "The descend section breaks the open-middle tree rule: oversized fruit and branches extend behind the central copy and promise cards.",
+  "The How we work backdrop visibly uses a diamond grid, contradicting the no-grid-hairlines direction."
+ ],
+ "fixes": [
+  {
+   "where": "assets/css/site.css — .descend__trunks",
+   "what": "Clip the painted trunks and branches to the outer gutters at every breakpoint; keep the entire statement and pillars column on uninterrupted cypress.",
+   "why": "The illustration should frame the message; its current scale makes the promises compete with oversized fruit."
+  },
+  {
+   "where": "assets/css/site.css — .termeh::before",
+   "what": "Remove the repeating lattice.svg background and retain a plain deep-cypress band.",
+   "why": "The visible diamond hairlines introduce a prohibited pattern and weaken the distinctive tree-and-kashida language."
+  },
+  {
+   "where": "assets/css/site.css — .pillars and .card",
+   "what": "Widen the desktop promise columns, reduce horizontal card padding to 24px, and use opaque deep-cypress backgrounds with 24–26px headings.",
+   "why": "The middle promise currently wraps into five heavy lines; the three promises feel cramped rather than editorial."
+  },
+  {
+   "where": "index.html — founder quote; assets/css/site.css — .quote blockquote",
+   "what": "Keep the owner's wording, but group the supporting sentences into two compact paragraphs at 24–28px; reserve 36px and ruby for 'Keep the soul. Redefine the style.'",
+   "why": "Giving every sentence headline scale produces a wall of bold text and dilutes the intended signature line."
+  },
+  {
+   "where": "assets/js/site.js — motion block 5; assets/css/site.css — .journey",
+   "what": "Show a subdued complete connecting line and all nine dots immediately; animate a gold overlay across it. Align English labels first and place smaller Persian accents beneath.",
+   "why": "The captured journey shows nine labels but only three dots and a partial line, making the composition look unfinished."
+  },
+  {
+   "where": "assets/css/site.css — mobile .hww-tab, .motion-toggle, .hero__scroll and .hero__tag",
+   "what": "Keep the approved How we work button, reduce its mobile type to 16px, and give the bottom controls one aligned row with at least 16px clearance from the scroll cue and Persian tagline.",
+   "why": "At 390px, four competing elements crowd the painted canopy and undermine the otherwise clear hero hierarchy."
+  }
+ ]
+}

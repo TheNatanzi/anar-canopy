@@ -1,0 +1,42 @@
+{
+ "model": "astra",
+ "role": "dev",
+ "score": 6,
+ "blocking": [
+  "The descending tree extends behind the central cards in desktop screenshot 2, breaking the required open middle.",
+  "The scrollable dialog lacks a Lenis exclusion; stopping Lenis can swallow wheel scrolling inside the panel.",
+  "Opacity-hidden reveal content remains keyboard-focusable, including inquiry fields."
+ ],
+ "fixes": [
+  {
+   "where": "assets/css/site.css — .descend__trunks",
+   "what": "Clip or mask the tree into edge strips that stay outside the content column at every breakpoint.",
+   "why": "The supplied desktop screenshot shows foliage behind central content, violating the framing rule."
+  },
+  {
+   "where": "Shared HTML — #hww-panel; assets/js/site.js — openPanel",
+   "what": "Add data-lenis-prevent to the scrollable panel and overscroll-behavior:contain; verify wheel, touch and keyboard scrolling reach its final links while background scrolling stays locked.",
+   "why": "The dialog must remain scrollable when Lenis is stopped, especially on short screens."
+  },
+  {
+   "where": "assets/js/site.js — section reveals; index.html — inquiry form",
+   "what": "Keep the form visible independently of reveal animation, and immediately reveal any animated ancestor when a descendant receives keyboard focus.",
+   "why": "Opacity does not remove controls from the tab order; keyboard users can encounter invisible focus."
+  },
+  {
+   "where": "assets/css/site.css — .quote figcaption.quote__by",
+   "what": "Use var(--ruby) or var(--sage) for the founder attribution on parchment.",
+   "why": "Gold on parchment is approximately 2.3:1, below the 4.5:1 requirement for this small text."
+  },
+  {
+   "where": "assets/css/site.css — mobile navigation and script-failure fallbacks",
+   "what": "Show mobile navigation links by default; collapse them only after navigation handlers have successfully initialized, and hide nonfunctional controls until then.",
+   "why": "Without site.js, mobile visitors lose access to Weddings, How we work and About despite the content fallback."
+  },
+  {
+   "where": "assets/js/site.js — inquiry fetch handler",
+   "what": "Add an AbortController timeout, restore the submit button in finally, and preserve entered values with a retry message after timeout.",
+   "why": "A stalled request currently leaves the form indefinitely on 'Sending…' with submission disabled."
+  }
+ ]
+}

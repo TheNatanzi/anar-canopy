@@ -1,0 +1,42 @@
+{
+ "model": "astra",
+ "role": "planner",
+ "score": 6,
+ "blocking": [
+  "The nine-stop journey presents different families' ceremonies as one prescribed sequence, undermining the promise to follow each family's traditions.",
+  "The founder page repeats positioning without establishing who will lead the wedding or what experience supports the promises.",
+  "The desktop tree-descent artwork extends behind central copy and cards; the required open middle is not maintained."
+ ],
+ "fixes": [
+  {
+   "where": "index.html #journey; shared .hww-panel; how-we-work.html #steps",
+   "what": "Keep the planning stages sequential, but group ceremonies under 'Your wedding celebrations' with 'We agree the events and their order with you.' Present the named ceremonies as optional examples, not nine required stops.",
+   "why": "Families should recognize their own wedding rather than feel assigned a composite cultural programme."
+  },
+  {
+   "where": "about.html #letter",
+   "what": "Add a concise, factual founder biography stating who leads planning, relevant experience and actual language capabilities; include one verifiable example of handling family preferences or a complex event.",
+   "why": "Couples and paying parents need evidence before trusting broad promises of cultural fluency."
+  },
+  {
+   "where": "index.html #how-teaser; how-we-work.html #you-get",
+   "what": "Surface 'Full planning' and 'Wedding coordination' as distinct options, with confirmed responsibilities, when support begins and how multi-day coverage is scoped.",
+   "why": "The current process explains the relationship but leaves families unsure what they can hire."
+  },
+  {
+   "where": "Shared .nav-fa and .site-footer__lang; index.html #f-lang; how-we-work.html #faq",
+   "what": "Remove the inert Persian navigation label until a destination exists. Describe parent-language pages as planning documents, and make the reply-language selector match verified support, explicitly resolving the Urdu discrepancy.",
+   "why": "Parents currently encounter an apparent language switch that does nothing and inconsistent language promises."
+  },
+  {
+   "where": "index.html inquiry form",
+   "what": "Add optional 'Help needed' choices for full planning, coordination and unsure; add 'Other traditions / still deciding' and a venue or city field. Label the date 'Main wedding date, if known' and invite additional dates in the message.",
+   "why": "These inputs accommodate mixed families and multi-day weddings without making visitors fit the predefined ceremony list."
+  },
+  {
+   "where": "assets/css/site.css .descend__trunks; index.html .descend",
+   "what": "Mask or crop the trunk artwork into side-only regions, keeping branches and fruit outside the central statement and cards at every scroll position.",
+   "why": "The supplied desktop view places foliage behind the reading area, weakening readability and breaking the open-middle rule."
+  }
+ ]
+}

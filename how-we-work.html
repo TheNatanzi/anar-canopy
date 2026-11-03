@@ -38,7 +38,7 @@
       </ul>
     </nav>
     <div class="nav-right">
-      <span class="nav-fa fa" lang="fa" dir="rtl" title="Persian site, coming soon" aria-label="Persian site, coming soon">فارسی</span>
+      <span class="nav-fa" lang="fa" dir="rtl">فارسی <span class="nav-fa__soon">· به‌زودی</span></span>
       <a class="btn btn--sm" href="index.html#inquire">Inquire</a>
     </div>
   </div>
@@ -62,13 +62,14 @@
     <div class="container container--text">
       <h2 id="steps-title" class="reveal" style="margin-bottom:48px">The five steps</h2>
       <div class="steps" data-track>
+        <svg class="steps__line" viewBox="0 0 2 1000" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M1 0 V1000"/></svg>
         <svg class="steps__line track-line" viewBox="0 0 2 1000" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M1 0 V1000"/></svg>
         <ol class="steps__list">
         <li class="step reveal">
           <span class="step__dot track-dot" aria-hidden="true"></span>
           <span class="step__n">01 · Enquiry &amp; consultation</span>
           <h3>Thank you for writing. Tell us about your family.</h3>
-          <p class="fa" lang="fa" dir="rtl">پرسش و مشاوره</p>
+          <p class="fa" lang="fa" dir="rtl">درخواست و مشاوره</p>
           <p>Write to us, or call. We reply within one business day, then meet your family. Parents and elders included at the level you choose. We greet the elders first, ask how your family observes each tradition, and listen.</p>
         </li>
         <li class="step reveal">
@@ -90,7 +91,7 @@
           <span class="step__n">04 · The wedding days</span>
           <h3>The sofreh is ready. Your grandparents are seated.</h3>
           <p class="fa" lang="fa" dir="rtl">روزهای عروسی</p>
-          <p>One timeline, called with the venue and every vendor. Elders' seats held, the officiant and family cued, the sofreh checked against the key, every sign in both scripts coordinated with your printer and the venue. Our staff are easy to find. You only have to be there.</p>
+          <p>One timeline, called with the venue and every vendor. Elders' seats held, the officiant and family cued, the sofreh checked against the sofreh key (a one-page guide naming each item on the spread, in both scripts), every sign in both scripts coordinated with your printer and the venue. Our staff are easy to find. You only have to be there.</p>
         </li>
         <li class="step reveal">
           <span class="step__dot track-dot" aria-hidden="true"></span>
@@ -109,6 +110,28 @@
     <div class="container container--text">
       <p class="eyebrow reveal">What you get</p>
       <h2 id="you-get-title" class="reveal" style="margin:8px 0 40px">One plan. One person to call.</h2>
+      <!-- the two service options: when support begins and three confirmed responsibilities each -->
+      <ul class="options stagger" aria-label="Two ways to work with us" style="margin-bottom:64px">
+        <li>
+          <h3>Full planning</h3>
+          <p class="option__when">Begins at the first conversation · ends at the thank-you</p>
+          <ul>
+            <li>One written plan: the rituals in order, the days, the price and what is included, with Persian and Dari pages for the parents.</li>
+            <li>Planning meetings ritual by ritual, with a short written summary after each one.</li>
+            <li>Every wedding day run: one timeline, called with the venue and every vendor; elders' seats held.</li>
+          </ul>
+        </li>
+        <li>
+          <h3>Wedding-day coordination</h3>
+          <p class="option__when">Begins 6–8 weeks out · we take over your plan and run the days</p>
+          <ul>
+            <li>Every contract, contact and time in your plan read and confirmed with the venue and every vendor.</li>
+            <li>One timeline for every day, with the sofreh key or the programme checked against your family's wishes.</li>
+            <li>On the days: elders greeted first, the officiant and family cued, our staff easy to find. You only have to be there.</li>
+          </ul>
+        </li>
+      </ul>
+      <p class="eyebrow reveal" style="margin-bottom:24px">With either option</p>
       <ul class="you-get stagger">
         <li><strong>One written plan</strong><span>Rituals in order, days, price, what is included. In English, with Persian and Dari pages for the parents.</span></li>
         <li><strong>One person to call</strong><span>Your planner, from the first message to the thank-you card.</span></li>
@@ -134,7 +157,7 @@
         </details>
         <details>
           <summary>Do you plan the whole wedding, or only run the day?</summary>
-          <p class="faq__a">Both. Some families want the whole journey planned with us from the engagement on; others have planned already and want one steady person to run the days. We say which fits on the first call, with the price and what is included.</p>
+          <p class="faq__a">Both. Full planning runs from the first conversation to the thank-you. Wedding-day coordination begins 6–8 weeks out: you have planned already, we take over your plan and run the days. We say which fits on the first call, with the price and what is included.</p>
         </details>
         <details>
           <summary>How early should we write?</summary>
@@ -179,9 +202,9 @@
 </footer>
 
 <button class="hww-tab ghost" type="button" aria-controls="hww-panel" aria-expanded="false">How we work <span aria-hidden="true">+</span></button>
-<button class="motion-toggle ghost" type="button" aria-pressed="false">Pause motion</button>
+<button class="motion-toggle ghost" type="button" aria-label="Motion" aria-pressed="false"><span class="motion-toggle__text">Pause motion</span></button>
 <div class="hww-backdrop" hidden></div>
-<aside class="hww-panel" id="hww-panel" role="dialog" aria-modal="true" aria-labelledby="hww-title" tabindex="-1" hidden>
+<aside class="hww-panel" id="hww-panel" role="dialog" aria-modal="true" aria-labelledby="hww-title" tabindex="-1" data-lenis-prevent hidden>
   <button class="hww-panel__close" type="button" aria-label="Close"><span aria-hidden="true">&times;</span></button>
   <p class="eyebrow">How we work · <span class="fa" lang="fa" dir="rtl">روش کار ما</span></p>
   <h2 id="hww-title">Five steps, one line</h2>

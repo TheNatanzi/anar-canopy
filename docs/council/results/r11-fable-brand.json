@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "brand",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "assets/css/site.css .descend__trunks mask-image (linear-gradient(to bottom,#000 78%,transparent))",
+   "what": "Start the fade earlier: `#000 55%, transparent 100%`, and lengthen .descend::after to 220px so both trunk strips dissolve into the night well before the How-we-work band.",
+   "why": "At 1440 (desktop-1) both trunks end on a near-flat horizontal edge ~30px above the band: the tree looks sawn off instead of descending into the ground."
+  },
+  {
+   "where": "assets/css/site.css .journey .leaf--3 (left:-20px, scale .55)",
+   "what": "Push it off the frame edge: `left:-70px; top:clamp(16px,3vh,40px)` so a third of the sprig is cropped by the viewport, matching the half-cut trunks.",
+   "why": "On desktop-3 the leaf sits fully inside the page corner and reads as a floating clip-art sprig, not part of the tree that frames the edges."
+  },
+  {
+   "where": "assets/css/site.css .site-header--solid,.site-header.is-scrolled (rgba(27,34,30,.96)) in the ≥769px blur block",
+   "what": "Raise the desktop bar to `rgba(27,34,30,.985)` while keeping the 8px blur.",
+   "why": "Desktop-4 shows the form's input boxes and labels ghosting through the bar as faint rectangles; the bar should be a clean night band."
+  },
+  {
+   "where": "assets/css/site.css .btn / .btn--sm border-radius:999px, and .skip-link",
+   "what": "Use `border-radius:2px` to match the 2px-radius panels, inputs, the How-we-work tab and the 2px gold rules.",
+   "why": "The pill is the one rounded shape in an otherwise square editorial system; a squared gold button reads premium and consistent, the pill reads startup."
+  },
+  {
+   "where": "assets/css/site.css @media (min-width:1100px) .accordion__panel:not(.is-open) .accordion__media img (blur 3px brightness .95) and ::after (.85→.45)",
+   "what": "Set `filter:blur(4px) brightness(.7)` and the overlay to `rgba(18,23,20,.9)→rgba(18,23,20,.6)` so every collapsed strip sits in the same tonal range.",
+   "why": "Desktop-2 shows one bright smeared strip (the hand photo) next to near-black strips; the five strips should read as one quiet set with the open panel as the single bright moment."
+  },
+  {
+   "where": "index.html hero (.hero__tag) and assets/css/site.css .hero__tag > span:first-child",
+   "what": "Give the English line the gold colour (var(--gold)) and keep the Persian twin in parchment.",
+   "why": "On desktop-0 the tag pair is two parchment strings on painted leaves; a gold English cap line ties the first screen's brand line to the logo and the gold system above it."
+  }
+ ]
+}

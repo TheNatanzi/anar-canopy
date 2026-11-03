@@ -1,0 +1,31 @@
+{
+ "model": "astra",
+ "role": "dev",
+ "score": 8,
+ "blocking": [
+  "Floating controls can remain keyboard-focusable while visually hidden.",
+  "The accordion's height reservation excludes expanded Read more content, so switching panels can move the page below it."
+ ],
+ "fixes": [
+  {
+   "where": "assets/js/site.js — setShown() and floating-control listeners",
+   "what": "Remove hidden controls from the tab order immediately, or add focus handlers that synchronously reveal them. Eliminate the 700ms mismatch between visibility and keyboard availability.",
+   "why": "Keyboard users can currently land on an invisible control during the hiding interval."
+  },
+  {
+   "where": "assets/js/site.js — accordion reserveHeight() and Read more",
+   "what": "Recalculate the reserved height when details toggle, measuring all panels at the actual expanded width and preserving their open states.",
+   "why": "The initial measurement covers closed details only; opening a long description and switching panels changes the row height."
+  },
+  {
+   "where": "assets/js/site.js — same-page anchors and history handling",
+   "what": "Handle popstate/hashchange by opening the corresponding celebration panel and restoring target focus and header clearance without adding another history entry.",
+   "why": "Back navigation can restore a celebration hash while its panel remains collapsed."
+  },
+  {
+   "where": "assets/css/site.css — @font-face",
+   "what": "Use a metrics-adjusted fallback with font-display:swap, and verify layout stability under a throttled font request.",
+   "why": "font-display:block can hide nearly all text while loading and does not guarantee freedom from layout shifts."
+  }
+ ]
+}

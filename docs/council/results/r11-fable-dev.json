@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "dev",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "assets/css/site.css:546-552 (.motion-toggle) and :537",
+   "what": "On ≤768px move the Pause button to the bottom-RIGHT (left:auto; right:var(--s2)) and raise the right clearance of every left-aligned text block at :537 from 24px to 44px (the comment already claims 44px). Then drop the 64px bottom reserves at :501 and in .accordion__body, which no longer serve a purpose.",
+   "why": "index-phone-1.jpg and index-phone-3.jpg show the fixed button sitting on body text ('On the days: elders…' and the Proposal Persian label): only the celebration bodies and the form reserve space; every other section scrolls under it."
+  },
+  {
+   "where": "index.html:365 (<details class=\"form__more\" open>) and assets/js/site.js:637",
+   "what": "Ship the details CLOSED in the HTML and delete the JS line that closes it; keep the capture-phase 'invalid' handler that reopens it.",
+   "why": "Every field inside is optional and a closed <details> is fully usable without JS, so the open-then-close costs a ~900px layout shift on #inquire deep links (the header Inquire button from every inner page) whenever first paint beats the four deferred scripts."
+  },
+  {
+   "where": "assets/css/site.css:47 (html) and :577 (body.panel-open)",
+   "what": "Add scrollbar-gutter:stable to html (and drop the gutter on phones with @media (hover:none) if the stable gutter shows there).",
+   "why": "On Windows desktops body{overflow:hidden} removes a ~17px scrollbar when the panel or drawer opens, so the whole page jolts sideways; the owner's own machine is Windows."
+  },
+  {
+   "where": "assets/css/site.css:10 and :12 (@font-face)",
+   "what": "Change font-display:block to swap and add a size-adjusted fallback face (e.g. @font-face{font-family:'Ramillas Fallback';src:local('Georgia');size-adjust:104%;ascent-override/descent-override tuned}) placed before Georgia in --font-latin.",
+   "why": "block keeps all text invisible up to 3s on a slow connection; a metric-matched fallback gives the same no-reflow result without the blank screen (Lighthouse flags block)."
+  },
+  {
+   "where": "assets/js/site.js:836-846 (block 3) and :1060",
+   "what": "Guard the trunk scrub with isDesktop() (the strips are display:none under 769px) and rebuild it in the desktopQuery change handler next to buildLeaves.",
+   "why": "Two ScrollTrigger scrubs plus img load listeners are created on every phone for images that never render; also a phone rotated to a wide tablet never gets the trunk motion."
+  },
+  {
+   "where": "index.html:14-20 (head)",
+   "what": "Move <link rel=\"stylesheet\"> above the five preloads and drop fetchpriority=\"high\" from the canopy preload/img (keep it on the logo and add it to the poster preload).",
+   "why": "The render-blocking CSS currently queues behind two fonts and a ~2048w webp marked high; the poster, the true LCP candidate, has no priority hint at all."
+  }
+ ]
+}

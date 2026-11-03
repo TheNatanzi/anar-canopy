@@ -1,0 +1,33 @@
+{
+ "model": "astra",
+ "role": "brand",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "assets/css/site.css — .hero__tag",
+   "what": "Add a localized cypress gradient behind the tagline, strongest at the bottom right and transparent toward the logo; preserve the approved canopy position.",
+   "why": "The parchment tagline competes with detailed foliage, especially at 390px; the brand signature needs a quieter ground."
+  },
+  {
+   "where": "index.html — #how-teaser; assets/css/site.css — .option__when",
+   "what": "Keep only the service start timing immediately beneath each heading; move the free-conversation note beside the closing link and render timing in sentence case.",
+   "why": "Long gold uppercase lines compete with the service titles and make the section feel administrative."
+  },
+  {
+   "where": "assets/css/site.css — desktop .accordion__label",
+   "what": "Use sentence case for collapsed celebration labels, reduce tracking to .02em, and retain their gold color and vertical placement.",
+   "why": "Five rotated uppercase labels create a dense navigation wall beside an otherwise elegant photographic panel."
+  },
+  {
+   "where": "index.html — .journey__extras",
+   "what": "Show a short introductory line and a native disclosure labeled 'Explore the celebrations' containing the complete existing list.",
+   "why": "The dense second catalogue competes with the five-step journey and repeats the preceding celebrations section."
+  },
+  {
+   "where": "assets/css/site.css — .form",
+   "what": "Remove the enclosing translucent background while retaining the field fills, gold underlines, padding and clear space above the roots.",
+   "why": "The large rectangular slab interrupts the painted landscape; the individual fields already provide sufficient structure."
+  }
+ ]
+}

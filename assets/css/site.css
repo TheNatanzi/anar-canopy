@@ -214,7 +214,7 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 /* no SCROLL cue anywhere: on desktop it printed over the painted foliage, on phones it read as the Pause button's label; the canopy draws the eye down */
 /* the brand line paired with its Persian twin, bottom right: English in Ramillas 14px caps (.12em), the Persian beside it in parchment */
 .hero__tag{position:absolute;right:clamp(16px,3vw,40px);bottom:clamp(14px,2.6vh,28px);display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:baseline;gap:4px 14px;color:var(--parch);text-align:right}
-.hero__tag > span:first-child{font-size:14px;line-height:20px;letter-spacing:.12em;text-transform:uppercase}
+.hero__tag > span:first-child{font-size:14px;line-height:20px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
 .hero__tag .fa{font-size:22px;line-height:1.4}
 @media (max-width:768px){
   /* the canopy at 112vw (the trunks sit at the art's own edges, so anything much wider than the viewport crops them off):

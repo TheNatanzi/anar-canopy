@@ -1,0 +1,40 @@
+{
+ "model": "astra",
+ "role": "planner",
+ "score": 8,
+ "blocking": [
+  "The Sofreh Aghd copy promises a fixed ceremonial script, including parental permission, despite promising elsewhere that the couple and officiant determine the customs."
+ ],
+ "fixes": [
+  {
+   "where": "index.html and weddings.html — Sofreh Aghd",
+   "what": "Replace the prescribed 'three bale' sequence with: 'We agree the ceremony wording, responses and family cues with you and your officiant, including any traditions you choose to keep.'",
+   "why": "Demonstrates cultural fluency through listening without assigning the couple a script or permission requirement."
+  },
+  {
+   "where": "index.html — Find your celebration; weddings.html — Afghan weddings",
+   "what": "Add an 'Afghan celebrations' link to a dedicated anchor on the existing Afghan weddings passage; explicitly name Khina in the henna panel heading or introduction.",
+   "why": "Afghan families are a headline audience but must currently discover their most specific recognition inside Nikah."
+  },
+  {
+   "where": "index.html — How we work teaser",
+   "what": "Add 'Begin the conversation' beneath the service comparison, with 'The first conversation is free; dates are held after signing and deposit.'",
+   "why": "Families ready after comparing services should have an immediate contextual next step before the lengthy celebrations section."
+  },
+  {
+   "where": "index.html — inquiry introduction",
+   "what": "Replace the parents' language promise with: 'Planning runs in English. Tell us your preferred language; we confirm translation and spoken support before booking.'",
+   "why": "Sets accurate expectations at the inquiry point instead of leaving the distinction between written and spoken support to the footer or FAQ."
+  },
+  {
+   "where": "index.html — celebration panels; weddings.html — tradition descriptions",
+   "what": "Shorten ritual explanations and give each celebration one distinct planning action already supported by the service copy: officiant timing, family cues, venue coordination or guest guidance. Remove repeated elders-seating sentences.",
+   "why": "Couples and paying parents need to understand what hiring Anar takes off their shoulders, beyond recognition of ceremonial vocabulary."
+  },
+  {
+   "where": "how-we-work.html — Full planning",
+   "what": "Change 'Your budget tracked, line by line, from the first conversation' to 'Your budget tracked, line by line, once planning begins.'",
+   "why": "The current statement conflicts with the signed-proposal start date and implies ongoing work begins during the free consultation."
+  }
+ ]
+}

@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "planner",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "index.html #sofreh-aghd .accordion__intro (and weddings.html Sofreh Aghd stagger p2)",
+   "what": "Change 'the sugar cones rubbed over the couple' to 'the sugar cones ground over the cloth held above the couple'.",
+   "why": "The kalleh ghand is rubbed over the tour cloth held by the women, never on the couple; every Persian grandmother will catch it."
+  },
+  {
+   "where": "index.html #nikah .accordion__intro + Read more",
+   "what": "Open with 'For Afghan, Pakistani and Indian Muslim families: the Islamic marriage contract…' and add one line after the aina mosaf: 'The rukhsati, when the bride leaves with the groom's family, cued for the elders.'",
+   "why": "The panel is Afghan-only after the first sentence; Pakistani and Indian Muslim families cannot see themselves in it."
+  },
+  {
+   "where": "index.html #anand-karaj Read more (and weddings.html Anand Karaj p1)",
+   "what": "Add 'The maiyan and the chooda ceremony in the days before, if your family keeps them.'",
+   "why": "Sikh families will test fluency on the pre-wedding days; only the laavan and milni are named now."
+  },
+  {
+   "where": "index.html .pills (journey__extras) and traditions checkboxes",
+   "what": "Add a 'Namzadi / Engagement' pill with نامزدی before Bale-boroon; the checkbox already exists.",
+   "why": "The teaser promises 'From the engagement', but the list of celebrations a family may choose omits it."
+  },
+  {
+   "where": "index.html .journey__stop 5 note and hww-panel step 5",
+   "what": "Change 'your parents are hosted, not working' to 'parents and grandparents are hosted, not working'.",
+   "why": "Parents are invited to inquire, yet every 'you' addresses the couple; this line should land for the parent reading it."
+  },
+  {
+   "where": "how-we-work.html #faq 'What does it cost?'",
+   "what": "Add an owner slot: 'Full planning starts at $[X]; wedding-day coordination at $[Y].' hidden until Medi fills it.",
+   "why": "Parents comparing planners leave without any price anchor; 'quoted after the first conversation' alone reads as evasive."
+  }
+ ]
+}

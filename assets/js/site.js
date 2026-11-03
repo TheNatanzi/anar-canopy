@@ -28,12 +28,6 @@
   var userPaused = false;
   try { userPaused = sessionStorage.getItem('anar-motion') === 'paused'; } catch (e) { /* storage blocked: ignore */ }
 
-  /* true while the visitor is moving focus with the keyboard (Tab); any mousedown clears it.
-     The accordion's hover guard only yields to a keyboard-placed focus. */
-  var usingKeyboard = false;
-  document.addEventListener('keydown', function (e) { if (e.key === 'Tab') { usingKeyboard = true; } }, true);
-  document.addEventListener('mousedown', function () { usingKeyboard = false; }, true);
-
   /* ---------------------------------------------------------
      0. Hero video: the src is set only after window 'load',
         only without reduced motion and only when Save-Data is off.
@@ -206,6 +200,7 @@
       panel.setAttribute('aria-hidden', 'true');
     };
     tab.addEventListener('click', openPanel);
+    html.classList.add('panel-ready');
     if (closeBtn) { closeBtn.addEventListener('click', closePanel); }
     backdrop.addEventListener('click', closePanel);
     document.addEventListener('keydown', function (e) {
@@ -221,17 +216,34 @@
     document.addEventListener('focusin', function (e) {
       if (panelOpen && !panel.contains(e.target)) { (closeBtn || panel).focus(); }
     });
-    /* hide the tab while the Inquire ground or the footer is in view */
+    /* Keep focused controls visible; synchronize visual and keyboard availability. */
+    var hideAtDestination = false, hideWhileScrolling = false, idleTimer;
+    var lastScroll = window.scrollY;
+    var syncTab = function () {
+      var hidden = !panelOpen && document.activeElement !== tab &&
+        (hideAtDestination || (!isDesktop() && hideWhileScrolling));
+      tab.classList.toggle('is-hidden', hidden);
+      tab.setAttribute('aria-hidden', hidden ? 'true' : 'false');
+      tab.tabIndex = hidden ? -1 : 0;
+    };
+    tab.addEventListener('blur', function () { setTimeout(syncTab, 0); });
+    desktopQuery.addEventListener('change', syncTab);
+    window.addEventListener('scroll', function () {
+      var next = window.scrollY;
+      if (Math.abs(next - lastScroll) > 2) { hideWhileScrolling = next > lastScroll; }
+      lastScroll = next;
+      syncTab();
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(function () { hideWhileScrolling = false; syncTab(); }, 700);
+    }, { passive: true });
     var hideFor = [$('#inquire'), $('.site-footer')].filter(Boolean);
     if (hideFor.length && 'IntersectionObserver' in window) {
       var inView = new Map();
       var tabObserver = new IntersectionObserver(function (entries) {
         entries.forEach(function (en) { inView.set(en.target, en.isIntersecting); });
-        var any = false;
-        inView.forEach(function (v) { if (v) { any = true; } });
-        tab.classList.toggle('is-hidden', any);
-        tab.setAttribute('aria-hidden', any ? 'true' : 'false');
-        tab.tabIndex = any ? -1 : 0;
+        hideAtDestination = false;
+        inView.forEach(function (v) { if (v) { hideAtDestination = true; } });
+        syncTab();
       }, { threshold: 0.05 });
       hideFor.forEach(function (el) { tabObserver.observe(el); });
     }
@@ -284,7 +296,7 @@
       if (bodyEl && !bodyEl.id) { bodyEl.id = 'acc-' + ai + '-' + i; }
       if (btn && bodyEl) { btn.setAttribute('aria-controls', bodyEl.id); }
       /* hover opens unless the keyboard placed focus inside the accordion (a click also focuses, and must not disable hover) */
-      if (hoverable) { p.addEventListener('mouseenter', function () { if (isDesktop() && !(usingKeyboard && acc.contains(document.activeElement))) { open(p); } }); }
+      if (hoverable) { p.addEventListener('mouseenter', function () { if (isDesktop() && !(acc.contains(document.activeElement) && document.activeElement.matches(':focus-visible'))) { open(p); } }); }
       if (btn) {
         btn.addEventListener('click', function () { if (isDesktop()) { open(p); } });
         btn.addEventListener('focus', function () { if (isDesktop()) { open(p); } });
@@ -339,10 +351,17 @@
       say('wait', 'Sending…');
       var controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
       var timedOut = false;
-      var timer = setTimeout(function () { timedOut = true; if (controller) { controller.abort(); } }, 12000);
+      var timer;
+      var timeout = new Promise(function (_, reject) {
+        timer = setTimeout(function () {
+          timedOut = true;
+          if (controller) { controller.abort(); }
+          reject(new Error('timeout'));
+        }, 12000);
+      });
       var options = { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } };
       if (controller) { options.signal = controller.signal; }
-      var request = fetch(form.action, options)
+      var request = Promise.race([timeout, Promise.resolve().then(function () { return fetch(form.action, options); })])
         .then(function (r) { if (!r.ok) { throw new Error('bad status'); } })
         .then(function () {
           say('ok', 'Thank you. Your message is on its way; we reply within one business day.');
@@ -351,7 +370,7 @@
         })
         .catch(function () {
           if (timedOut) {
-            say('error', 'The connection timed out before your message was sent. Nothing you typed was lost: please try again in a moment, or write to hello@anarevents.com or WhatsApp us.');
+            say('error', 'The connection timed out, so we could not confirm delivery. Nothing you typed was lost: please try again in a moment, or write to hello@anarevents.com or WhatsApp us.');
           } else {
             say('error', 'Your message did not send. Nothing you typed was lost: please try again, or write to hello@anarevents.com or WhatsApp us.');
           }
@@ -596,12 +615,22 @@
   if (toggle) {
     toggle.hidden = !hasGsap && !heroVideo;
     if (!toggle.hasAttribute('aria-label')) { toggle.setAttribute('aria-label', 'Motion'); }
+    html.classList.add('motion-ready');
     toggle.addEventListener('click', function () { if (userPaused || reduced) { playAll(true); } else { pauseAll(true); } });
     /* phones: the toggle hides (CSS .is-hidden under 768px) once the hero (or the inner-page band) has scrolled out */
     var heroEl = $('.hero') || $('.pageband');
+    var heroInView = true;
+    var syncToggle = function () {
+      var hidden = !isDesktop() && !heroInView && document.activeElement !== toggle;
+      toggle.classList.toggle('is-hidden', hidden);
+      toggle.setAttribute('aria-hidden', hidden ? 'true' : 'false');
+      toggle.tabIndex = hidden ? -1 : 0;
+    };
+    desktopQuery.addEventListener('change', syncToggle);
+    toggle.addEventListener('blur', function () { setTimeout(syncToggle, 0); });
     if (heroEl && 'IntersectionObserver' in window) {
       new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) { toggle.classList.toggle('is-hidden', !en.isIntersecting); });
+        entries.forEach(function (en) { heroInView = en.isIntersecting; syncToggle(); });
       }, { threshold: 0 }).observe(heroEl);
     }
   }

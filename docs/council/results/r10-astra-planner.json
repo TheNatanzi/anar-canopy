@@ -1,0 +1,36 @@
+{
+ "model": "astra",
+ "role": "planner",
+ "score": 8,
+ "blocking": [
+  "The language FAQ never clearly answers whether a parent can speak directly with the planner in their preferred language; translated pages and spoken support are blurred together.",
+  "The contingency section promises precise timing and an unchanged plan without explaining how delays, venue changes or substitute staff are actually handled."
+ ],
+ "fixes": [
+  {
+   "where": "how-we-work.html — language FAQ and 'A page for the parents'",
+   "what": "Separate English planning, written translation and spoken support. Say: 'Tell us which language your family needs for calls and meetings. Before booking, we confirm who will provide that support, its availability and any additional fee.'",
+   "why": "Parents need to know who can actually understand them before they commit."
+  },
+  {
+   "where": "how-we-work.html — 'On the hard days'",
+   "what": "Replace repeated 'timeline is re-called' and 'the plan does not change' with concrete procedures: agree priorities and spending approvals, revise timing with the officiant and venue, notify family contacts, and hand the current plan to the named backup.",
+   "why": "Operational specifics earn more trust than assurances that disruption changes nothing."
+  },
+  {
+   "where": "index.html — #celebrations, before the accordion",
+   "what": "Add a compact 'Find your celebration' list linking to each panel; retain the existing inquiry CTA after the panels.",
+   "why": "On phones, six stacked panels make families scroll through unrelated ceremonies to find their own."
+  },
+  {
+   "where": "index.html — Mehndi & Sangeet introduction",
+   "what": "Replace the fixed 'one night … the next' sequence with: 'Henna, blessings, music and dancing, across the gatherings your family chooses. We agree the timing and participants with you.'",
+   "why": "The prominent introduction should reflect the flexibility already promised in the supporting copy."
+  },
+  {
+   "where": "index.html and how-we-work.html — Full planning service descriptions",
+   "what": "Change 'Begins at the first conversation' to 'Planning begins once your proposal is signed and deposit received'; describe the first conversation separately as discussing fit, scope and fees.",
+   "why": "The current wording conflicts with the booking explanation and can imply planning work begins before engagement."
+  }
+ ]
+}

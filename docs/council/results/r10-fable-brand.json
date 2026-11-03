@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "brand",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "assets/css/site.css @media (max-width:768px) .hero__tag",
+   "what": "Raise the tag pair clear of the Pause button row: bottom:calc(64px + env(safe-area-inset-bottom)) (the toggle is 36px tall at bottom:16px, the tag now sits at 24px on the same baseline).",
+   "why": "On the phone hero 'REIMAGINED HERITAGE · میراث، از نو' sits beside the round pause glyph and reads as that button's label, the exact problem the removed scroll cue had."
+  },
+  {
+   "where": "assets/css/site.css @media (max-width:768px) .hero__canopy",
+   "what": "width:150vw -> 112vw and bottom:-4% (the comment above the rule already argues for 112vw).",
+   "why": "At 150vw the phone hero shows only a shallow leaf strip with both trunks cropped off; the approved 'one connected piece with half-cut trunks at the edges' composition is lost on the device most parents will use."
+  },
+  {
+   "where": "index.html #how-teaser Wedding-day coordination (and how-we-work.html #you-get)",
+   "what": "Shorten .option__when to 'Begins 6–8 weeks out' and cut 'we take over your existing bookings and plans' from the first bullet (keep 'Your family has planned already; we cover the events, hours and staffing named in the proposal').",
+   "why": "The gold caps eyebrow wraps to three shouting lines on phones and the first bullet repeats it word for word; eyebrows in this brand are short labels."
+  },
+  {
+   "where": "index.html .accordion panels 4–6 (Haldi & Pheras, Anand Karaj, Reception & Walima)",
+   "what": "Reorder the stand-ins so no two adjacent strips share a file: Haldi -> pom-tree-night, Anand Karaj -> pom-pile, Reception -> pom-open-closeup (srcset/sizes/width/height to match).",
+   "why": "Desktop row shows two identical blurred pile strips and two identical tree strips side by side; the slot row should read as six different photographs waiting to open."
+  },
+  {
+   "where": "assets/css/site.css .site-header.is-scrolled (add a max-width:768px rule)",
+   "what": "background:var(--night) solid on phones (no backdrop blur runs there).",
+   "why": "Phone shots 1 and 3 show sharp text ghosts ('MEDI, FOUNDER', 'Read the whole letter', pillar copy) bleeding through the 4% gap behind the logo; without blur it reads as a smudge, not frosted glass."
+  },
+  {
+   "where": "assets/css/site.css .accordion__media::after (phones) / .accordion__body .fa",
+   "what": "At <=768px deepen the top stop of the overlay to rgba(27,34,30,.45) (from .25).",
+   "why": "The gold Persian accent sits on bright red pomegranate flesh in the stacked Mehndi panel and nearly vanishes even with the text shadow."
+  }
+ ]
+}

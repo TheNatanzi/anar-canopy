@@ -1,5 +1,5 @@
 /* =========================================================
-   Anar Events — site.css (v2.9, night palette, round-9 fixes, 3 Nov 2026)
+   Anar Events — site.css (v2.10, night palette, round-10 fixes, 3 Nov 2026)
    One file. Mobile first. No grid hairlines anywhere.
    Latin: TT Ramillas Bold only (TRIAL font: buy before launch).
    Persian: Noto Naskh Arabic (self-hosted, Arabic subset), never italic/tracked/caps.
@@ -178,7 +178,9 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .site-header.nav-open .site-nav a{font-size:26px}
 /* solid once scrolled, and on inner pages */
 .site-header--solid,.site-header.is-scrolled{background:rgba(27,34,30,.96)}
-/* the open drawer's bar is the same solid deep cypress as the drawer (after the scrolled rule, so it wins while scrolled) */
+/* phones: fully solid once scrolled (no backdrop blur runs there, so the 4% bleed would show text ghosts behind the bar) */
+@media (max-width:768px){.site-header.is-scrolled{background:var(--night)}}
+/* the open drawer's bar is the same solid deep cypress as the drawer (after the scrolled rules, so it wins while scrolled) */
 .site-header.nav-open{background:var(--deep)}
 /* the blur only on pointer desktops: a fixed element with a backdrop filter is re-composited on every scrolled frame */
 @media (min-width:769px) and (hover:hover){
@@ -216,21 +218,24 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .hero__tag .fa{font-size:22px;line-height:1.4}
 @media (max-width:768px){
   /* the canopy at 112vw (the trunks sit at the art's own edges, so anything much wider than the viewport crops them off):
-     slivers of both edge trunks stay in the frame with the middle open, the owner's desktop composition at phone size */
-  .hero__canopy{width:150vw;top:auto;bottom:-8%;max-height:none}
+     both half-cut edge trunks stay in the frame at 390px with the middle open, the owner's desktop composition at phone
+     size; the img sizes / preload imagesizes strings carry the same 112vw */
+  .hero__canopy{width:112vw;top:auto;bottom:-4%;max-height:none}
   .hero__mark{width:78vw;top:30%}
   .hero__halo{width:170%;height:250%}
   .hero__line{font-size:14px;padding-inline:4px}
-  /* the tag pair sits on painted leaves: the same shadow as .hero__line, 24px up clear of the densest foliage */
-  .hero__tag{bottom:calc(24px + env(safe-area-inset-bottom));text-shadow:0 1px 12px rgba(27,34,30,.9)}
+  /* the tag pair sits on painted leaves: the same shadow as .hero__line, raised clear of the Pause button row
+     (the 36px toggle sits at bottom:16px; the pair starts 12px above its top) */
+  .hero__tag{bottom:calc(64px + env(safe-area-inset-bottom));text-shadow:0 1px 12px rgba(27,34,30,.9)}
   .hero__tag .fa{font-size:18px}
   /* the "How we work +" tab is now a mid-height edge tab on phones too: the tagline stays at the bottom */
 }
 
 /* ---------- Floating leaves (two places; static under reduced motion) ---------- */
-.leaf{position:absolute;z-index:0;width:220px;height:250px;background:url("../tree/leaves-float.webp") no-repeat;background-size:1376px 768px;pointer-events:none;opacity:.9}
-.leaf--1{background-position:-100px -70px}
-.leaf--3{background-position:-690px -50px}
+/* each leaf is its own 220x250 crop (leaf-1 / leaf-3, ~9 KB each, cut from src-assets/tree/leaves-float.png), not a sprite sheet */
+.leaf{position:absolute;z-index:0;width:220px;height:250px;background:no-repeat center/220px 250px;pointer-events:none;opacity:.9}
+.leaf--1{background-image:url("../tree/leaf-1.webp")}
+.leaf--3{background-image:url("../tree/leaf-3.webp")}
 @media (max-width:768px){.leaf{transform:scale(.6);transform-origin:top left}}
 
 /* ---------- DESCEND THE TREE ---------- */
@@ -290,6 +295,8 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 /* the lazy image fills the panel (the panel's min-height reserves the box); the 16/9 ratio is the fallback should its height ever resolve to auto */
 .accordion__media img{width:100%;height:100%;object-fit:cover;aspect-ratio:16/9;transition:filter .6s var(--ease),transform .6s var(--ease)}
 .accordion__media::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(18,23,20,.92) 0%,rgba(18,23,20,.45) 50%,rgba(27,34,30,.25) 100%)}
+/* phones: a deeper top stop (.45), so the gold accent above the h3 holds on bright image areas in the stacked panels */
+@media (max-width:768px){.accordion__media::after{background:linear-gradient(to top,rgba(18,23,20,.92) 0%,rgba(18,23,20,.45) 50%,rgba(27,34,30,.45) 100%)}}
 .accordion__trigger{position:absolute;inset:0;width:100%;text-align:left;z-index:2}
 .accordion__trigger[hidden]{display:none}
 .accordion__trigger:focus-visible{outline:2px solid var(--gold);outline-offset:-6px}
@@ -300,14 +307,22 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 }
 .accordion__label{position:absolute;left:var(--s2);top:var(--s2);letter-spacing:.06em;text-transform:uppercase;font-size:16px;z-index:1;display:none;color:var(--gold);text-shadow:0 1px 10px rgba(18,23,20,.95)}
 .accordion__body{position:relative;z-index:3;padding:var(--s4) var(--s2) var(--s3);display:grid;gap:var(--s1);min-height:100%;align-content:end;pointer-events:none}
-/* phones: a 44px right clearance for the mid-height "How we work +" tab; a compact preview (image + title + Persian) at 280px */
+/* phones: a 44px right clearance for the mid-height "How we work +" tab and 64px under the text reserved for the
+   fixed Pause button (which stays available here); a compact preview (image + title + Persian) at 280px */
 @media (max-width:768px){.accordion__body{padding-right:44px;padding-bottom:64px}.accordion__panel{min-height:280px}}
+/* "Find your celebration": a compact in-page link row above the panels, six gold text links (the stacked phone list is long) */
+.accordion__index{display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:var(--s1) 20px;margin:0 auto var(--s3);font-size:16px;line-height:24px}
+.accordion__index-label{color:var(--stone);font-size:14px;line-height:20px;letter-spacing:.14em;text-transform:uppercase;flex:0 0 100%;text-align:center}
+.accordion__index a{color:var(--gold);border-bottom:2px solid transparent;padding-bottom:2px;transition:border-color .3s,color .3s}
+.accordion__index a:hover{border-bottom-color:var(--gold)}
+@media (min-width:768px){.accordion__index-label{flex:0 0 auto;margin-right:var(--s1)}}
 /* stacked (under 1100px) the trigger button is gone, so the body takes the pointer (the native Read more must toggle) */
 @media (max-width:1099px){.accordion__body{pointer-events:auto}}
 .accordion__body h3{font-size:clamp(26px,3vw,38px)}
 /* the gold Persian accent sits directly above the h3 (left-aligned like .journey__fa and .step .fa; the span keeps direction:rtl);
-   it can land on a bright part of the photo: a soft night shadow keeps it legible */
-.accordion__body .fa{color:var(--gold);text-shadow:0 1px 10px rgba(18,23,20,.95);text-align:left;justify-self:start}
+   it can land on a bright part of the photo: a soft night shadow keeps it legible. The Hindu and Sikh panels carry a gold
+   English eyebrow in the same slot, with the same shadow */
+.accordion__body .fa,.accordion__body .eyebrow{color:var(--gold);text-shadow:0 1px 10px rgba(18,23,20,.95);text-align:left;justify-self:start}
 /* one intro sentence always visible (parchment, 18px); the operational text sits behind the native <details> "Read more"
    at every width in stone 16px, closed by default (site.js closes every one at start), so the hierarchy reads
    headline / bright intro / Read more */
@@ -441,8 +456,7 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .form{display:grid;gap:var(--s3);background:rgba(18,23,20,.55);border:0;border-top:2px solid var(--gold);padding:clamp(20px,4vw,48px)}
 .form__row{display:grid;gap:var(--s3)}
 @media (min-width:600px){.form__row{grid-template-columns:1fr 1fr}}
-/* the first row: names / email / phone side by side from 768px (two columns at 600-767, phone wraps alone); the names field is twice as wide so its placeholder never clips */
-@media (min-width:768px){.form__row--3{grid-template-columns:2fr 1fr 1fr}}
+/* the first row: names / email as two equal columns; the optional phone sits alone on the row under them */
 .field{display:grid;gap:var(--s1);min-width:0}
 .field label,.fieldset legend{font-size:16px;line-height:22px;color:var(--parch)}
 /* inputs in the underline style (editorial, like the kashida): no perimeter box, a 2px gold rule at .7 (opaque enough to read against the night fill) under a soft night fill; focus = the full gold underline (no 1px hairlines anywhere) */
@@ -482,9 +496,9 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .form__more[open] summary::after{content:"\2013"}
 .form__more summary:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 .form__more-body{display:grid;gap:var(--s3);margin-top:var(--s3)}
-/* phones: the form keeps 56px of bottom padding under the closing note for the fixed Pause button (which also hides while
-   the form is under it, site.js); every line in the card and the contact line start at the same edge (no indent) */
-@media (max-width:768px){.form{padding-bottom:56px}}
+/* phones: the form keeps 64px of bottom padding under the closing note, reserved for the fixed Pause button (which stays
+   available here and hides only while the page is scrolling, site.js); every line in the card and the contact line start at the same edge (no indent) */
+@media (max-width:768px){.form{padding-bottom:64px}}
 .form__status a{color:var(--parch)}
 
 /* ---------- Footer (deep night band) ---------- */
@@ -523,7 +537,8 @@ html:not(.panel-ready) .hww-tab{display:none}
   .options > li,.tradition__text,.faq,.step,.you-get li,.letter,.promise li,.behaviour li{padding-right:24px}
   .statement,.section__head{padding-inline:24px}
 }
-/* phones: the Pause button hides while scrolling down, like the tab (site.js toggles .is-hidden from the same scroll handler) */
+/* phones: the Pause button hides only while actively scrolling down, like the tab (site.js toggles .is-hidden from the same
+   scroll handler); it stays available while the animated sections are on screen (their bodies reserve 64px for it) */
 .motion-toggle.is-hidden{transform:translateY(calc(100% + 24px));opacity:0;pointer-events:none}
 /* Pause motion / Play motion: bottom-left on every screen size and visible the whole page (round, icon-only:
    36px on phones, 40px on desktop). The accessible name is the fixed aria-label "Pause motion" and

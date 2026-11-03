@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "dev",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "index.html, the six .accordion__media img sizes attributes",
+   "what": "change sizes to \"(max-width:1099px) 100vw, 480px\" (the open panel measures 464px at 1440; 60vw = 864px picks the 1400w files)",
+   "why": "verified in headless Edge: the desktop row fetches the 1400w JPEGs for a 464px panel, about 470KB more than the 800w set would cost"
+  },
+  {
+   "where": "assets/js/site.js accordion block, btn.addEventListener('focus', …)",
+   "what": "remove the focus-opens-panel handler; open on click/Enter/Space only and keep the :has() focus ring on the panel",
+   "why": "verified: tabbing through the celebrations opens every panel in turn (Sofreh, Nikah, Mehndi…), six flex transitions and refreshes a keyboard user never asked for"
+  },
+  {
+   "where": "assets/css/site.css, .site-header--solid,.site-header.is-scrolled background rgba(27,34,30,.96)",
+   "what": "inside @media (max-width:768px) set .site-header.is-scrolled{background:var(--night)} (desktop keeps .96 + blur)",
+   "why": "verified by element screenshot: on phones there is no backdrop blur, so parchment-section text ghosts through the 4% bleed of the bar (founder quote, form labels)"
+  },
+  {
+   "where": "assets/js/site.js accordion block, p.addEventListener('mouseenter', …)",
+   "what": "add a 120ms hover-intent timer (set on mouseenter, cleared on mouseleave) before calling open(p)",
+   "why": "a pointer crossing the row to reach 'Begin the conversation' opens every strip it passes, each a 350ms flex transition plus a ResizeObserver refresh"
+  },
+  {
+   "where": "assets/css/site.css .leaf background:url(../tree/leaves-float.webp) 1376x768",
+   "what": "export the two used sprite regions as a ~220x250 webp each (or one 440x250 strip) and point .leaf--1/.leaf--3 at them",
+   "why": "a 99KB sheet is fetched at page load (not lazy) to show two 220x250 crops; a cropped file is under 15KB"
+  },
+  {
+   "where": "assets/js/site.js nav drawer (syncNav uses el.inert only)",
+   "what": "add the same Tab-key trap the How-we-work panel has while header.nav-open, or set aria-hidden on the inert targets as setInert() does",
+   "why": "browsers without `inert` (Safari before 15.5) let focus tab out of the open drawer into the page behind it; the panel already handles this, the drawer does not"
+  }
+ ]
+}

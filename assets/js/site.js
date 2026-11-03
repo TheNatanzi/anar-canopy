@@ -1,5 +1,5 @@
 /* =========================================================
-   Anar Events — site.js (v2.9, night palette, round-9 fixes, 3 Nov 2026)
+   Anar Events — site.js (v2.10, night palette, round-10 fixes, 3 Nov 2026)
    Loaded (defer, self-hosted in assets/js/vendor/) before this file:
      GSAP 3.12.5 + ScrollTrigger, Lenis 1.1.18
    Content is visible by default. Reveal targets are hidden only
@@ -150,14 +150,13 @@
     }
   }
 
-  /* Skip link: move focus INTO <main> (main carries tabindex="-1") */
+  /* Skip link: the same anchor path as every in-page link (the drawer and the panel close first, so <main>
+     is no longer inert when it takes focus; main carries tabindex="-1") */
   var skip = $('.skip-link'), mainEl = $('#main');
   if (skip && mainEl) {
     skip.addEventListener('click', function (e) {
       e.preventDefault();
-      if (!mainEl.hasAttribute('tabindex')) { mainEl.setAttribute('tabindex', '-1'); }
-      mainEl.focus({ preventScroll: true });
-      mainEl.scrollIntoView({ behavior: 'auto', block: 'start' });
+      goToAnchor(mainEl);
     });
   }
 
@@ -167,6 +166,42 @@
      --------------------------------------------------------- */
   var header = $('.site-header');
   var navToggle = $('.nav-toggle');
+  /* the "How we work +" tab, panel and backdrop (their block is below); panelOpen is read here by syncInert() */
+  var tab = $('.hww-tab'), panel = $('#hww-panel'), backdrop = $('.hww-backdrop');
+  var panelOpen = false;
+  /* ONE background-inert state for BOTH overlays (the drawer and the panel). Every element outside the panel is
+     a candidate; its original inert / aria-hidden is saved the first time either overlay opens and restored only
+     once both are closed, so a resize (syncNav) can never clear inert under the open panel. The drawer leaves the
+     header live (it lives there) and the skip link reachable (activating it closes the drawer); the panel makes
+     everything outside itself inert. aria-hidden goes with inert, for browsers without `inert`. */
+  var inertState = null;
+  var outside = function () {
+    return $$('body > *').filter(function (el) { return el !== panel && el !== backdrop && el.tagName !== 'SCRIPT'; });
+  };
+  function syncInert() {
+    var navOpen = !!(header && header.classList.contains('nav-open'));
+    var on = navOpen || panelOpen;
+    if (on) {
+      if (!inertState) {
+        inertState = outside().map(function (el) { return { el: el, inert: el.inert, hidden: el.getAttribute('aria-hidden') }; });
+      }
+      inertState.forEach(function (s) {
+        var inert = panelOpen || (s.el !== header && s.el !== skip);
+        s.el.inert = inert;
+        if (inert) { s.el.setAttribute('aria-hidden', 'true'); }
+        else if (s.hidden === null) { s.el.removeAttribute('aria-hidden'); } else { s.el.setAttribute('aria-hidden', s.hidden); }
+      });
+    } else if (inertState) {
+      inertState.forEach(function (s) {
+        s.el.inert = s.inert;
+        if (s.hidden === null) { s.el.removeAttribute('aria-hidden'); } else { s.el.setAttribute('aria-hidden', s.hidden); }
+      });
+      inertState = null;
+    }
+    /* the scroll lock and Lenis follow the same combined state */
+    body.classList.toggle('panel-open', on);
+    if (lenis) { if (on) { lenis.stop(); } else { lenis.start(); } }
+  }
   /* ONE window scroll listener for the whole file, gated by requestAnimationFrame (with Lenis every frame is a
      scroll event): each block pushes its handler into scrollFns; every handler writes the DOM only on a change */
   var scrollFns = [];
@@ -190,17 +225,13 @@
   }
   scrollFns.push(onScrollState);
   onScrollState();
-  /* the toggle's aria-expanded, the inert page (main, footer, the fixed tab and the Pause button), the scroll lock
-     (body.panel-open, shared with the How we work panel) and Lenis always follow the drawer's class (also re-synced on resize) */
-  var drawerInert = function () { return [mainEl, $('.site-footer'), $('.hww-tab'), $('.motion-toggle')].filter(Boolean); };
+  /* the toggle's aria-expanded, the inert page, the scroll lock and Lenis always follow the drawer's class (also
+     re-synced on resize): syncInert() computes them from the drawer AND the panel together */
   function syncNav() {
     if (!header || !navToggle) { return; }
     var open = header.classList.contains('nav-open');
     navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-    drawerInert().forEach(function (el) { el.inert = open; });
-    /* panelOpen (the How we work panel, below) keeps its own lock and Lenis stop while it is open */
-    body.classList.toggle('panel-open', open || !!panelOpen);
-    if (lenis) { if (open) { lenis.stop(); } else if (!panelOpen) { lenis.start(); } }
+    syncInert();
   }
   function closeNav() {
     if (!header || !navToggle) { return; }
@@ -240,37 +271,15 @@
      hero is in view (the inner-page band hides it on phones only);
      on phones also while scrolling down: it slides in once the first
      screen has scrolled past. The same block turns the header
-     "Inquire" ghost at the destination and hides the Pause button on
-     phones while a celebration body or the form sits under it.
+     "Inquire" ghost while another filled inquiry button is on screen
+     and hides the Pause button on phones while the page is scrolling.
      --------------------------------------------------------- */
-  var tab = $('.hww-tab'), panel = $('#hww-panel'), backdrop = $('.hww-backdrop');
   var closePanel = function () {};
   if (tab && panel && backdrop) {
     var closeBtn = $('.hww-panel__close', panel);
     var lastFocus = null;
     var closeTimer = null;
     var openFrame = null;
-    var panelOpen = false;
-    var outsideState = [];
-    var outside = function () {
-      return $$('body > *').filter(function (el) { return el !== panel && el !== backdrop && el.tagName !== 'SCRIPT'; });
-    };
-    var setInert = function (on) {
-      if (on) {
-        outsideState = outside().map(function (el) {
-          var state = { el: el, inert: el.inert, hidden: el.getAttribute('aria-hidden') };
-          el.inert = true;
-          el.setAttribute('aria-hidden', 'true');
-          return state;
-        });
-      } else {
-        outsideState.forEach(function (s) {
-          s.el.inert = s.inert;
-          if (s.hidden === null) { s.el.removeAttribute('aria-hidden'); } else { s.el.setAttribute('aria-hidden', s.hidden); }
-        });
-        outsideState = [];
-      }
-    };
     var focusables = function () {
       return $$('a[href], button, input, select, textarea, [tabindex]', panel)
         .filter(function (el) { return !el.disabled && el.tabIndex >= 0 && el.offsetParent !== null && !el.closest('[inert]'); });
@@ -285,10 +294,8 @@
       panel.removeAttribute('aria-hidden');
       openFrame = requestAnimationFrame(function () { panel.classList.add('is-open'); backdrop.classList.add('is-on'); openFrame = null; });
       tab.setAttribute('aria-expanded', 'true');
-      body.classList.add('panel-open');
       (closeBtn || panel).focus({ preventScroll: true });
-      setInert(true);
-      if (lenis) { lenis.stop(); }
+      syncInert();
     };
     closePanel = function () {
       if (!panelOpen) { return; }
@@ -296,9 +303,7 @@
       if (openFrame !== null) { cancelAnimationFrame(openFrame); openFrame = null; }
       panel.classList.remove('is-open'); backdrop.classList.remove('is-on');
       tab.setAttribute('aria-expanded', 'false');
-      body.classList.remove('panel-open');
-      setInert(false);
-      if (lenis) { lenis.start(); }
+      syncInert();
       if (closeTimer) { clearTimeout(closeTimer); }
       closeTimer = setTimeout(function () { panel.hidden = true; backdrop.hidden = true; closeTimer = null; }, reduced || userPaused ? 0 : 560);
       if (lastFocus && lastFocus.focus) { lastFocus.focus({ preventScroll: true }); }
@@ -326,7 +331,7 @@
        Showing: the class, aria-hidden and tabIndex change together, at once. Hiding: while the page scrolls only
        the class changes (visual); aria-hidden / tabIndex follow in the settle timeout (700 ms after the last
        scroll or observer change). A control that holds focus is never hidden, visually or from the keyboard. */
-    var hideAtDestination = false, hideWhileScrolling = false, heroInView = true, underContent = false, idleTimer;
+    var hideAtDestination = false, hideWhileScrolling = false, heroInView = true, filledInquire = false, idleTimer;
     var lastScroll = window.scrollY;
     var motionBtn = $('.motion-toggle');
     var headerInquire = header ? $('.nav-right .btn', header) : null;
@@ -346,13 +351,15 @@
       var hidden = !panelOpen && document.activeElement !== tab &&
         (hideAtDestination || heroHides() || (!isDesktop() && hideWhileScrolling));
       setShown(tab, hidden, settled);
-      /* phones: the Pause button hides while scrolling down and while an open celebration body or the form is under it */
+      /* phones: the Pause button hides only while actively scrolling down (the animated sections keep it available;
+         the celebration bodies and the form reserve 64px under their text for it, CSS) */
       if (motionBtn) {
-        setShown(motionBtn, !isDesktop() && (hideWhileScrolling || underContent) && document.activeElement !== motionBtn, settled);
+        setShown(motionBtn, !isDesktop() && hideWhileScrolling && document.activeElement !== motionBtn, settled);
       }
-      /* the header "Inquire" turns ghost while #inquire or the footer is in view: one gold button per screen */
-      if (headerInquire && headerInquire.classList.contains('ghost') !== hideAtDestination) {
-        headerInquire.classList.toggle('ghost', hideAtDestination);
+      /* the header "Inquire" turns ghost while another filled inquiry button is on screen (the celebrations and
+         journey CTAs, the form's own button in #inquire, the footer): one gold button per screen */
+      if (headerInquire && headerInquire.classList.contains('ghost') !== filledInquire) {
+        headerInquire.classList.toggle('ghost', filledInquire);
       }
     };
     var settleSoon = function () {
@@ -369,17 +376,24 @@
       syncTab(false);
       settleSoon();
     });
+    /* one observer: #inquire and the footer hide the tab AND ghost the header Inquire; every other filled inquiry
+       button in the page (every main .btn whose href ends in #inquire) only ghosts the header Inquire */
     var hideFor = [$('#inquire'), $('.site-footer')].filter(Boolean);
-    if (hideFor.length && 'IntersectionObserver' in window) {
+    var ghostFor = hideFor.concat($$('main .btn[href$="#inquire"]'));
+    if (ghostFor.length && 'IntersectionObserver' in window) {
       var inView = new Map();
       var tabObserver = new IntersectionObserver(function (entries) {
         entries.forEach(function (en) { inView.set(en.target, en.isIntersecting); });
-        hideAtDestination = false;
-        inView.forEach(function (v) { if (v) { hideAtDestination = true; } });
+        hideAtDestination = false; filledInquire = false;
+        inView.forEach(function (v, el) {
+          if (!v) { return; }
+          filledInquire = true;
+          if (hideFor.indexOf(el) !== -1) { hideAtDestination = true; }
+        });
         syncTab(false);
         settleSoon();
       }, { threshold: 0.05 });
-      hideFor.forEach(function (el) { tabObserver.observe(el); });
+      ghostFor.forEach(function (el) { tabObserver.observe(el); });
     }
     /* the hero observer (index: .hero; inner pages: .pageband): the tab stays out of the first screen */
     if (heroEl && 'IntersectionObserver' in window) {
@@ -389,23 +403,22 @@
         settleSoon();
       }, { threshold: 0 }).observe(heroEl);
     } else { heroInView = false; syncTab(true); }
-    /* phones: the teaser options, the celebrations, the journey and the form, watched in the bottom 10% of the viewport (where the Pause button sits) */
-    var underFor = [$('.teaser'), $('.accordion'), $('.journey'), $('.form')].filter(Boolean);
-    if (motionBtn && underFor.length && 'IntersectionObserver' in window) {
-      var underView = new Map();
-      var underObserver = new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) { underView.set(en.target, en.isIntersecting); });
-        underContent = false;
-        underView.forEach(function (v) { if (v) { underContent = true; } });
-        syncTab(false);
-        settleSoon();
-      }, { threshold: 0, rootMargin: '-90% 0px 0px 0px' });
-      underFor.forEach(function (el) { underObserver.observe(el); });
-    }
   }
 
-  /* Same-page anchors (including "index.html#inquire" while on index):
-     the panel and the drawer close first, then the scroll. */
+  /* Same-page anchors (including "index.html#inquire" while on index) and the skip link:
+     the panel and the drawer close first, then the scroll. A target inside a collapsed
+     celebration strip (the "Find your celebration" links) opens that panel on wide screens. */
+  function openPanelFor(target) {
+    var p = target.closest ? target.closest('.accordion__panel') : null;
+    var btn = p ? $('.accordion__trigger', p) : null;
+    if (btn && !btn.hidden) { btn.click(); }
+  }
+  function goToAnchor(target) {
+    closeNav();
+    closePanel();
+    openPanelFor(target);
+    scrollToEl(target);
+  }
   $$('a[href*="#"]').forEach(function (a) {
     a.addEventListener('click', function (e) {
       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || a.target === '_blank') { return; }
@@ -415,25 +428,31 @@
       var target = document.getElementById(url.hash.slice(1));
       if (!target) { return; }
       e.preventDefault();
-      closeNav();
-      closePanel();
-      scrollToEl(target);
+      goToAnchor(target);
       history.pushState(null, '', url.hash);
     });
   });
-  /* a hash landing: the browser has already jumped to the fragment, so measure first. Within a header height of the top:
-     focus and settle only; otherwise an immediate (not glided) scroll to the header offset, so the page never slides twice */
+  /* a hash landing: the browser has already jumped to the fragment, so measure first. Already at the intended clearance
+     (its top between the header height and the CSS scroll-margin, header + 16px): focus and settle only; anywhere else,
+     a top of 0 behind the fixed header included, an immediate (not glided) scroll to the header offset, so the page
+     never slides twice */
   if (location.hash) {
     var landing = document.getElementById(location.hash.slice(1));
     if (landing) {
       setTimeout(function () {
+        if (!landing.hasAttribute('tabindex')) { landing.setAttribute('tabindex', '-1'); }
+        openPanelFor(landing);
+        /* focus first: the focusin handler (below) marks every .reveal ancestor .is-revealed (transform none), and
+           settleReveals() completes the reveals above the fold, so the box measured next is the untransformed one
+           (a target inside a not-yet-revealed .reveal sits 24px low until then; the browser's own jump used that box) */
+        landing.focus({ preventScroll: true });
+        settleReveals();
         var top = landing.getBoundingClientRect().top;
         var headerH = -headerOffset();
-        if (!landing.hasAttribute('tabindex')) { landing.setAttribute('tabindex', '-1'); }
-        landing.focus({ preventScroll: true });
-        if (Math.abs(top) <= headerH + 16) { settleReveals(); return; }
-        if (lenis) { lenis.scrollTo(landing, { offset: headerOffset(), immediate: true, onComplete: settleReveals }); }
-        else { landing.scrollIntoView({ behavior: 'auto', block: 'start' }); setTimeout(settleReveals, 50); }
+        if (top >= headerH - 2 && top <= headerH + 18) { return; }
+        var settled = function () { settleReveals(true); };
+        if (lenis) { lenis.scrollTo(landing, { offset: headerOffset(), immediate: true, onComplete: settled }); }
+        else { landing.scrollIntoView({ behavior: 'auto', block: 'start' }); setTimeout(settled, 50); }
       }, 80);
     }
   }
@@ -510,23 +529,30 @@
       var bodyEl = $('.accordion__body', p);
       if (bodyEl && !bodyEl.id) { bodyEl.id = 'acc-' + ai + '-' + i; }
       if (btn && bodyEl) { btn.setAttribute('aria-controls', bodyEl.id); }
-      /* hover opens unless focus sits inside the open body (its details / summary included) or the keyboard placed
-         focus inside the accordion (a click also focuses, and must not disable hover) */
+      /* hover opens after a 120 ms hover-intent pause (a pointer crossing the row to reach the CTA opens nothing),
+         unless focus sits inside the open body (its details / summary included) or the keyboard placed focus
+         inside the accordion (a click also focuses, and must not disable hover) */
       if (hoverable) {
+        var hoverTimer = null;
         p.addEventListener('mouseenter', function () {
           if (!isWide()) { return; }
-          var openBody = $('.accordion__panel.is-open .accordion__body', acc);
-          if (openBody && openBody.contains(document.activeElement)) { return; }
-          /* old Safari throws on the :focus-visible pseudo-class: a throw counts as "not keyboard focus" */
-          var keyboardFocus = false;
-          try { keyboardFocus = acc.contains(document.activeElement) && document.activeElement.matches(':focus-visible'); } catch (err) { keyboardFocus = false; }
-          if (keyboardFocus) { return; }
-          open(p);
+          clearTimeout(hoverTimer);
+          hoverTimer = setTimeout(function () {
+            hoverTimer = null;
+            var openBody = $('.accordion__panel.is-open .accordion__body', acc);
+            if (openBody && openBody.contains(document.activeElement)) { return; }
+            /* old Safari throws on the :focus-visible pseudo-class: a throw counts as "not keyboard focus" */
+            var keyboardFocus = false;
+            try { keyboardFocus = acc.contains(document.activeElement) && document.activeElement.matches(':focus-visible'); } catch (err) { keyboardFocus = false; }
+            if (keyboardFocus) { return; }
+            open(p);
+          }, 120);
         });
+        p.addEventListener('mouseleave', function () { clearTimeout(hoverTimer); hoverTimer = null; });
       }
+      /* keyboard: click / Enter / Space only (focus alone opens nothing; the :has() ring on the panel shows where focus is) */
       if (btn) {
         btn.addEventListener('click', function () { if (isWide()) { open(p); } });
-        btn.addEventListener('focus', function () { if (isWide()) { open(p); } });
       }
     });
     var syncMobile = function () {
@@ -551,20 +577,22 @@
         if (d) { d.open = false; }
       });
     };
-    /* the tallest expanded body at the open panel's width (flex 5 of 5+(n-1), minus the 8px gaps) -> --acc-min */
+    /* the tallest expanded body at the open panel's width (flex 5 of 5+(n-1), minus the 8px gaps) -> --acc-min.
+       Batched: every measuring style is written first, then every height is read, then every style is restored
+       (one layout, not one per panel) */
+    var bodies = panels.map(function (p) { return $('.accordion__body', p); }).filter(Boolean);
     var reserveHeight = function () {
       if (!isWide()) { acc.style.removeProperty('--acc-min'); return; }
       var n = panels.length;
       var gap = parseFloat(getComputedStyle(acc).columnGap) || 8;
       var openW = Math.max(0, (acc.clientWidth - gap * (n - 1)) * 5 / (n + 4));
-      var tallest = 0;
-      panels.forEach(function (p) {
-        var b = $('.accordion__body', p);
-        if (!b) { return; }
-        var saved = b.getAttribute('style');
+      var saved = bodies.map(function (b) { return b.getAttribute('style'); });
+      bodies.forEach(function (b) {
         b.style.cssText = 'position:absolute;inset:auto;left:0;top:0;width:' + openW + 'px;height:auto;min-height:0;visibility:hidden;opacity:0;transition:none';
-        tallest = Math.max(tallest, b.scrollHeight);
-        if (saved === null) { b.removeAttribute('style'); } else { b.setAttribute('style', saved); }
+      });
+      var tallest = bodies.reduce(function (m, b) { return Math.max(m, b.scrollHeight); }, 0);
+      bodies.forEach(function (b, i) {
+        if (saved[i] === null) { b.removeAttribute('style'); } else { b.setAttribute('style', saved[i]); }
       });
       if (tallest) { acc.style.setProperty('--acc-min', tallest + 'px'); }
     };

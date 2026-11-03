@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "planner",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "index.html pillars card 02 .muted, journey Consultation note, hww-panel Consultation, how-we-work.html step 02 and FAQ 'Will you work with our parents directly?'",
+   "what": "Replace every 'Parents and elders are involved at the level the couple chooses' with the warmer line the teaser already uses: 'Parents and elders are part of every decision your family wants them in.' Keep one plain sentence on the How we work page saying the couple tells us who joins each meeting.",
+   "why": "A paying Persian or Afghan parent reads 'the couple chooses' five times across the site as 'you are being gated'; it is the one line most likely to lose the parent who holds the budget."
+  },
+  {
+   "where": "index.html journey Proposal note and #inquire intro paragraph (the sentence also sits in the footer and the hww-panel)",
+   "what": "Keep 'Tell us your preferred language. We confirm written translation and spoken support before booking.' once, in the footer. In the journey Proposal note and the inquire intro use the concrete promise from how-we-work.html: 'A page for your parents in the language they read, agreed in your proposal.'",
+   "why": "The same hedge sentence appears four times on the home page and reads as legal nervousness; the parents' page is the single strongest trust signal for elders and is missing from the home page entirely."
+  },
+  {
+   "where": "index.html #celebrations Haldi & Pheras .accordion__intro and its Read more (and weddings.html #haldi-pheras first paragraph)",
+   "what": "Intro: 'The pheras under the mandap, with the pandit, at the muhurat your family's priest has set: your ceremony, in the sequence agreed with your officiant.' Read more: add 'We build the day backwards from the muhurat so the baraat, the milni and the mandap all land on time.'",
+   "why": "Keeping the muhurat is the first question a Hindu family asks a planner; its absence makes the Hindu panel read as outsider copy while the Persian panels read as insider copy."
+  },
+  {
+   "where": "index.html #how-teaser Wedding-day coordination: .option__when and the first <li>",
+   "what": "Eyebrow: 'Begins 6–8 weeks out · we run the days you have planned'. First bullet: 'Your family has planned already; we read every booking and contract and run the days, covering the events, hours and staffing named in the proposal.' Apply the same to how-we-work.html #you-get.",
+   "why": "The eyebrow and the bullet repeat 'we take over your existing bookings and plans' word for word on the first scroll (desktop screenshot 1), and 'take over' sounds like a seizure to parents who did the planning themselves."
+  },
+  {
+   "where": "index.html #celebrations Haldi & Pheras and Anand Karaj .accordion__body (the two panels with no .fa line above the h3)",
+   "what": "Add a gold English eyebrow in the same slot the Persian accent occupies on the other four panels: <p class=\"eyebrow\">Hindu ceremony</p> and <p class=\"eyebrow\">Sikh ceremony</p>, styled with the same text-shadow as .accordion__body .fa.",
+   "why": "On desktop the two South Asian panels are the only ones without the accent line; a Punjabi or Gujarati family notices which ceremonies got the care, and the site must win them as well as Persian families."
+  },
+  {
+   "where": "index.html #celebrations Sofreh Aghd Read more (and weddings.html #sofreh-aghd second paragraph)",
+   "what": "Add one line of lived fluency before the sofreh-key sentence: 'We cue the aghed and the family for the three \"bale\": the bride has gone to pick flowers, then bring rosewater, then yes, with the elders' permission.'",
+   "why": "The Persian panel is currently logistics only; the 'aroos rafte gol bechine' moment is the one line every Persian guest knows, and naming it proves fluency to the grandmother reading over the couple's shoulder."
+  }
+ ]
+}

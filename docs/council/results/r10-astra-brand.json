@@ -1,0 +1,36 @@
+{
+ "model": "astra",
+ "role": "brand",
+ "score": 8,
+ "blocking": [
+  "The service comparison and journey become dense blocks of similarly weighted text; the editorial hierarchy is weaker than the hero.",
+  "The phone hero loses the painted edge trunks, weakening the approved connected-tree composition."
+ ],
+ "fixes": [
+  {
+   "where": "assets/css/site.css — mobile .hero__canopy",
+   "what": "Reduce the 150vw canopy width and adjust its bottom offset until both half-cut edge trunks remain visible at 390px, preserving the open middle.",
+   "why": "The current phone crop reads as a hedge rather than the desktop's framing tree."
+  },
+  {
+   "where": "index.html — #how-teaser",
+   "what": "Keep each service's start time and three short benefit lines; move the contract and scope qualifications to how-we-work.html. Preserve TT Ramillas Bold.",
+   "why": "Long uppercase timing labels and wrapped bullets make the teaser feel administrative rather than premium."
+  },
+  {
+   "where": "index.html — #journey",
+   "what": "Limit each stage to one short visible sentence; retain the detailed language-support explanation on the process page and inquiry section. Move the repeated celebration inventory to weddings.html.",
+   "why": "Five paragraphs followed by another dense inventory compete with the otherwise elegant timeline."
+  },
+  {
+   "where": "assets/js/site.js — syncTab and headerInquire",
+   "what": "Extend the header's outlined Inquire treatment to moments when another filled inquiry button is visible, including the celebrations and journey CTAs.",
+   "why": "The celebrations screenshot shows two filled gold actions competing for emphasis."
+  },
+  {
+   "where": "assets/css/site.css — .form__row--3",
+   "what": "Use two equal columns for names and email, with optional phone on the next row, instead of the 2:1:1 split.",
+   "why": "The desktop email field is disproportionately narrow for its importance; balanced fields would make the inquiry surface feel more considered."
+  }
+ ]
+}

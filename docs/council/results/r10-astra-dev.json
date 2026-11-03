@@ -1,0 +1,36 @@
+{
+ "model": "astra",
+ "role": "dev",
+ "score": 7.8,
+ "blocking": [
+  "Opening the mobile menu leaves the skip link reachable but makes its destination inert; activating it does not close the menu.",
+  "Resizing with the How we work dialog open removes inert from background content through syncNav(), breaking modal isolation."
+ ],
+ "fixes": [
+  {
+   "where": "assets/js/site.js — skip-link click handler",
+   "what": "Close the mobile drawer before focusing and scrolling main; use the shared anchor-navigation path.",
+   "why": "The current handler attempts to focus inert content and leaves scrolling locked."
+  },
+  {
+   "where": "assets/js/site.js — syncNav() and dialog setInert()",
+   "what": "Centralize background inert state so resize cannot clear it while panelOpen is true; restore the original state only after both overlays close.",
+   "why": "The resize listener currently makes background content interactive beneath an active modal."
+  },
+  {
+   "where": "assets/js/site.js — initial location.hash handler",
+   "what": "Align fragment targets below the fixed header even when their current top is zero; skip repositioning only when already at the intended header clearance.",
+   "why": "The current absolute-distance check accepts targets hidden behind the header."
+  },
+  {
+   "where": "assets/js/site.js — syncTab(); assets/css/site.css — .motion-toggle.is-hidden",
+   "what": "Keep Pause motion available while animated sections are visible; reserve space or reposition it instead of hiding it throughout the accordion and journey.",
+   "why": "On phones, underContent removes the motion control precisely while readers encounter ongoing motion."
+  },
+  {
+   "where": "assets/js/site.js — reserveHeight()",
+   "what": "Batch temporary measurement-style writes, then height reads, then restoration; avoid alternating writes and scrollHeight reads for each panel.",
+   "why": "The current loop forces repeated synchronous layout during initialization and width changes."
+  }
+ ]
+}

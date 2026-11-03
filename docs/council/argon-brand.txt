@@ -45,7 +45,7 @@ THE CODE:
 <link rel="preload" href="assets/fonts/NotoNaskhArabic-arabic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/video/hero-poster-small.jpg" as="image">
 <!-- the canopy preload: imagesrcset / imagesizes match the <img class="hero__canopy"> srcset / sizes byte for byte -->
-<link rel="preload" href="assets/tree/canopy-u3.webp" as="image" imagesrcset="assets/tree/canopy-u3-1376.webp 1376w, assets/tree/canopy-u3-2048.webp 2048w, assets/tree/canopy-u3.webp 2752w" imagesizes="(max-width:768px) 175vw, min(100vw,165vh)" fetchpriority="high">
+<link rel="preload" href="assets/tree/canopy-u3.webp" as="image" imagesrcset="assets/tree/canopy-u3-1376.webp 1376w, assets/tree/canopy-u3-2048.webp 2048w, assets/tree/canopy-u3.webp 2752w" imagesizes="(max-width:768px) 150vw, min(100vw,165vh)" fetchpriority="high">
 <link rel="stylesheet" href="assets/css/site.css">
 <link rel="canonical" href="https://anarevents.com/">
 <link rel="icon" href="assets/logo/logo-gold.svg" type="image/svg+xml">
@@ -59,7 +59,7 @@ THE CODE:
 <body class="page-index">
 <a class="skip-link" href="#main">Skip to content</a>
 
-<!-- Shared header: left links, centre nothing, right فارسی (inert for now) + the one gold button -->
+<!-- Shared header: left links, centre nothing, right the phone number (wide desktops) + the one gold button; the فارسی note lives in the drawer and the footer only -->
 <header class="site-header">
   <div class="site-header__inner">
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span class="nav-toggle__bar"></span><span class="visually-hidden">Menu</span></button>
@@ -69,13 +69,12 @@ THE CODE:
         <li><a href="weddings.html">Weddings</a></li>
         <li><a href="how-we-work.html">How we work</a></li>
         <li><a href="about.html">About</a></li>
-        <!-- phones only (CSS): the phone line (tel: and WhatsApp as two links) as the last drawer item, then the inert "فارسی · coming soon" note -->
+        <!-- phones only (CSS): the phone line (tel: and WhatsApp as two links) as the last drawer item, then the "فارسی · coming soon" note (the bar carries no فارسی label; the footer repeats the note) -->
         <li class="site-nav__phone"><a href="tel:+19252639949">Call (925) 263-9949</a> · <a href="https://wa.me/19252639949" rel="noopener">WhatsApp</a></li>
         <li class="site-nav__fa"><span class="fa" lang="fa" dir="rtl">فارسی</span> · coming soon</li>
       </ul>
     </nav>
     <div class="nav-right">
-      <span class="nav-fa" lang="fa" dir="rtl">فارسی <span class="nav-fa__soon" aria-hidden="true">· به‌زودی</span><span class="visually-hidden" lang="en" dir="ltr"> (Persian site, coming soon)</span></span>
       <a class="nav-phone" href="tel:+19252639949">(925) 263-9949</a>
       <a class="btn btn--sm" href="index.html#inquire">Inquire</a>
     </div>
@@ -92,13 +91,14 @@ THE CODE:
     <video class="hero__video" muted loop playsinline disablepictureinpicture disableremoteplayback preload="none" poster="assets/video/hero-poster-small.jpg" width="1920" height="1080" aria-hidden="true" tabindex="-1" data-src-desktop="assets/video/hero-1080-loop.mp4" data-src-mobile="assets/video/hero-720-loop.mp4"></video>
     <div class="hero__tint" aria-hidden="true"></div>
     <div class="hero__deepen" aria-hidden="true"></div>
-    <img class="hero__canopy" src="assets/tree/canopy-u3.webp" srcset="assets/tree/canopy-u3-1376.webp 1376w, assets/tree/canopy-u3-2048.webp 2048w, assets/tree/canopy-u3.webp 2752w" sizes="(max-width:768px) 175vw, min(100vw,165vh)" width="2752" height="1536" alt="" aria-hidden="true" decoding="async" fetchpriority="high">
+    <img class="hero__canopy" src="assets/tree/canopy-u3.webp" srcset="assets/tree/canopy-u3-1376.webp 1376w, assets/tree/canopy-u3-2048.webp 2048w, assets/tree/canopy-u3.webp 2752w" sizes="(max-width:768px) 150vw, min(100vw,165vh)" width="2752" height="1536" alt="" aria-hidden="true" decoding="async" fetchpriority="high">
     <div class="hero__mark">
       <div class="hero__halo" aria-hidden="true"></div>
       <h1 class="hero__logo"><img src="assets/logo/logo-gold.svg" width="1600" height="552" alt="Anar Events" fetchpriority="high"></h1>
       <p class="hero__line">Wedding planning and coordination for Persian, Afghan and South Asian families<span class="hero__place">San Francisco Bay Area</span></p>
     </div>
-    <p class="hero__tag fa" lang="fa" dir="rtl">میراث، از نو</p>
+    <!-- the brand line and its Persian twin, paired on the first screen -->
+    <p class="hero__tag"><span>Reimagined Heritage</span> <span class="fa" lang="fa" dir="rtl">میراث، از نو</span></p>
   </section>
 
   <!-- 3. DESCEND THE TREE: two transparent edge strips (trunk-left / trunk-right) scroll past at 0.8x
@@ -113,7 +113,7 @@ THE CODE:
     <div class="descend__content">
       <div class="container container--text">
         <div class="statement">
-          <p class="eyebrow reveal">Reimagined Heritage</p>
+          <p class="eyebrow reveal"><span class="fa" lang="fa" dir="rtl">میراث، از نو</span></p>
           <svg class="kashida kashida--short kashida-draw" viewBox="0 0 320 2" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 1 H320"/></svg>
           <h2 id="statement-title" class="statement__text reveal">
             <span class="statement__line">Bespoke Persian, Afghan</span>
@@ -140,22 +140,23 @@ THE CODE:
           <li class="card">
             <span class="card__n">03</span>
             <h3>We always run multi-day cultural productions, seamlessly</h3>
-            <p class="muted">From the engagement to the last reception: one timeline, one plan, one person to call.</p>
+            <p class="muted">From the engagement to the last reception: one plan, every day run to the minute.</p>
           </li>
         </ol>
       </div>
     </div>
   </section>
 
-  <!-- 3b. HOW WE WORK teaser, directly after the three promises: a plain deep-cypress band with one soft gold glow, ONE gold kashida strip slides in (site.js block 6),
+  <!-- 3b. HOW WE WORK teaser, directly after the three promises: a plain deep-cypress band with one soft gold glow, the same kashida draw-on as under the statement (site.js block 4),
        then a SHORT two-option comparison (three bullets each); the full responsibility lists live on how-we-work.html #you-get -->
   <section class="section teaser band band--glow" id="how-teaser" aria-labelledby="how-teaser-title">
     <div class="container">
       <div class="section__head">
         <p class="eyebrow reveal"><span class="fa" lang="fa" dir="rtl">روش کار ما</span></p>
         <h2 id="how-teaser-title" class="reveal">How we work</h2>
+        <svg class="kashida kashida--short kashida-draw" viewBox="0 0 320 2" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 1 H320"/></svg>
+        <p class="section__intro reveal">Parents and grandparents are part of every decision you want them in.</p>
       </div>
-      <div class="teaser__strips" aria-hidden="true"><i></i></div>
       <ul class="options stagger" aria-label="Two ways to work with us">
         <li>
           <h3>Full planning</h3>
@@ -168,11 +169,11 @@ THE CODE:
         </li>
         <li>
           <h3>Wedding-day coordination</h3>
-          <p class="option__when">Begins 6–8 weeks out · we take over your finished plan and run the days</p>
+          <p class="option__when">Begins 6–8 weeks out · we take over your existing bookings and plans and run the days</p>
           <ul>
-            <li>Your family has planned already; we take over the finished plan and cover the events, hours and staffing named in the proposal.</li>
+            <li>Your family has planned already; we take over your existing bookings and plans and cover the events, hours and staffing named in the proposal.</li>
             <li>Every contract, contact and time confirmed with the venue and every vendor.</li>
-            <li>On the days: elders greeted first, the officiant and family cued. You only have to be there.</li>
+            <li>On the days: elders greeted first, the officiant and family cued.</li>
           </ul>
         </li>
       </ul>
@@ -187,7 +188,7 @@ THE CODE:
         <p class="eyebrow reveal"><span class="fa" lang="fa" dir="rtl">جشن‌ها</span></p>
         <h2 id="celebrations-title" class="reveal">The celebrations</h2>
         <svg class="kashida kashida--short kashida-draw" viewBox="0 0 320 2" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 1 H320"/></svg>
-        <p class="section__intro reveal">These are examples; we confirm your family's customs and sequence with you and your officiant.</p>
+        <p class="section__intro reveal">These are examples; we confirm your family's customs and sequence with you and your officiant. Two heritages, different levels of observance, or celebrations not listed here? Tell us what your family keeps.</p>
       </div>
       <div class="accordion reveal" data-accordion>
         <article class="accordion__panel is-open">
@@ -198,7 +199,7 @@ THE CODE:
           <div class="accordion__body" id="celebration-1">
             <p class="fa" lang="fa" dir="rtl">سفرهٔ عقد</p>
             <h3>Sofreh Aghd</h3>
-            <!-- one intro sentence on the image; the operational text behind the native "Read more" at every width (site.js opens every one above 768px, where the summary is hidden; on phones every one starts closed) -->
+            <!-- one intro sentence on the image; the operational text behind the native "Read more" at every width, closed by default (site.js closes every one at start) -->
             <p class="accordion__intro">The Persian ceremony at the spread: the mirror, the candlesticks, the sugar cones rubbed over the couple.</p>
             <details class="accordion__read"><summary>Read more</summary><p>We brief your sofreh designer and check the spread against the sofreh key (a one-page guide naming each item on the spread, in the languages listed in your proposal) before the elders are seated.</p></details>
           </div>
@@ -223,7 +224,7 @@ THE CODE:
           <div class="accordion__body" id="celebration-3">
             <p class="fa" lang="fa" dir="rtl">حنابندان · مهندی</p>
             <h3>Mehndi &amp; Sangeet</h3>
-            <p class="accordion__intro">The henna gathering and the sangeet, each as your family keeps it.</p>
+            <p class="accordion__intro">Henna on the bride's hands and the elders' blessing one night; both families singing and dancing the next, as your family keeps it.</p>
             <details class="accordion__read"><summary>Read more</summary><p>The henna gathering: hana-bandan for Persian families, khina for Afghan families, mehndi for South Asian families, with the henna on the bride's hands and the elders' blessing as your family keeps it. The sangeet, when both families sing, and the dholki or jaggo nights before it, if your family holds them. Music, dancing and the baraat on the wedding day, if your family chooses. Timing agreed around your family's customs.</p></details>
           </div>
         </article>
@@ -240,7 +241,7 @@ THE CODE:
         </article>
         <article class="accordion__panel">
           <!-- PHOTO SLOT · Anand Karaj: replace with the real gurdwara photo (real family, with consent), portrait ~1500×2000 -->
-          <div class="accordion__media"><img src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night.jpg 1125w" sizes="(max-width:1099px) 100vw, 60vw" width="1125" height="2000" alt="A pomegranate tree at night" loading="lazy" decoding="async"></div>
+          <div class="accordion__media"><img src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night.jpg 1125w, assets/img/pom-tree-night-1400.jpg 1400w" sizes="(max-width:1099px) 100vw, 60vw" width="1125" height="2000" alt="A pomegranate tree at night" loading="lazy" decoding="async"></div>
           <button class="accordion__trigger" type="button" aria-controls="celebration-6" aria-expanded="false"><span class="visually-hidden">Show Anand Karaj</span></button>
           <span class="accordion__label" aria-hidden="true">Anand Karaj</span>
           <div class="accordion__body" id="celebration-6">
@@ -251,7 +252,7 @@ THE CODE:
         </article>
         <article class="accordion__panel">
           <!-- PHOTO SLOT · Reception & Walima: replace with the real reception photo (real family, with consent), portrait ~1500×2000 -->
-          <div class="accordion__media"><img src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night.jpg 1125w" sizes="(max-width:1099px) 100vw, 60vw" width="1125" height="2000" alt="A pomegranate tree at night" loading="lazy" decoding="async"></div>
+          <div class="accordion__media"><img src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night.jpg 1125w, assets/img/pom-tree-night-1400.jpg 1400w" sizes="(max-width:1099px) 100vw, 60vw" width="1125" height="2000" alt="A pomegranate tree at night" loading="lazy" decoding="async"></div>
           <button class="accordion__trigger" type="button" aria-controls="celebration-4" aria-expanded="false"><span class="visually-hidden">Show Reception and Walima</span></button>
           <span class="accordion__label" aria-hidden="true">Reception &amp; Walima</span>
           <div class="accordion__body" id="celebration-4">
@@ -300,6 +301,7 @@ THE CODE:
           </p>
         </blockquote>
         <figcaption class="eyebrow quote__by">Medi, founder</figcaption>
+        <p class="center" style="margin-top:24px"><a class="link" href="about.html#letter">Read the whole letter</a></p>
       </figure>
     </div>
   </section>
@@ -311,7 +313,7 @@ THE CODE:
     <div class="leaf leaf--3" aria-hidden="true"></div>
     <div class="container">
       <div class="section__head">
-        <p class="eyebrow reveal">Five steps on one line</p>
+        <p class="eyebrow reveal"><span class="fa" lang="fa" dir="rtl">پنج گام، یک خط</span></p>
         <h2 id="journey-title" class="reveal">The journey</h2>
       </div>
       <p class="journey__order reveal">Planning runs in this order. Your wedding celebrations come in the order your family chooses.</p>
@@ -323,9 +325,9 @@ THE CODE:
         <ol class="journey__stops">
           <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Inquiry</span><span class="journey__fa fa" lang="fa" dir="rtl">درخواست</span><span class="journey__note">Write to us, or call, and tell us about your family and your dates.</span></li>
           <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Consultation</span><span class="journey__fa fa" lang="fa" dir="rtl">مشاوره</span><span class="journey__note">We hear your priorities first, with parents and elders included at the level you choose.</span></li>
-          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Proposal</span><span class="journey__fa fa" lang="fa" dir="rtl">پیشنهاد</span><span class="journey__note">The plan, the price, and what is included. A page for the parents, in their language.</span></li>
+          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Proposal</span><span class="journey__fa fa" lang="fa" dir="rtl">پیشنهاد</span><span class="journey__note">The plan, the price, and what is included. Tell us your preferred language. We confirm written translation and spoken support before booking.</span></li>
           <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Planning</span><span class="journey__fa fa" lang="fa" dir="rtl">برنامه‌ریزی</span><span class="journey__note">Ritual by ritual, as your family keeps it, with a short written summary after every meeting.</span></li>
-          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">The wedding days</span><span class="journey__fa fa" lang="fa" dir="rtl">روزهای عروسی</span><span class="journey__note">One timeline, called with the venue and every vendor; you only have to be there.</span></li>
+          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">The wedding days</span><span class="journey__fa fa" lang="fa" dir="rtl">روزهای عروسی</span><span class="journey__note">The venue and every vendor called to the minute; your parents are hosted, not working.</span></li>
         </ol>
       </div>
       <div class="journey__extras reveal">
@@ -339,6 +341,7 @@ THE CODE:
           <li class="pill">Haldi</li>
           <li class="pill">Aghd <span class="fa" lang="fa" dir="rtl">عقد</span></li>
           <li class="pill">Nikah <span class="fa" lang="fa" dir="rtl">نکاح</span></li>
+          <li class="pill">Baraat</li>
           <li class="pill">Pheras</li>
           <li class="pill">Anand Karaj</li>
           <li class="pill">Reception / Walima <span class="fa" lang="fa" dir="rtl">جشن عروسی</span></li>
@@ -355,12 +358,9 @@ THE CODE:
   <section class="ground" id="inquire" aria-labelledby="inquire-title">
     <img class="ground__roots" src="assets/tree/roots-floor.webp" width="1376" height="768" alt="" aria-hidden="true" loading="lazy" decoding="async">
     <div class="container container--text inquire">
-      <div class="pair reveal">
-        <p class="eyebrow">Inquire</p>
-        <p class="fa" lang="fa" dir="rtl">شروع برنامه‌ریزی</p>
-      </div>
+      <p class="eyebrow reveal"><span class="fa" lang="fa" dir="rtl">شروع برنامه‌ریزی</span></p>
       <h2 id="inquire-title" class="reveal" style="margin:8px 0 16px">Tell us about your family</h2>
-      <p class="reveal measure muted" style="margin-bottom:16px">Write to us in English or your own language; we reply within one business day. Couples and parents are both welcome to inquire.</p>
+      <p class="reveal measure muted" style="margin-bottom:16px">Write to us; we reply within one business day. Tell us your preferred language. We confirm written translation and spoken support before booking. Couples and parents are both welcome to inquire.</p>
       <p class="inquire__contact reveal"><span>Write or call:</span> <a href="mailto:hello@anarevents.com">hello@anarevents.com</a> <a href="tel:+19252639949">(925) 263-9949</a> <a class="wa" href="https://wa.me/19252639949" rel="noopener">WhatsApp</a></p>
       <!-- Formspree: replace FORMSPREE_ID with the real form id (also noted in docs/BUILD-NOTES.md) -->
       <!-- the form carries no reveal class: it is never hidden by the motion -->
@@ -369,13 +369,14 @@ THE CODE:
         <input type="text" name="_gotcha" class="visually-hidden" tabindex="-1" autocomplete="off" aria-hidden="true">
         <p class="form__note">Only names and email are required.</p>
         <div class="form__row form__row--3">
-          <div class="field"><label for="f-names">Your name(s)</label><input id="f-names" name="names" type="text" autocomplete="name" required placeholder="Sara &amp; Omid"></div>
+          <div class="field"><label for="f-names">Your name(s)</label><input id="f-names" name="names" type="text" autocomplete="name" required placeholder="Sara &amp; Omid, or a parent's name"></div>
           <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
           <div class="field"><label for="f-phone">Phone <span class="muted">(optional)</span></label><input id="f-phone" name="phone" type="tel" autocomplete="tel"></div>
         </div>
         <div class="field"><label for="f-message">Message</label><textarea id="f-message" name="message" placeholder="Your families, your dates, the rituals that matter most."></textarea></div>
-        <!-- the optional planning questions, closed by default (every field still submits); site.js opens it if a field inside is invalid -->
-        <details class="form__more">
+        <!-- the optional planning questions: OPEN in the HTML (no-JS users see every field); site.js closes it only once its
+             invalid-field handler is installed (an invalid field inside reopens it), so native submission never strands a hidden field -->
+        <details class="form__more" open>
           <summary>Share your dates, guest count &amp; traditions (optional)</summary>
           <div class="form__more-body">
             <div class="form__row">
@@ -434,6 +435,7 @@ THE CODE:
                 <label class="check"><input type="checkbox" name="traditions" value="Mehndi / Henna"> Mehndi / Henna</label>
                 <label class="check"><input type="checkbox" name="traditions" value="Sangeet"> Sangeet</label>
                 <label class="check"><input type="checkbox" name="traditions" value="Haldi"> Haldi</label>
+                <label class="check"><input type="checkbox" name="traditions" value="Baraat"> Baraat</label>
                 <label class="check"><input type="checkbox" name="traditions" value="Pheras / Mandap"> Pheras / Mandap</label>
                 <label class="check"><input type="checkbox" name="traditions" value="Anand Karaj"> Anand Karaj</label>
                 <label class="check"><input type="checkbox" name="traditions" value="Reception"> Reception</label>
@@ -482,7 +484,7 @@ THE CODE:
       </address>
       <p class="site-footer__fa fa" lang="fa" dir="rtl">انار · برنامه‌ریزی عروسی و جشن</p>
     </div>
-    <p class="site-footer__lang">English for everyone. A page for the parents, in Persian, Dari, Pashto, Urdu, Hindi, Punjabi or the language your parents read, agreed in your proposal.</p>
+    <p class="site-footer__lang">English for everyone. Tell us your preferred language. We confirm written translation and spoken support before booking. <span class="site-footer__soon"><span class="fa" lang="fa" dir="rtl">فارسی</span> · coming soon</span></p>
     <p class="site-footer__legal"><span>© 2026 Anar LLC · Persian, Afghan and South Asian weddings</span><span>Timeless traditions, curated for the modern era.</span></p>
   </div>
 </footer>
@@ -499,9 +501,9 @@ THE CODE:
   <ol class="hww-steps">
     <li><div><h3>Inquiry</h3><p>Write to us, or call. Tell us about your family and your dates.</p></div></li>
     <li><div><h3>Consultation</h3><p>We meet your family, greet the elders first, and listen. Parents and elders are involved at the level the couple chooses.</p></div></li>
-    <li><div><h3>Proposal</h3><p>The plan, the price, and what is included: the events covered, the staffing, the hours and the fees. A page for the parents, in their language.</p></div></li>
+    <li><div><h3>Proposal</h3><p>The plan, the price, and what is included: the events covered, the staffing, the hours and the fees. Tell us your preferred language. We confirm written translation and spoken support before booking.</p></div></li>
     <li><div><h3>Planning</h3><p>Ritual by ritual, as your family keeps it. A short written summary after every meeting.</p></div></li>
-    <li><div><h3>The wedding days</h3><p>The ceremonies your family chooses, in the order agreed with your family. One timeline, one person to call.</p></div></li>
+    <li><div><h3>The wedding days</h3><p>The ceremonies your family chooses, in the order agreed with your family, called with the venue and every vendor.</p></div></li>
   </ol>
   <p class="hww-panel__foot"><a class="btn" href="index.html#inquire">Begin the conversation</a> <a class="link" href="how-we-work.html">Read more</a> <span class="hww-panel__phone"><a href="tel:+19252639949">Call (925) 263-9949</a> · <a href="https://wa.me/19252639949" rel="noopener">WhatsApp</a></span></p>
 </aside>
@@ -548,13 +550,12 @@ THE CODE:
         <li><a href="weddings.html" aria-current="page">Weddings</a></li>
         <li><a href="how-we-work.html">How we work</a></li>
         <li><a href="about.html">About</a></li>
-        <!-- phones only (CSS): the phone line (tel: and WhatsApp as two links) as the last drawer item, then the inert "فارسی · coming soon" note -->
+        <!-- phones only (CSS): the phone line (tel: and WhatsApp as two links) as the last drawer item, then the "فارسی · coming soon" note (the bar carries no فارسی label; the footer repeats the note) -->
         <li class="site-nav__phone"><a href="tel:+19252639949">Call (925) 263-9949</a> · <a href="https://wa.me/19252639949" rel="noopener">WhatsApp</a></li>
         <li class="site-nav__fa"><span class="fa" lang="fa" dir="rtl">فارسی</span> · coming soon</li>
       </ul>
     </nav>
     <div class="nav-right">
-      <span class="nav-fa" lang="fa" dir="rtl">فارسی <span class="nav-fa__soon" aria-hidden="true">· به‌زودی</span><span class="visually-hidden" lang="en" dir="ltr"> (Persian site, coming soon)</span></span>
       <a class="nav-phone" href="tel:+19252639949">(925) 263-9949</a>
       <a class="btn btn--sm" href="index.html#inquire">Inquire</a>
     </div>
@@ -571,7 +572,7 @@ THE CODE:
         <p class="fa fa--title" lang="fa" dir="rtl">عروسی</p>
       </div>
       <p class="lede measure">Our celebrations are built on centuries of poetry, hospitality and sacred tradition, and they deserve more than a cookie-cutter approach. We honor the deep soul of your heritage while stripping away the stress, never the meaning.</p>
-      <p class="measure muted" style="margin-top:16px;font-size:16px;line-height:24px">These are examples; we confirm your family's customs and sequence with you and your officiant.</p>
+      <p class="measure muted" style="margin-top:16px;font-size:16px;line-height:24px">These are examples; we confirm your family's customs and sequence with you and your officiant. Two heritages, different levels of observance, or celebrations not listed here? Tell us what your family keeps.</p>
     </div>
   </section>
 
@@ -588,6 +589,7 @@ THE CODE:
             <p>The spread at the head of the room: mirror, candlesticks, honey, bread, coins, the pomegranate.</p>
             <p>The Persian ceremony. We brief your sofreh designer and check the spread against the sofreh key (a one-page guide naming each item on the spread, in the languages listed in your proposal) before the elders are seated.</p>
             <p>The key is coordinated with your printer and set out for the guests, so the other family learns each item at a glance.</p>
+            <p>Elders' seats held at the front, nearest the sofreh, as your family keeps it.</p>
           </div>
         </div>
         <figure class="tradition__media reveal">
@@ -610,7 +612,8 @@ THE CODE:
           </div>
           <div class="stagger">
             <p>The Islamic marriage contract, read before witnesses and both families.</p>
-            <p>We cue the officiant and the family, hold the elders' seats, and keep the room quiet and steady.</p>
+            <p>We cue the officiant and the family, and keep the room quiet and steady.</p>
+            <p>Elders' seats held at the front, as your family keeps it.</p>
             <p>If your family observes the aina mosaf (<span class="fa" lang="fa" dir="rtl">آینه‌مصحف</span>), as many Afghan families do, it has its own moment, at the nikah or at the reception under the shawl, as your family keeps it: the couple's first look in the mirror, the Quran open between them, the elders close. We cue the shawl, the mirror and the reading with your family, and nobody is hurried.</p>
             <p>A one-line programme, coordinated with your printer, explains the ritual so every guest can follow.</p>
           </div>
@@ -642,6 +645,7 @@ THE CODE:
             <p>The henna gathering: hana-bandan for Persian families, khina for Afghan families, mehndi for South Asian families. Henna on the bride's hands, with the elders' blessing as your family keeps it.</p>
             <p>The sangeet, when both families sing, as your family keeps it; the dholki or the jaggo in the nights before, if your family holds them. Music, dancing and the baraat (the groom's party arriving on the wedding day), if your family chooses.</p>
             <p>Timing agreed around your family's customs.</p>
+            <p>Elders' seats held at the front, close to the henna, as your family keeps it.</p>
           </div>
         </div>
         <figure class="tradition__media reveal">
@@ -663,13 +667,14 @@ THE CODE:
           </div>
           <div class="stagger">
             <p>If your family observes the haldi, the family paints the couple with turmeric before the wedding. The pheras under the mandap, with the pandit: your ceremony, in the sequence agreed with your officiant.</p>
-            <p>We coordinate timing with your officiant and religious venue. If your family observes the baraat and the milni, we call them in the order of the agreed programme. We hold the elders' seats and keep the mandap quiet and on time.</p>
+            <p>We coordinate timing with your officiant and religious venue. If your family observes the baraat and the milni, we call them in the order of the agreed programme. We keep the mandap quiet and on time.</p>
+            <p>Elders' seats held at the front, nearest the mandap, as your family keeps it.</p>
             <p>A one-line programme, coordinated with your printer, explains each ritual so every guest can follow.</p>
           </div>
         </div>
         <figure class="tradition__media reveal">
           <!-- PHOTO SLOT · Haldi & Pheras: the pheras under the mandap (real family, with consent), portrait 4:5 -->
-          <div class="slot"><img class="reveal-img" src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night.jpg 1125w" sizes="(max-width:899px) 100vw, 480px" width="1125" height="2000" alt="A pomegranate tree at night" loading="lazy" decoding="async"></div>
+          <div class="slot"><img class="reveal-img" src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night.jpg 1125w, assets/img/pom-tree-night-1400.jpg 1400w" sizes="(max-width:899px) 100vw, 480px" width="1125" height="2000" alt="A pomegranate tree at night" loading="lazy" decoding="async"></div>
           <figcaption class="caption">The pheras under the mandap, as your family keeps them.</figcaption>
         </figure>
       </div>
@@ -686,7 +691,8 @@ THE CODE:
           </div>
           <div class="stagger">
             <p>The Sikh ceremony before the Guru Granth Sahib: the couple walk the four laavan as the hymns are sung. Your ceremony, in the sequence agreed with your family and the granthi.</p>
-            <p>We coordinate timing with the gurdwara. If your family observes the baraat and the milni, we call them in the order of the agreed programme. We hold the elders' seats and keep the hall quiet and on time.</p>
+            <p>We coordinate timing with the gurdwara. If your family observes the baraat and the milni, we call them in the order of the agreed programme. We keep the hall quiet and on time.</p>
+            <p>Elders' seats held at the front, as your family and the gurdwara keep it.</p>
             <p>A one-line programme, coordinated with your printer, explains each ritual and what the gurdwara asks of guests (heads covered, shoes off), so every guest can follow.</p>
           </div>
         </div>
@@ -712,12 +718,13 @@ THE CODE:
             <p>The walima, the groom's family's feast after the nikah, and the reception, on one night or two as your family keeps it. We run each your family's way.</p>
             <p>Welcome sign, seating chart and table numbers in the languages listed in your proposal, coordinated with your printer and the venue.</p>
             <p>The timeline called with the venue and every vendor. Blessings, entrances and dancing as your family wishes, in the order agreed with your family.</p>
+            <p>Elders' table held at the front, nearest the couple, as your family keeps it.</p>
             <p>The send-off cued for the elders, and a thank-you card that follows.</p>
           </div>
         </div>
         <figure class="tradition__media reveal">
           <!-- PHOTO SLOT · Reception & Walima: the first dance (real family, with consent), portrait 4:5 -->
-          <div class="slot"><img class="reveal-img" src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night.jpg 1125w" sizes="(max-width:899px) 100vw, 480px" width="1125" height="2000" alt="A pomegranate tree at night" loading="lazy" decoding="async"></div>
+          <div class="slot"><img class="reveal-img" src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night.jpg 1125w, assets/img/pom-tree-night-1400.jpg 1400w" sizes="(max-width:899px) 100vw, 480px" width="1125" height="2000" alt="A pomegranate tree at night" loading="lazy" decoding="async"></div>
           <figcaption class="caption">From the sacred vows to the last song.</figcaption>
         </figure>
       </div>
@@ -757,7 +764,7 @@ THE CODE:
       </address>
       <p class="site-footer__fa fa" lang="fa" dir="rtl">انار · برنامه‌ریزی عروسی و جشن</p>
     </div>
-    <p class="site-footer__lang">English for everyone. A page for the parents, in Persian, Dari, Pashto, Urdu, Hindi, Punjabi or the language your parents read, agreed in your proposal.</p>
+    <p class="site-footer__lang">English for everyone. Tell us your preferred language. We confirm written translation and spoken support before booking. <span class="site-footer__soon"><span class="fa" lang="fa" dir="rtl">فارسی</span> · coming soon</span></p>
     <p class="site-footer__legal"><span>© 2026 Anar LLC · Persian, Afghan and South Asian weddings</span><span>Timeless traditions, curated for the modern era.</span></p>
   </div>
 </footer>
@@ -773,9 +780,9 @@ THE CODE:
   <ol class="hww-steps">
     <li><div><h3>Inquiry</h3><p>Write to us, or call. Tell us about your family and your dates.</p></div></li>
     <li><div><h3>Consultation</h3><p>We meet your family, greet the elders first, and listen. Parents and elders are involved at the level the couple chooses.</p></div></li>
-    <li><div><h3>Proposal</h3><p>The plan, the price, and what is included: the events covered, the staffing, the hours and the fees. A page for the parents, in their language.</p></div></li>
+    <li><div><h3>Proposal</h3><p>The plan, the price, and what is included: the events covered, the staffing, the hours and the fees. Tell us your preferred language. We confirm written translation and spoken support before booking.</p></div></li>
     <li><div><h3>Planning</h3><p>Ritual by ritual, as your family keeps it. A short written summary after every meeting.</p></div></li>
-    <li><div><h3>The wedding days</h3><p>The ceremonies your family chooses, in the order agreed with your family. One timeline, one person to call.</p></div></li>
+    <li><div><h3>The wedding days</h3><p>The ceremonies your family chooses, in the order agreed with your family, called with the venue and every vendor.</p></div></li>
   </ol>
   <p class="hww-panel__foot"><a class="btn" href="index.html#inquire">Begin the conversation</a> <a class="link" href="how-we-work.html">Read more</a> <span class="hww-panel__phone"><a href="tel:+19252639949">Call (925) 263-9949</a> · <a href="https://wa.me/19252639949" rel="noopener">WhatsApp</a></span></p>
 </aside>
@@ -822,13 +829,12 @@ THE CODE:
         <li><a href="weddings.html">Weddings</a></li>
         <li><a href="how-we-work.html" aria-current="page">How we work</a></li>
         <li><a href="about.html">About</a></li>
-        <!-- phones only (CSS): the phone line (tel: and WhatsApp as two links) as the last drawer item, then the inert "فارسی · coming soon" note -->
+        <!-- phones only (CSS): the phone line (tel: and WhatsApp as two links) as the last drawer item, then the "فارسی · coming soon" note (the bar carries no فارسی label; the footer repeats the note) -->
         <li class="site-nav__phone"><a href="tel:+19252639949">Call (925) 263-9949</a> · <a href="https://wa.me/19252639949" rel="noopener">WhatsApp</a></li>
         <li class="site-nav__fa"><span class="fa" lang="fa" dir="rtl">فارسی</span> · coming soon</li>
       </ul>
     </nav>
     <div class="nav-right">
-      <span class="nav-fa" lang="fa" dir="rtl">فارسی <span class="nav-fa__soon" aria-hidden="true">· به‌زودی</span><span class="visually-hidden" lang="en" dir="ltr"> (Persian site, coming soon)</span></span>
       <a class="nav-phone" href="tel:+19252639949">(925) 263-9949</a>
       <a class="btn btn--sm" href="index.html#inquire">Inquire</a>
     </div>
@@ -883,7 +889,7 @@ THE CODE:
           <span class="step__n">04 · Planning</span>
           <h3>Ritual by ritual, as your family keeps it.</h3>
           <p class="fa" lang="fa" dir="rtl">برنامه‌ریزی</p>
-          <p>We plan each ceremony as your family keeps it: the ceremonies your family chooses, in the order agreed with your family. A short written summary follows every meeting, in English, with the page for the parents in their language. Parents and elders included at the level you choose.</p>
+          <p>We plan each ceremony as your family keeps it: the ceremonies your family chooses, in the order agreed with your family. A short written summary follows every meeting, in English, with the page for the parents in the languages listed in your proposal. Parents and elders included at the level you choose.</p>
         </li>
         <li class="step reveal">
           <span class="step__dot track-dot" aria-hidden="true"></span>
@@ -903,7 +909,7 @@ THE CODE:
       <p class="eyebrow reveal">What you get</p>
       <h2 id="you-get-title" class="reveal" style="margin:8px 0 32px">One plan. One person to call.</h2>
       <!-- the two service options: when support begins and three confirmed responsibilities each -->
-      <ul class="options stagger" aria-label="Two ways to work with us" style="margin-bottom:64px">
+      <ul class="options stagger" aria-label="Two ways to work with us" style="margin-bottom:48px">
         <li>
           <h3>Full planning</h3>
           <p class="option__when">Begins at the first conversation · ends at the thank-you</p>
@@ -917,14 +923,23 @@ THE CODE:
         </li>
         <li>
           <h3>Wedding-day coordination</h3>
-          <p class="option__when">Begins 6–8 weeks out · we take over your finished plan and run the days</p>
+          <p class="option__when">Begins 6–8 weeks out · we take over your existing bookings and plans and run the days</p>
           <ul>
-            <li>Starts 6–8 weeks out: your family has planned already; we take over the finished plan and cover the events, hours and staffing named in the proposal.</li>
+            <li>Starts 6–8 weeks out: your family has planned already; we take over your existing bookings and plans and cover the events, hours and staffing named in the proposal.</li>
+            <li>The handover lists outstanding tasks and agrees who completes them, with a date.</li>
             <li>Every contract, contact and time in it read and confirmed with the venue and every vendor.</li>
             <li>One timeline for every day, with the sofreh key or the programme checked against your family's wishes.</li>
             <li>On the days: elders greeted first, the officiant and family cued, our staff easy to find. You only have to be there.</li>
           </ul>
         </li>
+      </ul>
+      <!-- how the hard days are handled, directly beside the two options: two events at once, a venue change, a delay, a planner who cannot be there -->
+      <p class="eyebrow reveal" style="margin-bottom:24px">On the hard days</p>
+      <ul class="you-get stagger" aria-label="How the hard days are handled" style="margin-bottom:64px">
+        <li><strong>Two events at once</strong><span>Covered under the same plan; the staffing for each is named in your proposal.</span></li>
+        <li><strong>A venue that changes</strong><span>The timeline is re-called with the venue and every vendor.</span></li>
+        <li><strong>A day that runs late</strong><span>The timeline is re-called with the venue and every vendor, to the minute.</span></li>
+        <li><strong>A planner who cannot be there</strong><span>Backup is named in your proposal; the plan does not change.</span></li>
       </ul>
       <p class="eyebrow reveal" style="margin-bottom:24px">With either option</p>
       <ul class="you-get stagger">
@@ -937,8 +952,6 @@ THE CODE:
         <li><strong>Staff on the day</strong><span>Easy to find, for the events and hours listed in your proposal. Elders greeted first.</span></li>
         <li><strong>A reply within one business day</strong><span>Every time, from the first inquiry on.</span></li>
       </ul>
-      <!-- how the hard days are handled: two events at once, a venue change, a delay, a planner who cannot be there -->
-      <p class="reveal muted" style="margin-top:32px;font-size:16px;line-height:24px;max-width:38em">Two events running at once, a venue that changes, a day that runs late, a planner who cannot be there: each is covered under the same plan. Staffing and backup are named in your proposal, and the timeline is re-called with the venue and every vendor.</p>
     </div>
   </section>
 
@@ -946,7 +959,7 @@ THE CODE:
   <section class="section on-light on-light--day" id="faq" aria-labelledby="faq-title">
     <div class="container container--text">
       <p class="eyebrow reveal">Questions families ask</p>
-      <h2 id="faq-title" class="reveal" style="margin:8px 0 32px">Six answers</h2>
+      <h2 id="faq-title" class="reveal" style="margin:8px 0 32px">Seven answers</h2>
       <div class="faq reveal">
         <details>
           <summary>Our two families come from different cultures. Can you plan both?</summary>
@@ -972,6 +985,10 @@ THE CODE:
           <summary>Where do you work?</summary>
           <p class="faq__a">The San Francisco Bay Area, from the city to the East Bay and the Peninsula. For a wedding further afield, write to us and we will tell you plainly whether we can.</p>
         </details>
+        <details>
+          <summary>What does it cost?</summary>
+          <p class="faq__a">Every proposal is priced to the events, days and staffing it covers. Full planning and wedding-day coordination are quoted after the first conversation.</p>
+        </details>
       </div>
       <p class="reveal" style="margin-top:48px"><a class="btn" href="index.html#inquire">Begin the conversation</a></p>
     </div>
@@ -994,7 +1011,7 @@ THE CODE:
       </address>
       <p class="site-footer__fa fa" lang="fa" dir="rtl">انار · برنامه‌ریزی عروسی و جشن</p>
     </div>
-    <p class="site-footer__lang">English for everyone. A page for the parents, in Persian, Dari, Pashto, Urdu, Hindi, Punjabi or the language your parents read, agreed in your proposal.</p>
+    <p class="site-footer__lang">English for everyone. Tell us your preferred language. We confirm written translation and spoken support before booking. <span class="site-footer__soon"><span class="fa" lang="fa" dir="rtl">فارسی</span> · coming soon</span></p>
     <p class="site-footer__legal"><span>© 2026 Anar LLC · Persian, Afghan and South Asian weddings</span><span>Timeless traditions, curated for the modern era.</span></p>
   </div>
 </footer>
@@ -1010,9 +1027,9 @@ THE CODE:
   <ol class="hww-steps">
     <li><div><h3>Inquiry</h3><p>Write to us, or call. Tell us about your family and your dates.</p></div></li>
     <li><div><h3>Consultation</h3><p>We meet your family, greet the elders first, and listen. Parents and elders are involved at the level the couple chooses.</p></div></li>
-    <li><div><h3>Proposal</h3><p>The plan, the price, and what is included: the events covered, the staffing, the hours and the fees. A page for the parents, in their language.</p></div></li>
+    <li><div><h3>Proposal</h3><p>The plan, the price, and what is included: the events covered, the staffing, the hours and the fees. Tell us your preferred language. We confirm written translation and spoken support before booking.</p></div></li>
     <li><div><h3>Planning</h3><p>Ritual by ritual, as your family keeps it. A short written summary after every meeting.</p></div></li>
-    <li><div><h3>The wedding days</h3><p>The ceremonies your family chooses, in the order agreed with your family. One timeline, one person to call.</p></div></li>
+    <li><div><h3>The wedding days</h3><p>The ceremonies your family chooses, in the order agreed with your family, called with the venue and every vendor.</p></div></li>
   </ol>
   <p class="hww-panel__foot"><a class="btn" href="index.html#inquire">Begin the conversation</a> <a class="link" href="how-we-work.html">Read more</a> <span class="hww-panel__phone"><a href="tel:+19252639949">Call (925) 263-9949</a> · <a href="https://wa.me/19252639949" rel="noopener">WhatsApp</a></span></p>
 </aside>
@@ -1059,13 +1076,12 @@ THE CODE:
         <li><a href="weddings.html">Weddings</a></li>
         <li><a href="how-we-work.html">How we work</a></li>
         <li><a href="about.html" aria-current="page">About</a></li>
-        <!-- phones only (CSS): the phone line (tel: and WhatsApp as two links) as the last drawer item, then the inert "فارسی · coming soon" note -->
+        <!-- phones only (CSS): the phone line (tel: and WhatsApp as two links) as the last drawer item, then the "فارسی · coming soon" note (the bar carries no فارسی label; the footer repeats the note) -->
         <li class="site-nav__phone"><a href="tel:+19252639949">Call (925) 263-9949</a> · <a href="https://wa.me/19252639949" rel="noopener">WhatsApp</a></li>
         <li class="site-nav__fa"><span class="fa" lang="fa" dir="rtl">فارسی</span> · coming soon</li>
       </ul>
     </nav>
     <div class="nav-right">
-      <span class="nav-fa" lang="fa" dir="rtl">فارسی <span class="nav-fa__soon" aria-hidden="true">· به‌زودی</span><span class="visually-hidden" lang="en" dir="ltr"> (Persian site, coming soon)</span></span>
       <a class="nav-phone" href="tel:+19252639949">(925) 263-9949</a>
       <a class="btn btn--sm" href="index.html#inquire">Inquire</a>
     </div>
@@ -1123,7 +1139,7 @@ THE CODE:
       </div>
       <div class="story__photos">
         <figure class="reveal">
-          <div class="slot"><img class="reveal-img" src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night.jpg 1125w" sizes="(max-width:767px) 100vw, 33vw" width="1125" height="2000" alt="A pomegranate tree at night, fruit on the branch" loading="lazy" decoding="async"></div>
+          <div class="slot"><img class="reveal-img" src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night.jpg 1125w, assets/img/pom-tree-night-1400.jpg 1400w" sizes="(max-width:767px) 100vw, 33vw" width="1125" height="2000" alt="A pomegranate tree at night, fruit on the branch" loading="lazy" decoding="async"></div>
           <figcaption class="caption">The tree. Roots that stay.</figcaption>
         </figure>
         <figure class="reveal">
@@ -1175,7 +1191,7 @@ THE CODE:
       </address>
       <p class="site-footer__fa fa" lang="fa" dir="rtl">انار · برنامه‌ریزی عروسی و جشن</p>
     </div>
-    <p class="site-footer__lang">English for everyone. A page for the parents, in Persian, Dari, Pashto, Urdu, Hindi, Punjabi or the language your parents read, agreed in your proposal.</p>
+    <p class="site-footer__lang">English for everyone. Tell us your preferred language. We confirm written translation and spoken support before booking. <span class="site-footer__soon"><span class="fa" lang="fa" dir="rtl">فارسی</span> · coming soon</span></p>
     <p class="site-footer__legal"><span>© 2026 Anar LLC · Persian, Afghan and South Asian weddings</span><span>Timeless traditions, curated for the modern era.</span></p>
   </div>
 </footer>
@@ -1191,9 +1207,9 @@ THE CODE:
   <ol class="hww-steps">
     <li><div><h3>Inquiry</h3><p>Write to us, or call. Tell us about your family and your dates.</p></div></li>
     <li><div><h3>Consultation</h3><p>We meet your family, greet the elders first, and listen. Parents and elders are involved at the level the couple chooses.</p></div></li>
-    <li><div><h3>Proposal</h3><p>The plan, the price, and what is included: the events covered, the staffing, the hours and the fees. A page for the parents, in their language.</p></div></li>
+    <li><div><h3>Proposal</h3><p>The plan, the price, and what is included: the events covered, the staffing, the hours and the fees. Tell us your preferred language. We confirm written translation and spoken support before booking.</p></div></li>
     <li><div><h3>Planning</h3><p>Ritual by ritual, as your family keeps it. A short written summary after every meeting.</p></div></li>
-    <li><div><h3>The wedding days</h3><p>The ceremonies your family chooses, in the order agreed with your family. One timeline, one person to call.</p></div></li>
+    <li><div><h3>The wedding days</h3><p>The ceremonies your family chooses, in the order agreed with your family, called with the venue and every vendor.</p></div></li>
   </ol>
   <p class="hww-panel__foot"><a class="btn" href="index.html#inquire">Begin the conversation</a> <a class="link" href="how-we-work.html">Read more</a> <span class="hww-panel__phone"><a href="tel:+19252639949">Call (925) 263-9949</a> · <a href="https://wa.me/19252639949" rel="noopener">WhatsApp</a></span></p>
 </aside>
@@ -1203,7 +1219,7 @@ THE CODE:
 
 ===== assets/css/site.css =====
 /* =========================================================
-   Anar Events — site.css (v2.8, night palette, round-8 fixes, 3 Nov 2026)
+   Anar Events — site.css (v2.9, night palette, round-9 fixes, 3 Nov 2026)
    One file. Mobile first. No grid hairlines anywhere.
    Latin: TT Ramillas Bold only (TRIAL font: buy before launch).
    Persian: Noto Naskh Arabic (self-hosted, Arabic subset), never italic/tracked/caps.
@@ -1316,8 +1332,6 @@ main > .on-light:last-child{border-bottom:0}
 .kashida path{fill:none;stroke:var(--gold);stroke-width:2;vector-effect:non-scaling-stroke;stroke-linecap:butt}
 .kashida--short{width:min(320px,70vw)}
 .on-light .kashida path{stroke:var(--ruby)}
-.rule{height:2px;background:var(--gold);width:100%;border:0;margin:0}
-.on-light .rule{background:var(--ruby)}
 /* the glow band: plain deep cypress with one soft radial gold glow at 10%, biased upward behind the heading (the lattice tile read as a grid and is gone) */
 .band--glow{position:relative;isolation:isolate}
 .band--glow::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 50% 30%,rgba(201,158,92,.10),rgba(201,158,92,0) 70%)}
@@ -1352,7 +1366,7 @@ main > .on-light:last-child{border-bottom:0}
   html:not(.nav-ready) .nav-toggle{visibility:hidden}
   html.nav-ready .site-nav{display:none}
 }
-/* phone-only drawer lines: the phone link and the inert "فارسی · coming soon" note (the bar carries no فارسی label on phones) */
+/* phone-only drawer lines: the phone link and the "فارسی · coming soon" note (the bar carries no فارسی label at any width; the footer repeats the note) */
 .site-nav__phone,.site-nav__fa{display:none}
 @media (max-width:768px){
   .site-nav__phone,.site-nav__fa{display:block}
@@ -1369,10 +1383,6 @@ main > .on-light:last-child{border-bottom:0}
   .nav-phone{display:inline-block;font-size:16px;line-height:24px;letter-spacing:.02em;padding-block:4px;border-bottom:2px solid transparent;transition:border-color .3s;white-space:nowrap}
   .nav-phone:hover{border-bottom-color:var(--gold)}
 }
-/* فارسی · به‌زودی: an inert stone label (no title / aria-label) on desktop only; phones carry the note at the end of the drawer */
-.nav-fa{font-size:20px;line-height:1;color:var(--stone);cursor:default;text-align:center;white-space:nowrap}
-.nav-fa__soon{font-size:14px}
-@media (max-width:768px){.nav-fa{display:none}}
 .nav-toggle{width:44px;height:44px;display:grid;place-items:center;margin-left:-8px}
 .nav-toggle__bar{display:block;width:24px;height:2px;background:currentColor;position:relative;transition:background .2s}
 .nav-toggle__bar::before,.nav-toggle__bar::after{content:"";position:absolute;left:0;width:24px;height:2px;background:currentColor;transition:transform .3s}
@@ -1403,9 +1413,9 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 /* ---------- HERO (index first screen, approved 02:05) ---------- */
 .hero{position:relative;height:100vh;height:100svh;min-height:600px;overflow:hidden;background:var(--night);color:var(--parch)}
 .hero__video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:var(--night)}
-/* the tint grades the loop toward the palette: cypress deepening downwards, plus a 6% warm gold wash (the logo stays readable; the mp4 is untouched) */
-.hero__tint{position:absolute;inset:0;background:linear-gradient(rgba(27,34,30,.42),rgba(27,34,30,.66));pointer-events:none}
-.hero__tint::after{content:"";position:absolute;inset:0;background:rgba(201,158,92,.06)}
+/* the tint grades the loop toward the palette: cypress deepening downwards (.42 -> .72), plus a 10% warm gold wash (the logo stays readable; the mp4 is untouched) */
+.hero__tint{position:absolute;inset:0;background:linear-gradient(rgba(27,34,30,.42),rgba(27,34,30,.72));pointer-events:none}
+.hero__tint::after{content:"";position:absolute;inset:0;background:rgba(201,158,92,.10)}
 .hero__deepen{position:absolute;inset:0;background:var(--night);opacity:0;pointer-events:none}
 /* the ONE tree piece: anchored by the BOTTOM (bottom:-4%), width 100vw capped at 165vh, at most 62vh tall
    (object-fit:cover from the top), so the canopy rises ~35% at the sides, the middle stays open and the top
@@ -1416,17 +1426,24 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .hero__halo{position:absolute;left:50%;top:50%;width:150%;height:220%;transform:translate(-50%,-50%);background:radial-gradient(closest-side,rgba(27,34,30,.6),transparent 70%);pointer-events:none}
 .hero__logo{position:relative;margin:0;line-height:0}
 .hero__logo img{width:100%;height:auto}
-.hero__line{position:relative;margin:clamp(12px,1.6vh,20px) auto 0;text-align:center;color:var(--parch);font-size:clamp(14px,1.15vw,16px);line-height:1.5;letter-spacing:.04em;opacity:.92;text-wrap:balance}
+/* the soft night shadow at every width: the line sits on moving video, and a bright frame can pass under it */
+.hero__line{position:relative;margin:clamp(12px,1.6vh,20px) auto 0;text-align:center;color:var(--parch);font-size:clamp(14px,1.15vw,16px);line-height:1.5;letter-spacing:.04em;opacity:.92;text-wrap:balance;text-shadow:0 1px 12px rgba(27,34,30,.9)}
 .hero__place{display:block}
 /* no SCROLL cue anywhere: on desktop it printed over the painted foliage, on phones it read as the Pause button's label; the canopy draws the eye down */
-.hero__tag{position:absolute;right:clamp(16px,3vw,40px);bottom:clamp(14px,2.6vh,28px);font-size:22px;line-height:1.4;color:var(--parch);text-align:right}
+/* the brand line paired with its Persian twin, bottom right: English in Ramillas 14px caps (.12em), the Persian beside it in parchment */
+.hero__tag{position:absolute;right:clamp(16px,3vw,40px);bottom:clamp(14px,2.6vh,28px);display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:baseline;gap:4px 14px;color:var(--parch);text-align:right}
+.hero__tag > span:first-child{font-size:14px;line-height:20px;letter-spacing:.12em;text-transform:uppercase}
+.hero__tag .fa{font-size:22px;line-height:1.4}
 @media (max-width:768px){
-  .hero__canopy{width:175vw;top:auto;bottom:-8%;max-height:none}
+  /* the canopy at 112vw (the trunks sit at the art's own edges, so anything much wider than the viewport crops them off):
+     slivers of both edge trunks stay in the frame with the middle open, the owner's desktop composition at phone size */
+  .hero__canopy{width:150vw;top:auto;bottom:-8%;max-height:none}
   .hero__mark{width:78vw;top:30%}
   .hero__halo{width:170%;height:250%}
-  .hero__line{font-size:14px;padding-inline:4px;text-shadow:0 1px 12px rgba(27,34,30,.9)}
-  /* the Persian tagline sits on painted leaves: the same shadow as .hero__line, 24px up clear of the densest foliage */
-  .hero__tag{font-size:18px;bottom:calc(24px + env(safe-area-inset-bottom));text-shadow:0 1px 12px rgba(27,34,30,.9)}
+  .hero__line{font-size:14px;padding-inline:4px}
+  /* the tag pair sits on painted leaves: the same shadow as .hero__line, 24px up clear of the densest foliage */
+  .hero__tag{bottom:calc(24px + env(safe-area-inset-bottom));text-shadow:0 1px 12px rgba(27,34,30,.9)}
+  .hero__tag .fa{font-size:18px}
   /* the "How we work +" tab is now a mid-height edge tab on phones too: the tagline stays at the bottom */
 }
 
@@ -1490,7 +1507,8 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .accordion{display:grid;gap:var(--s2)}
 .accordion__panel{position:relative;overflow:hidden;background:var(--deep);color:var(--parch);border-radius:2px;min-height:360px}
 .accordion__media{position:absolute;inset:0}
-.accordion__media img{width:100%;height:100%;object-fit:cover;transition:filter .6s var(--ease),transform .6s var(--ease)}
+/* the lazy image fills the panel (the panel's min-height reserves the box); the 16/9 ratio is the fallback should its height ever resolve to auto */
+.accordion__media img{width:100%;height:100%;object-fit:cover;aspect-ratio:16/9;transition:filter .6s var(--ease),transform .6s var(--ease)}
 .accordion__media::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(18,23,20,.92) 0%,rgba(18,23,20,.45) 50%,rgba(27,34,30,.25) 100%)}
 .accordion__trigger{position:absolute;inset:0;width:100%;text-align:left;z-index:2}
 .accordion__trigger[hidden]{display:none}
@@ -1507,30 +1525,28 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 /* stacked (under 1100px) the trigger button is gone, so the body takes the pointer (the native Read more must toggle) */
 @media (max-width:1099px){.accordion__body{pointer-events:auto}}
 .accordion__body h3{font-size:clamp(26px,3vw,38px)}
-/* the gold Persian accent can land on a bright part of the photo: a soft night shadow keeps it legible */
-.accordion__body .fa{color:var(--gold);text-shadow:0 1px 10px rgba(18,23,20,.95)}
+/* the gold Persian accent sits directly above the h3 (left-aligned like .journey__fa and .step .fa; the span keeps direction:rtl);
+   it can land on a bright part of the photo: a soft night shadow keeps it legible */
+.accordion__body .fa{color:var(--gold);text-shadow:0 1px 10px rgba(18,23,20,.95);text-align:left;justify-self:start}
 /* one intro sentence always visible (parchment, 18px); the operational text sits behind the native <details> "Read more"
-   at every width in stone 16px, so the hierarchy reads headline / bright intro / receding detail
-   (site.js opens every one above 768px, where the summary is hidden; on phones every one starts closed) */
+   at every width in stone 16px, closed by default (site.js closes every one at start), so the hierarchy reads
+   headline / bright intro / Read more */
 .accordion__intro,.accordion__read p{max-width:34em;color:var(--parch);margin-top:var(--s1)}
 .accordion__read p{color:var(--stone);font-size:16px;line-height:24px}
 .accordion__read summary{cursor:pointer;list-style:none;display:inline-flex;gap:8px;align-items:baseline;color:var(--gold);font-size:14px;line-height:20px;letter-spacing:.1em;text-transform:uppercase;padding:4px 0}
 .accordion__read summary::-webkit-details-marker{display:none}
 .accordion__read summary::after{content:"+"}
 .accordion__read[open] summary::after{content:"\2013"}
-/* above 768px every details is forced open by site.js: the toggle would be dead UI, so it goes (no-JS keeps it) */
-@media (min-width:769px){html.site-ready .accordion__read[open] summary{display:none}}
 /* the closing line under the celebrations: the Weddings link and the first in-page CTA side by side */
 .accordion__foot{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:var(--s2) var(--s3);margin-top:var(--s3)}
-.accordion__more{pointer-events:auto;margin-top:var(--s1);justify-self:start}
 /* the wide layout (one open panel + narrow strips) only from 1100px; below that every panel is stacked and readable.
    No fixed height: the row is at least min(70vh,640px) and grows to fit the open body. The open body is in flow once
-   the .7s flex transition has settled (site.js adds .is-settling for that moment, so the still-narrow text never
+   the .35s flex transition has settled (site.js adds .is-settling for that moment, so the still-narrow text never
    spikes the row height); collapsed bodies are out of flow. */
 @media (min-width:1100px){
   /* --acc-min: the tallest expanded body at the current width (site.js measures every body after fonts load and on resize), so the row never jumps between hovers */
   .accordion{display:flex;gap:var(--s1);min-height:max(min(70vh,640px),var(--acc-min,0px))}
-  .accordion__panel{flex:1 1 0;min-height:0;transition:flex .7s var(--ease)}
+  .accordion__panel{flex:1 1 0;min-height:0;transition:flex .35s var(--ease)}
   .accordion__panel.is-open{flex:5 1 0}
   /* collapsed strips keep their image texture (blur 3px, brightness .95) under a deeper overlay (.85 -> .45) so the gold labels hold on bright image areas: five photographs waiting to open, not dark bars */
   .accordion__panel:not(.is-open) .accordion__media img{filter:blur(3px) brightness(.95);transform:scale(1.08)}
@@ -1538,9 +1554,9 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
   .accordion__panel:not(.is-open) .accordion__body,.accordion__panel.is-settling .accordion__body{position:absolute;inset:0}
   /* collapsed bodies leave the accessibility tree (visibility:hidden after the fade) */
   .accordion__panel:not(.is-open) .accordion__body{opacity:0;visibility:hidden;transition:opacity .25s,visibility 0s .25s}
-  /* the opening body stays invisible while the row is still settling (.is-settling, .7s) and fades in only once the panel can hold it; the open body takes the pointer so its text can be selected */
-  .accordion__panel.is-open .accordion__body{opacity:1;visibility:visible;transition:opacity .6s,visibility 0s;pointer-events:auto}
-  .accordion__panel.is-open.is-settling .accordion__body{opacity:0;transition:none}
+  /* the opening body fades in as the width arrives: the .3s opacity transition starts .14s in (40% of the .35s flex transition),
+     so the text is never hidden for a beat and never shown at strip width; the open body takes the pointer so its text can be selected */
+  .accordion__panel.is-open .accordion__body{opacity:1;visibility:visible;transition:opacity .3s .14s,visibility 0s;pointer-events:auto}
   /* the vertical gold label never runs into the strip edge (nowrap, ellipsis within the panel height minus 64px); a 2px gold rule sits under it
      (border-top in the element's own frame: the 180deg turn puts it at the visual bottom, below the start of the text) */
   .accordion__panel:not(.is-open) .accordion__label{display:block;writing-mode:vertical-rl;left:auto;right:50%;top:auto;bottom:24px;transform:translateX(50%) rotate(180deg);max-height:calc(100% - 64px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border-top:2px solid var(--gold);padding-top:10px}
@@ -1565,13 +1581,12 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 /* "Medi, founder" as an eyebrow line in ruby (the founder attribution on parchment; no drawn signature) */
 .quote figcaption.quote__by{margin-top:var(--s3);color:var(--ruby)}
 
-/* ---------- How we work teaser (glow band, gold strips, two cards, two service options) ---------- */
-.teaser{overflow:hidden}
+/* ---------- How we work teaser (glow band, the section kashida, two service options) ---------- */
 /* the two service options (index teaser and How we work "What you get"): no top rules (the section kashida is the one gold line); spacing carries the structure */
 .options{display:grid;gap:var(--s3)}
 @media (min-width:768px){.options{grid-template-columns:1fr 1fr;gap:var(--s4)}}
-/* one explicit spacing sequence under the teaser heading: head 24px -> kashida strip -> 32px -> options (56px in all) */
-.teaser .section__head{margin-bottom:24px}
+/* one explicit spacing sequence under the teaser heading: h2 -> 16px -> kashida -> 16px -> intro line -> 32px -> options */
+.teaser .section__head{margin-bottom:var(--s3)}
 .teaser .options{margin-top:0}
 .options > li{display:grid;gap:var(--s1);align-content:start}
 .options h3{font-size:clamp(20px,2.2vw,24px)}
@@ -1580,12 +1595,6 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .options ul{display:grid;gap:4px}
 .options ul li{padding-left:18px;position:relative}
 .options ul li::before{content:"";position:absolute;left:0;top:11px;width:8px;height:2px;background:var(--gold)}
-.teaser__strips{position:relative;height:2px;margin:0 0 var(--s3)}
-/* ONE 2px gold kashida line sliding in through GSAP only (block 6: xPercent 102 -> 0 with x:0); no CSS translate to compound */
-.teaser__strips i{position:absolute;left:0;right:0;top:0;height:2px;background:var(--gold);transform-origin:right center}
-.teaser__grid{display:grid;gap:var(--s3)}
-@media (min-width:768px){.teaser__grid{grid-template-columns:1fr 1fr;gap:var(--s4)}}
-.teaser .card h3{font-size:clamp(28px,3.4vw,40px)}
 .teaser__foot{margin-top:var(--s4);text-align:center;color:var(--stone);font-size:16px;line-height:24px}
 
 /* ---------- The journey: the five planning stages on one gold line, then the celebrations as loose pills ---------- */
@@ -1648,25 +1657,29 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .inquire__contact a:hover{border-color:var(--gold)}
 .inquire__contact a.wa{user-select:auto;-webkit-user-select:auto}
 
-/* ---------- Form: a 2px gold top rule only ---------- */
-.form{display:grid;gap:var(--s3);background:rgba(18,23,20,.78);border:0;border-top:2px solid var(--gold);padding:clamp(20px,4vw,48px)}
+/* ---------- Form: a 2px gold top rule only; a quiet .55 night surface so the roots composition shows through ---------- */
+.form{display:grid;gap:var(--s3);background:rgba(18,23,20,.55);border:0;border-top:2px solid var(--gold);padding:clamp(20px,4vw,48px)}
 .form__row{display:grid;gap:var(--s3)}
 @media (min-width:600px){.form__row{grid-template-columns:1fr 1fr}}
-/* the first row: names / email / phone side by side from 768px (two columns at 600-767, phone wraps alone) */
-@media (min-width:768px){.form__row--3{grid-template-columns:1fr 1fr 1fr}}
+/* the first row: names / email / phone side by side from 768px (two columns at 600-767, phone wraps alone); the names field is twice as wide so its placeholder never clips */
+@media (min-width:768px){.form__row--3{grid-template-columns:2fr 1fr 1fr}}
 .field{display:grid;gap:var(--s1);min-width:0}
 .field label,.fieldset legend{font-size:16px;line-height:22px;color:var(--parch)}
 /* inputs in the underline style (editorial, like the kashida): no perimeter box, a 2px gold rule at .7 (opaque enough to read against the night fill) under a soft night fill; focus = the full gold underline (no 1px hairlines anywhere) */
 .field input,.field textarea,.field select{font:inherit;font-weight:700;color:var(--parch);background:rgba(27,34,30,.55);border:0;border-bottom:2px solid rgba(201,158,92,.7);border-radius:2px 2px 0 0;padding:12px 14px;width:100%;min-height:48px;transition:border-color .3s,background-color .3s}
-/* placeholders in stone (#B9B3A6 on the deep input ground: ~8:1) */
+/* placeholders in stone (#B9B3A6 on the deep input ground: ~8:1); the one-line inputs carry theirs at 16px, like the other secondary text */
 .field input::placeholder,.field textarea::placeholder{color:var(--stone);opacity:1}
-.field input:focus-visible,.field textarea:focus-visible,.field select:focus-visible{outline:none;border-bottom-color:var(--gold);background:rgba(27,34,30,.8)}
-.field input[type="date"],.field select{color-scheme:dark}
+.field input::placeholder{font-size:16px}
+/* keyboard focus: a visible 2px gold ring 3px out (the global ring, kept), plus the full gold underline and the deeper fill */
+.field input:focus-visible,.field textarea:focus-visible,.field select:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-bottom-color:var(--gold);background:rgba(27,34,30,.8)}
+.field select{color-scheme:dark}
 .field select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%);background-position:calc(100% - 22px) 50%,calc(100% - 16px) 50%;background-size:6px 6px,6px 6px;background-repeat:no-repeat;padding-right:44px;cursor:pointer}
 .field select option{background:var(--deep);color:var(--parch)}
 /* success / error region (aria-live) */
 .form__status{font-size:16px;line-height:24px;padding:var(--s2);border-top:2px solid var(--gold);color:var(--parch)}
-.form__status[hidden],.form__status:empty{display:none}
+/* the live region stays rendered while empty (padding and rule off), so it is in the accessibility tree before its text lands */
+.form__status[hidden]{display:none}
+.form__status:empty{padding:0;border:0}
 .form__status.is-error{border-top-color:var(--ruby)}
 .form__status.is-wait{color:var(--stone)}
 .form__status:focus{outline:none}
@@ -1705,6 +1718,9 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .site-footer__fa{font-size:20px;line-height:1.7;text-align:left;color:var(--gold)}
 @media (min-width:768px){.site-footer__fa{text-align:right}}
 .site-footer__lang{margin-top:var(--s2);font-size:14px;line-height:20px;color:var(--stone)}
+/* the one "فارسی · coming soon" line, under the language line */
+.site-footer__soon{display:block;margin-top:4px}
+.site-footer__soon .fa{font-size:16px}
 .site-footer__legal{margin-top:var(--s3);font-size:14px;line-height:20px;color:var(--stone);display:flex;flex-wrap:wrap;gap:var(--s2);justify-content:space-between}
 
 /* ---------- Ghost buttons: the "How we work +" tab and "Pause motion" (one gold-filled button per screen) ---------- */
@@ -1732,9 +1748,8 @@ html:not(.panel-ready) .hww-tab{display:none}
 /* Pause motion / Play motion: bottom-left on every screen size and visible the whole page (round, icon-only:
    36px on phones, 40px on desktop). The accessible name is the fixed aria-label "Pause motion" and
    aria-pressed="true" means paused, so the name never changes. */
-.motion-toggle{position:fixed;z-index:60;left:var(--s2);bottom:calc(16px + env(safe-area-inset-bottom));font-size:13px;line-height:18px;letter-spacing:.06em;padding:8px 14px;border-radius:999px;background-color:var(--night)}
+.motion-toggle{position:fixed;z-index:60;left:var(--s2);bottom:calc(16px + env(safe-area-inset-bottom));width:40px;height:40px;padding:0;border-radius:50%;display:grid;place-items:center;font-size:13px;line-height:1;letter-spacing:0;background-color:var(--night)}
 .motion-toggle[hidden],html:not(.motion-ready) .motion-toggle{display:none}
-.motion-toggle{width:40px;height:40px;padding:0;border-radius:50%;display:grid;place-items:center;line-height:1;letter-spacing:0}
 /* the glyph is an inline SVG background (two gold bars = pause, a gold triangle = play), never a font glyph */
 .motion-toggle::before{content:"";width:14px;height:14px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Crect x='2' y='1' width='3.6' height='12' fill='%23C99E5C'/%3E%3Crect x='8.4' y='1' width='3.6' height='12' fill='%23C99E5C'/%3E%3C/svg%3E") center/contain no-repeat}
 .motion-toggle[aria-pressed="true"]::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M3 1.2 12.6 7 3 12.8z' fill='%23C99E5C'/%3E%3C/svg%3E");margin-left:2px}
@@ -1784,7 +1799,8 @@ body.panel-open{overflow:hidden}
 .tradition__text p+p{margin-top:var(--s2)}
 .tradition__media{margin:0}
 .tradition__media .slot{overflow:hidden;background:var(--deep);max-width:480px;margin-inline:auto;aspect-ratio:4/5}
-.tradition__media .slot img{width:100%;height:100%;object-fit:cover}
+/* lazy images reserve their box on phones: the slot carries the ratio, and the img repeats it as a fallback should its height ever resolve to auto */
+.tradition__media .slot img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/5}
 .tradition__media figcaption{margin-top:var(--s1);text-align:center}
 .seasonal{border-top:2px solid var(--gold);background:rgba(18,23,20,.6);padding:var(--s3)}
 .seasonal p+p{margin-top:var(--s2)}
@@ -1826,7 +1842,7 @@ body.panel-open{overflow:hidden}
 @media (min-width:768px){.story__photos{grid-template-columns:repeat(3,1fr);align-items:end}}
 .story__photos figure{margin:0}
 .story__photos .slot{overflow:hidden;background:var(--deep);aspect-ratio:3/4}
-.story__photos img{width:100%;height:100%;object-fit:cover}
+.story__photos img{width:100%;height:100%;object-fit:cover;aspect-ratio:3/4}
 .story__photos figcaption{margin-top:var(--s1)}
 /* the three promises: no top rules (the gold numbers and the spacing carry the structure) */
 .promise{display:grid;gap:var(--s3)}
@@ -1871,7 +1887,7 @@ html:not(.site-ready) .accordion__trigger,html:not(.site-ready) .accordion__pane
 
 ===== assets/js/site.js =====
 /* =========================================================
-   Anar Events — site.js (v2.8, night palette, round-8 fixes, 3 Nov 2026)
+   Anar Events — site.js (v2.9, night palette, round-9 fixes, 3 Nov 2026)
    Loaded (defer, self-hosted in assets/js/vendor/) before this file:
      GSAP 3.12.5 + ScrollTrigger, Lenis 1.1.18
    Content is visible by default. Reveal targets are hidden only
@@ -2062,12 +2078,17 @@ html:not(.site-ready) .accordion__trigger,html:not(.site-ready) .accordion__pane
   }
   scrollFns.push(onScrollState);
   onScrollState();
-  /* the toggle's aria-expanded and the inert <main> always follow the drawer's class (also re-synced on resize) */
+  /* the toggle's aria-expanded, the inert page (main, footer, the fixed tab and the Pause button), the scroll lock
+     (body.panel-open, shared with the How we work panel) and Lenis always follow the drawer's class (also re-synced on resize) */
+  var drawerInert = function () { return [mainEl, $('.site-footer'), $('.hww-tab'), $('.motion-toggle')].filter(Boolean); };
   function syncNav() {
     if (!header || !navToggle) { return; }
     var open = header.classList.contains('nav-open');
     navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-    if (mainEl) { mainEl.inert = open; }
+    drawerInert().forEach(function (el) { el.inert = open; });
+    /* panelOpen (the How we work panel, below) keeps its own lock and Lenis stop while it is open */
+    body.classList.toggle('panel-open', open || !!panelOpen);
+    if (lenis) { if (open) { lenis.stop(); } else if (!panelOpen) { lenis.start(); } }
   }
   function closeNav() {
     if (!header || !navToggle) { return; }
@@ -2288,9 +2309,21 @@ html:not(.site-ready) .accordion__trigger,html:not(.site-ready) .accordion__pane
       history.pushState(null, '', url.hash);
     });
   });
+  /* a hash landing: the browser has already jumped to the fragment, so measure first. Within a header height of the top:
+     focus and settle only; otherwise an immediate (not glided) scroll to the header offset, so the page never slides twice */
   if (location.hash) {
     var landing = document.getElementById(location.hash.slice(1));
-    if (landing) { setTimeout(function () { scrollToEl(landing); }, 80); }
+    if (landing) {
+      setTimeout(function () {
+        var top = landing.getBoundingClientRect().top;
+        var headerH = -headerOffset();
+        if (!landing.hasAttribute('tabindex')) { landing.setAttribute('tabindex', '-1'); }
+        landing.focus({ preventScroll: true });
+        if (Math.abs(top) <= headerH + 16) { settleReveals(); return; }
+        if (lenis) { lenis.scrollTo(landing, { offset: headerOffset(), immediate: true, onComplete: settleReveals }); }
+        else { landing.scrollIntoView({ behavior: 'auto', block: 'start' }); setTimeout(settleReveals, 50); }
+      }, 80);
+    }
   }
 
   /* ---------------------------------------------------------
@@ -2298,15 +2331,15 @@ html:not(.site-ready) .accordion__trigger,html:not(.site-ready) .accordion__pane
      devices, click/focus expands (touch, keyboard). Each trigger
      controls its body (aria-controls / id). Under 1100px every body
      is shown stacked and the triggers are removed (CSS + here).
-     While the .7s flex transition runs the opening panel carries
-     .is-settling (its body stays out of flow and invisible, CSS) and
-     the row keeps its height; once settled (transitionend, or the
-     .7s timer) the body is in flow, fades in, the row grows to fit
-     its text and ScrollTrigger is refreshed. A ResizeObserver on the
-     accordion refreshes on any later height change (debounced).
-     Phones: each description sits in a native <details> "Read more",
-     every one closed at first; wider screens open every one (the
-     summary is hidden there, CSS). Collapsed bodies carry
+     While the .35s flex transition runs the opening panel carries
+     .is-settling (its body stays out of flow, CSS, and fades in from
+     40% of the transition) and the row keeps its height; once settled
+     (transitionend, or the .36s timer) the body is in flow, the row
+     grows to fit its text and ScrollTrigger is refreshed. A
+     ResizeObserver on the accordion refreshes on any later height
+     change (debounced). At every width each description sits in a
+     native <details> "Read more", closed at start (the title, the
+     Persian accent and the intro stay visible). Collapsed bodies carry
      aria-hidden="true" + inert at every breakpoint; a shown body
      carries neither (setBodyShown).
      Wide screens also reserve the row height: every body is measured
@@ -2315,7 +2348,6 @@ html:not(.site-ready) .accordion__trigger,html:not(.site-ready) .accordion__pane
      a short description to a long one never moves the sections below.
      --------------------------------------------------------- */
   var refreshTriggers = function () { if (hasGsap && motionOn) { ScrollTrigger.refresh(); } };
-  var compactQuery = window.matchMedia('(max-width: 768px)');
   var setBodyShown = function (content, shown) {
     if (!content) { return; }
     content.inert = !shown;
@@ -2348,7 +2380,7 @@ html:not(.site-ready) .accordion__trigger,html:not(.site-ready) .accordion__pane
         setBodyShown($('.accordion__body', p), on);
       });
       settling = target;
-      settleTimer = setTimeout(settle, reduced || userPaused ? 0 : 720);
+      settleTimer = setTimeout(settle, reduced || userPaused ? 0 : 360);
     }
     acc.addEventListener('transitionend', function (e) {
       if (settling && e.target === settling && /flex/.test(e.propertyName)) { settle(); }
@@ -2400,12 +2432,11 @@ html:not(.site-ready) .accordion__trigger,html:not(.site-ready) .accordion__pane
       });
       refreshTriggers();
     };
-    /* the native "Read more": open everywhere above 768px (the summary is hidden there, CSS); on phones every one starts closed */
+    /* the native "Read more": closed at start on every width (the summary stays visible; a reader opens the one they want) */
     var syncRead = function () {
-      var compact = compactQuery.matches;
       panels.forEach(function (p) {
         var d = $('.accordion__read', p);
-        if (d) { d.open = !compact; }
+        if (d) { d.open = false; }
       });
     };
     /* the tallest expanded body at the open panel's width (flex 5 of 5+(n-1), minus the 8px gaps) -> --acc-min */
@@ -2431,21 +2462,40 @@ html:not(.site-ready) .accordion__trigger,html:not(.site-ready) .accordion__pane
     syncRead();
     reserveHeight();
     onMQ(wideQuery, function () { syncMobile(); reserveSoon(); });
-    onMQ(compactQuery, syncRead);
-    window.addEventListener('resize', reserveSoon, { passive: true });
+    /* height-only resizes (the mobile URL bar) change no body width: only a width change re-measures */
+    var lastWidth = window.innerWidth;
+    window.addEventListener('resize', function () {
+      if (window.innerWidth === lastWidth) { return; }
+      lastWidth = window.innerWidth;
+      reserveSoon();
+    }, { passive: true });
     if (document.fonts && document.fonts.ready) { document.fonts.ready.then(reserveSoon); }
     window.addEventListener('load', reserveSoon, { once: true });
   });
   html.classList.add('site-ready');
 
   /* ---------------------------------------------------------
-     Inquiry form: posts to Formspree with fetch when available;
-     12 s AbortController timeout; entered values stay on every
-     error (timeout included); the submit button is restored in
-     finally; the aria-live region reports success / error.
-     Without fetch the form submits normally.
+     Inquiry form. First, before any other form logic and with or
+     without fetch: the invalid-field handler (a field that fails
+     validation inside the optional <details> opens it, so the
+     browser can show the message); only once it is installed does
+     the <details> close (the HTML renders it open for no-JS users).
+     Then: posts to Formspree with fetch when available; 12 s
+     AbortController timeout; entered values stay on every error
+     (timeout included); on success the form is reset only if its
+     values still match the submitted snapshot (edits made while
+     the request was pending are kept); the submit button is
+     restored in finally; the aria-live region reports success /
+     error. Without fetch the form submits normally.
      --------------------------------------------------------- */
   var form = $('.form[data-ajax]');
+  if (form) {
+    form.addEventListener('invalid', function (e) {
+      var more = e.target && e.target.closest ? e.target.closest('details') : null;
+      if (more && !more.open) { more.open = true; }
+    }, true);
+    $$('.form__more', form).forEach(function (more) { more.open = false; });
+  }
   if (form && window.fetch && window.FormData) {
     var status = $('.form__status', form) || $('#form-status');
     var submitBtn = $('button[type="submit"]', form);
@@ -2471,16 +2521,16 @@ html:not(.site-ready) .accordion__trigger,html:not(.site-ready) .accordion__pane
       if (links) { status.appendChild(contactLinks()); }
     };
     var restoreSubmit = function () { if (submitBtn) { submitBtn.disabled = false; } };
-    /* a field inside the closed "Share your dates, guest count & traditions" that fails validation opens it first, so the browser can show the message */
-    form.addEventListener('invalid', function (e) {
-      var more = e.target && e.target.closest ? e.target.closest('details') : null;
-      if (more && !more.open) { more.open = true; }
-    }, true);
+    /* the form's values as one string (no file fields here): compared before the reset after a successful send */
+    var snapshot = function () {
+      try { return new URLSearchParams(new FormData(form)).toString(); } catch (err) { return null; }
+    };
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       if (!form.checkValidity()) { form.reportValidity(); return; }
       if (/FORMSPREE_ID/.test(form.action)) {
         say('error', 'Online inquiries are not connected yet. Your entries are still here. Please', true);
+        if (status) { status.focus(); }
         return;
       }
       if (submitBtn && submitBtn.disabled) { return; }
@@ -2496,13 +2546,15 @@ html:not(.site-ready) .accordion__trigger,html:not(.site-ready) .accordion__pane
           reject(new Error('timeout'));
         }, 12000);
       });
+      var sent = snapshot();
       var options = { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } };
       if (controller) { options.signal = controller.signal; }
       var request = Promise.race([timeout, Promise.resolve().then(function () { return fetch(form.action, options); })])
         .then(function (r) { if (!r.ok) { throw new Error('bad status'); } })
         .then(function () {
           say('ok', 'Thank you. Your message is on its way; we reply within one business day.');
-          form.reset();
+          /* reset only what was sent: an edit made while the request was pending stays in place */
+          if (sent !== null && snapshot() === sent) { form.reset(); }
           if (status) { status.focus(); }
         })
         .catch(function () {
@@ -2530,6 +2582,12 @@ html:not(.site-ready) .accordion__trigger,html:not(.site-ready) .accordion__pane
   var motionOn = false;
   var motionCtx = null;
   var leafTweens = [];
+  /* the IntersectionObservers that pause / resume the desktop leaf loops off screen (block 8) */
+  var leafObservers = [];
+  var disconnectLeafObservers = function () {
+    leafObservers.forEach(function (o) { o.disconnect(); });
+    leafObservers = [];
+  };
   /* the once-only reveal tweens with their trigger elements (block 9), for settleReveals() */
   var revealTweens = [];
   var trunkImgs = $$('.descend__trunks img');
@@ -2570,7 +2628,8 @@ html:not(.site-ready) .accordion__trigger,html:not(.site-ready) .accordion__pane
     if (!hasGsap || motionOn) { return motionOn; }
     try {
       gsap.registerPlugin(ScrollTrigger);
-      ScrollTrigger.config({ limitCallbacks: true });
+      /* ignoreMobileResize: the iOS address-bar collapse fires resize; the hero and trunk scrubs read vh(), so a refresh there would jump the logo */
+      ScrollTrigger.config({ limitCallbacks: true, ignoreMobileResize: true });
       html.classList.add('anim-ready');
       html.classList.add('motion');
       html.classList.remove('reduced');
@@ -2598,6 +2657,7 @@ html:not(.site-ready) .accordion__trigger,html:not(.site-ready) .accordion__pane
       /* revert() kills every tween / ScrollTrigger recorded in the context and restores the inline styles each
          target had before (authored inline styles stay); other GSAP users on the page are untouched */
       if (motionCtx) { motionCtx.revert(); motionCtx = null; }
+      disconnectLeafObservers();
       leafTweens = [];
       revealTweens = [];
     } catch (e) { /* ignore */ }
@@ -2705,16 +2765,9 @@ html:not(.site-ready) .accordion__trigger,html:not(.site-ready) .accordion__pane
     });
 
     /* -------------------------------------------------------
-       6. How we work teaser: ONE gold kashida strip (<i>) slides in
-          from the right as the section arrives, then the options.
+       6. (gone, round 9) The teaser's gold line is the same
+          .kashida-draw as under the statement: block 4 draws it.
        ------------------------------------------------------- */
-    var teaser = $('.teaser');
-    if (teaser) {
-      var strips = $$('.teaser__strips i', teaser);
-      /* GSAP alone positions the strips (no CSS translate to compound with xPercent) */
-      gsap.timeline({ scrollTrigger: { trigger: teaser, start: 'top 75%', end: 'top 20%', scrub: true } })
-        .fromTo(strips, { xPercent: 102, x: 0 }, { xPercent: 0, x: 0, ease: 'power1.inOut', duration: 0.6, stagger: 0.15 }, 0);
-    }
 
     /* -------------------------------------------------------
        7. The roots: roots-floor rises in as the floor while the
@@ -2763,14 +2816,18 @@ html:not(.site-ready) .accordion__trigger,html:not(.site-ready) .accordion__pane
 
   /* -------------------------------------------------------
      8. Floating leaves (two places): desktop runs the slow
-        yoyo drift loop; phones get the scroll-scrub drift
-        instead. Never both: the same `y` is driven once, and
-        relative (+=) so a CSS translate on the leaf is kept.
-        Crossing the 769px breakpoint kills the old tweens
-        (and their triggers) and builds the other kind, inside
-        motionCtx so a later killMotion() reverts them too.
+        yoyo drift loop, paused while its leaf is off screen
+        (IntersectionObserver) and resumed when it is back;
+        phones get the scroll-scrub drift instead. Never both:
+        the same `y` is driven once, and relative (+=) so a CSS
+        translate on the leaf is kept. Crossing the 769px
+        breakpoint kills the old tweens (and their triggers and
+        observers) and builds the other kind, inside motionCtx so
+        a later killMotion() reverts them too (the reduced-motion
+        cleanup is unchanged).
      ------------------------------------------------------- */
   function killLeaves() {
+    disconnectLeafObservers();
     leafTweens.forEach(function (t) { t.revert(); });
     leafTweens = [];
   }
@@ -2778,7 +2835,16 @@ html:not(.site-ready) .accordion__trigger,html:not(.site-ready) .accordion__pane
     killLeaves();
     $$('.leaf').forEach(function (leaf, i) {
       if (isDesktop()) {
-        leafTweens.push(gsap.to(leaf, { y: '+=' + (18 + i * 6), x: '+=' + (i % 2 ? -10 : 10), rotation: '+=' + (i % 2 ? -3 : 3), duration: 6 + i * 1.5, ease: 'sine.inOut', yoyo: true, repeat: -1 }));
+        var drift = gsap.to(leaf, { y: '+=' + (18 + i * 6), x: '+=' + (i % 2 ? -10 : 10), rotation: '+=' + (i % 2 ? -3 : 3), duration: 6 + i * 1.5, ease: 'sine.inOut', yoyo: true, repeat: -1, paused: true });
+        leafTweens.push(drift);
+        /* the loop only runs while the leaf is in (or within 10% of) the viewport */
+        if ('IntersectionObserver' in window) {
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (en) { if (en.isIntersecting) { drift.play(); } else { drift.pause(); } });
+          }, { rootMargin: '10% 0px' });
+          io.observe(leaf);
+          leafObservers.push(io);
+        } else { drift.play(); }
       } else {
         leafTweens.push(gsap.to(leaf, { y: '+=' + (40 + i * 10), ease: 'none', scrollTrigger: { trigger: leaf.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } }));
       }

@@ -346,17 +346,41 @@
     document.addEventListener('focusin', function (e) {
       if (panelOpen && !panel.contains(e.target)) { (closeBtn || panel).focus(); }
     });
-    /* Keep the focused tab visible; synchronize visual and keyboard availability.
-       Showing: the class, aria-hidden and tabIndex change together, at once. Hiding: while the page scrolls only
-       the class changes (visual); aria-hidden / tabIndex follow in the settle timeout (700 ms after the last
-       scroll or observer change). A tab that holds focus is never hidden, visually or from the keyboard. */
+    /* Synchronize visual and keyboard availability. Showing: the class, aria-hidden and tabIndex change together, at
+       once. Hiding: while the page scrolls only the class changes (visual); aria-hidden / tabIndex follow in the
+       settle timeout (700 ms after the last scroll or observer change). A tab that holds focus is not hidden for the
+       soft reasons (the hero in view, a phone scrolling down). The COLLISION reasons take precedence over that
+       (round 6: the owner's hard rule, nothing ever covers the form, the footer or the open drawer): when #inquire or
+       the footer is in view, or the drawer is open, a focused tab moves its focus to the next focusable element
+       first (the first tabbable control inside the destination that is on screen; main as the last resort) and
+       then hides at once, from the keyboard too. */
     var hideWhileScrolling = false, heroInView = true, idleTimer;
     var lastScroll = window.scrollY;
     var heroEl = $('.hero') || $('.pageband');
     /* the index hero hides the tab on every screen size; the inner-page band only on phones */
     var heroHides = function () { return heroInView && (!isDesktop() || (heroEl && heroEl.classList.contains('hero'))); };
-    var setShown = function (el, hidden, settled) {
-      if (hidden && el.contains(document.activeElement)) { hidden = false; }
+    var tabbable = function (root) {
+      return $$('a[href], button, input, select, textarea, [tabindex]', root)
+        .filter(function (el) { return !el.disabled && el.tabIndex >= 0 && el.offsetParent !== null && !el.closest('[inert]') && el.getAttribute('aria-hidden') !== 'true'; });
+    };
+    var inView = function (el) {
+      if (!el) { return false; }
+      var r = el.getBoundingClientRect();
+      return r.bottom > 0 && r.top < vh();
+    };
+    /* the tab's focus goes to the next focusable element before the tab hides: the first tabbable control of the
+       destination now on screen (#inquire's call line, the footer's first link, the phone photo row's first title),
+       else main (tabindex -1). hideFor / hideForPhone are the observer's own lists (declared below, assigned before
+       any scroll or observer callback runs) */
+    var moveFocusOff = function () {
+      var dests = (hideFor || []).concat(isDesktop() ? [] : (hideForPhone || [])).filter(inView);
+      var next = null;
+      dests.some(function (d) { var f = tabbable(d); if (f.length) { next = f[0]; return true; } return false; });
+      if (!next) { next = mainEl; }
+      if (next && next.focus) { next.focus({ preventScroll: true }); }
+    };
+    var setShown = function (el, hidden, settled, force) {
+      if (hidden && !force && el.contains(document.activeElement)) { hidden = false; }
       if (el.classList.contains('is-hidden') !== hidden) { el.classList.toggle('is-hidden', hidden); }
       if (hidden && !settled) { return; }
       var aria = hidden ? 'true' : 'false';
@@ -366,9 +390,12 @@
     };
     syncTab = function (settled) {
       var navOpen = !!(header && header.classList.contains('nav-open'));
-      var hidden = !panelOpen && document.activeElement !== tab &&
-        (navOpen || hideAtDestination || heroHides() || (!isDesktop() && hideWhileScrolling));
-      setShown(tab, hidden, settled);
+      /* the collision reasons hide the tab whatever holds focus; the soft reasons only while it is not focused */
+      var collision = !panelOpen && (navOpen || hideAtDestination);
+      var hidden = collision || (!panelOpen && document.activeElement !== tab &&
+        (heroHides() || (!isDesktop() && hideWhileScrolling)));
+      if (collision && tab.contains(document.activeElement)) { moveFocusOff(); }
+      setShown(tab, hidden, settled || collision, collision);
     };
     var settleSoon = function () {
       clearTimeout(idleTimer);
@@ -476,19 +503,24 @@
     }
   }
 
-  /* a native <details> opening or closing (the options' "What is included", the FAQ) moves everything below it: the
-     scroll measurements (ScrollTrigger) and Lenis's page size are refreshed once the content has settled. `toggle`
-     does not bubble, so it is caught in the capture phase; 150 ms debounced, then in a frame */
-  var detailsTimer = null;
-  document.addEventListener('toggle', function (e) {
-    if (!e.target || e.target.tagName !== 'DETAILS') { return; }
-    clearTimeout(detailsTimer);
-    detailsTimer = setTimeout(function () {
+  /* a layout change below the fold moves everything under it: the scroll measurements (ScrollTrigger: the ground's
+     rise, the fruit, the maximum scroll) and Lenis's page size are refreshed once the content has settled, 150 ms
+     debounced, then in a frame. Callers: a native <details> opening or closing (the options' "What is included",
+     the FAQ; `toggle` does not bubble, so it is caught in the capture phase) and the inquiry form's ResizeObserver
+     below (validation lines, the status region, the textarea pulled taller) */
+  var relayoutTimer = null;
+  function refreshAfterRelayout() {
+    clearTimeout(relayoutTimer);
+    relayoutTimer = setTimeout(function () {
       requestAnimationFrame(function () {
         if (lenis && lenis.resize) { lenis.resize(); }
         if (hasGsap && motionOn) { ScrollTrigger.refresh(); }
       });
     }, 150);
+  }
+  document.addEventListener('toggle', function (e) {
+    if (!e.target || e.target.tagName !== 'DETAILS') { return; }
+    refreshAfterRelayout();
   }, true);
 
   /* the behaviour script is live (CSS may key no-JS fallbacks on html:not(.site-ready)) */
@@ -575,12 +607,30 @@
     form.addEventListener('invalid', function (e) {
       if (e.target && e.target.willValidate) { setInvalid(e.target); }
     }, true);
+    /* while typing only the validity STATE is read (round 6): checkValidity() dispatches `invalid`, which wrote an
+       error line for every unfinished email address; checkValidity() / reportValidity() run on submit only */
     form.addEventListener('input', function (e) {
-      if (e.target && e.target.willValidate && e.target.checkValidity()) { clearInvalid(e.target); }
+      if (e.target && e.target.willValidate && e.target.validity.valid) { clearInvalid(e.target); }
     });
+    /* the form's height changes (an error line written or cleared, the status region filled, the textarea pulled
+       taller) move the ground and the footer under it: the scroll measurements follow, debounced */
+    if ('ResizeObserver' in window) {
+      var formSized = false;
+      new ResizeObserver(function () {
+        if (!formSized) { formSized = true; return; }   /* the first callback is the initial size, nothing moved */
+        refreshAfterRelayout();
+      }).observe(form);
+    }
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      if (!form.checkValidity()) { form.reportValidity(); return; }
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        /* after reportValidity(): the native focus move is not guaranteed on iOS Safari once the custom error lines
+           exist, so the first invalid control is focused explicitly (deterministic for the keyboard and VoiceOver) */
+        var firstInvalid = form.querySelector(':invalid');
+        if (firstInvalid && firstInvalid.focus) { firstInvalid.focus(); }
+        return;
+      }
       if (/FORMSPREE_ID/.test(form.action)) {
         say('error', 'Online inquiries are not connected yet. Your entries are still here. Please', true);
         if (status) { status.focus(); }

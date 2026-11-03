@@ -83,11 +83,8 @@ h3{font-size:clamp(22px,2.6vw,28px);line-height:1.2}
 .on-light .caption{color:var(--sage)}
 .lede{font-size:clamp(20px,2.2vw,24px);line-height:1.45}
 .fa,[lang="fa"]{font-family:var(--font-fa);font-style:normal!important;letter-spacing:0!important;text-transform:none!important;font-weight:400;font-size:115%;line-height:1.7;direction:rtl;unicode-bidi:isolate;font-synthesis:none}
-/* the Urdu accents (ولیمہ · رخصتی) set in the same Naskh as the Persian; the Devanagari / Gurmukhi accents (हल्दी · फेरे,
-   ਅਨੰਦ ਕਾਰਜ) in the system's Indic faces (Nirmala UI on Windows, Kohinoor / Devanagari MT on Apple, Noto on Android),
-   left to right, never bold-synthesised or tracked */
-[lang="ur"]{font-family:var(--font-fa)}
-[lang="hi"],[lang="pa"]{font-family:"Nirmala UI","Kohinoor Devanagari","Devanagari MT","Noto Sans Devanagari","Noto Sans Gurmukhi","Mukta",Tahoma,sans-serif;direction:ltr;unicode-bidi:isolate;font-weight:400;font-style:normal!important;letter-spacing:0!important;text-transform:none!important;font-synthesis:none}
+/* English only, with Persian accents (the owner's rule, round 6): no Hindi, Punjabi or Urdu script anywhere, so there
+   is no Indic or Urdu font rule; the Hindu and Sikh ceremony titles carry their English kicker instead */
 .fa--big{font-size:clamp(26px,4.2vw,40px);line-height:1.5}
 .fa--title{font-size:clamp(34px,5.4vw,60px);line-height:1.4}
 .measure{max-width:38em}
@@ -151,9 +148,9 @@ main > .on-light:last-child{border-bottom:0}
 .nav-home{display:block;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:120px;opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s}
 .nav-home img{width:100%;height:auto}
 .site-header--solid .nav-home,.site-header.is-scrolled .nav-home{opacity:1;visibility:visible}
-/* phones: a 12px gap; the centred logo shrinks below 350px so toggle + Pause (left) and Inquire (right) never meet it
-   (320px: 90px logo, 115–205, the left group ends at 104 and Inquire starts at 244) */
-@media (max-width:768px){.site-header__inner{gap:12px}.nav-home{width:min(120px,calc(100vw - 230px))}.nav-right{min-width:0}}
+/* phones: a 12px gap; the centred logo shrinks below 370px so toggle + Pause (left) and Inquire (right) never meet it
+   (round 6: 100vw − 250px; 320px: 70px logo, 125–195, the left group ends at 104 and Inquire starts at 244) */
+@media (max-width:768px){.site-header__inner{gap:12px}.nav-home{width:min(120px,calc(100vw - 250px))}.nav-right{min-width:0}}
 /* 320px (and enlarged text): the bar's fixed items (toggle 44 + Pause 36 + Inquire) leave the logo ~70px; the button loses 6px of padding and nothing clips */
 @media (max-width:360px){.site-header__inner{padding-inline:12px}.btn--sm{padding:10px 14px}}
 /* the links are visible by default, on every page and at every width. Through 1024px (phones and tablets: the centred
@@ -388,7 +385,8 @@ html.logo-morphing .logo-morph{visibility:visible;will-change:transform}
 /* the Persian line: one line, gold, right-aligned at every width */
 .site-footer__fa{margin-top:var(--s3);font-size:18px;line-height:1.7;color:var(--gold);text-align:right;white-space:nowrap}
 .site-footer__bottom{margin-top:48px;padding-top:var(--s3);border-top:2px solid rgba(201,158,92,.35);display:flex;flex-wrap:wrap;justify-content:space-between;gap:var(--s1) var(--s2);font-size:13px;line-height:20px;color:rgba(249,246,240,.7)}
-.site-footer__lang{margin-top:var(--s2);font-size:12px;line-height:18px;color:rgba(249,246,240,.6);text-align:center;text-wrap:balance}
+/* parchment .72 (round 6): 12px at .6 over --deep sat at ~4.3:1; .72 clears 5.5:1 and keeps the line quiet */
+.site-footer__lang{margin-top:var(--s2);font-size:12px;line-height:18px;color:rgba(249,246,240,.72);text-align:center;text-wrap:balance}
 /* "فارسی · coming soon" rides the same quiet line */
 .site-footer__soon{display:inline;margin-left:6px;white-space:nowrap}
 .site-footer__soon .fa{font-size:14px}
@@ -436,7 +434,9 @@ html:not(.motion-ready) .motion-toggle{visibility:hidden}
 .hww-backdrop[hidden]{display:none}
 .hww-backdrop.is-on{opacity:1}
 /* the panel is the scrollable element: data-lenis-prevent (HTML) keeps Lenis off its wheel/touch events, overscroll-behavior:contain keeps the page still */
-.hww-panel{position:fixed;z-index:80;left:0;right:0;bottom:0;max-height:88vh;overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;background:var(--night);color:var(--parch);padding:var(--s3) var(--s3) var(--s4);border-top:2px solid var(--gold);border-radius:12px 12px 0 0;transform:translateY(100%);transition:transform .55s var(--ease)}
+/* the phone sheet's top corners are 2px (round 6: a 12px rounded sheet read as a generic app modal, not the brand's
+   crisp editorial geometry) */
+.hww-panel{position:fixed;z-index:80;left:0;right:0;bottom:0;max-height:88vh;overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;background:var(--night);color:var(--parch);padding:var(--s3) var(--s3) var(--s4);border-top:2px solid var(--gold);border-radius:2px 2px 0 0;transform:translateY(100%);transition:transform .55s var(--ease)}
 .hww-panel[hidden]{display:none}
 .hww-panel.is-open{transform:translateY(0)}
 @media (min-width:768px){
@@ -479,6 +479,11 @@ body.panel-open{overflow:hidden}
 .jump a{color:var(--gold);border-bottom:2px solid transparent;padding-bottom:2px;transition:border-color .3s}
 .jump a:hover{border-bottom-color:var(--gold)}
 @media (min-width:768px){.jump__label{flex:0 0 auto;margin-right:var(--s1)}}
+/* the quiet call line under the jump row (round 6): the home's .inquire__call, centred: 16/24 stone, the links in
+   parchment on a 2px gold .45 underline (full gold on hover / focus), no button */
+.jump__call{margin-top:var(--s2);text-align:center;color:var(--stone);font-size:16px;line-height:24px;text-wrap:balance}
+.jump__call a{color:var(--parch);border-bottom:2px solid rgba(201,158,92,.45);padding-bottom:2px;transition:border-color .3s,color .3s}
+.jump__call a:hover,.jump__call a:focus-visible{color:var(--gold);border-bottom-color:var(--gold)}
 .tradition+.tradition{padding-top:clamp(48px,8vh,100px)}
 .tradition__grid{display:grid;gap:var(--s3)}
 @media (min-width:900px){
@@ -489,7 +494,10 @@ body.panel-open{overflow:hidden}
    carries the script accent like the other sections */
 .tradition__text > .eyebrow{margin-bottom:var(--s1)}
 .tradition__title{display:grid;gap:var(--s1);margin-bottom:var(--s3)}
-@media (min-width:600px){.tradition__title{grid-template-columns:1fr 1fr;align-items:baseline}.tradition__title .fa,.tradition__title .eyebrow{text-align:right;color:var(--gold)}}
+@media (min-width:600px){.tradition__title{grid-template-columns:1fr 1fr;align-items:baseline}.tradition__title .fa,.tradition__title .eyebrow{text-align:right;color:var(--gold)}
+  /* a title with no accent cell (Haldi & Pheras, Anand Karaj: English only, round 6) takes both columns, so it does not
+     wrap in a half-width cell beside an empty one */
+  .tradition__title > h2:only-child{grid-column:1 / -1}}
 .tradition__text p+p{margin-top:var(--s2)}
 .tradition__media{margin:0}
 .tradition__media .slot{overflow:hidden;background:var(--deep);max-width:480px;margin-inline:auto;aspect-ratio:4/5}

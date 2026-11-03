@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "planner",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "weddings.html: the jump row (nav.jump) and the six ceremony sections",
+   "what": "Add one quiet call line under the jump row, the same as the home's .inquire__call: 'Call (925) 263-9949 · WhatsApp · Begin the conversation' (link to index.html#inquire). Today the page's only CTA sits after the sixth section and the Nowruz note.",
+   "why": "A mother who finds her ceremony in the jump row and reads one section has no path to inquire without scrolling six sections or leaving for the home page."
+  },
+  {
+   "where": "index.html: .cel__foot ('Haldi & pheras, Anand Karaj, walima, rukhsati: every ceremony on the Weddings page')",
+   "what": "Lead with the families, not a list: 'Hindu and Sikh families: haldi and pheras, Anand Karaj. Pakistani and Bengali families: walima, rukhsati. Every ceremony on the Weddings page.' Keep the gold link.",
+   "why": "The three slots are Persian, Islamic contract and henna night; a Gujarati or Punjabi family reads the current line as an afterthought footnote and may not feel addressed."
+  },
+  {
+   "where": "index.html: Nikah figcaption ('The contract before both families; the Afghan aina mosaf.')",
+   "what": "Change to 'The contract before both families; the aina mosaf for Afghan families.'",
+   "why": "Pakistani and Indian Muslim couples read the card as Afghan-only; the rewrite keeps the Afghan cue without excluding them."
+  },
+  {
+   "where": "index.html #inquire form: the Message field (optional) and its helper",
+   "what": "Keep Message optional but move 'approximate dates and which celebrations' into the Phone row as one short optional text input 'Celebrations and season (optional)' with placeholder 'Sofreh aghd + reception, spring 2027'; or make Message required with a one-line placeholder.",
+   "why": "Names + email alone is a valid submit today; the planner's first reply then has nothing to work from and a second round-trip costs the inquiry momentum parents give once."
+  },
+  {
+   "where": "index.html + inner pages: header .btn 'Inquire' (href index.html#inquire)",
+   "what": "On inner pages, point the header Inquire at the 'How we work +' panel's own 'Begin the conversation' and call line (open the panel) OR keep the link but add rel=prefetch for index.html; at minimum add the call line into the panel header so a parent can call without the home page reload.",
+   "why": "From Weddings or About the Inquire button loads the heavy canopy home and scrolls four screens before the form appears; parents on phones lose the thread."
+  },
+  {
+   "where": "weddings.html #nikah paragraph 1 ('the mehndi and the rukhsati included if your family keeps them')",
+   "what": "Reorder to the actual sequence and name the days: 'the mehndi the night before and the rukhsati after the nikah or the reception, if your family keeps them.'",
+   "why": "As written the mehndi reads as part of the nikah itself; South Asian parents notice sequencing errors first."
+  }
+ ]
+}

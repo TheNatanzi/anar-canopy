@@ -1,0 +1,36 @@
+{
+ "model": "astra",
+ "role": "dev",
+ "score": 6,
+ "blocking": [
+  "The English-only rule permits Persian accents, but weddings.html also renders Hindi, Punjabi and Urdu text.",
+  "The focused How we work tab explicitly bypasses destination hiding, so scrolling with keyboard focus on it can leave it covering the footer."
+ ],
+ "fixes": [
+  {
+   "where": "weddings.html — Haldi & Pheras, Anand Karaj, Reception & Walima",
+   "what": "Remove the lang=\"hi\", lang=\"pa\" and lang=\"ur\" accents; retain the English ceremony names and permitted Persian accents.",
+   "why": "These visible strings violate the stated language rule, capping the score at 6."
+  },
+  {
+   "where": "assets/js/site.js — syncTab() and setShown()",
+   "what": "Give inquiry/footer collision protection precedence over focused-tab visibility. When hiding a focused tab becomes necessary, move focus to a visible equivalent control before hiding it.",
+   "why": "Both functions currently exempt the focused tab from hiding, defeating the owner's absolute clearance requirement."
+  },
+  {
+   "where": "assets/js/site.js — inquiry form input listener",
+   "what": "Use el.validity.valid instead of el.checkValidity() during input; reserve checkValidity()/reportValidity() for submission.",
+   "why": "checkValidity() dispatches invalid events while typing, immediately generating errors for unfinished email addresses before submission."
+  },
+  {
+   "where": "assets/js/canopy.js — initial guard and fitHero()",
+   "what": "Run fitHero() and its resize/font listeners whenever main.canopy exists; gate only animation initialization on GSAP and ScrollTrigger availability.",
+   "why": "The early dependency guard disables the supposedly motion-independent clearance measurement when a vendor fails, leaving short screens and enlarged text dependent on fixed estimates."
+  },
+  {
+   "where": "assets/js/site.js — form validation/status updates; assets/js/canopy.js — ground triggers",
+   "what": "Refresh scroll measurements after validation messages, request status or textarea resizing changes form height; use a debounced ResizeObserver on the form.",
+   "why": "These changes move the ground and footer after trigger measurement, leaving ground motion and maximum-scroll calculations stale."
+  }
+ ]
+}

@@ -34,14 +34,15 @@
         last 10 %; desktop only, the sprite is display:none on phones) and the
         fallen one nudged 30° into place on the ground
      5. the ground rising 40px into place; the logo + line rising on load
-     6. the logo morph: the hero logo travels up and shrinks into the centre
-        of the header bar over the first 70 % of the hero (eased out: it moves
-        fastest first, so the text scrolling up under it meets its box as late
-        as possible) and docks there (one ScrollTrigger; html.logo-morphing /
-        html.logo-docked)
-   fitHero() (no motion needed): the mark's rendered height is written to
-   --hero-content on main, so canopy.css can size the hero to the real text
-   (short phones: nothing under the fixed bar, nothing in the foliage).
+     6. the logo morph (built before 3, which reads its measurement): the hero
+        logo travels up and shrinks into the centre of the header bar over the
+        first 70 % of the hero (eased out: it moves fastest first, so the text
+        scrolling up under it meets its box as late as possible) and docks
+        there (one ScrollTrigger; html.logo-morphing / html.logo-docked)
+   fitHero() (no motion, no vendor needed: it runs whenever main.canopy
+   exists): the mark's rendered height is written to --hero-content on main,
+   so canopy.css can size the hero to the real text (short phones: nothing
+   under the fixed bar, nothing in the foliage).
    Leaves (.leaf), kashida draws (.kashida-draw) and reveals (.reveal / .stagger)
    are site.js blocks 8, 4 and 9.
    ========================================================= */
@@ -50,8 +51,9 @@
 
   var html = document.documentElement;
   var main = document.querySelector('main.canopy');
+  if (!main) { return; }
+  /* GSAP + ScrollTrigger gate the MOTION only (below, after fitHero): the clearance measurement runs without them */
   var hasGsap = typeof window.gsap !== 'undefined' && typeof window.ScrollTrigger !== 'undefined';
-  if (!main || !hasGsap) { return; }
 
   var $ = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
@@ -94,6 +96,34 @@
   var bounceTl = null;
   var lastBounce = 0;
   var canopyInView = false;
+
+  /* the mark's rendered content height (logo + descriptor + tag pair; the halo is absolute and not counted) goes to
+     --hero-content on main, so the CSS hero height reserves the real text: short phones (390×700, 360×640) and
+     enlarged text get a taller hero instead of text under the fixed bar. Independent of the motion AND of the vendors
+     (round 6: it runs whenever main.canopy exists, under Pause, reduced motion and a failed GSAP request alike);
+     re-measured on resize, when the fonts land and on load. The hero's height does not feed back into the mark's
+     height (its width is viewport-based), so the write never loops */
+  var fitTimer = null;
+  function fitHero() {
+    if (!mark) { return; }
+    var h = mark.offsetHeight;
+    if (!h) { return; }
+    var next = h + 'px';
+    if (main.style.getPropertyValue('--hero-content') === next) { return; }
+    main.style.setProperty('--hero-content', next);
+    if (on && hasGsap) { ScrollTrigger.refresh(); }
+  }
+  fitHero();
+  window.addEventListener('resize', function () {
+    clearTimeout(fitTimer);
+    fitTimer = setTimeout(fitHero, 120);
+  }, { passive: true });
+  window.addEventListener('load', fitHero);
+  if (document.fonts && document.fonts.ready) { document.fonts.ready.then(fitHero); }
+
+  /* ---- everything from here on is the motion: nothing without GSAP + ScrollTrigger ---- */
+  if (!hasGsap) { return; }
+
   /* the last global ScrollTrigger.refresh() (site.js refreshes in initMotion, on load and when the fonts land):
      build() skips its own when one has just run, since triggers measure themselves on creation */
   var lastRefresh = 0;
@@ -153,29 +183,6 @@
     while (el && el !== main) { top += el.offsetTop; el = el.offsetParent; }
     return top + main.offsetTop;
   }
-
-  /* the mark's rendered content height (logo + descriptor + tag pair; the halo is absolute and not counted) goes to
-     --hero-content on main, so the CSS hero height reserves the real text: short phones (390×700, 360×640) and
-     enlarged text get a taller hero instead of text under the fixed bar. Independent of the motion (it runs under
-     Pause and reduced motion too); re-measured on resize, when the fonts land and on load. The hero's height does
-     not feed back into the mark's height (its width is viewport-based), so the write never loops */
-  var fitTimer = null;
-  function fitHero() {
-    if (!mark) { return; }
-    var h = mark.offsetHeight;
-    if (!h) { return; }
-    var next = h + 'px';
-    if (main.style.getPropertyValue('--hero-content') === next) { return; }
-    main.style.setProperty('--hero-content', next);
-    if (on) { ScrollTrigger.refresh(); }
-  }
-  fitHero();
-  window.addEventListener('resize', function () {
-    clearTimeout(fitTimer);
-    fitTimer = setTimeout(fitHero, 120);
-  }, { passive: true });
-  window.addEventListener('load', fitHero);
-  if (document.fonts && document.fonts.ready) { document.fonts.ready.then(fitHero); }
 
   function buildAll() {
     /* 1. parallax, desktop only (on phones the layer is the page height × 110vw: promoting it costs memory and jank for
@@ -262,11 +269,15 @@
       loopInView(sprigR, gsap.fromTo(sprigR, { rotation: 0.3 }, { rotation: -0.3, duration: 5.5, ease: 'sine.inOut', yoyo: true, repeat: -1 }));
     }
 
-    /* the morph geometry (block 6), measured here so block 3 can solve the text's cross point against it. A = the hero
-       logo's untransformed page rect, summed up the offsetParent chain (the mark's drift / rise transforms ignored;
-       its translateX(-50%) taken off); B = the header slot's img rect (fixed, so viewport = page), read with the
-       bar's transitions disabled (.is-measuring) so a mid-transition frame can never be captured. The copy's img is
-       sized by a plain style write (no callback-driven gsap.set outside the context); kill() clears it */
+    /* the morph geometry (block 6), measured ONCE per refresh by the morph trigger's onRefreshInit (a global
+       "refreshInit" listener: every onRefreshInit fires before any trigger re-measures, and the create-time refresh
+       calls it too), so block 3 can solve the text's cross point against it without a second measurement (round 6:
+       measureMorph() inside the text trigger's end walked the offsetParent chain and toggled .is-measuring twice per
+       refresh, two forced layouts for one measurement). A = the hero logo's untransformed page rect, summed up the
+       offsetParent chain (the mark's drift / rise transforms ignored; its translateX(-50%) taken off); B = the header
+       slot's img rect (fixed, so viewport = page), read with the bar's transitions disabled (.is-measuring) so a
+       mid-transition frame can never be captured. The copy's img is sized by a plain style write (no callback-driven
+       gsap.set outside the context); kill() clears it */
     var A = null, B = null;
     var canMorph = !!(morph && morphImg && heroLogo && navImg && hero && mark);
     var measureMorph = function () {
@@ -281,18 +292,52 @@
       B = { left: r.left, top: r.top, w: r.width };
       morphImg.style.width = A.w + 'px';
     };
+
+    /* 6. the logo morph, created BEFORE the hero text trigger (block 3 reads its A / B): the hero logo travels up and
+          shrinks into the centre of the header bar over the first 70 % of the hero's height, and docks there. ONE
+          ScrollTrigger (no tween: the progress is applied directly through three gsap.quickSetters, so the copy
+          tracks the page pixel for pixel and no per-frame tween is recorded). At progress p, q = power2.out(p): the
+          fixed copy sits at lerp(A in the viewport, B, q) with scale lerp(1, B.w / A.w, q) about its top-left
+          corner (fastest first: the text scrolling up under it meets its box as late as possible, block 3 fades the
+          text before that); at p = 0 the hero's own logo shows, between the ends the copy (html.logo-morphing hides
+          the hero img), at p = 1 the header logo (html.logo-docked) in the same place, never overshooting the bar.
+          Re-measured on every refresh (resize, fonts); kill() clears the copy's transform (clearProps, the GSAP
+          cache included) and its img width */
+    if (canMorph) {
+      /* scaleX + scaleY, not "scale": the alias is resolved only by a tween, a quickSetter on it writes nothing
+         (verified on 3.12.5: style.transform stayed translate-only, the copy never shrank) */
+      var setMorphX = gsap.quickSetter(morph, 'x', 'px');
+      var setMorphY = gsap.quickSetter(morph, 'y', 'px');
+      var setMorphSX = gsap.quickSetter(morph, 'scaleX');
+      var setMorphSY = gsap.quickSetter(morph, 'scaleY');
+      var applyMorph = function (self) {
+        if (!A || !B) { return; }
+        var p = self.progress, q = morphEase(p), k = 1 + (B.w / A.w - 1) * q;
+        setMorphX(A.left + (B.left - A.left) * q);
+        setMorphY(A.top + (B.top - A.top) * q);
+        setMorphSX(k);
+        setMorphSY(k);
+        html.classList.toggle('logo-morphing', p > 0 && p < 1);
+        html.classList.toggle('logo-docked', p >= 1);
+      };
+      ScrollTrigger.create({
+        trigger: hero, start: 'top top', end: function () { return '+=' + Math.round(hero.offsetHeight * MORPH_END); },
+        onRefreshInit: measureMorph, onRefresh: applyMorph, onUpdate: applyMorph
+      });
+    }
+
     /* the scroll position (px) by which the descriptor + tag pair must be gone: the first px where the morphing
        logo's box bottom (rising from A to B with the eased progress, shrinking about its top-left corner) comes
        within TEXT_RESERVE of the text's top (scrolling up at 1× less the mark's drift), less 2px, so the fade is
        complete strictly before the box reaches the text's bounds; never later than FADE_TO of the hero (the
        foliage clearance). Scanned in 2px steps from 0 (the eased morph makes the gap a quadratic in the scroll).
+       A / B come from the morph trigger above (measured on its create-time refresh and on every refreshInit since).
        Measured: 1440×900 → ~66px linear, later eased; 390×844 → ~24px linear */
     var TEXT_RESERVE = 8;
     var textFadeEnd = function () {
       var H = hero.offsetHeight;
       var cap = Math.round(FADE_TO * H);
-      if (!text || !canMorph) { return cap; }
-      measureMorph();
+      if (!text || !canMorph || !A || !B) { return cap; }
       var L = Math.round(H * MORPH_END);
       var scaleEnd = B.w / A.w;
       var tTop = pageTop(text);
@@ -367,38 +412,7 @@
       }
     }
 
-    /* 6. the logo morph: the hero logo travels up and shrinks into the centre of the header bar over the first 70 % of
-          the hero's height, and docks there. ONE ScrollTrigger (no tween: the progress is applied directly through
-          three gsap.quickSetters, so the copy tracks the page pixel for pixel and no per-frame tween is recorded).
-          At progress p, q = power2.out(p): the fixed copy sits at lerp(A in the viewport, B, q) with scale
-          lerp(1, B.w / A.w, q) about its top-left corner (fastest first: the text scrolling up under it meets its
-          box as late as possible, block 3 fades the text before that); at p = 0 the hero's own logo shows, between
-          the ends the copy (html.logo-morphing hides the hero img), at p = 1 the header logo (html.logo-docked) in
-          the same place, never overshooting the bar. Re-measured on every refresh (resize, fonts); kill() clears
-          the copy's transform (clearProps, the GSAP cache included) and its img width */
-    if (canMorph) {
-      /* scaleX + scaleY, not "scale": the alias is resolved only by a tween, a quickSetter on it writes nothing
-         (verified on 3.12.5: style.transform stayed translate-only, the copy never shrank) */
-      var setMorphX = gsap.quickSetter(morph, 'x', 'px');
-      var setMorphY = gsap.quickSetter(morph, 'y', 'px');
-      var setMorphSX = gsap.quickSetter(morph, 'scaleX');
-      var setMorphSY = gsap.quickSetter(morph, 'scaleY');
-      var applyMorph = function (self) {
-        if (!A || !B) { return; }
-        var p = self.progress, q = morphEase(p), k = 1 + (B.w / A.w - 1) * q;
-        setMorphX(A.left + (B.left - A.left) * q);
-        setMorphY(A.top + (B.top - A.top) * q);
-        setMorphSX(k);
-        setMorphSY(k);
-        html.classList.toggle('logo-morphing', p > 0 && p < 1);
-        html.classList.toggle('logo-docked', p >= 1);
-      };
-      measureMorph();
-      ScrollTrigger.create({
-        trigger: hero, start: 'top top', end: function () { return '+=' + Math.round(hero.offsetHeight * MORPH_END); },
-        onRefreshInit: measureMorph, onRefresh: applyMorph, onUpdate: applyMorph
-      });
-    }
+    /* (6. the logo morph is built above block 3, which depends on its measurement) */
 
     /* 5. the logo + line rise on load, once per page. The CSS holds .hero__rise at opacity 0 only under
           html.canopy-ready (added by build() with this context), and this fromTo sets the same start inside the

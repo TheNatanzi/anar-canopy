@@ -1,0 +1,35 @@
+{
+ "model": "astra",
+ "role": "brand",
+ "score": 6,
+ "blocking": [
+  "The English-only rule permits Persian accents, but weddings.html also displays Hindi, Punjabi and Urdu accents. This triggers the score cap."
+ ],
+ "fixes": [
+  {
+   "where": "weddings.html — Haldi & Pheras, Anand Karaj, Reception & Walima",
+   "what": "Remove the Hindi, Punjabi and Urdu script accents; retain the English ceremony names and permitted Persian accents.",
+   "why": "Matches the explicit language constraint without changing ceremony coverage."
+  },
+  {
+   "where": "assets/css/canopy.css — .screen--statement and canopy geometry",
+   "what": "Shorten the desktop canopy transition so the statement heading, introduction and promises fit together beneath the foliage in the second viewport.",
+   "why": "Desktop screenshot 1 is overwhelmingly foliage, with the heading stranded near the bottom; the statement loses its impact."
+  },
+  {
+   "where": "assets/css/canopy.css — mobile .hero and .screen--statement",
+   "what": "Bring the statement closer to the canopy underside on phones while preserving the approved logo and canopy clearance.",
+   "why": "The 390px hero leaves a long, empty trunk corridor below the canopy instead of leading directly into the next message."
+  },
+  {
+   "where": "assets/css/canopy.css — .tree__band",
+   "what": "Break up the visibly repeated vertical bark with a longer continuous trunk crop and a softer transition into the roots.",
+   "why": "The inquiry screen reads as two flat brown curtains; the painted frame needs more natural continuity."
+  },
+  {
+   "where": "index.html — decorative .leaf elements beside statement and celebrations",
+   "what": "Remove the detached leaf overlays and retain motion in the connected canopy and sprigs.",
+   "why": "The pale floating fragments introduce a pasted-on texture that weakens the illusion of one continuous painting."
+  }
+ ]
+}

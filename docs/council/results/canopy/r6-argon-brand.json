@@ -1,0 +1,18 @@
+{
+ "model": "argon",
+ "role": "brand",
+ "score": 9.6,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "assets/css/site.css:359",
+   "what": "Remove `border-radius:12px 12px 0 0` (or set to `2px 2px 0 0`) on `.hww-panel` at mobile widths",
+   "why": "A 12px rounded sheet top feels like a generic iOS app modal rather than the crisp editorial geometry of the rest of the brand book."
+  },
+  {
+   "where": "assets/css/site.css:154",
+   "what": "Adjust `.nav-home` width formula at `@media (max-width:768px)` from `min(120px,calc(100vw - 230px))` to `min(120px,calc(100vw - 210px))`",
+   "why": "Gives the intricate Persian kashida line inside the centered header wordmark slightly more breathing room on 360px–375px screens without touching the controls."
+  }
+ ]
+}

@@ -1,0 +1,36 @@
+{
+ "model": "astra",
+ "role": "planner",
+ "score": 6,
+ "blocking": [
+  "The English-only rule permits Persian accents, but weddings.html also includes Hindi, Punjabi and Urdu text; this triggers the score cap.",
+  "Three service options are offered, but the shared inclusions and FAQs describe only two, leaving partial-planning clients unsure what they are buying."
+ ],
+ "fixes": [
+  {
+   "where": "weddings.html: #haldi-pheras, #anand-karaj, #reception-walima",
+   "what": "Remove the Hindi, Punjabi and Urdu script accents; retain the English ceremony names.",
+   "why": "Meets the explicit language rule without losing ceremony recognition."
+  },
+  {
+   "where": "how-we-work.html: .option--wide, #with-either and #faq",
+   "what": "Define when partial planning begins and its included responsibilities. Replace 'either option' with wording that explicitly identifies which benefits apply to each of the three services; include partial planning in the scope and pricing answers.",
+   "why": "Couples and paying parents need an unambiguous scope before requesting a proposal."
+  },
+  {
+   "where": "index.html: Nikah caption; weddings.html: #afghan",
+   "what": "Use 'The marriage contract; customs confirmed with your family' for the home caption. Change 'the nikah with the aina mosaf' in the Afghan introduction to 'the nikah, and the aina mosaf if your family observes it.'",
+   "why": "The introductory copy should preserve the family-specific qualification already present in the expanded details."
+  },
+  {
+   "where": "weddings.html: ceremony introductions and #reception-walima",
+   "what": "Keep each visible introduction to two short coordination sentences and move the detailed ritual sequences into the existing disclosure. Qualify signage and thank-you-card commitments with 'as agreed in your proposal.'",
+   "why": "Families can scan the practical help faster, and ceremony pages will match the proposal-dependent scope stated elsewhere."
+  },
+  {
+   "where": "how-we-work.html: Partial planning .option__scope",
+   "what": "Replace 'A venue’s own coordinator may run the generic day' with 'Already have a venue coordinator? We agree who handles venue operations, family ceremonies and each additional event.'",
+   "why": "Clear responsibility boundaries build more trust than dismissing another professional’s role."
+  }
+ ]
+}

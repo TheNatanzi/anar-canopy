@@ -1,0 +1,33 @@
+{
+ "model": "fable",
+ "role": "dev",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "index.html, .tree__bark <img> (the only non-lazy tree-full.webp)",
+   "what": "add loading=\"lazy\" so tree-full.webp (448 KB desktop / 300 KB phone) is fetched when the junction bark nears the viewport, not at parse",
+   "why": "it competes with the four LCP canopy layers on screen 1, and on phones the bark is display:none yet the 300 KB file still downloads"
+  },
+  {
+   "where": "assets/tree/layers/L1-back.webp, L2-mid.webp, L3-front.webp, L4-fore.webp",
+   "what": "delete or exclude from deploy (2.1 MB unreferenced)",
+   "why": "dead weight in the published tree that nothing loads"
+  },
+  {
+   "where": "assets/js/canopy.js, textFadeEnd()",
+   "what": "stop calling measureMorph() inside the text trigger's end function; create the morph ScrollTrigger first and reuse its A/B from onRefreshInit",
+   "why": "each refresh walks the offsetParent chain and toggles .is-measuring twice (two forced layouts) for one measurement"
+  },
+  {
+   "where": "assets/css/canopy.css, html.canopy-motion .tree__layer{will-change:transform}",
+   "what": "scope to @media (min-width:769px)",
+   "why": "on a 390 px DPR 3 phone it pins four 110vw textures (~22 MB GPU) for a 2–4 px bounce and a ±0.45° sway"
+  },
+  {
+   "where": "index.html, .cel <img> sizes + assets/img/pom-open-closeup.jpg",
+   "what": "sizes=\"(max-width:768px) min(100vw,420px), 330px\" and ship a portrait 4:5 crop for the landscape 2000×1123 file",
+   "why": "phones pull the 1400–2000 w JPGs (217–266 KB each) for a 420 px slot that object-fit crops anyway"
+  }
+ ]
+}

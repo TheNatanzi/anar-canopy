@@ -1,0 +1,23 @@
+{
+ "model": "argon",
+ "role": "planner",
+ "score": 9.5,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "how-we-work.html:103-112",
+   "what": "Add an expandable `<details class=\"option__more\">` block under 'Partial planning' listing 3–4 concrete deliverables (e.g., timeline integration across all days, ritual and officiant cueing, cultural vendor handover, elders' seating and signage check) to match 'Full planning' and 'Wedding-day coordination'.",
+   "why": "Families booking a venue with an in-house coordinator frequently need partial or multi-event cultural planning; giving it the same structural detail as the other two tiers reassures parents and couples that it is a complete, well-defined service."
+  },
+  {
+   "where": "weddings.html:279-280",
+   "what": "Expand the 'Reception & Walima' `<details>` block to explicitly mention navigating hospitality and dietary logistics with the venue and caterer (e.g., strict halal meat sourcing, vegetarian-only kitchens, or dry/non-alcoholic bars alongside modern reception expectations).",
+   "why": "In Persian, Afghan, and South Asian weddings, food and beverage boundaries are often the single biggest source of anxiety between elders and couples; naming how you coordinate these expectations with the venue immediately wins parent trust without crossing into offering catering."
+  },
+  {
+   "where": "index.html:171",
+   "what": "Add `placeholder=\"e.g. Fall 2026, ~250 guests, Sofreh Aghd & Walima, Farsi/Dari for parents\"` to `<textarea id=\"f-message\">`.",
+   "why": "A concrete example inside the message box lowers friction on phones and models the exact cultural and family details that make the first consultation productive."
+  }
+ ]
+}

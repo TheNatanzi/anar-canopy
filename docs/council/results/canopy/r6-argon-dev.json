@@ -1,0 +1,23 @@
+{
+ "model": "argon",
+ "role": "dev",
+ "score": 9.6,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "index.html:196, weddings.html:206, how-we-work.html:180, about.html:167",
+   "what": "Remove `loading=\"lazy\"` from `<img class=\"site-footer__logo\" src=\"assets/logo/logo-gold.svg\" ...>` across all four pages",
+   "why": "`logo-gold.svg` is already fetched in the header (and preloaded on index), so lazy-loading the identical cached asset in the footer is redundant and can cause a brief unstyled pop-in on fast scroll-to-bottom."
+  },
+  {
+   "where": "assets/js/site.js:350",
+   "what": "In `form.addEventListener('submit')`, move `var firstInvalid = form.querySelector(':invalid'); if (firstInvalid) { firstInvalid.focus(); }` after `form.reportValidity()`",
+   "why": "While `reportValidity()` focuses the first invalid input in most desktop browsers, explicitly focusing it ensures deterministic keyboard and screen-reader behavior on iOS Safari when custom `.field__error` nodes are injected."
+  },
+  {
+   "where": "assets/css/site.css:354",
+   "what": "Change `.site-footer__lang` color from `rgba(249,246,240,.6)` to `rgba(249,246,240,.72)`",
+   "why": "At 12px font size over `--deep` (#121714), 0.6 opacity yields ~4.3:1 contrast (just below WCAG AA 4.5:1 for small text); 0.72 lifts it safely above 5.5:1 while keeping the quiet hierarchy."
+  }
+ ]
+}

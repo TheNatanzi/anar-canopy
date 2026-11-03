@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "brand",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "assets/css/canopy.css · @media (min-width:769px) .screen--statement .screen__col",
+   "what": "The round-5 comment promises 140–220px under the canopy clearance but the rule still sets clamp(40px,6vh,72px), identical to the base rule. Change it to padding-top:clamp(140px,18vh,220px) so the eyebrow, 'Reimagined Heritage', the kashida and the sentence frame as one composition on the second stop instead of the h2 stranded at the bottom edge (index-desktop-1) and the sentence cut under the bar (index-desktop-2).",
+   "why": "The brand's first statement is split across two scroll stops at 1440×900; the comment says it was fixed and it was not."
+  },
+  {
+   "where": "assets/css/canopy.css · @media (max-width:768px) .canopy .hero__tint",
+   "what": "Reach solid night earlier: linear-gradient(rgba(27,34,30,.42) 0%,rgba(27,34,30,.72) 55%,var(--night) 82%). In index-phone-0 the loop's grey table and vase show through the gap between the two canopy shrubs (y≈690–840), so the open middle sits on muddy footage, not on cypress.",
+   "why": "The night palette must own the canopy's open middle; a grey blob between painted shrubs reads as a compositing error."
+  },
+  {
+   "where": "assets/css/canopy.css · .screen--celebrations .leaf--1{right:-48px;top:58%;transform:rotate(38deg)}",
+   "what": "Remove this leaf (as the screen-4 leaf was) or move it fully inside the trunk (right:8px, rotate(18deg)). In index-desktop-3 its fruit is sliced by the viewport edge at the top right and reads as a cut-off red disc stuck on the bark.",
+   "why": "A sprite cut by the viewport edge is a sticker, not part of the painting; the brand rule is one connected tree."
+  },
+  {
+   "where": "assets/css/canopy.css · .inquire__call a",
+   "what": "Drop the full 2px gold underline on the call line: use border-bottom:2px solid rgba(201,158,92,.45) (the same quiet rule as .cel h3 a) and colour the links gold. On screen 4 the kashida, the two underlined links and the first field underline stack four gold rules within 200px (index-desktop-3).",
+   "why": "The kashida is the brand's one drawn line per heading; stacked underlines dilute it into a ruled form."
+  },
+  {
+   "where": "assets/css/canopy.css · @media (max-width:768px) .tree__band background",
+   "what": "Add the desktop inner-edge shade in front of the flat 25% tint: linear-gradient(to right,rgba(27,34,30,0) 7%,rgba(27,34,30,.4) 13%,rgba(27,34,30,.4) 87%,rgba(27,34,30,0) 93%) before the tile. In index-phone-1/2/3 the two 35px bark strips are flat and read as a brown wallpaper border around the copy, not as two round trunks.",
+   "why": "Edges that frame the page must still read as the tree; a flat border is the opposite of the painted frame in the brand book."
+  },
+  {
+   "where": "index.html · .hero__tag",
+   "what": "Set the Persian twin on its own line under the English caps on desktop too (flex:0 0 100%, as on phones), centred: 'HONORING THE ROOTS. ELEVATING THE VIBE.' in 14px gold caps beside 22px parchment Naskh on one baseline (index-desktop-0) reads as two unrelated sizes side by side.",
+   "why": "The two voices of the brand should stack like the logo's own wordmark-over-kashida, not sit shoulder to shoulder at mismatched sizes."
+  }
+ ]
+}

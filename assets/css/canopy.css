@@ -23,10 +23,10 @@ main.canopy{
   --tree-w:100vw;                                  /* phones: 110vw (below) */
   --s:calc(var(--tree-w) / 1536);                  /* one art pixel */
   --vh100:100vh;
-  /* the rendered height of the mark's content (logo + descriptor + tag pair): a CSS estimate (364px at 1440, the
-     measured value), overwritten with the measured .hero__mark height by canopy.js fitHero() (with or without the
-     motion), so the hero height below reserves the real text, not a guess */
-  --hero-content:364px;
+  /* the rendered height of the mark's content (logo + descriptor + tag pair, the Persian twin on its own line): a CSS
+     estimate (387px at 1440, the measured value), overwritten with the measured .hero__mark height by canopy.js
+     fitHero() (with or without the motion), so the hero height below reserves the real text, not a guess */
+  --hero-content:387px;
   /* the hero height the content needs: the mark's top is capped at --tree-top + 278 art rows − the content (the
      bottom of the text 18 rows above the first foliage inside the logo's column, row 297) and floored at 100px
      (the 88px bar + 12): both hold when the hero is at least (100px + content − 109 art rows) / .6 tall */
@@ -62,7 +62,7 @@ main.canopy{
      content: the hero must be at least (header + 24px + 16px + content) / .52 tall for the text to clear the fixed
      bar by 24px (390×700: 704px; 360×640: ~740px, the hero taller than the viewport, the page simply longer) */
   main.canopy{--tree-w:110vw;--gutter:clamp(24px,7vw,40px);--tree-top:calc(var(--hero-h) * .52 - 169 * var(--s));
-    --hero-content:262px;--hero-min:calc((var(--header-h) + 40px + var(--hero-content)) / .52)}
+    --hero-content:266px;--hero-min:calc((var(--header-h) + 40px + var(--hero-content)) / .52)}
 }
 
 /* ---------- the video: behind everything, fixed while the motion runs (desktop), fades out under .hero__deepen
@@ -91,8 +91,10 @@ html.canopy-motion .hero__bg{position:fixed;inset:0;height:auto}
 /* the top scrim: 180px of cypress (.55 → 0) over the tint, so the bar's links, the number and the envelope sit on
    night at scroll 0, not on the loop's white drapery; the phone tint (site.css) keeps its bottom ramp under it */
 .canopy .hero__tint{background:linear-gradient(rgba(27,34,30,.55) 0,rgba(27,34,30,0) 180px),linear-gradient(rgba(27,34,30,.34),rgba(27,34,30,.66))}
+/* phones: the bottom ramp reaches solid night at 82 % (round 6: at 100 % the loop's grey table and vase showed through
+   the gap between the two canopy shrubs, y ≈ 690–840 at 390×844; the open middle must sit on cypress) */
 @media (max-width:768px){
-  .canopy .hero__tint{background:linear-gradient(rgba(27,34,30,.55) 0,rgba(27,34,30,0) 180px),linear-gradient(rgba(27,34,30,.42) 0%,rgba(27,34,30,.72) 60%,var(--night) 100%)}
+  .canopy .hero__tint{background:linear-gradient(rgba(27,34,30,.55) 0,rgba(27,34,30,0) 180px),linear-gradient(rgba(27,34,30,.42) 0%,rgba(27,34,30,.72) 55%,var(--night) 82%)}
 }
 /* over the video (before .is-scrolled) the number beside the handset is parchment (the small gold figures lost
    definition on the bright drapery); the icons stay gold, and the solid bar keeps the gold number */
@@ -103,18 +105,19 @@ html.canopy-motion .hero__bg{position:fixed;inset:0;height:auto}
    scripts run before first paint, so a warm-cache load never flashes the logo before it rises */
 html.canopy-ready.anim-ready .canopy .hero__rise{opacity:0}
 .reduced .canopy .hero__rise{opacity:1}
-/* in flow under the line (relative, not static: it must paint above the absolutely positioned halo) */
-.canopy .hero__tag{position:relative;right:auto;bottom:auto;justify-content:center;text-align:center;margin-top:clamp(14px,2vh,24px);text-shadow:0 1px 12px rgba(27,34,30,.9)}
+/* in flow under the line (relative, not static: it must paint above the absolutely positioned halo); the Persian twin
+   on its own line under the English caps at every width, centred (round 6: on desktop the 14px gold caps and the 22px
+   parchment Naskh sat shoulder to shoulder on one baseline, two unrelated sizes; stacked they read like the logo's
+   own wordmark over its kashida). The English line: each sentence its own nowrap span, so a narrow break falls at
+   the full stop ("HONORING THE ROOTS." / "ELEVATING THE VIBE.") */
+.canopy .hero__tag{position:relative;right:auto;bottom:auto;justify-content:center;text-align:center;margin-top:clamp(14px,2vh,24px);row-gap:2px;text-shadow:0 1px 12px rgba(27,34,30,.9)}
+.canopy .hero__tag-en{display:inline-flex;flex-wrap:wrap;justify-content:center;gap:0 .6em}
+.canopy .hero__tag-en > span{white-space:nowrap}
+.canopy .hero__tag .fa{flex:0 0 100%;text-align:center}
 /* phones: the mark is positioned from its BOTTOM, 16px above the first foliage anywhere across the width (art row
    169 sits at 52% of the hero on phones: bottom = 48% of the hero + 16px), so the rendered logo + descriptor + tag
    block, at any text size, ends above the canopy instead of hoping a blind top:30% leaves room */
-@media (max-width:768px){.canopy .hero__mark{width:78vw;top:auto;bottom:calc(var(--hero-h) * .48 + 16px)}.canopy .hero__tag{bottom:auto}
-  /* the English line at 78vw: each sentence is its own nowrap span, so the break falls at the full stop ("HONORING THE
-     ROOTS." / "ELEVATING THE VIBE."; text-wrap:balance broke it as "ELEVATING / THE VIBE."), and the Persian takes
-     its own line under them */
-  .canopy .hero__tag-en{display:inline-flex;flex-wrap:wrap;justify-content:center;gap:0 .6em}
-  .canopy .hero__tag-en > span{white-space:nowrap}
-  .canopy .hero__tag .fa{flex:0 0 100%;text-align:center}}
+@media (max-width:768px){.canopy .hero__mark{width:78vw;top:auto;bottom:calc(var(--hero-h) * .48 + 16px)}.canopy .hero__tag{bottom:auto}}
 /* the logo morph (canopy.js block 6): while the hero logo travels up into the bar (0 < progress < 1) the hero's own
    logo is hidden and the fixed .logo-morph copy draws it; the header slot stays EMPTY until the morph docks
    (html.logo-docked, progress 1), then the header logo shows in the same place with no transition (no jump). Without
@@ -167,8 +170,9 @@ html.canopy-motion.logo-docked .page-index .site-header .nav-home{opacity:1;visi
 .tree__layer{position:absolute;top:0;left:16px;width:calc(100% - 32px);transform-origin:50% 0}
 .tree__layer img{width:100%}
 /* the four layer divs only (round 5): GSAP's force3D promotes each img for the 0.9 s bounce and demotes it after, so
-   four full-width textures stay resident, not eight */
-html.canopy-motion .tree__layer{will-change:transform}
+   four full-width textures stay resident, not eight. Desktop only (round 6): on a 390px DPR 3 phone the four 110vw
+   textures pinned to the GPU cost ~22 MB for a 2–4px bounce and a ±0.45° sway; there GSAP promotes them per tween */
+@media (min-width:769px){html.canopy-motion .tree__layer{will-change:transform}}
 /* the static junction bark (rows 1000–1300, above the layers): the bark columns only (x ≤ 215 / ≥ 1326 — the trunks
    end at x ≤ 201 / ≥ 1341 from row 1090 down, and the shrubs stay outside those columns above row 1300), fading in
    over its first 100 rows so it takes the bark over from the moving layers gradually, and overlapping the lower
@@ -212,10 +216,12 @@ html.canopy-motion .tree__layer{will-change:transform}
   -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 calc(60 * var(--s)));mask-image:linear-gradient(to bottom,transparent 0,#000 calc(60 * var(--s)))}
 @media (max-width:768px){
   .tree__trunk,.tree__sprig,.tree__bark{display:none}
-  /* an 80-row soft top mask (22px at 390), and a 25% cypress tint over the tile: at 390px the bright 35px bark
-     strips read as a wallpaper border against the parchment copy; the tint sits them back into the night. It ramps
-     in from 0 at the canopy junction (rows 1140–1300), so the untinted canopy bark meets it without a tonal step */
-  .tree__band{top:calc(1060 * var(--s));background:linear-gradient(rgba(27,34,30,0) calc(80 * var(--s)),rgba(27,34,30,.25) calc(240 * var(--s)),rgba(27,34,30,.25)),url("../tree/trunk-band.webp") center top / 100% auto repeat-y;
+  /* an 80-row soft top mask (22px at 390), the desktop inner-edge shade (round 6: each 35px strip darkens toward the
+     open middle, so the two read as round trunks, not a flat brown border around the copy; the inner edges sit at
+     12.8 % / 87.2 % of the 110vw tile) in front of a 25% cypress tint over the tile: at 390px the bright bark strips
+     read as a wallpaper border against the parchment copy; the tint sits them back into the night. It ramps in from
+     0 at the canopy junction (rows 1140–1300), so the untinted canopy bark meets it without a tonal step */
+  .tree__band{top:calc(1060 * var(--s));background:linear-gradient(to right,rgba(27,34,30,0) 7%,rgba(27,34,30,.4) 13%,rgba(27,34,30,.4) 87%,rgba(27,34,30,0) 93%),linear-gradient(rgba(27,34,30,0) calc(80 * var(--s)),rgba(27,34,30,.25) calc(240 * var(--s)),rgba(27,34,30,.25)),url("../tree/trunk-band.webp") center top / 100% auto repeat-y;
     -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 calc(80 * var(--s)));mask-image:linear-gradient(to bottom,transparent 0,#000 calc(80 * var(--s)))}
   /* phones: no falling fruit (at 390px it hung over the 21px bark sliver and read as a cut-off disc at the edge) */
   .tree img.fruit-drop{display:none}
@@ -251,8 +257,8 @@ html.canopy-motion .tree__layer{will-change:transform}
    the old 200px void. The column stays inside the shrub gap (x 331–1210 at the narrowest) */
 .screen--statement{padding-top:max(0px,calc(var(--at-under) - var(--hero-h)))}
 .screen--statement .screen__col{max-width:min(640px + 2 * var(--gutter),44vw + 2 * var(--gutter));min-height:calc(var(--vh100) - var(--header-h) - 420 * var(--s));display:grid;align-content:start;padding-top:clamp(40px,6vh,72px)}
-/* desktop (round 5): 140–220px under the canopy clearance, so "Reimagined Heritage" is not stranded at the bottom
-   edge of the first scroll stop under the mass of foliage and the block frames in one viewport on the next; the
+/* desktop: the same 40–72px under the canopy clearance as the base rule, by the owner's choice (round 6: the round-5
+   140–220px was tried and reverted; the statement packs to the top of its column, right under the foliage); the
    column (≤ 640px) stays inside the shrub gap (x 331–1210 = 824px at 1440) at every offset, measured */
 @media (min-width:769px){.screen--statement .screen__col{padding-top:clamp(40px,6vh,72px)}}
 .screen--statement h2{font-size:clamp(32px,3.3vw,48px)}
@@ -308,16 +314,17 @@ html.canopy-motion .tree__layer{will-change:transform}
 .screen--inquire .form__submit,.screen--inquire .form__note{text-align:center}
 /* the call line sits under the kashida, above the form (parents who prefer to speak see it before the fields) */
 .inquire__call{margin-top:var(--s3);color:var(--stone);font-size:16px;line-height:24px}
-/* the same 2px gold underline as .link everywhere else (no half-opacity rule above the roots) */
-.inquire__call a{color:var(--parch);border-bottom:2px solid var(--gold);transition:border-color .3s,color .3s}
-.inquire__call a:hover{color:var(--gold);border-color:var(--ruby)}
+/* the quiet 2px gold .45 underline of .cel h3 a, full gold on hover / focus (round 6: with the kashida, two full gold
+   underlines and the first field's rule, four gold rules stacked within 200px on the roots screen) */
+.inquire__call a{color:var(--parch);border-bottom:2px solid rgba(201,158,92,.45);padding-bottom:2px;transition:border-color .3s,color .3s}
+.inquire__call a:hover,.inquire__call a:focus-visible{color:var(--gold);border-bottom-color:var(--gold)}
 
 /* drifting leaves (site.js block 8 animates every .leaf): screens 2–3, over the trunks at the edges (x ≤ 180 / ≥ 1260
    at 1440), never over the copy or the photo row (which ends 110px inside the trunk edge at 1440, 65px at 1280) */
 .screen--statement .leaf--1{right:3vw;top:62%;transform:rotate(12deg)}
 .screen--celebrations .leaf--3{left:-48px;top:18%;transform:rotate(-8deg)}
-.screen--celebrations .leaf--1{right:-48px;top:58%;transform:rotate(38deg)}
-/* (the screen-4 leaf is gone: pasted over the bare trunk it read as a sticker, not part of the tree) */
+/* (the screen-4 leaf and the screen-3 right leaf are gone, rounds 5 and 6: pasted over the bare trunk, its fruit cut
+   by the viewport edge, each read as a sticker, not part of the one painting) */
 
 /* phones: everything centred at full width (40px gutters), the photos stacked, the leaves off */
 @media (max-width:768px){

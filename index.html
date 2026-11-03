@@ -122,7 +122,7 @@
     </div>
     <!-- the static bark at the canopy junction (rows 1000–1272, bark columns only), ABOVE the moving layers: the trunks
          never move while the branches and leaves do -->
-    <div class="tree__bark"><img src="assets/tree/tree-full.webp" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>
+    <div class="tree__bark"><img src="assets/tree/tree-full.webp" loading="lazy" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>
     <img class="fruit-drop" src="assets/tree/fruit-drop.webp" width="82" height="91" alt="" loading="lazy" decoding="async">
   </div>
   <div class="ground-art" aria-hidden="true">
@@ -176,26 +176,28 @@
        PHOTO SLOTS: stand-ins until the real photos arrive (real families, with consent), portrait ~1500×2000 each -->
   <section class="screen screen--celebrations" aria-labelledby="celebrations-title">
     <div class="leaf leaf--3" aria-hidden="true"></div>
-    <div class="leaf leaf--1" aria-hidden="true"></div>
     <div class="screen__col">
       <p class="eyebrow reveal"><span class="fa" lang="fa" dir="rtl">جشن‌ها</span></p>
       <h2 id="celebrations-title" class="reveal">The celebrations</h2>
       <svg class="kashida kashida--short kashida-draw" viewBox="0 0 320 2" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M160 1 H0"/><path d="M160 1 H320"/></svg>
       <div class="cel stagger">
         <figure>
-          <a class="cel__slot" href="weddings.html#sofreh-aghd" tabindex="-1" aria-hidden="true"><img src="assets/img/pom-open-closeup.jpg" srcset="assets/img/pom-open-closeup-800.jpg 800w, assets/img/pom-open-closeup-1400.jpg 1400w, assets/img/pom-open-closeup.jpg 2000w" sizes="(max-width:768px) 100vw, 330px" width="2000" height="1123" alt="An opened pomegranate, seeds packed tight" loading="lazy" decoding="async"></a>
+          <!-- the 4:5 crop of the landscape stand-in (Pillow, round 6: 898×1123 at the seed star's centre, plus a 640w
+               file), so the slot no longer pulls a 1400–2000w landscape file it crops anyway; sizes = the rendered slot
+               (330px desktop, the 420px-capped figure on phones) -->
+          <a class="cel__slot" href="weddings.html#sofreh-aghd" tabindex="-1" aria-hidden="true"><img src="assets/img/pom-open-closeup-4x5.jpg" srcset="assets/img/pom-open-closeup-4x5-640.jpg 640w, assets/img/pom-open-closeup-4x5.jpg 898w" sizes="(max-width:768px) min(100vw,420px), 330px" width="898" height="1123" alt="An opened pomegranate, seeds packed tight" loading="lazy" decoding="async"></a>
           <figcaption><span class="fa" lang="fa" dir="rtl">سفرهٔ عقد</span><h3><a href="weddings.html#sofreh-aghd">Sofreh Aghd</a></h3><p>The Persian ceremony, at the sofreh.</p></figcaption>
         </figure>
         <figure>
-          <a class="cel__slot" href="weddings.html#nikah" tabindex="-1" aria-hidden="true"><img src="assets/img/pom-in-hand.jpg" srcset="assets/img/pom-in-hand-800.jpg 800w, assets/img/pom-in-hand-1400.jpg 1400w, assets/img/pom-in-hand.jpg 1500w" sizes="(max-width:768px) 100vw, 330px" width="1500" height="2000" alt="A pomegranate held in an open hand" loading="lazy" decoding="async"></a>
-          <figcaption><span class="fa" lang="fa" dir="rtl">نکاح</span><h3><a href="weddings.html#nikah">Nikah</a></h3><p>The contract before both families; the Afghan aina mosaf.</p></figcaption>
+          <a class="cel__slot" href="weddings.html#nikah" tabindex="-1" aria-hidden="true"><img src="assets/img/pom-in-hand.jpg" srcset="assets/img/pom-in-hand-800.jpg 800w, assets/img/pom-in-hand-1400.jpg 1400w, assets/img/pom-in-hand.jpg 1500w" sizes="(max-width:768px) min(100vw,420px), 330px" width="1500" height="2000" alt="A pomegranate held in an open hand" loading="lazy" decoding="async"></a>
+          <figcaption><span class="fa" lang="fa" dir="rtl">نکاح</span><h3><a href="weddings.html#nikah">Nikah</a></h3><p>The contract before both families; the aina mosaf for Afghan families.</p></figcaption>
         </figure>
         <figure>
-          <a class="cel__slot" href="weddings.html#mehndi-sangeet" tabindex="-1" aria-hidden="true"><img src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night.jpg 1125w" sizes="(max-width:768px) 100vw, 330px" width="1125" height="2000" alt="A pomegranate tree at night" loading="lazy" decoding="async"></a>
+          <a class="cel__slot" href="weddings.html#mehndi-sangeet" tabindex="-1" aria-hidden="true"><img src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night.jpg 1125w" sizes="(max-width:768px) min(100vw,420px), 330px" width="1125" height="2000" alt="A pomegranate tree at night" loading="lazy" decoding="async"></a>
           <figcaption><span class="fa" lang="fa" dir="rtl">حنابندان · مهندی</span><h3><a href="weddings.html#mehndi-sangeet">Mehndi &amp; Sangeet</a></h3><p>Henna, blessings, music and dancing.</p></figcaption>
         </figure>
       </div>
-      <p class="cel__foot reveal">Haldi &amp; pheras, Anand Karaj, walima, rukhsati: <a class="link" href="weddings.html">every ceremony on the Weddings page</a></p>
+      <p class="cel__foot reveal">Hindu and Sikh families: haldi and pheras, Anand Karaj. Pakistani, Afghan and Bengali families: nikah, walima, rukhsati. <a class="link" href="weddings.html">Every ceremony on the Weddings page.</a></p>
     </div>
   </section>
 
@@ -216,7 +218,7 @@
           <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
           <div class="field"><label for="f-phone">Phone / WhatsApp <span class="muted">(optional)</span></label><input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
         </div>
-        <div class="field"><label for="f-message">Message <span class="muted">(optional)</span></label><p class="field__help" id="f-message-help">Your families, approximate dates and guest count, the rituals that matter most, and the language your parents prefer.</p><textarea id="f-message" name="message" aria-describedby="f-message-help"></textarea></div>
+        <div class="field"><label for="f-message">Message <span class="muted">(optional)</span></label><p class="field__help" id="f-message-help">Your families, approximate dates and guest count, the rituals that matter most, and the language your parents prefer.</p><textarea id="f-message" name="message" aria-describedby="f-message-help" placeholder="e.g. Fall 2026, ~250 guests, Sofreh Aghd &amp; Walima, Persian/Dari for parents"></textarea></div>
         <div class="form__submit"><button class="btn" type="submit">Begin the conversation</button></div>
         <p class="form__status" id="form-status" role="status" aria-live="polite" tabindex="-1"></p>
         <p class="form__note">We reply within one business day.</p>
@@ -231,7 +233,7 @@
   <div class="container">
     <div class="site-footer__grid">
       <div class="site-footer__brand">
-        <a href="index.html" aria-label="Anar Events, home"><img class="site-footer__logo" src="assets/logo/logo-gold.svg" width="1600" height="552" alt="Anar Events" loading="lazy"></a>
+        <a href="index.html" aria-label="Anar Events, home"><img class="site-footer__logo" src="assets/logo/logo-gold.svg" width="1600" height="552" alt="Anar Events"></a>
         <p class="site-footer__tag">Persian, Afghan and South Asian weddings · San Francisco Bay Area</p>
       </div>
       <address class="site-footer__col">

@@ -1,0 +1,31 @@
+{
+ "model": "astra",
+ "role": "dev",
+ "score": 8,
+ "blocking": [
+  "Reduced-motion mode still permits hover/focus scaling and button translation; shortening transition duration makes these changes instantaneous rather than removing them.",
+  "An inquiry response unconditionally moves keyboard focus to the status region, even when the visitor has moved on or is editing another field."
+ ],
+ "fixes": [
+  {
+   "where": "assets/css/site.css and assets/css/canopy.css — reduced-motion rules",
+   "what": "Under both .reduced and prefers-reduced-motion:reduce, disable the button hover translation and celebration-image hover/focus scaling explicitly.",
+   "why": "Pause and reduced motion should stop these spatial effects, including keyboard-triggered scaling."
+  },
+  {
+   "where": "assets/js/site.js — inquiry request success/error handlers",
+   "what": "Keep the live status announcement, but move focus only if focus remains on the submit control; preserve focus when the visitor is editing or has navigated elsewhere.",
+   "why": "A delayed response should not interrupt typing or unexpectedly move keyboard users."
+  },
+  {
+   "where": "assets/js/site.js — moveFocusOff()",
+   "what": "Filter destination controls by their own viewport bounds before selecting a focus target; currently only the enclosing section is checked.",
+   "why": "When the footer or inquiry section is partly visible, its first control can already be offscreen, leaving focus invisible because preventScroll is used."
+  },
+  {
+   "where": "assets/js/canopy.js — applyMorph()",
+   "what": "Cache the previous morphing/docked states and toggle root classes only when those states change.",
+   "why": "The root MutationObserver watches these classes; avoid redundant attribute mutations and observer work during every scroll update."
+  }
+ ]
+}

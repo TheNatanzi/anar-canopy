@@ -85,9 +85,12 @@ html.canopy-motion .hero__bg{position:fixed;inset:0;height:auto}
 .canopy .hero__mark{width:min(51vw,760px);top:clamp(100px,calc(var(--tree-top) + 278 * var(--s) - var(--hero-content)),28%)}
 .canopy .hero__fade,.canopy .hero__rise,.canopy .hero__text{position:relative}
 /* the halo carries the contrast behind the logo and the descriptor (the full-frame tint is lighter, round 3): .85 at
-   the centre holding .5 to 55% and 230% tall (round 5), so the thin Persian kashida under ANAR EVENTS reads over the
-   loop's pale roses and the small parchment lines never compete with the bright linens */
-.canopy .hero__halo{width:140%;height:230%;background:radial-gradient(closest-side,rgba(27,34,30,.85),rgba(27,34,30,.5) 55%,transparent 80%)}
+   the centre, so the thin Persian kashida under ANAR EVENTS reads over the loop's pale roses and the small parchment
+   lines never compete with the bright linens. Round 8: the outer reach pulled in (230% → 180% tall, gone at 78% of
+   the radius, not 80%), so the loop's midtones read above the logo and below the tag pair; the stops are re-solved so
+   the alpha behind the text is unchanged (measured at 1440: tag bottom .57 → .57, the descriptor's ends .10 → .10;
+   the same proportions at 390). The dark field now ends ~270px from the centre vertically (was ~355px) */
+.canopy .hero__halo{width:145%;height:180%;background:radial-gradient(closest-side,rgba(27,34,30,.85),rgba(27,34,30,.55) 60%,transparent 78%)}
 /* the top scrim: 180px of cypress (.55 → 0) over the tint, so the bar's links, the number and the envelope sit on
    night at scroll 0, not on the loop's white drapery; the phone tint (site.css) keeps its bottom ramp under it */
 .canopy .hero__tint{background:linear-gradient(rgba(27,34,30,.55) 0,rgba(27,34,30,0) 180px),linear-gradient(rgba(27,34,30,.34),rgba(27,34,30,.66))}
@@ -294,6 +297,9 @@ html.canopy-motion.logo-docked .page-index .site-header .nav-home{opacity:1;visi
 /* the photo is out of the tab order (one link per destination: the title is the accessible one); keyboard focus on
    the title lifts the photo the same way */
 @supports selector(:has(a)){.cel figure:has(h3 a:focus-visible) .cel__slot img{transform:scale(1.03)}}
+/* Pause and reduced motion (round 8): the photos stay still on hover and focus (no scale at all, not an instant one) */
+.reduced .cel__slot img{transform:none!important;transition:none}
+@media (prefers-reduced-motion:reduce){.cel__slot img{transform:none!important;transition:none}}
 /* each caption: the Persian accent, the linked title (its gold underline is the one line; no rule above it, round 5),
    the description reserving two lines on phones and three side by side (below), so the three captions end level */
 .cel h3{position:relative;font-size:clamp(20px,1.7vw,24px);margin-top:var(--s1)}
@@ -340,8 +346,15 @@ html.canopy-motion.logo-docked .page-index .site-header .nav-home{opacity:1;visi
 @media (max-width:768px){
   .screen__col,.screen--statement .screen__col,.screen--celebrations .screen__col,.screen--inquire .screen__col{max-width:none}
   /* the whole canopy (352px at 390) sits inside screen 1 on phones, so the statement is a compact block after it, not a
-     viewport-high column; the promises end ≤ 80px above "The celebrations" (40px here + 32–40px below, no void) */
-  .screen--statement .screen__col{min-height:0;padding-block:clamp(40px,6vh,64px) 40px}
+     viewport-high column; the promises end ≤ 80px above "The celebrations" (40px here + 32–40px below, no void).
+     Round 8: the statement starts at the canopy's own clearance, not at the hero's bottom: art row 1150, where the
+     stack is fully opaque for the last time (Pillow, the four layers composited with the 1150–1200 mask: the last
+     pixel above alpha .16 across the text column, x 206–1330, is row 1148, the hanging fruit), so the section's
+     top is --tree-top + 1150 rows (a negative margin into the hero's solid-night bottom ramp; positive where the
+     canopy ends below the hero, e.g. 768×1024) and the eyebrow sits 28px under it (≥ 16px clearance with the sway,
+     ±1px at the fruit, and the bounce, which lifts). 390×844: fruit 713, eyebrow 741 (was 922, a 209px corridor) */
+  .screen--statement{padding-top:0;margin-top:calc(var(--tree-top) + 1150 * var(--s) - var(--hero-h))}
+  .screen--statement .screen__col{min-height:0;padding-block:28px 40px}
   .screen--celebrations{padding-top:32px}
   .cel{grid-template-columns:1fr;gap:var(--s3)}
   .cel figure{max-width:420px;margin-inline:auto;width:100%}
@@ -350,8 +363,9 @@ html.canopy-motion.logo-docked .page-index .site-header .nav-home{opacity:1;visi
   .promises{font-size:18px}
   /* the "How we work +" tab (36px wide, mid-height, right edge; hidden while the hero or the photo row is in view and
      while scrolling, site.js) must never sit over text or a slot: the blocks that can meet it keep 44px of right
-     clearance, i.e. the 40px gutter topped up by 4px (the centred promises shift 2px, invisible). Not .cel figure
-     (round 7): site.js hides the tab while the photo row is in view on phones, so the extra right pad only pushed the
-     slots off-centre (27px left, 44px right at 390) */
-  .promises,.screen--inquire .form{padding-right:max(0px,44px - var(--gutter))}
+     clearance, i.e. the gutter topped up (the centred promises shift a few px, invisible). Not .cel figure (round 7)
+     and not the inquiry form (round 8): site.js hides the tab while the photo row, #inquire or the footer is in view,
+     so the extra right pad only pushed the slots, the fields and the button off the heading's axis; the form keeps
+     equal gutters (27px / 27px at 390) */
+  .promises{padding-right:max(0px,44px - var(--gutter))}
 }

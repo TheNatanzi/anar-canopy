@@ -497,11 +497,14 @@ body.panel-open{overflow:hidden}
 /* a kicker over a ceremony title ("Hindu ceremonies" / "Sikh ceremony"), 8px above it; the title's right cell then
    carries the script accent like the other sections */
 .tradition__text > .eyebrow{margin-bottom:var(--s1)}
-.tradition__title{display:grid;gap:var(--s1);margin-bottom:var(--s3)}
-@media (min-width:600px){.tradition__title{grid-template-columns:1fr 1fr;align-items:baseline}.tradition__title .fa,.tradition__title .eyebrow{text-align:right;color:var(--gold)}
-  /* a title with no accent cell (Haldi & Pheras, Anand Karaj: English only, round 6) takes both columns, so it does not
-     wrap in a half-width cell beside an empty one */
-  .tradition__title > h2:only-child{grid-column:1 / -1}}
+/* round 8: a wrapping flex row, not two equal grid halves. The h2 takes the whole text-column width it needs and the
+   Persian accent sits at the right end of the same baseline when both fit; when they do not, the accent drops to
+   its own line beneath the heading (still right-aligned), so a ceremony title never stacks in a half-width cell.
+   A title with no accent (Haldi & Pheras, Anand Karaj) is simply the full-width h2 */
+.tradition__title{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--s1) var(--s3);margin-bottom:var(--s3)}
+.tradition__title > h2{flex:0 1 auto;min-width:0}
+.tradition__title .fa{margin-left:auto;text-align:right}
+@media (min-width:600px){.tradition__title .fa,.tradition__title .eyebrow{color:var(--gold)}}
 .tradition__text p+p{margin-top:var(--s2)}
 .tradition__media{margin:0}
 .tradition__media .slot{overflow:hidden;background:var(--deep);max-width:480px;margin-inline:auto;aspect-ratio:4/5}
@@ -578,6 +581,8 @@ body.panel-open{overflow:hidden}
 .reduced .track-line path,html:not(.anim-ready) .track-line path{stroke-dashoffset:0!important}
 .reduced .track-dot,html:not(.anim-ready) .track-dot{background:var(--gold)}
 .reduced *, .reduced *::before, .reduced *::after{transition-duration:.01ms!important;animation-duration:.01ms!important}
+/* Pause (round 8): the buttons stay in place on hover (no lift at all, not an instant one); the colour change stays */
+.reduced .btn:hover,.reduced .btn:focus-visible{transform:none}
 
 /* ---------- Reduced motion: everything visible, nothing scrubs ---------- */
 @media (prefers-reduced-motion:reduce){
@@ -587,4 +592,6 @@ body.panel-open{overflow:hidden}
   .anim-ready .reveal-img{transform:none}
   .track-line path{stroke-dashoffset:0!important}
   .track-dot{background:var(--gold)}
+  /* round 8: no spatial hover effect either (the button lift; the canopy home's photo scale is in canopy.css) */
+  .btn:hover,.btn:focus-visible{transform:none}
 }

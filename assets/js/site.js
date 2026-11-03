@@ -373,10 +373,18 @@
        destination now on screen (#inquire's call line, the footer's first link, the phone photo row's first title),
        else main (tabindex -1). hideFor / hideForPhone are the observer's own lists (declared below, assigned before
        any scroll or observer callback runs) */
+    /* round 8: a candidate control must itself be on screen (a box, below the fixed bar, above the viewport's
+       bottom), not only its section: a partly visible footer or #inquire can have its first control off screen, and
+       the focus move uses preventScroll, so an off-screen target would leave the focus invisible */
+    var controlOnScreen = function (el) {
+      var r = el.getBoundingClientRect();
+      var top = header ? header.getBoundingClientRect().bottom : 0;
+      return r.width > 0 && r.height > 0 && r.top >= top && r.bottom <= vh();
+    };
     var moveFocusOff = function () {
       var dests = (hideFor || []).concat(isDesktop() ? [] : (hideForPhone || [])).filter(inView);
       var next = null;
-      dests.some(function (d) { var f = tabbable(d); if (f.length) { next = f[0]; return true; } return false; });
+      dests.some(function (d) { var f = tabbable(d).filter(controlOnScreen); if (f.length) { next = f[0]; return true; } return false; });
       if (!next) { next = mainEl; }
       if (next && next.focus) { next.focus({ preventScroll: true }); }
     };
@@ -647,8 +655,18 @@
         refreshAfterRelayout();
       }).observe(form);
     }
+    /* round 8: the response is always announced (the live region), but focus moves to it ONLY while it is still on the
+       submit button, so a delayed reply never pulls a visitor out of a field they are editing or a link they moved to.
+       The button is disabled while the request runs, and a browser applying the focus fixup rule then drops the focus
+       to <body>: a submit started from the button with the focus now on nothing counts as still on the button */
+    var focusStatusIfOnSubmit = function (fromSubmit) {
+      if (!status) { return; }
+      var a = document.activeElement;
+      if ((submitBtn && a === submitBtn) || (fromSubmit && (!a || a === body || a === html))) { status.focus(); }
+    };
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      var fromSubmit = !!submitBtn && document.activeElement === submitBtn;
       if (!form.checkValidity()) {
         form.reportValidity();
         /* after reportValidity(): the native focus move is not guaranteed on iOS Safari once the custom error lines
@@ -659,7 +677,7 @@
       }
       if (/FORMSPREE_ID/.test(form.action)) {
         say('error', 'Online inquiries are not connected yet. Your entries are still here. Please', true);
-        if (status) { status.focus(); }
+        focusStatusIfOnSubmit(fromSubmit);
         return;
       }
       if (submitBtn && submitBtn.disabled) { return; }
@@ -684,7 +702,7 @@
           say('ok', 'Thank you. Your message is on its way; we reply within one business day.');
           /* reset only what was sent: an edit made while the request was pending stays in place */
           if (sent !== null && snapshot() === sent) { form.reset(); }
-          if (status) { status.focus(); }
+          focusStatusIfOnSubmit(fromSubmit);
         })
         .catch(function () {
           if (timedOut) {
@@ -692,7 +710,7 @@
           } else {
             say('error', 'Your message did not send. Nothing you typed was lost: please try again, or', true);
           }
-          if (status) { status.focus(); }
+          focusStatusIfOnSubmit(fromSubmit);
         });
       var done = function () { clearTimeout(timer); restoreSubmit(); };
       if (request.finally) { request.finally(done); } else { request.then(done, done); }
@@ -899,7 +917,10 @@
           Anything already inside the viewport is shown at once
           (no flash: .anim-ready and these sets land in one task).
        ------------------------------------------------------- */
-    var limit = vh() * 0.88;
+    /* "inside the viewport" at build time means the whole viewport (round 8: at 88 %, the trigger start, the home's
+       phone statement, now 28px under the canopy at y ≈ 744 of 844, stayed hidden on the first screen and left the
+       corridor under the canopy empty until the first scroll); the tweens below still start at 88 % */
+    var limit = vh();
     var seen = function (el) { return el.getBoundingClientRect().top < limit; };
     revealTweens = [];
     var reveal = function (el, targets, vars) {

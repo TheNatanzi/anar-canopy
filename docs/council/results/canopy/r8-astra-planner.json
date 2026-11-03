@@ -1,0 +1,30 @@
+{
+ "model": "astra",
+ "role": "planner",
+ "score": 8,
+ "blocking": [
+  "Selected-event planning is described almost entirely as coordination; families cannot tell whether Anar helps plan those events or only runs them."
+ ],
+ "fixes": [
+  {
+   "where": "how-we-work.html #you-get — Selected-event planning",
+   "what": "State whether this service includes event budgeting, venue/vendor sourcing and booking support. If it only covers handover and execution, rename it Selected-event coordination.",
+   "why": "Families comparing the three services need a clear scope before choosing an inquiry path."
+  },
+  {
+   "where": "how-we-work.html #steps — Consultation and Proposal",
+   "what": "Explicitly distinguish the couple's approval of ceremony and personal choices from the agreed payer's approval of spending; retain the invitation to involve parents.",
+   "why": "The current family-agreement language welcomes parents but leaves couples unsure whose wishes prevail."
+  },
+  {
+   "where": "weddings.html — ceremony introduction paragraphs",
+   "what": "Keep each opening to two short sentences explaining Anar's coordination work; move the remaining sequences and participant lists into the existing details disclosures.",
+   "why": "Dense ritual inventories bury the practical reasons to hire the planner and make the inner page tiring to scan."
+  },
+  {
+   "where": "assets/css/canopy.css — mobile hero-to-statement transition",
+   "what": "Reduce the empty interval beneath the mobile canopy so the next heading begins shortly after the hanging fruit clears the content column, preserving the approved hero and connected artwork.",
+   "why": "The supplied phone view ends with a substantial empty corridor and no indication of the next content, weakening the invitation to continue."
+  }
+ ]
+}

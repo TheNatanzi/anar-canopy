@@ -1,0 +1,33 @@
+{
+ "model": "astra",
+ "role": "brand",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "assets/css/canopy.css — .tree__canopy and .screen--statement",
+   "what": "Shorten the desktop canopy transition while preserving the connected painting and text clearance. Bring the complete statement composition into view sooner.",
+   "why": "Desktop scroll point 1 is dominated by foliage; the heading arrives near the bottom, weakening the intended four-screen rhythm."
+  },
+  {
+   "where": "assets/css/canopy.css — mobile .screen--inquire .form",
+   "what": "Remove the additional right padding from the mobile inquiry form; the tab already hides throughout #inquire. Keep equal left and right gutters.",
+   "why": "The extra padding shifts fields, the submit button and the reply note left of the heading's central axis."
+  },
+  {
+   "where": "assets/css/canopy.css — .hero__halo; assets/css/site.css — .hero__tint",
+   "what": "Reduce the halo's outer reach and lift the video midtones outside the logo and text clearance area, retaining the existing gold logo and readable text.",
+   "why": "The supplied hero reads uniformly muddy; more tonal separation would make the approved night composition feel richer."
+  },
+  {
+   "where": "assets/js/canopy.js — block 2, kickBounce",
+   "what": "Remove the velocity-triggered canopy bounce and retain the restrained sway and scroll parallax.",
+   "why": "Repeated kicks during ordinary scrolling add a reactive effect that competes with the calm, premium character of the painting."
+  },
+  {
+   "where": "assets/css/site.css — .tradition__title at desktop widths",
+   "what": "Give ceremony headings the available text-column width and place the Persian accent beneath them when the two cannot fit comfortably side by side.",
+   "why": "Splitting an already narrow ceremony column into equal halves forces prominent titles into cramped stacks and weakens the inner pages' editorial hierarchy."
+  }
+ ]
+}

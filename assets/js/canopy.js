@@ -321,6 +321,11 @@
       var setMorphY = gsap.quickSetter(morph, 'y', 'px');
       var setMorphSX = gsap.quickSetter(morph, 'scaleX');
       var setMorphSY = gsap.quickSetter(morph, 'scaleY');
+      /* round 8: the last morphing / docked states written to the root, so the classes change only on a state change
+         (the root's MutationObserver, sync() below, would otherwise run on every scroll update). Read from the root
+         itself on each build, so a kill() (which removes both) and a rebuild start from the truth */
+      var wasMorphing = html.classList.contains('logo-morphing');
+      var wasDocked = html.classList.contains('logo-docked');
       var applyMorph = function (self) {
         if (!A || !B) { return; }
         var p = self.progress, q = morphEase(p), k = 1 + (B.w / A.w - 1) * q;
@@ -328,8 +333,9 @@
         setMorphY(A.top + (B.top - A.top) * q);
         setMorphSX(k);
         setMorphSY(k);
-        html.classList.toggle('logo-morphing', p > 0 && p < 1);
-        html.classList.toggle('logo-docked', p >= 1);
+        var morphing = p > 0 && p < 1, docked = p >= 1;
+        if (morphing !== wasMorphing) { wasMorphing = morphing; html.classList.toggle('logo-morphing', morphing); }
+        if (docked !== wasDocked) { wasDocked = docked; html.classList.toggle('logo-docked', docked); }
       };
       ScrollTrigger.create({
         trigger: hero, start: 'top top', end: function () { return '+=' + Math.round(hero.offsetHeight * MORPH_END); },

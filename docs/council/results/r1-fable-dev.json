@@ -1,0 +1,42 @@
+{
+ "model": "fable",
+ "role": "dev",
+ "score": 7,
+ "blocking": [
+  "assets/css/site.css:4 declares the shipped TT Ramillas Bold woff2 is the TRIAL font; cannot launch on a trial licence",
+  "At 390px the fixed 'How we work +' pill (site.css:317) sits over page content: it covers the hero Persian tag (index-phone-0), the last line of the founder quote (index-phone-2) and the form note under the submit button (index-phone-4)",
+  "Hero video weight: hero-1080-loop.mp4 is 10.6 MB and hero-720-loop.mp4 is 4.1 MB, plus a 333 KB poster; site.js:34 sets src and calls load() immediately, so every visit downloads the full file before anything else settles"
+ ],
+ "fixes": [
+  {
+   "where": "assets/css/site.css:317 (.hww-tab) and :168 (.hero__tag)",
+   "what": "On ≤768px: set .hww-tab bottom to calc(var(--s2) + env(safe-area-inset-bottom)); lift .hero__tag and .hero__scroll by 64px so the pill does not cover them; add an IntersectionObserver in site.js that adds .is-hidden (translateY(120%)) to .hww-tab while #inquire or the footer is in view, and while the mobile nav drawer or the panel is open",
+   "why": "A fixed pill at bottom-right currently hides real content at 390px in three of five phone screenshots, including the text directly under the form's submit button."
+  },
+  {
+   "where": "assets/video/hero-*-loop.mp4, index.html:52, site.js:34",
+   "what": "Re-encode the loops to ~8–10 s at 24 fps, CRF 28–30 (target ≤3 MB desktop, ≤1.2 MB mobile), add a WebM/AV1 alternative, compress hero-poster.jpg to ≤80 KB; set the video src only after window 'load' (or requestIdleCallback) and only on connections that are not 'save-data' or 2g/3g (navigator.connection); drop the <link rel=preload> for canopy-u3.webp or move it after the font so the poster, logo and font win bandwidth",
+   "why": "14.7 MB of hero media competing with the preloaded canopy and font delays LCP and burns mobile data; the poster already gives a correct first paint."
+  },
+  {
+   "where": "assets/css/site.css:4 and assets/fonts/",
+   "what": "Purchase the TT Ramillas Bold web licence, replace TTRamillas-Bold.woff2 with the licensed file, delete the unused Regular and Italic woff2 and the ~70 MB of unused PNG/MP4 sources (canopy*.png, trunk*.png, hero-1080.mp4, hero-720.mp4) from the deploy folder or add them to a deploy ignore",
+   "why": "Shipping a trial font is a licence breach, and the stray sources will be uploaded with the site unless excluded."
+  },
+  {
+   "where": "assets/js/site.js:188 and assets/css/site.css:164",
+   "what": "Remove filter:'blur(10px)' from the scrubbed .hero__mark tween (keep y + opacity), and replace .hero__halo's filter:blur(70px) with a static radial-gradient(closest-side, rgba(27,34,30,.6), transparent 70%) so no filter is recomputed per scroll frame",
+   "why": "A scrubbed filter on a 740 px element that itself contains a 70 px blur forces a full raster every frame; this is the first thing that will drop frames on a mid-range phone."
+  },
+  {
+   "where": "index.html accordion (section 4) and site.css .accordion rules",
+   "what": "Add aria-controls on each .accordion__trigger pointing at an id on its .accordion__body; set visibility:hidden (with a transition-delay) on .accordion__panel:not(.is-open) .accordion__body at ≥768px; on ≤768px hide the four .accordion__trigger buttons (display:none) since all bodies are already visible there",
+   "why": "Today screen readers read all four hidden bodies as if open on desktop, and on mobile keyboard users tab through four buttons that do nothing."
+  },
+  {
+   "where": "index.html:11, :20–22 and the head of weddings/how-we-work/about",
+   "what": "Make og:image absolute (https://anarevents.com/assets/video/hero-poster.jpg), add og:url and og:type=website, and copy og tags to the three inner pages; add integrity + crossorigin=\"anonymous\" to the cdnjs and unpkg script tags or self-host the three libraries under assets/js/vendor/",
+   "why": "Relative og:image is ignored by every link preview, and unpinned third-party scripts without SRI are an outage and tampering risk for a site whose motion depends on them."
+  }
+ ]
+}

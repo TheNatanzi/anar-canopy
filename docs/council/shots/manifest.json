@@ -1,0 +1,245 @@
+{
+ "shots": [
+  {
+   "page": "index.html",
+   "view": "desktop",
+   "scroll": 0,
+   "file": "index-desktop-0.jpg"
+  },
+  {
+   "page": "index.html",
+   "view": "desktop",
+   "scroll": 0.22,
+   "file": "index-desktop-1.jpg"
+  },
+  {
+   "page": "index.html",
+   "view": "desktop",
+   "scroll": 0.45,
+   "file": "index-desktop-2.jpg"
+  },
+  {
+   "page": "index.html",
+   "view": "desktop",
+   "scroll": 0.68,
+   "file": "index-desktop-3.jpg"
+  },
+  {
+   "page": "index.html",
+   "view": "desktop",
+   "scroll": 0.92,
+   "file": "index-desktop-4.jpg"
+  },
+  {
+   "page": "weddings.html",
+   "view": "desktop",
+   "scroll": 0,
+   "file": "weddings-desktop-0.jpg"
+  },
+  {
+   "page": "weddings.html",
+   "view": "desktop",
+   "scroll": 0.22,
+   "file": "weddings-desktop-1.jpg"
+  },
+  {
+   "page": "weddings.html",
+   "view": "desktop",
+   "scroll": 0.45,
+   "file": "weddings-desktop-2.jpg"
+  },
+  {
+   "page": "weddings.html",
+   "view": "desktop",
+   "scroll": 0.68,
+   "file": "weddings-desktop-3.jpg"
+  },
+  {
+   "page": "weddings.html",
+   "view": "desktop",
+   "scroll": 0.92,
+   "file": "weddings-desktop-4.jpg"
+  },
+  {
+   "page": "how-we-work.html",
+   "view": "desktop",
+   "scroll": 0,
+   "file": "how-we-work-desktop-0.jpg"
+  },
+  {
+   "page": "how-we-work.html",
+   "view": "desktop",
+   "scroll": 0.22,
+   "file": "how-we-work-desktop-1.jpg"
+  },
+  {
+   "page": "how-we-work.html",
+   "view": "desktop",
+   "scroll": 0.45,
+   "file": "how-we-work-desktop-2.jpg"
+  },
+  {
+   "page": "how-we-work.html",
+   "view": "desktop",
+   "scroll": 0.68,
+   "file": "how-we-work-desktop-3.jpg"
+  },
+  {
+   "page": "how-we-work.html",
+   "view": "desktop",
+   "scroll": 0.92,
+   "file": "how-we-work-desktop-4.jpg"
+  },
+  {
+   "page": "about.html",
+   "view": "desktop",
+   "scroll": 0,
+   "file": "about-desktop-0.jpg"
+  },
+  {
+   "page": "about.html",
+   "view": "desktop",
+   "scroll": 0.22,
+   "file": "about-desktop-1.jpg"
+  },
+  {
+   "page": "about.html",
+   "view": "desktop",
+   "scroll": 0.45,
+   "file": "about-desktop-2.jpg"
+  },
+  {
+   "page": "about.html",
+   "view": "desktop",
+   "scroll": 0.68,
+   "file": "about-desktop-3.jpg"
+  },
+  {
+   "page": "about.html",
+   "view": "desktop",
+   "scroll": 0.92,
+   "file": "about-desktop-4.jpg"
+  },
+  {
+   "page": "index.html",
+   "view": "phone",
+   "scroll": 0,
+   "file": "index-phone-0.jpg"
+  },
+  {
+   "page": "index.html",
+   "view": "phone",
+   "scroll": 0.22,
+   "file": "index-phone-1.jpg"
+  },
+  {
+   "page": "index.html",
+   "view": "phone",
+   "scroll": 0.45,
+   "file": "index-phone-2.jpg"
+  },
+  {
+   "page": "index.html",
+   "view": "phone",
+   "scroll": 0.68,
+   "file": "index-phone-3.jpg"
+  },
+  {
+   "page": "index.html",
+   "view": "phone",
+   "scroll": 0.92,
+   "file": "index-phone-4.jpg"
+  },
+  {
+   "page": "weddings.html",
+   "view": "phone",
+   "scroll": 0,
+   "file": "weddings-phone-0.jpg"
+  },
+  {
+   "page": "weddings.html",
+   "view": "phone",
+   "scroll": 0.22,
+   "file": "weddings-phone-1.jpg"
+  },
+  {
+   "page": "weddings.html",
+   "view": "phone",
+   "scroll": 0.45,
+   "file": "weddings-phone-2.jpg"
+  },
+  {
+   "page": "weddings.html",
+   "view": "phone",
+   "scroll": 0.68,
+   "file": "weddings-phone-3.jpg"
+  },
+  {
+   "page": "weddings.html",
+   "view": "phone",
+   "scroll": 0.92,
+   "file": "weddings-phone-4.jpg"
+  },
+  {
+   "page": "how-we-work.html",
+   "view": "phone",
+   "scroll": 0,
+   "file": "how-we-work-phone-0.jpg"
+  },
+  {
+   "page": "how-we-work.html",
+   "view": "phone",
+   "scroll": 0.22,
+   "file": "how-we-work-phone-1.jpg"
+  },
+  {
+   "page": "how-we-work.html",
+   "view": "phone",
+   "scroll": 0.45,
+   "file": "how-we-work-phone-2.jpg"
+  },
+  {
+   "page": "how-we-work.html",
+   "view": "phone",
+   "scroll": 0.68,
+   "file": "how-we-work-phone-3.jpg"
+  },
+  {
+   "page": "how-we-work.html",
+   "view": "phone",
+   "scroll": 0.92,
+   "file": "how-we-work-phone-4.jpg"
+  },
+  {
+   "page": "about.html",
+   "view": "phone",
+   "scroll": 0,
+   "file": "about-phone-0.jpg"
+  },
+  {
+   "page": "about.html",
+   "view": "phone",
+   "scroll": 0.22,
+   "file": "about-phone-1.jpg"
+  },
+  {
+   "page": "about.html",
+   "view": "phone",
+   "scroll": 0.45,
+   "file": "about-phone-2.jpg"
+  },
+  {
+   "page": "about.html",
+   "view": "phone",
+   "scroll": 0.68,
+   "file": "about-phone-3.jpg"
+  },
+  {
+   "page": "about.html",
+   "view": "phone",
+   "scroll": 0.92,
+   "file": "about-phone-4.jpg"
+  }
+ ],
+ "errors": []
+}

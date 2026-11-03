@@ -1,0 +1,92 @@
+# Anar Events site — build notes (v2.1, night palette, round-1 fixes, 3 Nov 2026)
+
+Static site, no build step. Open `index.html` over a local server (`.claude/launch.json` serves the folder on port 5173) so the fonts, video and deferred scripts load normally.
+
+## What was built
+
+| File | What it is |
+|---|---|
+| `index.html` | The long scroll story: hero → descend the tree → the celebrations → founder quote (parchment) → how we work teaser → the journey → roots + Inquire → footer |
+| `weddings.html` | One section per tradition (Sofreh Aghd, Nikah, Mehndi & Sangeet, Reception & Walima; Persian title right, English left, 3 lines, one photo slot each) + the Nowruz / Yalda note |
+| `how-we-work.html` | Five steps on one gold kashida line, "what you get", six FAQs (the second light interlude, day palette) |
+| `about.html` | The founder letter (parchment interlude), the name / pomegranate story with the three pomegranate photos, the promise + service behaviour |
+| `assets/css/site.css` | One stylesheet, mobile first, night palette as custom properties |
+| `assets/js/site.js` | All motion, numbered blocks; also the nav drawer, the accordion and the slide-out panel (those work without GSAP) |
+
+Shared on every page: the header (left links · nothing in the centre · right **فارسی** [inert] + the one gold "Inquire" pill; the small gold logo fades in once scrolled), the deep-night footer (with the language line), the ghost "How we work +" tab + panel, and the ghost "Pause motion" button bottom-left. Every "Inquire" links to `index.html#inquire`. Nothing anywhere mentions catering, decor or rentals.
+
+## Palette and type
+
+- Night palette first: cypress night `#1B221E` (page ground, video tint), deep night `#121714` (bands, footer), silk parchment `#F9F6F0` (text), zaffaran gold `#C99E5C` (logo, accents, the one button), Kashan ruby `#6D1A24` (hover, accent on parchment), sage `#5D625F` / stone `#B9B3A6` (captions).
+- Day palette only on the FAQ interlude (`.on-light--day`: cream + brown). The founder quote and letter sit on parchment with ruby accents.
+- **No grid hairlines anywhere** (the v1 `.hairlines` block is gone).
+- Latin: **TT Ramillas Bold for all Latin text** (body is `font-weight:700`; only `TTRamillas-Bold.woff2` is loaded, `font-display:swap`, preloaded). Persian: Noto Naskh Arabic via Google Fonts, forced `font-style:normal`, no tracking, no caps (`.fa`).
+
+> **FONT LICENCE — `assets/fonts/TTRamillas-Bold.woff2` is a TRIAL font. Buy TT Ramillas (web licence, at least Bold) from TypeType before launch and replace the woff2 file.** The unreferenced Regular and Italic files were deleted in round 1.
+
+## The hero (index first screen, HERO-V2 "APPROVED 02:05")
+
+- Full-bleed muted looping video (`.hero__video`), `muted loop playsinline preload="none"`, poster `hero-poster-small.jpg` (141 KB). The `<video>` has no `src` in the HTML: `site.js` block 0 appends the mp4 `<source>` only after window `load`, only without `prefers-reduced-motion`, only when `navigator.connection.saveData` is not true, and not while motion is paused. `hero-1080-loop.mp4` (4.0 MB) above 768px, `hero-720-loop.mp4` (1.7 MB) at or below (the `media` attribute on `<source>` is ignored inside `<video>`). The video pauses when off screen. No WebM: the encode came out larger than the mp4.
+- Tint `.hero__tint` = `rgba(27,34,30,.58)`; `.hero__deepen` is a solid cypress layer that fades in on scroll.
+- Plain gold logo `assets/logo/logo-gold.svg` centred, `width:min(51vw,980px)`, top at 28% of the viewport, with the one-line descriptor `.hero__line` under it (parchment, small caps). Halo `.hero__halo`: a static `radial-gradient(closest-side, rgba(27,34,30,.6), transparent 70%)` (no `filter:blur`). On phones the logo is 78vw (51vw was too small to read).
+- Tree art `assets/tree/canopy-u3.webp` as ONE piece, `width:max(100%,140vh)` centred, `top:35%` so the canopy shows ~37% high at the sides and ~15% in the centre, trunks half off the page, bottom running off-screen. The `140vh` floor keeps that ratio on tall/narrow screens. Phones (≤768px): 140vw, anchored to the bottom.
+- "Scroll ↓" bottom-left (lifted 64px so the "Pause motion" button never covers it), میراث، از نو bottom-right (lifted 64px on phones, clear of the tab).
+
+## Where each motion lives (`assets/js/site.js`)
+
+| Block | Motion | Trigger |
+|---|---|---|
+| 0 | Hero video source + pause off-screen | load |
+| — | Lenis smooth scroll (1.1.18) on the GSAP ticker; same-page anchors use `lenis.scrollTo` with the header offset | — |
+| 1 | Hero: logo rises slower than the page (`y = 0.45·vh`) and fades to .35 (no blur tween), tint deepens to solid cypress; "Scroll" and the tagline fade | scrub over the hero height |
+| 2 | Canopy piece moves up and out at 0.6× scroll speed (`y = +0.4·vh` inside the 1× section) | same timeline |
+| 3 | Descend the tree: `trunks-tall.webp` at 124vw centred in a sticky viewport-high frame (`.descend__trunks`) scrolls past at 0.8× (travel = 0.8 × section scroll, clamped to the image's spare height) while the statement + pillars (text column capped at 880px) pass at 1×; phones show one trunk at the left edge | scrub over `.descend` |
+| 4 | Kashida draw-on: every `.kashida-draw path` (statement line, celebrations line) via `stroke-dashoffset` | scrub, top 88% → 45% |
+| 5 | The journey / the steps page: `[data-track]` draws ONE gold line and pops each `.track-dot` in order | scrub across the track |
+| 6 | How we work teaser: three gold strips slide in from the right | scrub, top 75% → 20% |
+| 7 | The roots: `roots-floor.png` rises in (`yPercent 28 → 0`) as the Inquire ground arrives | scrub |
+| 8 | Floating leaves (`.leaf`, two places: descend top-right, journey top-left) drift on a yoyo tween + a slow scroll drift | always / scrub |
+| 9 | Section reveals: `.reveal` fade + rise 0.9s ease-out once; `.reveal-img` scale 1.02→1; `.stagger` children stagger | once, top 88% |
+| — | Accordion: hover expands on pointer devices, click/focus on keyboard; each trigger has `aria-controls` → the body's id; collapsed desktop bodies get `visibility:hidden` after the fade; under 768px every body is shown stacked and the triggers are hidden | — |
+| — | "How we work +" panel: slide-out from the right (bottom sheet under 768px), close ×, Esc, backdrop click, focus trap, everything outside set `inert` (+ `aria-hidden` fallback), the close timer is cancelled on reopen, same-page anchor clicks close it first, focus returns to the tab, Lenis paused while open. The ghost tab hides (slides out + fades) while `#inquire` or the footer is in view (IntersectionObserver) | — |
+| — | "Pause motion / Play motion" (`.motion-toggle`, bottom-left): kills every ScrollTrigger and the leaf drift, shows everything (`.reduced`), pauses the hero video; Play rebuilds the tweens. Remembered for the session in `sessionStorage`. The `prefers-reduced-motion` media query `change` event does the same | — |
+
+Hover on any `.card` nudges it 4px up (CSS).
+
+### Reduced motion / no JS / content visible by default
+- `document.documentElement.classList.add('js')` is the only inline script (one line, in every `<head>`). `.js` now only switches the header to `position:fixed` and shows the two ghost buttons; it hides nothing.
+- Content is visible by default. Reveal targets are hidden only under `html.anim-ready`, which `initMotion()` in `site.js` adds inside a `try` right after `gsap.registerPlugin(ScrollTrigger)`; anything already inside the viewport is set visible in the same task (no flash). If init throws, `.anim-ready` is removed and `.reduced` is added, so nothing stays hidden. Under `.reduced` and under `@media (prefers-reduced-motion: reduce)` everything is visible, nothing scrubs, the strips are in place, the leaves are static.
+- If a CDN script fails, `site.js` still runs: the nav, accordion, panel, form and skip link work, and `.reduced` shows all content.
+
+## Formspree
+
+The form on `index.html#inquire` posts to `https://formspree.io/f/FORMSPREE_ID`. **Replace `FORMSPREE_ID`** (one place: `<form class="form" action="…">` in `index.html`, marked with an HTML comment). Fields: names ("Your name(s)"), email, writing_as (the couple / a parent / another family member), reply_in (English / Persian / Dari / Urdu), phone, wedding_date, traditions[] (Sofreh Aghd · Nikah · Mehndi/Henna · Sangeet · Reception · Walima · Nowruz/Yalda), guest_count, message; honeypot `_gotcha`; `_subject` preset. Once the real id is in, `site.js` posts with `fetch` (`Accept: application/json`): the `#form-status` region (`role=status`, `aria-live=polite`) reports success or error, entered values stay on error, and the form only resets on success. While the action still contains `FORMSPREE_ID` the browser posts normally. A WhatsApp link (`https://wa.me/19252639949`) sits next to the phone number under the form and in every footer.
+
+## Photo slots
+
+Every real-photo position carries an HTML comment starting `PHOTO SLOT ·` with the subject and the shape wanted: the four accordion panels on `index.html` and the four tradition figures on `weddings.html`. The pomegranate photos in `assets/img` are placeholders there. The three on `about.html` are the intended pomegranate story photos, not placeholders.
+
+## Mobile (390px)
+
+Single column throughout; hamburger drawer (deep night) for the links, فارسی + Inquire stay in the bar; hero canopy at 140vw anchored to the bottom; trunks at 230% width in the sticky frame; accordion becomes stacked cards; journey becomes a vertical line with dots on the left; panel becomes a bottom sheet; leaves at 60%.
+
+## Round 1 fixes (council review, 3 Nov 2026)
+
+Applied from the six reviews in `docs/council/results/r1-*.json`; the owner decisions in `docs/council/RUBRIC.md` were kept (Formspree placeholder, pomegranate stand-ins, hero composition, the tab, the owner's copy lines).
+
+- **Copy.** Every decor / styling / supply promise is gone (no "lay the sofreh", "signs we supply", favour boxes, styled seasonal tables): the sofreh is *briefed to your designer and checked against the family's key*, signage and programmes are *coordinated with your printer and the venue*. Catering, decor and rentals are never mentioned. Khastegari (the private proposal visit before the engagement) was removed from the journey and the pillar: stop 5 is now **Bale-boroon / Shirini-khori (the engagement)** and the pillar reads "From the engagement to the walima". Aghd (the Persian ceremony at the sofreh) and nikah (the Islamic marriage contract read before witnesses) are described separately; mehndi, sangeet and baraat are distinguished. "We learn your rituals before we meet you" → "We ask how your family observes each tradition" everywhere; "Parents and elders included at the level you choose" everywhere. Languages: "Persian and Dari pages for the parents; English for everyone" (FAQ, footers, panel, steps).
+- **Hero.** One-line descriptor under the logo (`.hero__line`). No blur tween; static radial-gradient halo; video src set after `load`, mp4 only, small poster.
+- **Brand / CSS.** No 1px gold perimeter borders or hairline row dividers anywhere (`.card`, `.form`, `.you-get li`, `.behaviour li`, `.tradition`, `.seasonal`, `.hww-steps li`, `.faq details`, the header shadow): cards and the form keep a 2px gold top rule, rows are separated by spacing. One gold-filled button per screen: the tab is a ghost (`.ghost`: transparent, 2px gold border, parchment text, ruby on hover/focus), bottom-right above the safe area on phones. The termeh weave is replaced by `assets/patterns/lattice.svg` (320px diamond tile, 1px gold at .06) under a cypress radial fade so it shows only at the edges. Founder quote: 30em, `clamp(22px,3vw,36px)`, `text-wrap:balance`, "Medi, founder" as a gold eyebrow (the scribble signature is gone). Small gold logo fades in (.4s) in the header once scrolled, on every page. Trunks at 124vw with the text column capped at 880px; one trunk at the left edge on phones.
+- **JS / a11y.** Content visible by default (`.anim-ready`, see above). Pause / Play motion button. Panel: `inert` outside, focus trap, close timer cancelled on reopen, closes before same-page anchor scrolls. Skip link moves focus into `<main tabindex="-1">`. Accordion `aria-controls` / ids, collapsed bodies `visibility:hidden`, stacked with no triggers on phones. Form: name(s), writing-as and reply-in selects, WhatsApp link, `aria-live` status, values kept on error.
+- **Head.** `og:image` absolute (`https://anarevents.com/assets/video/hero-poster.jpg`), `og:url`, `og:type=website` on all four pages; `crossorigin="anonymous"` on the three CDN scripts (no integrity hashes); placeholders in `--stone`.
+- **Assets.** `assets/tree` keeps only `canopy-u3`, `trunks-tall`, `roots-floor`, `leaves-float` (`.webp` + `.png`) and `raw/`; `assets/video` keeps `hero-1080-loop.mp4`, `hero-720-loop.mp4`, `hero-poster.jpg`, `hero-poster-small.jpg` (the WebM and the 31 MB / 12 MB originals are deleted); `assets/fonts` keeps only `TTRamillas-Bold.woff2`; `assets/patterns/termeh.svg` is deleted.
+
+## Known gaps / to polish
+
+1. **Image weight.** The `.png` twins of the four tree pieces (5.0 + 1.4 + 1.2 + 1.0 MB) are kept as sources only; the pages load the `.webp`. For the hero, a 1400px-wide canopy variant via `srcset` would still help phones.
+2. The trunks image at 124vw on a 1920 screen is ~4260px tall, taller than the descend section, so the 0.8× travel has room. If the section grows (more copy), the clamp in block 3 slows the parallax rather than opening a gap.
+3. The hero tagline / "Scroll" and the nav are parchment on video with only the .58 tint; check legibility on the brightest frames.
+4. `leaves-float.webp` is a sprite sheet; `.leaf--1` and `.leaf--3` crop two sprigs by `background-position`.
+5. Persian lines are from the brand book; they still need the native Persian + Dari proofread the book calls for (the new بله‌برون / شیرینی‌خوری stop included).
+6. The Persian site link is inert (`<span>`); swap for an `<a href="fa/">` when the Persian site exists.
+7. Not tested in a browser (per the brief). The owner's assistant should check: the sticky trunk frame under Lenis and the single left trunk on phones, the accordion flex transitions in Safari, `100svh` fallbacks on iOS, focus order through the form and the two selects, the `date` input in dark colour scheme, the tab hide/show near the footer, and Pause → Play motion mid-page.

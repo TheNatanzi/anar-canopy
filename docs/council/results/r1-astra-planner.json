@@ -1,0 +1,43 @@
+{
+ "model": "astra",
+ "role": "planner",
+ "score": 5,
+ "blocking": [
+  "The primary inquiry form still posts to FORMSPREE_ID; the main conversion path is not launch-ready.",
+  "Cultural fluency is asserted without supporting wedding examples, testimonials or founder experience.",
+  "The universal journey conflates distinct traditions: 'Aghd / Nikah' shares a sofreh description, and every family is shown the same ceremony sequence.",
+  "Promises to design and lay a modern sofreh, supply signs and provide favour boxes cross the brief's prohibition on decor content."
+ ],
+ "fixes": [
+  {
+   "where": "index.html — #inquire form",
+   "what": "Replace FORMSPREE_ID with the live endpoint; verify receipt, confirmation and failure handling. Label names 'Your name(s)' so parents can inquire naturally.",
+   "why": "An obvious Inquire button cannot compensate for an unfinished submission path."
+  },
+  {
+   "where": "index.html — #journey; weddings.html — tradition sections",
+   "what": "Keep the service journey to consultation, proposal, planning and wedding days. Present ceremonies as optional examples chosen with each family; separate Aghd and Nikah descriptions, and distinguish Mehndi, Sangeet and Baraat.",
+   "why": "A prescribed blended sequence makes cultural knowledge feel superficial."
+  },
+  {
+   "where": "index.html — celebrations; weddings.html — photo slots; about.html — founder letter",
+   "what": "Replace fruit placeholders with consented wedding photographs and accurate captions identifying Anar's actual role. Add a factual founder biography and an attributable client testimonial where available; never imply styled work was a client wedding.",
+   "why": "Couples and paying parents need evidence that this team can manage their celebration."
+  },
+  {
+   "where": "weddings.html — Sofreh Aghd and Reception; how-we-work.html — What you get",
+   "what": "Remove sofreh design, signage production and favour-box promises. Describe ceremony timing, family cues and coordination with the family's appointed specialists. Explain full planning versus coordination with confirmed deliverables and when coordination begins.",
+   "why": "This restores the required service boundary and makes the purchase understandable."
+  },
+  {
+   "where": "index.html — pillars, consultation stop and shared slide-out; all pages — language promises",
+   "what": "Replace 'We learn your rituals before we meet you' with 'We ask how your family observes each tradition.' Use 'Include parents and elders at the level you choose' consistently. Name verified language capabilities instead of promising 'both languages' to every family.",
+   "why": "Respect comes from listening and couple-led involvement, not assumptions about families or languages."
+  },
+  {
+   "where": "index.html — hero and statement",
+   "what": "Add a short visible hero descriptor: 'Wedding planning and coordination for Persian, Afghan and South Asian families · San Francisco Bay Area.' Replace 'the modern aesthetic you actually want' and 'outdated tropes' elsewhere with language about the couple's priorities and chosen traditions.",
+   "why": "The first screen should establish service and location, while the copy should welcome parents without positioning heritage as an obstacle."
+  }
+ ]
+}

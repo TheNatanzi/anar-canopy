@@ -1,0 +1,43 @@
+{
+ "model": "astra",
+ "role": "brand",
+ "score": 5.5,
+ "blocking": [
+  "The tree does not preserve an open middle: oversized branches and fruit intrude behind the statement and pillar cards.",
+  "Repeated thin gold card outlines and grid dividers contradict the no-grid-hairlines direction.",
+  "Service copy offers sofreh styling, signage and favour boxes, crossing the prohibition on decor content.",
+  "Pomegranate placeholder photographs substitute for wedding imagery throughout the celebrations, leaving the premium service visually unsubstantiated."
+ ],
+ "fixes": [
+  {
+   "where": "assets/css/site.css — .descend__trunks img, .hero__canopy",
+   "what": "Constrain trunks and branches to separate outer-edge regions; keep the entire statement and pillar area free of painted art. Lower the desktop hero canopy so its central foliage stays within the bottom quarter.",
+   "why": "The tree should frame the experience; its current scale crowds the content and overwhelms the wedding footage."
+  },
+  {
+   "where": "weddings.html — tradition copy; how-we-work.html — What you get and Thank-you",
+   "what": "Remove offers to design or lay an architectural sofreh, supply signs, style seasonal tables and provide favour boxes. Describe ceremony scheduling, family communication and vendor coordination instead; apply the same correction to homepage teasers.",
+   "why": "These tangible styling deliverables breach the explicit service-scope restriction."
+  },
+  {
+   "where": "index.html — #celebrations; weddings.html — .tradition__media",
+   "what": "Replace fruit placeholders with permission-cleared photographs of the actual named ceremonies. Match each caption to the photograph; reserve fruit studies for About Anar.",
+   "why": "Repeated fruit imagery makes the wedding offering feel conceptual rather than established."
+  },
+  {
+   "where": "assets/css/site.css — .card, .form, .you-get li, .behaviour li, .hww-steps li",
+   "what": "Remove decorative perimeter borders and repeated grid rules. Separate content through spacing and restrained background changes; retain input boundaries and a deliberate standalone kashida.",
+   "why": "The current boxed layout reads as a generic interface rather than a premium editorial brand."
+  },
+  {
+   "where": "index.html — .pillars and founder quote; assets/css/site.css — .statement__text",
+   "what": "Shorten pillar headings to 'Fluent in your traditions', 'Heritage, with your vision' and 'Every day, coordinated'. Remove statement all-caps and tracking, reduce it to two concise sentences, and move the full founder letter to About. Keep TT Ramillas Bold.",
+   "why": "The second pillar wraps into seven lines, while oversized repeated declarations make the page dense and monotonous."
+  },
+  {
+   "where": "assets/css/site.css — .hww-tab; assets/js/site.js — hero timeline",
+   "what": "Make How we work an inline secondary link instead of a persistent gold overlay. Remove the logo blur tween and use a restrained fade as the hero exits.",
+   "why": "The floating control competes with Inquire and covers the artwork; blurring the primary mark weakens its deliberate, premium presentation."
+  }
+ ]
+}

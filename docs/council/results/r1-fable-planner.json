@@ -1,0 +1,42 @@
+{
+ "model": "fable",
+ "role": "planner",
+ "score": 6,
+ "blocking": [
+  "Zero proof: every photo slot is a pomegranate stock image, no wedding pictured, no testimonial, no founder photo or credentials. Parents paying $$$ will not inquire on copy alone.",
+  "Khastegari is listed as journey stop 5 (after Proposal and Planning) and as the start of pillar 03. The khastegari is the private proposal visit that happens before any planner is hired; a Persian or Afghan parent reads this as not fluent.",
+  "Hard-rule risk: 'We plan an architectural, modern sofreh ... and lay it' (weddings.html) and 'the sofreh laid against the key' (index teaser, how-we-work step 04) read as a decor service."
+ ],
+ "fixes": [
+  {
+   "where": "index.html .accordion__media (4 imgs) and weddings.html .slot imgs, about.html #letter",
+   "what": "Replace the four pomegranate photos with real sofreh, nikah, mehndi and reception photos (with consent) before launch; add one founder photo under the letter and one line of proof ('X weddings since 20XX' or two short family quotes). Until photos exist, hide the accordion images and keep text panels only.",
+   "why": "A planner site with no wedding shown wins no trust from couples or parents."
+  },
+  {
+   "where": "index.html journey stop 5 ('Khastegari') and pillar 03 ('Khastegari to walima'); hww-panel step 4; how-we-work.html step 03",
+   "what": "Replace 'Khastegari' with 'Bale-boroon / Shirini-khori (engagement)' and change 'Khastegari to walima' to 'From the engagement to the walima'.",
+   "why": "Khastegari precedes hiring a planner; placing it after Planning breaks cultural credibility."
+  },
+  {
+   "where": "how-we-work.html FAQ 'Which languages' and the three 'page for the parents, in Persian or Dari' lines (index hww-panel, how-we-work steps/you-get)",
+   "what": "Either add 'Urdu, Hindi or Punjabi for South Asian families' or state plainly 'Persian and Dari pages for the parents; English for other families'.",
+   "why": "The site sells South Asian weddings but every bilingual promise is Persian-only, which a Pakistani or Indian parent will notice."
+  },
+  {
+   "where": "index.html form, after f-names; inquire__contact",
+   "what": "Add a select 'You are writing as: the couple / a parent / another family member' and a select 'Reply in: English / Persian / Dari / Urdu'; add a WhatsApp link beside the phone number.",
+   "why": "Parents inquire and pay in these families, and WhatsApp is how they actually reach a planner."
+  },
+  {
+   "where": "index.html .hww-tab (all pages)",
+   "what": "Make the persistent tab 'Inquire' linking to #inquire (keep the How-we-work panel behind the header link), and on phone move it so it does not cover the scroll cue and form note.",
+   "why": "The one sticky action should be the inquiry, not a process explainer."
+  },
+  {
+   "where": "weddings.html #sofreh-aghd paragraph 2; index.html teaser card 02; how-we-work.html step 04",
+   "what": "Change to 'We brief your sofreh designer and check the spread against your family's key before the elders are seated' and 'the sofreh checked against the key'.",
+   "why": "'Lay it' claims decor work, which the brand rules forbid."
+  }
+ ]
+}

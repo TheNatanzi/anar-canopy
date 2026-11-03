@@ -1,0 +1,41 @@
+{
+ "model": "fable",
+ "role": "brand",
+ "score": 7,
+ "blocking": [
+  "Three gold buttons live on every screen at once (Inquire pill, the fixed 'How we work +' tab, 'Begin the conversation'): the brand book allows one gold button, and on phone the tab pill also sits on top of the tree and the SCROLL cue",
+  "The termeh weave behind the How we work teaser renders as broken dark-red horizontal streaks, not a weave; at desktop it reads like a rendering glitch"
+ ],
+ "fixes": [
+  {
+   "where": "assets/css/site.css .hww-tab (and the @media ≥768px override)",
+   "what": "Make the tab a ghost tab: background transparent, border 2px solid var(--gold), color var(--parch); keep ruby fill only on hover. On phone, move it above the SCROLL cue line (bottom: 72px) or hide it while .hero is in view",
+   "why": "Restores the one-gold-button rule and stops a second gold pill competing with Inquire on every screen"
+  },
+  {
+   "where": "assets/patterns/termeh.svg + site.css .termeh::before",
+   "what": "Redraw the tile as a true diagonal boteh/paisley lattice (or a fine diamond lattice) at 320–400px, opacity .05, and add a 60% cypress radial fade over it so it only shows at the edges",
+   "why": "The current tile shows as scan-line dashes; the pattern should whisper heritage, not look like a broken texture"
+  },
+  {
+   "where": "site.css .card, .form, .tradition, .you-get li, .behaviour li, .hww-steps li",
+   "what": "Drop every 1px rgba-gold border; keep only border-top: 2px solid var(--gold) on cards and a 2px gold top rule on the form; for list rows use spacing (var(--s2)) instead of hairline tops",
+   "why": "Brand book says no hairlines; the 1px gold outlines on cards and form currently box the layout like a grid"
+  },
+  {
+   "where": "site.css .quote blockquote and .quote blockquote span",
+   "what": "Set max-width: 30em, font-size clamp(22px,3vw,36px), and text-wrap: balance on each span (fallback: let spans flow inline with line-height 1.35)",
+   "why": "At 40px the founder lines break as 'never two / people.' and 'the whole / table.', which reads sloppy on the one parchment moment"
+  },
+  {
+   "where": "index.html .signature SVG (founder quote)",
+   "what": "Replace the generated scribble path with a scanned signature traced as a single path, or remove the SVG and set 'Medi, founder' in gold eyebrow style",
+   "why": "A random squiggle presented as a signature reads as costume and undercuts the letter's sincerity"
+  },
+  {
+   "where": "site.css `.site-header--solid .nav-home{display:block}`",
+   "what": "Change to `.site-header--solid .nav-home, .site-header.is-scrolled .nav-home{display:block}` and fade it in with opacity .4s",
+   "why": "Once the hero logo blurs away, the home page scrolls with no Anar mark in the header; the brand should stay present on every scroll point"
+  }
+ ]
+}

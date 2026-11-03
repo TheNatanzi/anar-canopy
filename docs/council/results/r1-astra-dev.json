@@ -1,0 +1,43 @@
+{
+ "model": "astra",
+ "role": "dev",
+ "score": 5,
+ "blocking": [
+  "The inquiry form still posts to FORMSPREE_ID; the primary conversion path is not launch-ready.",
+  "If site.js fails to load, the inline .js flag leaves headings, content and the inquiry form invisible.",
+  "Continuous video and leaf animation have no user-accessible pause control.",
+  "Keyboard navigation and accordion accessibility need correction despite the harness reporting no console errors or overflow."
+ ],
+ "fixes": [
+  {
+   "where": "index.html — inquiry form",
+   "what": "Replace FORMSPREE_ID with the production endpoint; verify delivery, successful submission and recoverable error handling without losing entered values.",
+   "why": "The site's primary action currently cannot deliver inquiries to the intended destination."
+  },
+  {
+   "where": "assets/css/site.css — reveal rules; assets/js/site.js — initialization",
+   "what": "Keep content visible by default. Apply hidden reveal states only when animation initialization succeeds, and restore visibility if initialization fails.",
+   "why": "A missing local script currently turns most of the site, including its form, invisible."
+  },
+  {
+   "where": "assets/js/site.js — hero video and floating leaves",
+   "what": "Add a keyboard-accessible pause/resume control for continuous motion. Listen for reduced-motion preference changes and stop video, looping tweens and smooth scrolling immediately.",
+   "why": "The initial reduced-motion check does not provide an on-page pause mechanism or handle preference changes."
+  },
+  {
+   "where": "assets/js/site.js — openPanel, closePanel and same-page anchors",
+   "what": "Make background content inert while the dialog is open; cancel pending close timers when reopening. Close the panel before scrolling to Inquire, then focus the destination. Make the skip link move focus into main and apply header clearance to native anchor scrolling.",
+   "why": "The dialog has a reopen race; its CTA starts scrolling while Lenis is stopped, and intercepted anchors move the viewport without moving keyboard focus."
+  },
+  {
+   "where": "index.html — celebrations accordion; assets/css/site.css — .accordion__body",
+   "what": "Give each trigger aria-controls and its body a matching ID. Remove collapsed desktop bodies from the accessibility tree. On mobile, expose every body and remove redundant expansion controls; synchronize semantics when crossing the breakpoint.",
+   "why": "Opacity-zero desktop content remains readable to assistive technology, while mobile cards announce collapsed states despite being fully visible."
+  },
+  {
+   "where": "assets/css/site.css — form placeholders and card borders",
+   "what": "Use --stone for placeholders on dark inputs and verify their contrast. Remove the enclosing 1px borders from .card and .form, retaining spacing, background fills and intentional gold accents.",
+   "why": "The placeholders are visibly faint, and the outlined card grids contradict the explicit no-grid-hairlines requirement."
+  }
+ ]
+}

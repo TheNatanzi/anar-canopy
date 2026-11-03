@@ -1,0 +1,10 @@
+C:\dev\anar-site\docs\council\shots\index-desktop-0.jpg
+C:\dev\anar-site\docs\council\shots\index-desktop-1.jpg
+C:\dev\anar-site\docs\council\shots\index-desktop-2.jpg
+C:\dev\anar-site\docs\council\shots\index-desktop-3.jpg
+C:\dev\anar-site\docs\council\shots\index-desktop-4.jpg
+C:\dev\anar-site\docs\council\shots\index-phone-0.jpg
+C:\dev\anar-site\docs\council\shots\index-phone-1.jpg
+C:\dev\anar-site\docs\council\shots\index-phone-2.jpg
+C:\dev\anar-site\docs\council\shots\index-phone-3.jpg
+C:\dev\anar-site\docs\council\shots\index-phone-4.jpg

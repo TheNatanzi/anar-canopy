@@ -1,0 +1,36 @@
+{
+ "model": "astra",
+ "role": "dev",
+ "score": 7.5,
+ "blocking": [
+  "The mobile floating tab has no reserved clearance across several reading sections, so it can cover text after scrolling stops.",
+  "Accordion expansion can change document height without refreshing ScrollTrigger, leaving downstream animation positions stale."
+ ],
+ "fixes": [
+  {
+   "where": "assets/css/site.css — .hww-tab and mobile content gutters",
+   "what": "Reserve clearance for the approximately 34px tab across statement, service, tradition, FAQ and inner-page text sections; retain symmetric padding where text is centered. Verify after the 700ms scrolling timeout makes the tab reappear.",
+   "why": "The default 20px gutter is narrower than the fixed tab; only selected sections currently receive protection."
+  },
+  {
+   "where": "assets/js/site.js — accordion open() and syncMobile()",
+   "what": "Refresh ScrollTrigger after the opening body returns to normal flow and after accordion breakpoint changes; observe accordion height changes to catch subsequent reflow.",
+   "why": "The expanding row can move every following section after trigger positions have been calculated."
+  },
+  {
+   "where": "assets/js/site.js — accordion open(); assets/css/site.css — .is-settling",
+   "what": "Keep sufficient row height throughout expansion and reveal the opening description only when its container can accommodate it.",
+   "why": "The description starts fading in before the 720ms settling timer restores its layout contribution, allowing temporary clipping inside overflow:hidden."
+  },
+  {
+   "where": "assets/js/site.js — reduced-motion toggle handling",
+   "what": "When the operating system requires reduced motion, hide or disable the play control with a clear accessible explanation; preserve any separately stored user pause preference.",
+   "why": "The current control presents a play icon that cannot start motion, and clicking it clears the saved pause preference."
+  },
+  {
+   "where": "index.html and weddings.html — photographic image slots",
+   "what": "Provide responsive image variants with srcset and sizes for stacked phone images, desktop accordion panels and tradition figures.",
+   "why": "Lazy loading delays requests but still delivers the same large source images to 390px phones."
+  }
+ ]
+}

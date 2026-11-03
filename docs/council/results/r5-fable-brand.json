@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "brand",
+ "score": 7,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "assets/css/site.css .ground__roots (and assets/tree/roots-floor.webp)",
+   "what": "Add a top fade so the roots emerge from the night instead of starting with a seam: -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 22%);mask-image:linear-gradient(to bottom,transparent 0,#000 22%). The art's two trunks are cropped flat at the image's top edge, so on desktop the painted floor begins as a hard horizontal line across the Inquire section (index-desktop-4, y≈300).",
+   "why": "The brand promise is a tree that frames the edges; a straight seam reads as a pasted image."
+  },
+  {
+   "where": "assets/css/site.css .descend__trunk--l / --r mask + clip-path",
+   "what": "Tie the mask fade to the clip edge: mask the left strip with linear-gradient(to right,#000 calc(var(--edge-space) - 72px),transparent var(--edge-space)) and mirror it for the right; drop the fixed 70% stop. At 1440px the strip is 288px, the fade starts at 201px but the clip cuts at 280px, so the paint ends in a hard vertical edge (index-desktop-1, both sides).",
+   "why": "The edge art must dissolve into the night, never show a ruler-straight cut."
+  },
+  {
+   "where": "index.html hero video + .hero__tint",
+   "what": "Grade the loop toward the palette: either re-export the mp4 with a warm, desaturated grade, or add a warm overlay (.hero__tint background:linear-gradient(rgba(27,34,30,.5),rgba(27,34,30,.72)) plus a second layer rgba(201,158,92,.08) with mix-blend-mode:soft-light). The current clip is lilac florals and white drape under a grey tint; the lilac fights the gold logo and the ruby fruit.",
+   "why": "Night palette first means the video must sit inside cypress and gold, not pink and white."
+  },
+  {
+   "where": "index.html .teaser__strips (three <i>) + site.js block 6",
+   "what": "Make it one kashida: keep a single 2px gold line sliding in (remove the two offset lines at opacity .9 and .6), or replace with the .kashida-draw device used in the statement and celebrations heads.",
+   "why": "The brand has one kashida line; a triple stacked rule is a decorative flourish not in the book and the only place lines stack on the site."
+  },
+  {
+   "where": "assets/css/site.css .pillars .card h3 + index.html pillar 02",
+   "what": "Balance the three pillars: set .pillars .card h3{font-size:clamp(22px,2vw,24px);text-wrap:balance} and give the three cards a shared baseline for the body (align-content:start is right, but add min-height on h3 via grid-template-rows:auto minmax(3.6em,auto) auto). Card 02's headline runs five lines against two on 01, so the row sags in the middle (index-desktop-1).",
+   "why": "The pillars are the first typographic statement after the hero; uneven line counts break its rhythm."
+  },
+  {
+   "where": "assets/css/site.css .form__note, .inquire__contact, .journey__stops (phone)",
+   "what": "Give left-aligned bottom content clearance for the fixed Pause button on phones: @media (max-width:768px){.form .form__note:last-child,.inquire__contact{padding-left:52px}} or move .motion-toggle to the right of the Scroll cue only inside the hero and tuck it into the footer band after. On index-phone-4 the round button covers the start of 'elders included…'.",
+   "why": "A fixed control sitting on live copy looks unfinished on the one screen where the family decides to write."
+  }
+ ]
+}

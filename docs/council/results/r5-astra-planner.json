@@ -1,0 +1,41 @@
+{
+ "model": "astra",
+ "role": "planner",
+ "score": 7.5,
+ "blocking": [
+  "Language support is promised inconsistently: the form offers six reply languages, the process guarantees the chosen language, and the FAQ retreats to 'where we can'. Families cannot tell what support is actually available.",
+  "Several ceremony descriptions prescribe a sequence or practice despite the central promise to follow each family's traditions."
+ ],
+ "fixes": [
+  {
+   "where": "index.html #f-lang; how-we-work.html #steps and language FAQ; shared footers",
+   "what": "Rename 'Reply in' to 'Preferred language'; consistently state that language support will be confirmed before booking. Distinguish translated planning documents from spoken support. Keep 'coming soon' visible beside the inactive Persian label on phones.",
+   "why": "Parents need a reliable language commitment, not conflicting expectations."
+  },
+  {
+   "where": "weddings.html #nikah, #haldi-pheras and #anand-karaj",
+   "what": "Introduce optional practices with 'If your family observes…'; describe aina mosaf separately from the nikah contract; replace 'Seven circuits under the mandap' with 'Your ceremony, in the sequence agreed with your officiant.' Make arrival and milni sequencing conditional on the agreed programme.",
+   "why": "Specificity earns trust only when it leaves room for religious, regional and family differences."
+  },
+  {
+   "where": "index.html #celebrations",
+   "what": "Give Anand Karaj its own panel, separate from Haldi & Pheras, matching the distinct sections on weddings.html.",
+   "why": "Sikh families should see their ceremony represented independently rather than as one option inside a combined religious category."
+  },
+  {
+   "where": "index.html inquiry form and .inquire__contact",
+   "what": "Place phone, email and WhatsApp links above the form. Show names, email and message first; put the remaining optional planning questions inside an expandable 'Share more wedding details' section.",
+   "why": "The long intake visually demands substantial work even though only two fields are required, especially on phones."
+  },
+  {
+   "where": "how-we-work.html consultation and proposal sections",
+   "what": "Add: 'Together, we agree who approves decisions, who approves spending, and which updates each family receives.' Explain how the couple sets the level of parent involvement.",
+   "why": "Greeting elders is thoughtful; clear decision authority is what prevents family planning stress."
+  },
+  {
+   "where": "index.html service comparison; how-we-work.html #you-get",
+   "what": "Clarify that coordination covers the events, hours and staffing named in the proposal. Replace 'your budget held' with 'your budget tracked', and explain that contract review covers planning requirements and vendor logistics.",
+   "why": "Families paying for several events need precise scope and responsibility boundaries before they inquire."
+  }
+ ]
+}

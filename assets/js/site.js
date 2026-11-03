@@ -49,8 +49,13 @@
     source.type = 'video/mp4';
     source.src = src;
     heroVideo.appendChild(source);
-    heroVideo.load();
-    heroVideo.play().catch(function () {});
+    /* load()/play() only while the hero is on screen (a deep link to #inquire lands below it); otherwise the
+       observer starts it when the hero scrolls back in (play() on the preload="none" video fetches the mp4) */
+    var inView = heroVideo.getBoundingClientRect().bottom > 0;
+    if (inView || !('IntersectionObserver' in window)) {
+      heroVideo.load();
+      heroVideo.play().catch(function () {});
+    }
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (entries) {
         entries.forEach(function (en) {
@@ -234,14 +239,23 @@
     /* Keep focused controls visible; synchronize visual and keyboard availability. */
     var hideAtDestination = false, hideWhileScrolling = false, heroInView = true, idleTimer;
     var lastScroll = window.scrollY;
+    var motionBtn = $('.motion-toggle');
     var syncTab = function () {
       var hidden = !panelOpen && document.activeElement !== tab &&
         (hideAtDestination || (!isDesktop() && (hideWhileScrolling || heroInView)));
       tab.classList.toggle('is-hidden', hidden);
       tab.setAttribute('aria-hidden', hidden ? 'true' : 'false');
       tab.tabIndex = hidden ? -1 : 0;
+      /* phones: the Pause button hides while scrolling down too, and comes back when the page is still */
+      if (motionBtn) {
+        var btnHidden = !isDesktop() && hideWhileScrolling && document.activeElement !== motionBtn;
+        motionBtn.classList.toggle('is-hidden', btnHidden);
+        motionBtn.setAttribute('aria-hidden', btnHidden ? 'true' : 'false');
+        motionBtn.tabIndex = btnHidden ? -1 : 0;
+      }
     };
     tab.addEventListener('blur', function () { setTimeout(syncTab, 0); });
+    if (motionBtn) { motionBtn.addEventListener('blur', function () { setTimeout(syncTab, 0); }); }
     desktopQuery.addEventListener('change', syncTab);
     window.addEventListener('scroll', function () {
       var next = window.scrollY;
@@ -300,16 +314,34 @@
      controls its body (aria-controls / id). Under 1100px every body
      is shown stacked and the triggers are removed (CSS + here).
      While the .7s flex transition runs the opening panel carries
-     .is-settling (its body stays out of flow, CSS); once settled the
-     body is in flow and the row grows to fit its text.
+     .is-settling (its body stays out of flow and invisible, CSS) and
+     the row keeps its height; once settled (transitionend, or the
+     .7s timer) the body is in flow, fades in, the row grows to fit
+     its text and ScrollTrigger is refreshed. A ResizeObserver on the
+     accordion refreshes on any later height change (debounced).
+     Phones: each description sits in a native <details> "Read more";
+     wider screens open every one (the summary is hidden there).
      --------------------------------------------------------- */
+  var refreshTriggers = function () { if (hasGsap && motionOn) { ScrollTrigger.refresh(); } };
+  var compactQuery = window.matchMedia('(max-width: 768px)');
   $$('[data-accordion]').forEach(function (acc, ai) {
     var panels = $$('.accordion__panel', acc);
     var hoverable = window.matchMedia('(hover: hover)').matches;
     var settleTimer = null;
+    var settling = null;
+    function settle() {
+      if (!settling) { return; }
+      var p = settling; settling = null;
+      if (settleTimer) { clearTimeout(settleTimer); settleTimer = null; }
+      p.classList.remove('is-settling');
+      acc.style.minHeight = '';
+      refreshTriggers();
+    }
     function open(target) {
       if (target.classList.contains('is-open')) { return; }
-      if (settleTimer) { clearTimeout(settleTimer); settleTimer = null; }
+      settle();
+      /* the row keeps its current height while the flex transition runs */
+      if (isWide()) { acc.style.minHeight = acc.offsetHeight + 'px'; }
       panels.forEach(function (p) {
         var on = p === target;
         p.classList.toggle('is-open', on);
@@ -319,7 +351,18 @@
         var content = $('.accordion__body', p);
         if (content) { content.inert = !on; content.setAttribute('aria-hidden', on ? 'false' : 'true'); }
       });
-      settleTimer = setTimeout(function () { target.classList.remove('is-settling'); settleTimer = null; }, reduced || userPaused ? 0 : 720);
+      settling = target;
+      settleTimer = setTimeout(settle, reduced || userPaused ? 0 : 720);
+    }
+    acc.addEventListener('transitionend', function (e) {
+      if (settling && e.target === settling && /flex/.test(e.propertyName)) { settle(); }
+    });
+    if ('ResizeObserver' in window) {
+      var resizeTimer = null;
+      new ResizeObserver(function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(refreshTriggers, 150);
+      }).observe(acc);
     }
     panels.forEach(function (p, i) {
       var btn = $('.accordion__trigger', p);
@@ -346,9 +389,20 @@
         if (mobile) { btn.setAttribute('aria-expanded', 'true'); }
         else { btn.setAttribute('aria-expanded', p.classList.contains('is-open') ? 'true' : 'false'); }
       });
+      refreshTriggers();
+    };
+    /* the native "Read more": open everywhere above 768px; on phones the first panel starts open, the rest closed */
+    var syncRead = function () {
+      var compact = compactQuery.matches;
+      panels.forEach(function (p, i) {
+        var d = $('.accordion__read', p);
+        if (d) { d.open = !compact || i === 0; }
+      });
     };
     syncMobile();
+    syncRead();
     wideQuery.addEventListener('change', syncMobile);
+    compactQuery.addEventListener('change', syncRead);
   });
   html.classList.add('site-ready');
 
@@ -370,6 +424,11 @@
       status.textContent = text;
     };
     var restoreSubmit = function () { if (submitBtn) { submitBtn.disabled = false; } };
+    /* a field inside the closed "Share more wedding details" that fails validation opens it first, so the browser can show the message */
+    form.addEventListener('invalid', function (e) {
+      var more = e.target && e.target.closest ? e.target.closest('details') : null;
+      if (more && !more.open) { more.open = true; }
+    }, true);
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       if (!form.checkValidity()) { form.reportValidity(); return; }
@@ -676,10 +735,18 @@
   /* the visible text lives in .motion-toggle__text (hidden where CSS draws the glyph); the accessible name is the
      fixed aria-label "Pause motion" and is never changed here: aria-pressed="true" means paused */
   var toggleText = toggle ? ($('.motion-toggle__text', toggle) || toggle) : null;
+  var toggleNote = $('.motion-toggle__note');
   var setToggle = function (pressed) {
     if (!toggle) { return; }
     toggle.setAttribute('aria-pressed', pressed ? 'true' : 'false');
     toggleText.textContent = pressed ? 'Play motion' : 'Pause motion';
+  };
+  /* OS reduced motion: the play control is hidden (it could not start anything) and a visually-hidden line says why;
+     the stored user pause preference is left untouched */
+  var syncReducedControl = function () {
+    if (!toggle) { return; }
+    toggle.hidden = reduced || (!hasGsap && !heroVideo);
+    if (toggleNote) { toggleNote.hidden = !reduced; }
   };
   function pauseAll(remember) {
     if (remember) { userPaused = true; }
@@ -700,14 +767,15 @@
     setToggle(false);
   }
   if (toggle) {
-    toggle.hidden = !hasGsap && !heroVideo;
+    syncReducedControl();
     if (!toggle.hasAttribute('aria-label')) { toggle.setAttribute('aria-label', 'Pause motion'); }
     html.classList.add('motion-ready');
     /* the control stays visible the whole page on every screen size: motion continues below the hero, so must the way to stop it */
-    toggle.addEventListener('click', function () { if (userPaused || reduced) { playAll(true); } else { pauseAll(true); } });
+    toggle.addEventListener('click', function () { if (userPaused) { playAll(true); } else { pauseAll(true); } });
   }
   var onReduceChange = function (e) {
     reduced = e.matches;
+    syncReducedControl();
     if (reduced) { pauseAll(false); } else if (!userPaused) { playAll(false); }
   };
   if (rmq.addEventListener) { rmq.addEventListener('change', onReduceChange); } else if (rmq.addListener) { rmq.addListener(onReduceChange); }

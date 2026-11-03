@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "dev",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "index.html .accordion__media img (5), weddings.html/about.html .slot img, index.html .hero__canopy",
+   "what": "Add srcset/sizes to every photo slot and the canopy (e.g. 800w/1400w/2000w with sizes=\"(max-width:1099px) 100vw, 60vw\"; canopy 1376w/2752w with sizes=\"(max-width:768px) 175vw, max(100vw,140vh)\")",
+   "why": "At 390px each 2000px JPG and the 2752px webp download at full size for a ~350px panel; the heaviest bytes on the page are avoidable."
+  },
+  {
+   "where": "site.css .motion-toggle @media (max-width:768px) + site.js syncTab",
+   "what": "On phones give the toggle the same hide-while-scrolling-down behaviour as .hww-tab (toggle .is-hidden from the scroll handler) so it only shows when the page is still",
+   "why": "Screenshots phone-1 and phone-4: the 36px fixed button sits over the Nikah text and the form note ('…ders included') in the 20px gutter."
+  },
+  {
+   "where": "site.css .pill .fa{color:rgba(201,158,92,.7)}",
+   "what": "Use var(--gold) (or opacity ≥.85) for the Persian pill labels",
+   "why": "Gold at 70% over cypress is ≈3.6:1 at 14px; fails WCAG AA 4.5:1 for small text (full gold is ≈6.9:1)."
+  },
+  {
+   "where": "site.css .accordion__body{pointer-events:none}",
+   "what": "Add .accordion__panel.is-open .accordion__body{pointer-events:auto} (hover-open is already bound on the panel's mouseenter, so nothing breaks)",
+   "why": "The open celebration's text cannot be selected or copied on desktop because the full-size trigger button sits over it."
+  },
+  {
+   "where": "site.css @font-face TT Ramillas / Noto Naskh (font-display:swap)",
+   "what": "Switch the preloaded, self-hosted fonts to font-display:block (or optional)",
+   "why": "swap paints Georgia first then reflows the hero line, statement and pillars when Ramillas lands; with a preload the block window is almost never hit, so this removes the one visible layout shift."
+  },
+  {
+   "where": "site.js block 0 loadHeroVideo()",
+   "what": "Only call load()/play() when heroVideo.getBoundingClientRect().bottom > 0; otherwise let the IntersectionObserver start it, and add disablepictureinpicture disableremoteplayback to the <video>",
+   "why": "A deep link to index.html#inquire (every inner-page 'Inquire' button) starts the 1080 mp4 download and playback off-screen before the observer pauses it."
+  }
+ ]
+}

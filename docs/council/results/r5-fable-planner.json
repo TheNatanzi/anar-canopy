@@ -1,0 +1,40 @@
+{
+ "model": "fable",
+ "role": "planner",
+ "score": 8,
+ "blocking": [
+  "about.html #letter: the bracketed founder-bio placeholder ('[Medi: two lines…]', '[one proof line…]') renders on the public page; add `hidden` to .letter__bio until the lines arrive, exactly as the proof slot does, or a parent sees an unfinished site"
+ ],
+ "fixes": [
+  {
+   "where": "index.html #celebrations, panel 'Haldi, Pheras & Anand Karaj' (<p class=\"fa\">عروسی هندو و سیک</p>) and weddings.html #haldi-pheras / #anand-karaj (.fa--big)",
+   "what": "Drop the Persian caption on the Hindu and Sikh panels (keep it on Sofreh Aghd, Nikah, Mehndi/Henna, Reception/Walima). Leave the h3 alone.",
+   "why": "A Persian label over a Hindu or Sikh family's ceremony reads as Persian-first costume, not fluency; it tells a Punjabi mother the site is not for her."
+  },
+  {
+   "where": "index.html #journey 'Proposal' note, hww-panel step 3, how-we-work.html step 03 and FAQ 'Will you work with our parents'",
+   "what": "Change 'A page for the parents, in Persian or Dari.' to 'A page for the parents, in Persian, Dari, Urdu, Hindi or Punjabi.'",
+   "why": "The footer and FAQ promise Urdu/Hindi/Punjabi on request, but the proposal step promises only Persian/Dari; South Asian parents read that as second-class."
+  },
+  {
+   "where": "index.html form, #f-lang 'Reply in' options",
+   "what": "Add <option value=\"Pashto\">Pashto</option> after Dari.",
+   "why": "weddings.html says you ask whether the elders speak Dari or Pashto; the form cannot say Pashto."
+  },
+  {
+   "where": "index.html .journey__en 'Enquiry', hww-steps 'Enquiry', how-we-work.html '01 · Enquiry', form _subject 'New enquiry'",
+   "what": "Use 'Inquiry' everywhere to match the gold 'Inquire' button and the #inquire section.",
+   "why": "Two spellings of the one action on a Bay Area site look like two different things to a parent scanning for where to write."
+  },
+  {
+   "where": "index.html form, .form__note after the submit button (phone 390px, see index-phone-4)",
+   "what": "Add bottom padding or left margin of 56px to the last .form__note at ≤768px, or move the note above the button.",
+   "why": "The round Pause button covers 'elders included at the level you choose', the one reassurance line parents are meant to read at the moment of sending."
+  },
+  {
+   "where": "index.html pillar 03 and weddings.html #seasons last paragraph",
+   "what": "Pillar 03: 'From the engagement to the walima' → 'From the engagement to the last reception'. Seasons: move 'Two heritages at one table?' line onto its own eyebrow/heading so mixed couples find it.",
+   "why": "Hindu and Sikh families have no walima, and the mixed-heritage promise is the single strongest line for the couples most likely to inquire, yet it is buried under Nowruz."
+  }
+ ]
+}

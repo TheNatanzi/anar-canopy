@@ -5,10 +5,11 @@
    Persian: Noto Naskh Arabic (self-hosted, Arabic subset), never italic/tracked/caps.
    ========================================================= */
 
-/* ---------- Fonts ---------- */
-@font-face{font-family:"TT Ramillas";src:url("../fonts/TTRamillas-Bold.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap}
+/* ---------- Fonts (both preloaded, so font-display:block: no Georgia flash and reflow before Ramillas lands) ---------- */
+/* TRIAL file: replace with licensed TT Ramillas Bold before launch (same file name; see docs/BUILD-NOTES.md) */
+@font-face{font-family:"TT Ramillas";src:url("../fonts/TTRamillas-Bold.woff2") format("woff2");font-weight:700;font-style:normal;font-display:block}
 /* Noto Naskh Arabic: the Arabic-subset variable file from Google Fonts (one woff2 covers 400-700), self-hosted so no cross-origin CSS blocks render */
-@font-face{font-family:"Noto Naskh Arabic";src:url("../fonts/NotoNaskhArabic-arabic.woff2") format("woff2");font-weight:400 700;font-style:normal;font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+0870-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC}
+@font-face{font-family:"Noto Naskh Arabic";src:url("../fonts/NotoNaskhArabic-arabic.woff2") format("woff2");font-weight:400 700;font-style:normal;font-display:block;unicode-range:U+0600-06FF,U+0750-077F,U+0870-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC}
 
 /* ---------- Tokens ---------- */
 :root{
@@ -171,7 +172,9 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 /* ---------- HERO (index first screen, approved 02:05) ---------- */
 .hero{position:relative;height:100vh;height:100svh;min-height:600px;overflow:hidden;background:var(--night);color:var(--parch)}
 .hero__video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:var(--night)}
-.hero__tint{position:absolute;inset:0;background:var(--tint);pointer-events:none}
+/* the tint grades the loop toward the palette: cypress deepening downwards, plus a 6% warm gold wash (the logo stays readable; the mp4 is untouched) */
+.hero__tint{position:absolute;inset:0;background:linear-gradient(rgba(27,34,30,.5),rgba(27,34,30,.72));pointer-events:none}
+.hero__tint::after{content:"";position:absolute;inset:0;background:rgba(201,158,92,.06)}
 .hero__deepen{position:absolute;inset:0;background:var(--night);opacity:0;pointer-events:none}
 /* the ONE tree piece: anchored low, width 100vw (or 140vh on tall screens), top at ~35% so the canopy
    rises ~37% at the sides and ~15% in the centre; trunks half off the page; bottom runs off-screen */
@@ -210,11 +213,12 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
    The paint is clipped at the column edge, max((100vw - 880px)/2, gutter),
    and at the gutter on phones: no painted art under the text at any width. */
 .descend__trunk{position:absolute;top:0;width:20vw;max-width:20vw;height:auto;min-height:100%;object-fit:cover;will-change:transform}
-.descend__trunk--l{left:0;object-position:left top;-webkit-mask-image:linear-gradient(to right,#000 70%,transparent);mask-image:linear-gradient(to right,#000 70%,transparent)}
-.descend__trunk--r{right:0;object-position:right top;-webkit-mask-image:linear-gradient(to left,#000 70%,transparent);mask-image:linear-gradient(to left,#000 70%,transparent)}
 /* Clip independently of mask support; paint cannot enter the reading column. */
 .descend{--edge-space:var(--gutter)}
 @media (min-width:769px){.descend{--edge-space:max(calc((100vw - var(--descend-col))/2),var(--gutter))}}
+/* the fade is tied to the clip edge: solid until 72px before the column edge, transparent at it (no ruler-straight cut) */
+.descend__trunk--l{left:0;object-position:left top;-webkit-mask-image:linear-gradient(to right,#000 calc(var(--edge-space) - 72px),transparent var(--edge-space));mask-image:linear-gradient(to right,#000 calc(var(--edge-space) - 72px),transparent var(--edge-space))}
+.descend__trunk--r{right:0;object-position:right top;-webkit-mask-image:linear-gradient(to left,#000 calc(var(--edge-space) - 72px),transparent var(--edge-space));mask-image:linear-gradient(to left,#000 calc(var(--edge-space) - 72px),transparent var(--edge-space))}
 .descend__trunk--l{clip-path:inset(0 max(0px,calc(100% - var(--edge-space))) 0 0)}
 .descend__trunk--r{clip-path:inset(0 0 0 max(0px,calc(100% - var(--edge-space))))}
 @media (min-width:769px) and (max-width:1023px){.descend__trunk{width:26vw;max-width:26vw}}
@@ -233,7 +237,7 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 
 /* three pillars as cards */
 .pillars{display:grid;gap:var(--s2);margin-top:clamp(56px,10vh,120px)}
-@media (min-width:768px){.pillars{grid-template-columns:repeat(3,1fr);gap:var(--s3)}}
+@media (min-width:768px){.pillars{grid-template-columns:repeat(3,1fr);gap:24px}}
 /* cards: a 2px gold top rule only (no perimeter border) */
 .card{position:relative;background:rgba(18,23,20,.82);border:0;border-top:2px solid var(--gold);padding:var(--s3) var(--s3) var(--s3);display:grid;gap:var(--s2);align-content:start;transition:transform .35s var(--ease);will-change:transform}
 .card:hover{transform:translateY(-4px)}
@@ -241,9 +245,9 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .card__n .fa{display:inline;font-size:18px;color:var(--parch);letter-spacing:0}
 .card p{color:var(--parch)}
 .card p.muted{color:var(--stone);font-size:16px;line-height:24px}
-/* the three pillars are lighter than the teaser cards: no box fill, no top rule (the gold numbering eyebrow carries the structure), 16px sides, h3 24-26px */
-.pillars .card{background:transparent;border-top:0;padding:var(--s2) 16px}
-.pillars .card h3{font-size:clamp(24px,2.2vw,26px)}
+/* the three pillars are lighter than the teaser cards: no box fill, no top rule (the gold numbering eyebrow carries the structure), 12-16px sides, h3 22-24px balanced so pillar 02 wraps to <=4 lines at 1440 */
+.pillars .card{background:transparent;border-top:0;padding:var(--s2) clamp(12px,1.1vw,16px)}
+.pillars .card h3{font-size:clamp(22px,2vw,24px);text-wrap:balance}
 
 /* ---------- The celebrations: accordion ---------- */
 .accordion{display:grid;gap:var(--s2)}
@@ -256,11 +260,19 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .accordion__trigger:focus-visible{outline:2px solid var(--gold);outline-offset:-6px}
 .accordion__label{position:absolute;left:var(--s2);top:var(--s2);letter-spacing:.1em;text-transform:uppercase;font-size:14px;z-index:1;display:none;color:var(--gold)}
 .accordion__body{position:relative;z-index:3;padding:var(--s4) var(--s2) var(--s3);display:grid;gap:var(--s1);min-height:100%;align-content:end;pointer-events:none}
-/* phones: a 44px right clearance for the mid-height "How we work +" tab */
-@media (max-width:768px){.accordion__body{padding-right:44px}}
+/* phones: a 44px right clearance for the mid-height "How we work +" tab; a compact preview (image + title + Persian) at 280px */
+@media (max-width:768px){.accordion__body{padding-right:44px}.accordion__panel{min-height:280px}}
+/* stacked (under 1100px) the trigger button is gone, so the body takes the pointer (the native Read more must toggle) */
+@media (max-width:1099px){.accordion__body{pointer-events:auto}}
 .accordion__body h3{font-size:clamp(26px,3vw,38px)}
 .accordion__body .fa{color:var(--gold)}
-.accordion__body p:last-child{max-width:34em;color:var(--parch)}
+.accordion__read p{max-width:34em;color:var(--parch);margin-top:var(--s1)}
+/* the description's native <details>: "Read more" shows on phones only; site.js opens every one on wider screens and the summary is hidden there */
+.accordion__read summary{cursor:pointer;list-style:none;display:inline-flex;gap:8px;align-items:baseline;color:var(--gold);font-size:14px;line-height:20px;letter-spacing:.1em;text-transform:uppercase;padding:4px 0}
+.accordion__read summary::-webkit-details-marker{display:none}
+.accordion__read summary::after{content:"+"}
+.accordion__read[open] summary::after{content:"\2013"}
+@media (min-width:769px){html.site-ready .accordion__read summary{display:none}}
 .accordion__more{pointer-events:auto;margin-top:var(--s1);justify-self:start}
 /* the wide layout (one open panel + narrow strips) only from 1100px; below that every panel is stacked and readable.
    No fixed height: the row is at least min(70vh,640px) and grows to fit the open body. The open body is in flow once
@@ -274,7 +286,9 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
   .accordion__panel:not(.is-open) .accordion__body,.accordion__panel.is-settling .accordion__body{position:absolute;inset:0}
   /* collapsed bodies leave the accessibility tree (visibility:hidden after the fade) */
   .accordion__panel:not(.is-open) .accordion__body{opacity:0;visibility:hidden;transition:opacity .25s,visibility 0s .25s}
-  .accordion__panel.is-open .accordion__body{opacity:1;visibility:visible;transition:opacity .6s .25s,visibility 0s}
+  /* the opening body stays invisible while the row is still settling (.is-settling, .7s) and fades in only once the panel can hold it; the open body takes the pointer so its text can be selected */
+  .accordion__panel.is-open .accordion__body{opacity:1;visibility:visible;transition:opacity .6s,visibility 0s;pointer-events:auto}
+  .accordion__panel.is-open.is-settling .accordion__body{opacity:0;transition:none}
   .accordion__panel:not(.is-open) .accordion__label{display:block;writing-mode:vertical-rl;left:auto;right:50%;top:auto;bottom:var(--s3);transform:translateX(50%) rotate(180deg)}
   .accordion__body{padding:var(--s4) var(--s4) var(--s4)}
 }
@@ -290,8 +304,8 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 
 /* ---------- Founder quote: the light interlude (parchment) ---------- */
 .quote{text-align:center}
-/* two paragraphs at 24-28px; only "Keep the soul. Redefine the style." is display size (36px desktop, ruby) */
-.quote blockquote{font-size:clamp(24px,2.6vw,28px);line-height:1.35;max-width:30em;margin-inline:auto;text-wrap:balance;display:grid;gap:var(--s3)}
+/* two supporting paragraphs at 20-24px; only "Keep the soul. Redefine the style." is display size (36px desktop, ruby) */
+.quote blockquote{font-size:clamp(20px,1.7vw,24px);line-height:1.4;max-width:30em;margin-inline:auto;text-wrap:balance;display:grid;gap:var(--s3)}
 .quote blockquote span{display:block}
 .quote blockquote .quote__key{color:var(--ruby);font-size:clamp(28px,3.4vw,36px);line-height:1.2}
 /* "Medi, founder" as an eyebrow line in ruby (the founder attribution on parchment; no drawn signature) */
@@ -310,12 +324,9 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .options ul{display:grid;gap:4px}
 .options ul li{padding-left:18px;position:relative}
 .options ul li::before{content:"";position:absolute;left:0;top:11px;width:8px;height:2px;background:var(--gold)}
-.teaser__strips{position:relative;height:2px;margin-block:var(--s3) var(--s4);display:grid;gap:0}
-/* the strips start off-screen through GSAP only (block 6: xPercent 102 -> 0 with x:0); no CSS translate to compound */
-.teaser__strips i{position:absolute;left:0;right:0;height:2px;background:var(--gold);transform-origin:right center}
-.teaser__strips i:nth-child(1){top:-14px;opacity:.9}
-.teaser__strips i:nth-child(2){top:0}
-.teaser__strips i:nth-child(3){top:14px;opacity:.6}
+.teaser__strips{position:relative;height:2px;margin-block:var(--s3) var(--s4)}
+/* ONE 2px gold kashida line sliding in through GSAP only (block 6: xPercent 102 -> 0 with x:0); no CSS translate to compound */
+.teaser__strips i{position:absolute;left:0;right:0;top:0;height:2px;background:var(--gold);transform-origin:right center}
 .teaser__grid{display:grid;gap:var(--s3)}
 @media (min-width:768px){.teaser__grid{grid-template-columns:1fr 1fr;gap:var(--s4)}}
 .teaser .card h3{font-size:clamp(28px,3.4vw,40px)}
@@ -358,20 +369,20 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .journey__extras{margin-top:clamp(40px,6vh,64px);text-align:center}
 .journey__extras .eyebrow{margin-bottom:var(--s2)}
 .pills{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--s1) 12px}
-/* softer than the one gold button: outline at .45, the Persian in gold at .7, full gold on hover/focus */
-.pill{display:inline-flex;align-items:baseline;gap:10px;border:2px solid rgba(201,158,92,.45);border-radius:999px;padding:6px 16px;font-size:15px;line-height:20px;color:var(--parch);white-space:nowrap;transition:border-color .3s}
-.pill .fa{font-size:14px;line-height:1.4;color:rgba(201,158,92,.7);transition:color .3s}
-.pill:hover,.pill:focus-visible{border-color:var(--gold)}
-.pill:hover .fa,.pill:focus-visible .fa{color:var(--gold)}
+/* labels, not controls: a soft outline at .45, the Persian in full gold (AA at 14px), no hover treatment */
+.pill{display:inline-flex;align-items:baseline;gap:10px;border:2px solid rgba(201,158,92,.45);border-radius:999px;padding:6px 16px;font-size:15px;line-height:20px;color:var(--parch);white-space:nowrap}
+.pill .fa{font-size:14px;line-height:1.4;color:var(--gold)}
 
 /* ---------- The roots and the floor; Inquire sits on the ground ---------- */
 .ground{position:relative;overflow:hidden;background:var(--night)}
-.ground__roots{position:absolute;left:50%;bottom:-2%;width:max(100%,120vh);max-width:none;height:auto;transform:translateX(-50%);pointer-events:none;z-index:0;will-change:transform}
+/* the roots emerge from the night: a top fade so the art's flat-cut trunk tops never read as a horizontal seam */
+.ground__roots{position:absolute;left:50%;bottom:-2%;width:max(100%,120vh);max-width:none;height:auto;transform:translateX(-50%);pointer-events:none;z-index:0;will-change:transform;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 22%);mask-image:linear-gradient(to bottom,transparent 0,#000 22%)}
 @media (max-width:768px){.ground__roots{width:150vw}}
 .ground .container{position:relative;z-index:1}
 .inquire{padding-block:clamp(72px,12vh,150px) clamp(24vw,28vw,520px)}
 @media (min-width:768px){.inquire{padding-bottom:clamp(220px,22vw,420px)}}
-.inquire__contact{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s3);margin-top:var(--s3);color:var(--stone);font-size:16px;line-height:24px}
+/* email / phone / WhatsApp sit ABOVE the form */
+.inquire__contact{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s3);margin-bottom:var(--s3);color:var(--stone);font-size:16px;line-height:24px}
 .inquire__contact a{color:var(--parch);user-select:all;-webkit-user-select:all;border-bottom:2px solid rgba(201,158,92,.5)}
 .inquire__contact a:hover{border-color:var(--gold)}
 .inquire__contact a.wa{user-select:auto;-webkit-user-select:auto}
@@ -406,6 +417,16 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .check input:checked{background-color:var(--gold);border-color:var(--gold);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6.3 4.8 9 10 3.2' fill='none' stroke='%231B221E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
 .check input:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .form__note{font-size:14px;line-height:20px;color:var(--stone)}
+/* "Share more wedding details": the optional questions in a native <details>, closed by default (every field still submits) */
+.form__more{border-top:2px solid rgba(201,158,92,.45);padding-top:var(--s2)}
+.form__more summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:var(--s2);align-items:baseline;color:var(--parch);font-size:18px;line-height:28px;padding:4px 0}
+.form__more summary::-webkit-details-marker{display:none}
+.form__more summary::after{content:"+";color:var(--gold);flex:0 0 auto}
+.form__more[open] summary::after{content:"\2013"}
+.form__more summary:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.form__more-body{display:grid;gap:var(--s3);margin-top:var(--s3)}
+/* phones: the fixed Pause button (bottom-left) never covers the closing note or the contact line */
+@media (max-width:768px){.form > .form__note:last-child,.inquire__contact{padding-left:52px}}
 
 /* ---------- Footer (deep night band) ---------- */
 .site-footer{background:var(--deep);color:var(--parch);border-top:2px solid var(--gold);padding-block:var(--s4) var(--s3);position:relative;z-index:2}
@@ -436,7 +457,12 @@ html:not(.panel-ready) .hww-tab{display:none}
    and the founder quote gets the same 32px on both sides so it stays centred */
 @media (max-width:768px){
   .quote blockquote{padding-inline:32px}
+  /* ~44px right clearance for every left-aligned text block the tab can sit over; centred blocks keep symmetric padding */
+  .options > li,.tradition__text,.faq,.step,.you-get li,.letter,.promise li,.behaviour li{padding-right:24px}
+  .statement,.section__head{padding-inline:24px}
 }
+/* phones: the Pause button hides while scrolling down, like the tab (site.js toggles .is-hidden from the same scroll handler) */
+.motion-toggle.is-hidden{transform:translateY(calc(100% + 24px));opacity:0;pointer-events:none}
 /* Pause motion / Play motion: bottom-left on every screen size and visible the whole page (round, icon-only:
    36px on phones, 40px on desktop). The accessible name is the fixed aria-label "Pause motion" and
    aria-pressed="true" means paused, so the name never changes. */
@@ -525,6 +551,7 @@ body.panel-open{overflow:hidden}
 .letter__sign{color:var(--ruby);font-size:18px}
 /* the founder bio slot under the letter (owner input: bracketed placeholders until Medi writes the lines) */
 .letter__bio{margin-top:var(--s3);padding-top:var(--s2);border-top:2px solid var(--ruby);max-width:34em;display:grid;gap:var(--s1);font-size:18px;line-height:28px;color:var(--night)}
+.letter__bio[hidden]{display:none}
 .letter__bio .letter__proof{color:var(--ruby);font-size:16px;line-height:24px}
 .story__photos{display:grid;gap:var(--s3);margin-top:var(--s3)}
 @media (min-width:768px){.story__photos{grid-template-columns:repeat(3,1fr);align-items:end}}

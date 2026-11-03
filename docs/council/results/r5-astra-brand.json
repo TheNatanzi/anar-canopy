@@ -1,0 +1,41 @@
+{
+ "model": "astra",
+ "role": "brand",
+ "score": 7.4,
+ "blocking": [
+  "The roots artwork begins with conspicuous horizontal cuts at both desktop edges, breaking the illusion of a continuous painted frame.",
+  "The stylesheet identifies TT Ramillas as a trial asset; the final production font needs to be resolved before brand sign-off."
+ ],
+ "fixes": [
+  {
+   "where": "assets/css/site.css — .ground__roots",
+   "what": "Fade only the upper trunk ends into cypress, or extend the artwork beyond the section boundary so neither trunk begins with a visible horizontal cut.",
+   "why": "The abrupt cut edges in desktop screenshot 5 make the signature illustration look pasted onto the page."
+  },
+  {
+   "where": "assets/css/site.css — @font-face",
+   "what": "Replace the font identified in the stylesheet as TRIAL with the production TT Ramillas Bold webfont and recheck line wrapping.",
+   "why": "The defining brand typeface should be a finalized production asset before launch."
+  },
+  {
+   "where": "assets/css/site.css — .pillars and .pillars .card",
+   "what": "Reduce desktop card side padding and column gaps to give each promise more width; tune heading size so the second promise occupies no more than four lines at 1440px.",
+   "why": "The current two-, five-, and four-line headings create an awkwardly uneven composition and make the middle column disproportionately heavy."
+  },
+  {
+   "where": "assets/css/site.css — .quote blockquote",
+   "what": "Reduce supporting quote paragraphs to 22–24px on desktop while retaining the ruby key line at 36px; keep the founder attribution small.",
+   "why": "Too much of the parchment interlude reads as display text, weakening the intended emphasis on the owner's central line."
+  },
+  {
+   "where": "index.html — #celebrations; assets/css/site.css — mobile .accordion",
+   "what": "On phones, present each celebration as a compact image-and-title preview with an explicit expandable description instead of five permanently expanded image panels.",
+   "why": "Five panels of at least 360px create a long gallery detour before visitors reach services and inquiry."
+  },
+  {
+   "where": "assets/css/site.css — .pill",
+   "what": "Remove the hover treatment from noninteractive celebration labels and replace the rounded outlines with a restrained, wrapping text list.",
+   "why": "The cluster currently resembles selectable filters and competes visually with the actual gold inquiry button."
+  }
+ ]
+}

@@ -1,4 +1,4 @@
-"""Run one council seat on Medi's plans. Usage: run_seat.py <astra|fable> <planner|brand|dev> [round]
+"""Run one council seat on Medi's plans. Usage: run_seat.py <astra|fable|argon> <planner|brand|dev> [round]
 astra -> codex exec (ChatGPT plan), fable -> claude -p (Claude plan). Argon seats run in the Gemini web app by hand.
 Writes docs/council/results/r<round>-<model>-<role>.json"""
 import os, sys, json, subprocess, re, time
@@ -17,6 +17,15 @@ if model == 'astra':
     cmd = ['codex.cmd', 'exec', '--skip-git-repo-check', '-m', 'gpt-6-astra', '-C', SITE, '-i', *shots[:6], '-']
     r = subprocess.run(cmd, input=prompt, capture_output=True, text=True, encoding='utf8', errors='replace', cwd=r'C:\Claude', timeout=1500)
     txt = r.stdout
+elif model == 'argon':
+    # paid Gemini API (approved by Medi 2026-11-03, no cap on this project); the 10 shots go in as inline JPEGs
+    import base64, urllib.request
+    parts = [{'inlineData': {'mimeType': 'image/jpeg', 'data': base64.b64encode(open(s, 'rb').read()).decode()}} for s in shots] + [{'text': prompt}]
+    body = {'contents': [{'parts': parts}], 'generationConfig': {'responseMimeType': 'application/json'}}
+    req = urllib.request.Request('https://generativelanguage.googleapis.com/v1beta/models/gemini-4-argon:generateContent', data=json.dumps(body).encode(), headers={'Content-Type': 'application/json', 'x-goog-api-key': os.environ['GEMINI_API_KEY']})
+    rr = json.load(urllib.request.urlopen(req, timeout=900)); txt = ''.join(p.get('text', '') for p in rr['candidates'][0]['content']['parts'])
+    class R: stderr = json.dumps(rr.get('usageMetadata', {}))
+    r = R()
 else:
     cmd = ['claude', '-p', '--model', 'claude-fable-5-1', '--output-format', 'text']
     r = subprocess.run(cmd, input=prompt, capture_output=True, text=True, encoding='utf8', errors='replace', cwd=SITE, timeout=1500, shell=True)

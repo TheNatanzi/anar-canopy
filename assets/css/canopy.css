@@ -1,0 +1,173 @@
+/* =========================================================
+   Anar Events — canopy.css (branch `canopy`, home page only; loaded after site.css)
+   ONE tall painted tree, assets/tree/tree-full.webp (1536×3714, transparent), scrolled down over four screens.
+   Measured with Pillow (alpha > 40), in art rows (1536 wide):
+     row  169  first foliage (the top fruit clusters at the sides; the centre stays open to row ~390)
+     rows 400–950   solid canopy, edge to edge
+     row 1200  the canopy's underside: the centre is fully open below (trunk inner edges x 196 / 1346)
+     rows 1280–1760 the trunk shrubs (the gap narrows to x 331–1210)
+     rows 2360–2800 bare trunks, gap x 196–1349 (the band tile, assets/tree/trunk-band.webp, made seamless)
+     row 3080  the roots start at the sides;  row 3240 the ground closes the middle
+     rows 3241–3584, x 551–1099: the two big ground pomegranates (nothing may cover them)
+   The art is drawn in three layers from the same file (canopy / trunk shrubs / ground) with the bare-trunk band
+   tiled between them, so the middle stretches to the content at any width and the ground always sits on the footer.
+   Screen offsets derive from those rows via --s (one art px in CSS px) and --tree-top.
+   ========================================================= */
+
+main.canopy{
+  --art-w:1536;
+  --art-h:3714;
+  --tree-w:100vw;                                  /* phones: 120vw (below) */
+  --s:calc(var(--tree-w) / 1536);                  /* one art pixel */
+  --vh100:100vh;
+  --vh45:45vh;
+  /* the tree's top: the first foliage (row 169) lands at 60% of screen 1, so the solid canopy (rows 400–950) fills
+     the bottom ~16% of screen 1 and the top ~40% of screen 2 at 1440×900 (966px of canopy at that width);
+     the centre of the canopy starts at row ~390, i.e. ~200px under the logo + line */
+  --tree-top:calc(var(--vh100) * .6 - 169 * var(--s));
+  /* page y where art row 1270 (just under the canopy) sits: the statement starts there.
+     With the 0.9× parallax (html.canopy-par) the tree is 0.1×scrollY lower when viewed; content is read ~45% down
+     the viewport, so c = (top + 1270·s − 45vh·0.1) / 0.9 */
+  --at-1270:calc(var(--tree-top) + 1270 * var(--s));
+  --ground-h:calc(634 * var(--s));                 /* rows 3080–3714: the roots and the ground */
+  --form-reserve:calc(534 * var(--s));             /* rows 3180–3714: the form ends above the central fruit (row 3241) */
+  position:relative;
+  overflow:clip;
+  background:var(--night);
+}
+@supports (height:1svh){
+  main.canopy{--vh100:100svh;--vh45:45svh}
+}
+html.canopy-par main.canopy{--at-1270:calc((var(--tree-top) + 1270 * var(--s) - var(--vh45) * .1) / .9)}
+/* phones: the trunks sit at the art's outer 13%, so 120vw keeps ~21px of bark at both edges with the 1150-row
+   gap (350px at 390) open for the copy; wider than that pushes the trunks off the screen */
+@media (max-width:768px){
+  main.canopy{--tree-w:120vw}
+}
+
+/* ---------- the video: behind everything, fixed while the motion runs (desktop), fades out under .hero__deepen
+   (site.js block 1) as screen 2 arrives, then display:none (canopy.js) so site.js pauses it; absolute (scrolls
+   away with screen 1) without motion and on phones ---------- */
+.hero__bg{position:absolute;top:0;left:0;width:100%;height:var(--vh100);min-height:600px;z-index:0;overflow:hidden;background:var(--night)}
+html.canopy-motion .hero__bg{position:fixed;inset:0;height:auto;min-height:0}
+@media (max-width:768px){
+  html.canopy-motion .hero__bg{position:absolute;inset:auto;top:0;left:0;height:var(--vh100);min-height:600px}
+}
+.hero__bg.is-gone{display:none}
+.hero__bg .hero__video,.hero__bg .hero__tint,.hero__bg .hero__deepen{position:absolute;inset:0}
+
+/* ---------- screen 1: the hero section is transparent (the fixed video shows through) ---------- */
+.canopy .hero{height:var(--vh100);min-height:600px;overflow:visible;background:transparent}
+/* the plain gold logo (no halo plaque), capped so the canopy's centre never reaches it on wide screens; the
+   descriptor line and the tag pair sit under it in the open centre (the canopy's centre starts ~200px lower) */
+.canopy .hero__mark{width:min(51vw,760px)}
+.canopy .hero__fade,.canopy .hero__rise{position:relative}
+.canopy .hero__tag{position:static;justify-content:center;text-align:center;margin-top:clamp(14px,2vh,24px);text-shadow:0 1px 12px rgba(27,34,30,.9)}
+@media (max-width:768px){.canopy .hero__mark{width:78vw;top:30%}.canopy .hero__tag{bottom:auto}}
+/* site.js block 1 tweens a `.hero__canopy`; here the canopy is the tree (.tree__canopy), so that target is an
+   empty hidden element (no GSAP "target not found" warning, nothing moved) */
+.hero__canopy[hidden]{display:none}
+
+/* ---------- the tree: one absolutely positioned layer the full height of main, moved at 0.9× scroll (canopy.js) ---------- */
+.screen,.tree,.ground-art{position:relative}
+.tree{position:absolute;top:var(--tree-top);bottom:0;left:50%;width:var(--tree-w);margin-left:calc(var(--tree-w) / -2);z-index:1;pointer-events:none;will-change:transform}
+.tree img,.ground-art img{display:block;width:100%;max-width:none;height:auto}
+/* z inside the tree: the trunk shrubs (opaque) under the band (which fades in over them), the sprigs and the canopy on top */
+.tree__trunk{z-index:1}
+.tree__band{z-index:2}
+.tree__sprig{z-index:3}
+.tree__canopy{z-index:4}
+.fruit-drop{z-index:5}
+
+/* the canopy: rows 0–1260, the last 60 rows fade out over the opaque trunk layer underneath (bark on bark, so the
+   sway's 0.5° misregistration at the seam is invisible); 8px wider than the art so the scroll shake never shows an edge */
+.tree__canopy{position:absolute;top:0;left:-8px;width:calc(100% + 16px);height:calc(1260 * var(--s));overflow:hidden;transform-origin:50% 0;will-change:transform;
+  -webkit-mask-image:linear-gradient(to bottom,#000 calc(1200 * var(--s)),transparent calc(1260 * var(--s)));mask-image:linear-gradient(to bottom,#000 calc(1200 * var(--s)),transparent calc(1260 * var(--s)))}
+.tree__shake{width:calc(100% - 16px);margin-left:8px;will-change:transform}
+/* the trunk shrubs: rows 1200–1900 (static; opaque, no fade: the layers above it fade) */
+.tree__trunk{position:absolute;top:calc(1200 * var(--s));left:0;width:100%;height:calc(700 * var(--s));overflow:hidden}
+.tree__trunk img{margin-top:calc(-1200 * var(--s))}
+/* two small swaying copies of the shrub branches (rows 1280–1760), each clipped to its side and faded out toward the
+   trunk it grows from (x 196 left / 1346 right), rotating about that edge (9s / 11s, canopy.js) over the static copy */
+.tree__sprig{position:absolute;top:calc(1280 * var(--s));width:calc(470 * var(--s));height:calc(480 * var(--s));overflow:hidden;will-change:transform}
+.tree__sprig img{margin-top:calc(-1280 * var(--s))}
+.tree__sprig--l{left:0;transform-origin:calc(196 * var(--s)) 50%;
+  -webkit-mask-image:linear-gradient(to right,transparent calc(170 * var(--s)),#000 calc(230 * var(--s)));mask-image:linear-gradient(to right,transparent calc(170 * var(--s)),#000 calc(230 * var(--s)))}
+.tree__sprig--r{right:0;transform-origin:calc(100% - 190 * var(--s)) 50%;
+  -webkit-mask-image:linear-gradient(to left,transparent calc(170 * var(--s)),#000 calc(230 * var(--s)));mask-image:linear-gradient(to left,transparent calc(170 * var(--s)),#000 calc(230 * var(--s)))}
+.tree__sprig--r img{margin-left:calc(-1066 * var(--s))}
+/* the bare-trunk band: trunk-band.webp (rows 2360–2800, seamless) tiled from row 1800 down to the bottom of main,
+   fading in over the opaque trunk layer; phones (no trunk layer) tile it from row 1200, under the canopy's fade */
+.tree__band{position:absolute;left:0;width:100%;top:calc(1800 * var(--s));bottom:0;background:url("../tree/trunk-band.webp") center top / 100% auto repeat-y;
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 calc(60 * var(--s)));mask-image:linear-gradient(to bottom,transparent 0,#000 calc(60 * var(--s)))}
+@media (max-width:768px){
+  .tree__trunk,.tree__sprig{display:none}
+  .tree__band{top:calc(1200 * var(--s));-webkit-mask-image:none;mask-image:none}
+  /* phones: the drop fruit (25px) hangs on the left trunk sliver, inside the 20px gutter, and drifts off the edge */
+  .tree img.fruit-drop{left:calc(105 * var(--s))}
+}
+/* the falling fruit (assets/tree/fruit-drop.webp, 82×91, cut from tile-B): hangs under the left trunk's branch at
+   x 150 / row 1000, well left of the statement column, and drops 1.6 screens with scroll (canopy.js), drifting
+   30px right on desktop (still outside the column) and 20px left on phones (off the edge) */
+.tree img.fruit-drop{position:absolute;left:calc(150 * var(--s));top:calc(1000 * var(--s));width:calc(82 * var(--s));height:auto;transform-origin:50% 50%;will-change:transform}
+
+/* the ground: rows 3080–3714 at the bottom of main, outside the parallax layer (the form and the footer sit on it
+   exactly); its top 100 rows fade in over the band; rises 40px into place on screen 4 (canopy.js) */
+.ground-art{position:absolute;left:50%;bottom:0;width:var(--tree-w);height:var(--ground-h);margin-left:calc(var(--tree-w) / -2);overflow:hidden;z-index:1;pointer-events:none;will-change:transform;
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 calc(100 * var(--s)));mask-image:linear-gradient(to bottom,transparent 0,#000 calc(100 * var(--s)))}
+.ground-art img{margin-top:calc(-3080 * var(--s))}
+/* the fallen fruit on the moss left of the big pair (x 300 / row 3440), rolls in as the ground arrives (canopy.js) */
+.ground-art img.fruit-roll{position:absolute;left:calc(300 * var(--s));top:calc(360 * var(--s));width:calc(70 * var(--s));height:auto;margin:0;transform-origin:50% 50%;will-change:transform}
+
+/* ---------- the content screens: normal flow above the art (z 2), the middle kept open ---------- */
+.screen{z-index:2}
+.screen__col{width:100%;margin-inline:auto;padding-inline:var(--gutter);text-align:center}
+.screen .kashida{margin:var(--s2) auto 0}
+.screen h2{font-size:clamp(32px,4vw,48px);line-height:1.1;text-wrap:balance}
+.screen .eyebrow{margin-bottom:var(--s1)}
+/* screen 2: starts under the canopy's underside; the column stays inside the shrub gap (x 331–1210 at the narrowest) */
+.screen--statement{padding-top:calc(var(--at-1270) - var(--vh100))}
+.screen--statement .screen__col{max-width:min(640px + 2 * var(--gutter),44vw + 2 * var(--gutter))}
+.screen--statement h2{font-size:clamp(32px,3.3vw,48px)}
+.statement__one{margin:var(--s3) auto 0;font-size:clamp(20px,1.8vw,24px);line-height:1.4;max-width:24em;text-wrap:balance}
+.promises{display:grid;gap:12px;margin:var(--s3) auto 0;color:var(--parch);font-size:clamp(17px,1.4vw,20px);line-height:1.4}
+.promises li{position:relative;padding-top:12px}
+.promises li::before{content:"";position:absolute;left:50%;top:0;width:24px;height:2px;margin-left:-12px;background:var(--gold)}
+/* screen 3: three photo slots side by side in the bare trunks (gap x 196–1349 = 1078px at 1440), each a 4:5 slot */
+.screen--celebrations{padding-top:clamp(96px,14vh,170px)}
+.screen--celebrations .screen__col{max-width:min(1000px + 2 * var(--gutter),68vw)}
+.cel{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2.4vw,32px);margin-top:clamp(32px,5vh,48px);text-align:left}
+.cel figure{margin:0;display:grid;gap:var(--s1)}
+.cel__slot{overflow:hidden;background:var(--deep);aspect-ratio:4/5}
+.cel__slot img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/5}
+.cel h3{font-size:clamp(20px,1.7vw,24px);margin-top:var(--s1)}
+.cel .fa{font-size:16px;color:var(--gold);text-align:left;display:block;line-height:1.5}
+.cel p{color:var(--stone);font-size:16px;line-height:24px}
+.cel__foot{margin-top:clamp(32px,5vh,48px);font-size:16px;line-height:24px;color:var(--stone)}
+/* screen 4: the short form (names, email, message, button) ends above the ground's central fruit; the ground + footer close the page */
+.screen--inquire{padding-top:clamp(96px,14vh,170px);padding-bottom:var(--form-reserve)}
+.screen--inquire .screen__col{max-width:min(680px + 2 * var(--gutter),56vw)}
+.screen--inquire .form{margin-top:var(--s3);text-align:left}
+.inquire__call{margin-top:var(--s3);color:var(--stone);font-size:16px;line-height:24px}
+.inquire__call a{color:var(--parch);border-bottom:2px solid rgba(201,158,92,.5);transition:border-color .3s}
+.inquire__call a:hover{border-color:var(--gold)}
+
+/* drifting leaves (site.js block 8 animates every .leaf): screens 2–3, over the trunks at the edges (x ≤ 180 / ≥ 1260
+   at 1440), never over the copy or the photo row (which ends 110px inside the trunk edge at 1440, 65px at 1280) */
+.screen--statement .leaf--1{right:3vw;top:62%;transform:rotate(12deg)}
+.screen--celebrations .leaf--3{left:-48px;top:18%;transform:rotate(-8deg)}
+.screen--celebrations .leaf--1{right:-48px;top:58%;transform:rotate(38deg)}
+.screen--inquire .leaf--3{left:-40px;top:4%;opacity:.7;transform:rotate(20deg)}
+
+/* phones: everything centred at full width (20px gutters), the photos stacked, the leaves small at the edges */
+@media (max-width:768px){
+  .screen__col,.screen--statement .screen__col,.screen--celebrations .screen__col,.screen--inquire .screen__col{max-width:none}
+  .cel{grid-template-columns:1fr;gap:var(--s3)}
+  .cel figure{max-width:420px;margin-inline:auto;width:100%}
+  /* no drifting leaves on phones: the copy runs edge to edge (20px gutters), so a leaf would sit over it */
+  .canopy .leaf{display:none}
+  /* the form keeps 64px under its last line for the fixed Pause button (site.css); the home footer keeps 56px more
+     under its legal line for the same button (no "How we work +" block on this page, so site.js never hides it) */
+  .promises{font-size:18px}
+  main.canopy + .site-footer{padding-bottom:calc(var(--s3) + 56px)}
+}

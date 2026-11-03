@@ -14,8 +14,9 @@ def key(src):
     spill = np.clip(np.minimum(r, b) - g, 0, 255); spill = np.where(fruit, 0, spill)
     r2 = r - spill; b2 = b - spill
     rgb = np.dstack([r2, g, b2]); return Image.fromarray(np.dstack([np.clip(rgb, 0, 255), alpha * 255]).astype(np.uint8), 'RGBA')
-for n in ['canopy-u3', 'trunks-tall', 'roots-floor', 'leaves-float']:
-    src = next(os.path.join(A, f'{n}.{e}') for e in ('jpg', 'png') if os.path.exists(os.path.join(A, f'{n}.{e}')))
-    im = key(src); im.save(os.path.join(T, f'{n}.png'), optimize=True)
-    im.save(os.path.join(T, f'{n}.webp'), 'WEBP', quality=88, method=6)
-    print(n, im.size, 'png', os.path.getsize(os.path.join(T, f'{n}.png')) // 1024, 'KB  webp', os.path.getsize(os.path.join(T, f'{n}.webp')) // 1024, 'KB')
+if __name__ == '__main__':
+  for n in ['canopy-u3', 'trunks-tall', 'roots-floor', 'leaves-float']:
+      src = next(os.path.join(A, f'{n}.{e}') for e in ('jpg', 'png') if os.path.exists(os.path.join(A, f'{n}.{e}')))
+      im = key(src); im.save(os.path.join(T, f'{n}.png'), optimize=True)
+      im.save(os.path.join(T, f'{n}.webp'), 'WEBP', quality=88, method=6)
+      print(n, im.size, 'png', os.path.getsize(os.path.join(T, f'{n}.png')) // 1024, 'KB  webp', os.path.getsize(os.path.join(T, f'{n}.webp')) // 1024, 'KB')

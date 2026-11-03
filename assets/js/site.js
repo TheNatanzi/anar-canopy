@@ -150,7 +150,7 @@
     }
   }
 
-  /* Skip link: the same anchor path as every in-page link (the drawer and the panel close first, so <main>
+  /* Skip link: the same anchor path as every in-page link (the drawer closes first, so <main>
      is no longer inert when it takes focus; main carries tabindex="-1") */
   var skip = $('.skip-link'), mainEl = $('#main');
   if (skip && mainEl) {
@@ -166,27 +166,22 @@
      --------------------------------------------------------- */
   var header = $('.site-header');
   var navToggle = $('.nav-toggle');
-  /* the "How we work +" tab, panel and backdrop (their block is below); panelOpen is read here by syncInert() */
-  var tab = $('.hww-tab'), panel = $('#hww-panel'), backdrop = $('.hww-backdrop');
-  var panelOpen = false;
-  /* ONE background-inert state for BOTH overlays (the drawer and the panel). Every element outside the panel is
-     a candidate; its original inert / aria-hidden is saved the first time either overlay opens and restored only
-     once both are closed, so a resize (syncNav) can never clear inert under the open panel. The drawer leaves the
-     header live (it lives there) and the skip link reachable (activating it closes the drawer); the panel makes
-     everything outside itself inert. aria-hidden goes with inert, for browsers without `inert`. */
+  /* the background-inert state for the open drawer. Every element outside it is a candidate; its original
+     inert / aria-hidden is saved the first time the drawer opens and restored once it closes, so a resize (syncNav)
+     can never clear inert under an open drawer. The header stays live (the drawer lives there) and the skip link
+     reachable (activating it closes the drawer). aria-hidden goes with inert, for browsers without `inert`. */
   var inertState = null;
   var outside = function () {
-    return $$('body > *').filter(function (el) { return el !== panel && el !== backdrop && el.tagName !== 'SCRIPT'; });
+    return $$('body > *').filter(function (el) { return el.tagName !== 'SCRIPT'; });
   };
   function syncInert() {
-    var navOpen = !!(header && header.classList.contains('nav-open'));
-    var on = navOpen || panelOpen;
+    var on = !!(header && header.classList.contains('nav-open'));
     if (on) {
       if (!inertState) {
         inertState = outside().map(function (el) { return { el: el, inert: el.inert, hidden: el.getAttribute('aria-hidden') }; });
       }
       inertState.forEach(function (s) {
-        var inert = panelOpen || (s.el !== header && s.el !== skip);
+        var inert = (s.el !== header && s.el !== skip);
         s.el.inert = inert;
         if (inert) { s.el.setAttribute('aria-hidden', 'true'); }
         else if (s.hidden === null) { s.el.removeAttribute('aria-hidden'); } else { s.el.setAttribute('aria-hidden', s.hidden); }
@@ -226,7 +221,7 @@
   scrollFns.push(onScrollState);
   onScrollState();
   /* the toggle's aria-expanded, the inert page, the scroll lock and Lenis always follow the drawer's class (also
-     re-synced on resize): syncInert() computes them from the drawer AND the panel together */
+     re-synced on resize): syncInert() computes them from the drawer */
   function syncNav() {
     if (!header || !navToggle) { return; }
     var open = header.classList.contains('nav-open');
@@ -247,8 +242,8 @@
       if (e.key === 'Escape' && header.classList.contains('nav-open')) { closeNav(); navToggle.focus(); }
     });
     /* the drawer closes when a link is activated, on a click outside the header (capture: before the target's own
-       handler, so the "How we work +" tab's open runs on a page that is no longer inert), when focus leaves the
-       header (Tab past the last link) and when the viewport grows past the phone breakpoint */
+       handler runs on a page that is no longer inert), when focus leaves the header (Tab past the last link) and
+       when the viewport grows past the phone breakpoint */
     $$('.site-nav a', header).forEach(function (a) { a.addEventListener('click', closeNav); });
     document.addEventListener('click', function (e) {
       if (header.classList.contains('nav-open') && !header.contains(e.target)) { closeNav(); }
@@ -263,150 +258,27 @@
   }
 
   /* ---------------------------------------------------------
-     "How we work +" slide-out panel (works without GSAP too):
-     ghost tab, night panel, close ×, Esc closes, backdrop closes,
-     focus trap, main content inert (aria-hidden fallback), close
-     timer cancelled on reopen, focus returns to the tab. The tab
-     hides while #inquire or the footer is in view and while the index
-     hero is in view (the inner-page band hides it on phones only);
-     on phones also while scrolling down: it slides in once the first
-     screen has scrolled past. The same block turns the header
-     "Inquire" ghost while another filled inquiry button is on screen
-     and hides the Pause button on phones while the page is scrolling.
+     The header "Inquire" turns ghost while another filled inquiry
+     button is on screen (#inquire with the form's own button, the
+     footer, and every main .btn whose href ends in #inquire): one
+     gold button per screen. Runs on every page; the Pause button
+     sits in the header bar (CSS) and is never hidden.
      --------------------------------------------------------- */
-  var closePanel = function () {};
-  if (tab && panel && backdrop) {
-    var closeBtn = $('.hww-panel__close', panel);
-    var lastFocus = null;
-    var closeTimer = null;
-    var openFrame = null;
-    var focusables = function () {
-      return $$('a[href], button, input, select, textarea, [tabindex]', panel)
-        .filter(function (el) { return !el.disabled && el.tabIndex >= 0 && el.offsetParent !== null && !el.closest('[inert]'); });
-    };
-    var openPanel = function () {
-      if (panelOpen) { return; }
-      panelOpen = true;
-      if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
-      lastFocus = document.activeElement;
-      panel.hidden = false; backdrop.hidden = false;
-      panel.inert = false;
-      panel.removeAttribute('aria-hidden');
-      openFrame = requestAnimationFrame(function () { panel.classList.add('is-open'); backdrop.classList.add('is-on'); openFrame = null; });
-      tab.setAttribute('aria-expanded', 'true');
-      (closeBtn || panel).focus({ preventScroll: true });
-      syncInert();
-    };
-    closePanel = function () {
-      if (!panelOpen) { return; }
-      panelOpen = false;
-      if (openFrame !== null) { cancelAnimationFrame(openFrame); openFrame = null; }
-      panel.classList.remove('is-open'); backdrop.classList.remove('is-on');
-      tab.setAttribute('aria-expanded', 'false');
-      syncInert();
-      if (closeTimer) { clearTimeout(closeTimer); }
-      closeTimer = setTimeout(function () { panel.hidden = true; backdrop.hidden = true; closeTimer = null; }, reduced || userPaused ? 0 : 560);
-      if (lastFocus && lastFocus.focus) { lastFocus.focus({ preventScroll: true }); }
-      panel.inert = true;
-      panel.setAttribute('aria-hidden', 'true');
-    };
-    tab.addEventListener('click', openPanel);
-    html.classList.add('panel-ready');
-    if (closeBtn) { closeBtn.addEventListener('click', closePanel); }
-    backdrop.addEventListener('click', closePanel);
-    document.addEventListener('keydown', function (e) {
-      if (!panelOpen) { return; }
-      if (e.key === 'Escape') { closePanel(); return; }
-      if (e.key === 'Tab') {
-        var f = focusables(); if (!f.length) { e.preventDefault(); panel.focus(); return; }
-        var first = f[0], last = f[f.length - 1];
-        if (e.shiftKey && (document.activeElement === first || document.activeElement === panel)) { e.preventDefault(); last.focus(); }
-        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-      }
-    });
-    document.addEventListener('focusin', function (e) {
-      if (panelOpen && !panel.contains(e.target)) { (closeBtn || panel).focus(); }
-    });
-    /* Keep focused controls visible; synchronize visual and keyboard availability.
-       Showing: the class, aria-hidden and tabIndex change together, at once. Hiding: while the page scrolls only
-       the class changes (visual); aria-hidden / tabIndex follow in the settle timeout (700 ms after the last
-       scroll or observer change). A control that holds focus is never hidden, visually or from the keyboard. */
-    var hideAtDestination = false, hideWhileScrolling = false, heroInView = true, filledInquire = false, idleTimer;
-    var lastScroll = window.scrollY;
-    var motionBtn = $('.motion-toggle');
-    var headerInquire = header ? $('.nav-right .btn', header) : null;
-    var heroEl = $('.hero') || $('.pageband');
-    /* the index hero hides the tab on every screen size; the inner-page band only on phones */
-    var heroHides = function () { return heroInView && (!isDesktop() || (heroEl && heroEl.classList.contains('hero'))); };
-    var setShown = function (el, hidden, settled) {
-      if (hidden && el.contains(document.activeElement)) { hidden = false; }
-      if (el.classList.contains('is-hidden') !== hidden) { el.classList.toggle('is-hidden', hidden); }
-      if (hidden && !settled) { return; }
-      var aria = hidden ? 'true' : 'false';
-      if (el.getAttribute('aria-hidden') !== aria) { el.setAttribute('aria-hidden', aria); }
-      var ti = hidden ? -1 : 0;
-      if (el.tabIndex !== ti) { el.tabIndex = ti; }
-    };
-    var syncTab = function (settled) {
-      var hidden = !panelOpen && document.activeElement !== tab &&
-        (hideAtDestination || heroHides() || (!isDesktop() && hideWhileScrolling));
-      setShown(tab, hidden, settled);
-      /* phones: the Pause button hides only while actively scrolling down (the animated sections keep it available;
-         the celebration bodies and the form reserve 64px under their text for it, CSS) */
-      if (motionBtn) {
-        setShown(motionBtn, !isDesktop() && hideWhileScrolling && document.activeElement !== motionBtn, settled);
-      }
-      /* the header "Inquire" turns ghost while another filled inquiry button is on screen (the celebrations and
-         journey CTAs, the form's own button in #inquire, the footer): one gold button per screen */
-      if (headerInquire && headerInquire.classList.contains('ghost') !== filledInquire) {
-        headerInquire.classList.toggle('ghost', filledInquire);
-      }
-    };
-    var settleSoon = function () {
-      clearTimeout(idleTimer);
-      idleTimer = setTimeout(function () { hideWhileScrolling = false; syncTab(true); }, 700);
-    };
-    tab.addEventListener('blur', function () { setTimeout(function () { syncTab(true); }, 0); });
-    if (motionBtn) { motionBtn.addEventListener('blur', function () { setTimeout(function () { syncTab(true); }, 0); }); }
-    onMQ(desktopQuery, function () { syncTab(true); });
-    scrollFns.push(function () {
-      var next = window.scrollY;
-      if (Math.abs(next - lastScroll) > 2) { hideWhileScrolling = next > lastScroll; }
-      lastScroll = next;
-      syncTab(false);
-      settleSoon();
-    });
-    /* one observer: #inquire and the footer hide the tab AND ghost the header Inquire; every other filled inquiry
-       button in the page (every main .btn whose href ends in #inquire) only ghosts the header Inquire */
-    var hideFor = [$('#inquire'), $('.site-footer')].filter(Boolean);
-    var ghostFor = hideFor.concat($$('main .btn[href$="#inquire"]'));
-    if (ghostFor.length && 'IntersectionObserver' in window) {
-      var inView = new Map();
-      var tabObserver = new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) { inView.set(en.target, en.isIntersecting); });
-        hideAtDestination = false; filledInquire = false;
-        inView.forEach(function (v, el) {
-          if (!v) { return; }
-          filledInquire = true;
-          if (hideFor.indexOf(el) !== -1) { hideAtDestination = true; }
-        });
-        syncTab(false);
-        settleSoon();
-      }, { threshold: 0.05 });
-      ghostFor.forEach(function (el) { tabObserver.observe(el); });
-    }
-    /* the hero observer (index: .hero; inner pages: .pageband): the tab stays out of the first screen */
-    if (heroEl && 'IntersectionObserver' in window) {
-      new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) { heroInView = en.isIntersecting; });
-        syncTab(false);
-        settleSoon();
-      }, { threshold: 0 }).observe(heroEl);
-    } else { heroInView = false; syncTab(true); }
+  var headerInquire = header ? $('.nav-right .btn', header) : null;
+  var ghostFor = [$('#inquire'), $('.site-footer')].concat($$('main .btn[href$="#inquire"]')).filter(Boolean);
+  if (headerInquire && ghostFor.length && 'IntersectionObserver' in window) {
+    var ghostInView = new Map();
+    var ghostObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { ghostInView.set(en.target, en.isIntersecting); });
+      var filled = false;
+      ghostInView.forEach(function (v) { if (v) { filled = true; } });
+      if (headerInquire.classList.contains('ghost') !== filled) { headerInquire.classList.toggle('ghost', filled); }
+    }, { threshold: 0.05 });
+    ghostFor.forEach(function (el) { ghostObserver.observe(el); });
   }
 
   /* Same-page anchors (including "index.html#inquire" while on index) and the skip link:
-     the panel and the drawer close first, then the scroll. A target inside a collapsed
+     the drawer closes first, then the scroll. A target inside a collapsed
      celebration strip (the "Find your celebration" links) opens that panel on wide screens. */
   function openPanelFor(target) {
     var p = target.closest ? target.closest('.accordion__panel') : null;
@@ -415,7 +287,6 @@
   }
   function goToAnchor(target) {
     closeNav();
-    closePanel();
     openPanelFor(target);
     scrollToEl(target);
   }
@@ -738,9 +609,10 @@
   var lengthOf = function (p) {
     return function () { var r = p.getBoundingClientRect(); return Math.max(r.width, r.height) || 1; };
   };
+  /* the gap is 4px longer than the dash, so at the full offset no rounding leaves a dot at the path's end */
   var dashOf = function (p) {
     var len = lengthOf(p);
-    return function () { var l = len(); return l + 'px ' + l + 'px'; };
+    return function () { var l = len(); return l + 'px ' + (l + 4) + 'px'; };
   };
   /* an element's offset along one axis inside an ancestor, summed up the offsetParent chain (transform-independent) */
   var offsetWithin = function (el, root, prop) {
@@ -974,6 +846,8 @@
   function buildLeaves() {
     killLeaves();
     $$('.leaf').forEach(function (leaf, i) {
+      /* a leaf hidden by CSS (the canopy home on phones) gets no tween or trigger */
+      if (getComputedStyle(leaf).display === 'none') { return; }
       if (isDesktop()) {
         var drift = gsap.to(leaf, { y: '+=' + (18 + i * 6), x: '+=' + (i % 2 ? -10 : 10), rotation: '+=' + (i % 2 ? -3 : 3), duration: 6 + i * 1.5, ease: 'sine.inOut', yoyo: true, repeat: -1, paused: true });
         leafTweens.push(drift);
@@ -993,8 +867,8 @@
   onMQ(desktopQuery, function () { if (motionOn && motionCtx) { motionCtx.add(buildLeaves); } });
 
   /* ---------------------------------------------------------
-     Pause motion / Play motion (bottom-left ghost button) and
-     the prefers-reduced-motion change event.
+     Pause motion / Play motion (the ghost button in the header bar)
+     and the prefers-reduced-motion change event.
      --------------------------------------------------------- */
   var toggle = $('.motion-toggle');
   /* the visible text lives in .motion-toggle__text (hidden where CSS draws the glyph); the accessible name is the
@@ -1035,7 +909,7 @@
     syncReducedControl();
     if (!toggle.hasAttribute('aria-label')) { toggle.setAttribute('aria-label', 'Pause motion'); }
     html.classList.add('motion-ready');
-    /* the control stays visible the whole page on every screen size: motion continues below the hero, so must the way to stop it */
+    /* the control sits in the fixed header, so it is reachable the whole page: motion continues below the hero, so must the way to stop it */
     toggle.addEventListener('click', function () { if (userPaused) { playAll(true); } else { pauseAll(true); } });
   }
   var onReduceChange = function (e) {

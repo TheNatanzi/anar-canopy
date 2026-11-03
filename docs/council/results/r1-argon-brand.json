@@ -1,0 +1,35 @@
+{
+ "model": "argon",
+ "role": "brand",
+ "score": 8,
+ "blocking": [
+  "Hard rule broken in index-phone-4.jpg: the fixed .motion-toggle button sits directly on top of the 'Instagram · @anarevents' link in the footer, obscuring the text."
+ ],
+ "fixes": [
+  {
+   "where": "assets/css/site.css (.site-footer on mobile)",
+   "what": "Increase bottom padding on .site-footer at <=768px to calc(64px + env(safe-area-inset-bottom)), or hide .motion-toggle when .site-footer intersects the viewport.",
+   "why": "Violates the hard rule that controls must never cover logo, text, buttons, inputs, or the footer (visible in index-phone-4.jpg)."
+  },
+  {
+   "where": "assets/css/canopy.css & index.html (.kashida--short in .screen__col)",
+   "what": "Add margin-inline: auto to .screen__col .kashida--short so the 2px gold kashida lines center under the centered h2 headings on screens 2, 3, and 4.",
+   "why": "In desktop shots 2, 3, and 4 and phone shots 1 and 3, the gold kashida line is awkwardly left-aligned inside a centered header stack."
+  },
+  {
+   "where": "assets/css/site.css (.field input::placeholder)",
+   "what": "Add text-overflow: ellipsis or shorten placeholder to 'Sara & Omid, or parent's name' and adjust padding-inline.",
+   "why": "In index-desktop-3.jpg, the placeholder text is clipped mid-letter ('Sara & Omid, or a parent's nan') at the right edge of the input."
+  },
+  {
+   "where": "assets/css/canopy.css (.tree__sprig on mobile)",
+   "what": "Hide .tree__sprig--l and .tree__sprig--r at max-width: 768px, or clip them cleanly inside the trunk edge.",
+   "why": "In index-phone-1.jpg, a stray half-cropped red pomegranate floats at the far left edge, breaking the clean vertical trunk framing."
+  },
+  {
+   "where": "assets/css/canopy.css (.screen--statement .promises)",
+   "what": "Replace the tiny gold <hr>/pseudo-element dashes between the three promises with vertical spacing (gap: 20px) and let the main kashida be the sole horizontal gold line.",
+   "why": "Three tiny centered gold ticks under a off-center kashida line look cluttered and dilute the kashida device."
+  }
+ ]
+}

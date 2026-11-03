@@ -16,7 +16,7 @@
 <link rel="preload" href="assets/fonts/NotoNaskhArabic-arabic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/video/hero-poster-small.jpg" as="image">
 <!-- the one painted tree (1536×3714, transparent): drawn in three layers from this file plus the tiled trunk band -->
-<link rel="preload" href="assets/tree/tree-full.webp" as="image" fetchpriority="high">
+<link rel="preload" href="assets/tree/tree-full.webp" as="image" imagesrcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full.webp 1536w" imagesizes="(max-width:768px) 120vw, 100vw" fetchpriority="high">
 <link rel="stylesheet" href="assets/css/site.css">
 <link rel="stylesheet" href="assets/css/canopy.css">
 <link rel="canonical" href="https://anarevents.com/">
@@ -50,6 +50,10 @@
       <a class="nav-phone" href="tel:+19252639949">(925) 263-9949</a>
       <a class="btn btn--sm" href="index.html#inquire">Inquire</a>
     </div>
+    <!-- Pause motion / Play motion: a 36px round control in the bar (right, beside Inquire; beside the menu toggle on
+         phones), so it never covers text, inputs or the footer. aria-pressed="true" means paused -->
+    <button class="motion-toggle ghost" type="button" aria-label="Pause motion" aria-pressed="false"><span class="motion-toggle__text">Pause motion</span></button>
+    <p class="motion-toggle__note visually-hidden" hidden>Motion is off because your device asks for reduced motion.</p>
   </div>
 </header>
 
@@ -70,26 +74,27 @@
 
   <!-- the tree, screen 1 to screen 4 -->
   <div class="tree" aria-hidden="true">
-    <div class="tree__trunk"><img src="assets/tree/tree-full.webp" width="1536" height="3714" alt="" decoding="async"></div>
+    <div class="tree__trunk"><img src="assets/tree/tree-full.webp" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 120vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>
     <div class="tree__band"></div>
-    <div class="tree__sprig tree__sprig--l"><img src="assets/tree/tree-full.webp" width="1536" height="3714" alt="" decoding="async"></div>
-    <div class="tree__sprig tree__sprig--r"><img src="assets/tree/tree-full.webp" width="1536" height="3714" alt="" decoding="async"></div>
-    <div class="tree__canopy"><div class="tree__shake"><img src="assets/tree/tree-full.webp" width="1536" height="3714" alt="" fetchpriority="high"></div></div>
+    <div class="tree__sprig tree__sprig--l"><img src="assets/tree/tree-full.webp" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 120vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>
+    <div class="tree__sprig tree__sprig--r"><img src="assets/tree/tree-full.webp" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 120vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>
+    <div class="tree__canopy"><div class="tree__shake"><img src="assets/tree/tree-full.webp" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 120vw, 100vw" width="1536" height="3714" alt="" fetchpriority="high"></div></div>
     <img class="fruit-drop" src="assets/tree/fruit-drop.webp" width="82" height="91" alt="" loading="lazy" decoding="async">
   </div>
   <div class="ground-art" aria-hidden="true">
-    <img src="assets/tree/tree-full.webp" width="1536" height="3714" alt="" decoding="async">
+    <img src="assets/tree/tree-full.webp" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 120vw, 100vw" width="1536" height="3714" alt="" decoding="async">
     <img class="fruit-roll" src="assets/tree/fruit-drop.webp" width="82" height="91" alt="" loading="lazy" decoding="async">
   </div>
 
-  <!-- 1. SCREEN ONE: the video, the plain gold logo, one descriptor line and the tag pair in the open centre;
-       the canopy rises into the bottom of the screen (its centre starts ~200px under the line). -->
+  <!-- 1. SCREEN ONE: the video, the plain gold logo (soft cypress halo, no panel edge), one descriptor line and the
+       tag pair in the open centre; the canopy rises into the bottom of the screen (its centre starts under the tag pair). -->
   <section class="screen hero" aria-label="Anar Events">
     <i class="hero__canopy" hidden aria-hidden="true"></i>
     <div class="hero__mark">
       <!-- .hero__fade: scrubbed to opacity 0 in the last half of screen 1 (canopy.js), so no text sits over the canopy
            once site.js block 1 has moved the mark down; .hero__rise: the rise on load -->
       <div class="hero__fade"><div class="hero__rise">
+        <i class="hero__halo" aria-hidden="true"></i>
         <h1 class="hero__logo"><img src="assets/logo/logo-gold.svg" width="1600" height="552" alt="Anar Events" fetchpriority="high"></h1>
         <p class="hero__line">Wedding planning and coordination for Persian, Afghan and South Asian families<span class="hero__place">San Francisco Bay Area</span></p>
         <p class="hero__tag"><span>Reimagined Heritage</span> <span class="fa" lang="fa" dir="rtl">میراث، از نو</span></p>
@@ -97,17 +102,18 @@
     </div>
   </section>
 
-  <!-- 2. SCREEN TWO: the rest of the canopy across the top, the trunks beginning at the edges; the statement in the open middle -->
+  <!-- 2. SCREEN TWO: the rest of the canopy across the top, the trunks beginning at the edges; the statement starts right
+       under the canopy's underside and is centred in the open middle (the kashidas draw from the centre outward: two half paths) -->
   <section class="screen screen--statement" aria-labelledby="statement-title">
     <div class="leaf leaf--1" aria-hidden="true"></div>
     <div class="screen__col">
       <p class="eyebrow reveal"><span class="fa" lang="fa" dir="rtl">میراث، از نو</span></p>
       <h2 id="statement-title" class="reveal">Reimagined Heritage</h2>
-      <svg class="kashida kashida--short kashida-draw" viewBox="0 0 320 2" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 1 H320"/></svg>
+      <svg class="kashida kashida--short kashida-draw" viewBox="0 0 320 2" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M160 1 H0"/><path d="M160 1 H320"/></svg>
       <p class="statement__one reveal">Bespoke Persian, Afghan and South Asian weddings, fluent in the traditions your family cherishes.</p>
       <ol class="promises stagger" aria-label="Three things we always do">
         <li>Fluent in the unspoken details.</li>
-        <li>The elders honoured, your vision realised.</li>
+        <li>The elders honored, your vision realized.</li>
         <li>Multi-day celebrations, run to the minute.</li>
       </ol>
     </div>
@@ -121,39 +127,40 @@
     <div class="screen__col">
       <p class="eyebrow reveal"><span class="fa" lang="fa" dir="rtl">جشن‌ها</span></p>
       <h2 id="celebrations-title" class="reveal">The celebrations</h2>
-      <svg class="kashida kashida--short kashida-draw" viewBox="0 0 320 2" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 1 H320"/></svg>
+      <svg class="kashida kashida--short kashida-draw" viewBox="0 0 320 2" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M160 1 H0"/><path d="M160 1 H320"/></svg>
       <div class="cel stagger">
         <figure>
           <div class="cel__slot"><img src="assets/img/pom-open-closeup.jpg" srcset="assets/img/pom-open-closeup-800.jpg 800w, assets/img/pom-open-closeup-1400.jpg 1400w, assets/img/pom-open-closeup.jpg 2000w" sizes="(max-width:768px) 100vw, 330px" width="2000" height="1123" alt="An opened pomegranate, seeds packed tight" loading="lazy" decoding="async"></div>
-          <figcaption><span class="fa" lang="fa" dir="rtl">سفرهٔ عقد</span><h3>Sofreh Aghd</h3><p>The Persian ceremony at the spread.</p></figcaption>
+          <figcaption><span class="fa" lang="fa" dir="rtl">سفرهٔ عقد</span><h3><a href="weddings.html#sofreh-aghd">Sofreh Aghd</a></h3><p>The Persian ceremony at the spread.</p></figcaption>
         </figure>
         <figure>
           <div class="cel__slot"><img src="assets/img/pom-in-hand.jpg" srcset="assets/img/pom-in-hand-800.jpg 800w, assets/img/pom-in-hand-1400.jpg 1400w, assets/img/pom-in-hand.jpg 1500w" sizes="(max-width:768px) 100vw, 330px" width="1500" height="2000" alt="A pomegranate held in an open hand" loading="lazy" decoding="async"></div>
-          <figcaption><span class="fa" lang="fa" dir="rtl">نکاح</span><h3>Nikah</h3><p>The contract, read before both families.</p></figcaption>
+          <figcaption><span class="fa" lang="fa" dir="rtl">نکاح</span><h3><a href="weddings.html#nikah">Nikah</a></h3><p>The contract, read before both families.</p></figcaption>
         </figure>
         <figure>
           <div class="cel__slot"><img src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night.jpg 1125w" sizes="(max-width:768px) 100vw, 330px" width="1125" height="2000" alt="A pomegranate tree at night" loading="lazy" decoding="async"></div>
-          <figcaption><span class="fa" lang="fa" dir="rtl">حنابندان · مهندی</span><h3>Mehndi &amp; Sangeet</h3><p>Henna, blessings, music and dancing.</p></figcaption>
+          <figcaption><span class="fa" lang="fa" dir="rtl">حنابندان · مهندی</span><h3><a href="weddings.html#mehndi-sangeet">Mehndi &amp; Sangeet</a></h3><p>Henna, blessings, music and dancing.</p></figcaption>
         </figure>
       </div>
-      <p class="cel__foot reveal"><a class="link" href="weddings.html">Every tradition, in its own words</a></p>
+      <p class="cel__foot reveal"><a class="link" href="weddings.html">Haldi &amp; pheras, Anand Karaj, walima: every tradition, in its own words</a></p>
     </div>
   </section>
 
-  <!-- 4. SCREEN FOUR: the roots and the ground; Inquire above the fallen fruit, the footer below the ground -->
+  <!-- 4. SCREEN FOUR: the roots and the ground; Inquire (names, email + optional phone, message) above the fallen fruit, the footer below the ground -->
   <section class="screen screen--inquire" id="inquire" aria-labelledby="inquire-title">
     <div class="leaf leaf--3" aria-hidden="true"></div>
     <div class="screen__col">
       <p class="eyebrow reveal"><span class="fa" lang="fa" dir="rtl">شروع برنامه‌ریزی</span></p>
       <h2 id="inquire-title" class="reveal">Tell us about your family</h2>
-      <svg class="kashida kashida--short kashida-draw" viewBox="0 0 320 2" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 1 H320"/></svg>
+      <svg class="kashida kashida--short kashida-draw" viewBox="0 0 320 2" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M160 1 H0"/><path d="M160 1 H320"/></svg>
       <!-- Formspree: replace FORMSPREE_ID with the real form id (also noted in docs/BUILD-NOTES.md); the form carries no reveal class -->
       <form class="form" action="https://formspree.io/f/FORMSPREE_ID" method="POST" data-ajax>
         <input type="hidden" name="_subject" value="New inquiry from anarevents.com">
         <input type="text" name="_gotcha" class="visually-hidden" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="field"><label for="f-names">Your name(s)</label><p class="field__help" id="f-names-help">Couple or parent names</p><input id="f-names" name="names" type="text" autocomplete="name" required placeholder="Sara &amp; Omid" aria-describedby="f-names-help"></div>
         <div class="form__row">
-          <div class="field"><label for="f-names">Your name(s)</label><input id="f-names" name="names" type="text" autocomplete="name" required placeholder="Sara &amp; Omid, or a parent's name"></div>
           <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
+          <div class="field"><label for="f-phone">Phone / WhatsApp <span class="muted">(optional)</span></label><input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
         </div>
         <div class="field"><label for="f-message">Message</label><textarea id="f-message" name="message" placeholder="Your families, your dates, the rituals that matter most."></textarea></div>
         <div><button class="btn" type="submit">Begin the conversation</button></div>
@@ -187,8 +194,6 @@
   </div>
 </footer>
 
-<!-- Owner decision (canopy): no "How we work +" tab or slide-out panel on the home page (the inner pages keep theirs; site.js skips that block when the tab is absent). The Pause-motion button stays. -->
-<button class="motion-toggle ghost" type="button" aria-label="Pause motion" aria-pressed="false"><span class="motion-toggle__text">Pause motion</span></button>
-<p class="motion-toggle__note visually-hidden" hidden>Motion is off because your device asks for reduced motion.</p>
+<!-- Owner decision (2026-11-03): no "How we work +" tab or slide-out panel anywhere; the Pause-motion button lives in the header bar. -->
 </body>
 </html>

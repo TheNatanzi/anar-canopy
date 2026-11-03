@@ -1,0 +1,36 @@
+{
+ "model": "astra",
+ "role": "brand",
+ "score": 6,
+ "blocking": [
+  "The persistent Pause control overlays the footer in desktop screenshot 4, breaking the explicit rule that controls never cover the footer.",
+  "Desktop screenshot 1 is almost entirely canopy and empty space; the statement arrives too late to make the intended four-screen composition feel deliberate."
+ ],
+ "fixes": [
+  {
+   "where": "assets/js/site.js — motion-toggle visibility",
+   "what": "Move Pause-control visibility handling outside the optional How we work panel block. Hide it when the footer enters its occupied area, retaining an accessible motion control above the footer.",
+   "why": "Removing the home-page tab also removed its shared visibility logic; the remaining control violates the footer exclusion."
+  },
+  {
+   "where": "assets/css/canopy.css — --tree-top, --at-1270 and .screen--statement",
+   "what": "Retune canopy scale and section placement together so screen two shows the canopy overhead and the complete statement beneath it, with the heading below the fixed header and all text inside the open middle.",
+   "why": "The current desktop sequence spends nearly a whole viewport on artwork before compressing the statement and celebrations into the next view."
+  },
+  {
+   "where": "assets/css/site.css — .form__row and .field input",
+   "what": "Use minmax(0,1fr) for both desktop form columns, constrain inputs with min-width:0, and preserve a visibly clear gap between their fills and underlines.",
+   "why": "In desktop screenshot 3, the name and email inputs read as one continuous strip, and the example name is visibly clipped."
+  },
+  {
+   "where": "assets/js/canopy.js — velocity shake and fruit animations",
+   "what": "Remove the elastic scroll-velocity shake and spinning fruit drop/roll; retain restrained canopy sway, tree parallax and the ground arrival.",
+   "why": "The scripted spring and tumbling-fruit effects introduce a playful register that weakens the otherwise premium painted composition."
+  },
+  {
+   "where": "index.html — .hero__logo; assets/css/canopy.css",
+   "what": "Restore the approved soft cypress halo behind the gold logo using a restrained radial-gradient pseudo-element without a visible panel edge.",
+   "why": "The halo styling exists but its element is absent; the gold mark currently competes with bright video details, particularly on the phone."
+  }
+ ]
+}

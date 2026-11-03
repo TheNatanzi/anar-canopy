@@ -1,0 +1,36 @@
+{
+ "model": "argon",
+ "role": "dev",
+ "score": 6,
+ "blocking": [
+  "Hard rule broken in index-phone-4.jpg: the fixed `.motion-toggle` button at `bottom: 16px; left: 16px` overlaps and obscures the \"Instagram · @anarevents\" link in the footer on mobile when the user stops scrolling.",
+  "Hard rule broken in index-phone-2.jpg: the section heading `<h2 id=\"statement-title\">Reimagined Heritage</h2>` and its eyebrow on Screen 2 are completely cut off/obscured at the top by the sticky header/canopy transition on 390px viewports."
+ ],
+ "fixes": [
+  {
+   "where": "assets/css/site.css (.site-footer) or assets/js/site.js (syncTab)",
+   "what": "Add `padding-bottom: calc(var(--s3) + 56px)` to `.site-footer` on mobile (`@media (max-width:768px)`), or hide `.motion-toggle` when `.site-footer` intersects the viewport.",
+   "why": "Prevents the fixed bottom-left Pause Motion button from covering the footer's Instagram link on mobile (hard rule violation shown in index-phone-4.jpg)."
+  },
+  {
+   "where": "assets/js/site.js:273 (if (tab && panel && backdrop))",
+   "what": "Decouple the `motionBtn` scroll-hide and the `headerInquire` ghosting observer from the `if (tab && panel && backdrop)` guard.",
+   "why": "On `index.html`, `.hww-tab` was removed by owner decision, which causes this entire block to be skipped—breaking mobile scroll-hiding for `.motion-toggle` and ghost-button toggling for the header CTA on the home page."
+  },
+  {
+   "where": "assets/css/canopy.css & index.html (section.screen--statement)",
+   "what": "Increase the top padding or scroll offset of `.screen--statement` on mobile viewports (`@media (max-width:768px)`) and ensure `.tree__canopy` does not overlap the top of Screen 2's text column.",
+   "why": "Fixes the `<h2>Reimagined Heritage</h2>` heading and eyebrow being cut off/covered at the top of Screen 2 on mobile (index-phone-2.jpg) and clipped on desktop (index-desktop-2.jpg)."
+  },
+  {
+   "where": "weddings.html:160, 214 (img srcset)",
+   "what": "Change `srcset=\"... assets/img/pom-tree-night.jpg 1125w, assets/img/pom-tree-night-1400.jpg 1400w\"` to match `index.html` (`800w` and `1125w` only), or ensure the 1400w file exists and has the larger intrinsic width.",
+   "why": "The `img` declares `width=\"1125\"` for `pom-tree-night.jpg` while listing a `-1400.jpg` candidate in `srcset` that is omitted on `index.html`, risking a 404 or mismatched aspect ratio on high-DPR screens."
+  },
+  {
+   "where": "assets/css/site.css:15 (@font-face)",
+   "what": "Change `font-display: block` to `font-display: swap` (or `optional`) on both `@font-face` declarations.",
+   "why": "Even with `<link rel=\"preload\">`, `font-display: block` risks up to a 3-second invisible text delay (FOIT) on slow mobile 3G/4G connections before rendering critical headings."
+  }
+ ]
+}

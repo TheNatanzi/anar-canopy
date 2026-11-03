@@ -1,0 +1,40 @@
+{
+ "model": "fable",
+ "role": "dev",
+ "score": 7,
+ "blocking": [
+  "Phone (390px): the fixed Pause button covers the Email input at rest (index-phone-3.jpg, button 16–52px x over the input that starts at 40px) and the footer's Instagram link (index-phone-4.jpg). The hide-while-scrolling and 64px/56px reserves only help at the very bottom; this breaks the owner's hard rule that controls never cover inputs, text or the footer."
+ ],
+ "fixes": [
+  {
+   "where": "site.js, the `if (tab && panel && backdrop)` block (hww panel) + canopy.css phone rules",
+   "what": "Move the motionBtn hide-while-scrolling logic and the headerInquire ghost toggle out of the hww-tab block into their own block that runs when `.motion-toggle` exists (index has no tab, so neither runs there). On phones also give .form, .inquire__call and .site-footer address a left padding of 56px below 769px, or move the Pause button to bottom-right where the form's left edge is not.",
+   "why": "On index the header Inquire stays gold while the form's gold button is on screen (index-desktop-4.jpg) and the Pause button sits over the Email field and footer links on phones."
+  },
+  {
+   "where": "index.html `.tree__canopy img` and the other four tree-full.webp <img>s + the preload",
+   "what": "Add a 768-wide variant (assets/tree/tree-full-768.webp, ~120 KB) with srcset=\"tree-full-768.webp 768w, tree-full.webp 1536w\" sizes=\"(max-width:768px) 120vw, 100vw\" and `imagesrcset`/`imagesizes` on the preload link.",
+   "why": "A 491 KB, 1536×3714 image is preloaded at high priority on a 390px phone that renders it 468px wide; it competes with the logo, fonts and poster for the first paint."
+  },
+  {
+   "where": "canopy.css `.canopy .hero__rise` + canopy.js block 5",
+   "what": "Add `.js.anim-ready .canopy .hero__rise{opacity:0}` (and `.reduced .hero__rise{opacity:1}`), and have the rise tween use `gsap.to(rise,{opacity:1,...})` instead of fromTo from opacity 0.",
+   "why": "Deferred scripts run after first paint: the logo and line paint, snap to opacity 0, then rise — a visible flash on every load with a warm cache."
+  },
+  {
+   "where": "canopy.css `.tree{will-change:transform}` and `.tree__band`",
+   "what": "Remove `will-change` from `.tree` (GSAP's transform already promotes it) and keep it only on `.tree__canopy`, `.tree__shake` and the two sprigs; let the band stay a plain repeat-y background without its own layer.",
+   "why": "`.tree` is a composited layer the full page height (≈1440×3500 px at desktop, plus five decoded copies of the same image); on phones that is tens of MB of GPU texture for a 0.1× parallax."
+  },
+  {
+   "where": "canopy.css `--tree-top` / `.screen--statement{padding-top}` at 1440×900",
+   "what": "Lower the hero's canopy start to ~70% of screen 1 (`--tree-top:calc(var(--vh100) * .7 - 169 * var(--s))`) or shrink the gap after row 1270 so the statement's eyebrow enters the viewport before the canopy's underside leaves it; verify at 1366×657 and 1440×900.",
+   "why": "index-desktop-1.jpg is a full 900px viewport of canopy with no copy at all (statement begins at page y≈1700): a dead scroll screen between the hero and the first words."
+  },
+  {
+   "where": "index.html `<head>`: the two stylesheets; site.js block 8 on phones",
+   "what": "Concatenate canopy.css into site.css for the home build (or inline it) and skip `buildLeaves()` for leaves that are `display:none` (`getComputedStyle(leaf).display==='none'`).",
+   "why": "One extra render-blocking CSS request on the only page that matters for LCP, and four ScrollTriggers scrubbing invisible leaves on every phone scroll frame."
+  }
+ ]
+}

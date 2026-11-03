@@ -1,0 +1,41 @@
+{
+ "model": "astra",
+ "role": "planner",
+ "score": 7.8,
+ "blocking": [
+  "Service selection is buried below the lengthy five-step process; families must read too far to learn whether Anar offers the help they need.",
+  "The celebrations copy bundles distinct occasions together, weakening the otherwise convincing promise to plan each family's chosen traditions individually."
+ ],
+ "fixes": [
+  {
+   "where": "how-we-work.html — #you-get and #steps",
+   "what": "Move the existing Full planning and Wedding-day coordination options above the five steps. Keep their start times and responsibilities together; remove repeated inclusions from the later list.",
+   "why": "Couples and paying parents need to identify the service before studying its process."
+  },
+  {
+   "where": "weddings.html — #mehndi-sangeet",
+   "what": "Give henna gatherings and sangeet separate short paragraphs; move the baraat explanation into the relevant wedding-day ceremony descriptions. Retain family-choice qualifiers beside each occasion.",
+   "why": "The current paragraph makes separate events read like interchangeable parts of one celebration."
+  },
+  {
+   "where": "weddings.html — immediately after .pageband introduction",
+   "what": "Add a compact set of jump links to the existing ceremony sections, including Anand Karaj and Haldi & Pheras.",
+   "why": "Families should find their ceremony without scrolling through several unrelated traditions."
+  },
+  {
+   "where": "index.html — .cel figures and .cel__foot",
+   "what": "Link each celebration title to its matching weddings.html section and change the existing footer link to 'Explore wedding traditions'.",
+   "why": "The current cards offer no direct route to their details, while 'Every tradition' overstates the page's explicitly illustrative coverage."
+  },
+  {
+   "where": "index.html — #f-names",
+   "what": "Move the parent-inclusive example into persistent helper text below the label, using 'Couple or parent names', and connect it with aria-describedby.",
+   "why": "The desktop screenshot clips the parent's-name invitation, and placeholder guidance disappears when someone starts typing."
+  },
+  {
+   "where": "how-we-work.html — Full planning first bullet",
+   "what": "Change 'Your budget tracked, line by line, from the first conversation' to 'Your budget tracked, line by line, once planning begins'.",
+   "why": "The current promise conflicts with the stated signed-proposal start and makes the free consultation's scope unclear."
+  }
+ ]
+}

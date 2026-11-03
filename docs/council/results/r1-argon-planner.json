@@ -1,0 +1,31 @@
+{
+ "model": "argon",
+ "role": "planner",
+ "score": 7,
+ "blocking": [
+  "Hard rule violation on mobile footer (shot index-phone-4.jpg): the fixed 'Pause motion' button at the bottom-left covers the word 'Instagram' in the footer contact list.",
+  "On desktop and mobile scroll (shots index-desktop-2.jpg, index-phone-1.jpg), the 'Reimagined Heritage' h2 and its Persian eyebrow are clipped/hidden under the sticky header bar when scrolling into the statement section."
+ ],
+ "fixes": [
+  {
+   "where": "index.html / assets/css/site.css (.site-footer, .motion-toggle)",
+   "what": "Add bottom padding (e.g., padding-bottom: 72px) to .site-footer on mobile or hide .motion-toggle when the footer is in view.",
+   "why": "Hard rule: controls must never cover text or the footer; right now the pause button sits directly on top of 'Instagram · @anarevents' on phone."
+  },
+  {
+   "where": "assets/css/canopy.css (.screen--statement)",
+   "what": "Increase top padding on .screen--statement so the eyebrow ('میراث، از نو') and h2 ('Reimagined Heritage') clear the fixed header and canopy overhang.",
+   "why": "In index-desktop-2.jpg and index-phone-1.jpg, the section title is cut off at the top of the viewport, leaving only the kashida line and body copy visible."
+  },
+  {
+   "where": "index.html:126 (screen--celebrations)",
+   "what": "Add a 4th card or explicitly name Afghan & Hindu/Sikh traditions in the captions or subhead alongside Sofreh Aghd, Nikah, and Mehndi & Sangeet.",
+   "why": "An Afghan parent or a Hindu/Sikh South Asian family scanning the home page only sees Persian and Muslim/North Indian ceremonies unless they click through to weddings.html."
+  },
+  {
+   "where": "index.html:148 (inquire form)",
+   "what": "Add an optional Phone / WhatsApp input field (`<input type=\"tel\" name=\"phone\">`) to the inquiry form.",
+   "why": "Parents and elders in Persian, Afghan, and South Asian families strongly prefer a phone call or WhatsApp message over email threads when vetting a planner."
+  }
+ ]
+}

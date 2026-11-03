@@ -1,0 +1,30 @@
+{
+ "model": "argon",
+ "role": "dev",
+ "score": 7,
+ "blocking": [
+  "Hard rule violation on home page mobile (index-phone-4.jpg): the fixed 'Pause motion' button (.motion-toggle) overlaps and obscures the 'Instagram · @anarevents' link in the footer because the hww-tab scroll-hide block in site.js is skipped on index.html and the footer's bottom padding is cleared before the link text."
+ ],
+ "fixes": [
+  {
+   "where": "assets/js/site.js:239 & assets/css/canopy.css:154",
+   "what": "Decouple the mobile scroll-hide logic for `.motion-toggle` and the header `.btn` ghosting observer from the `if (tab && panel && backdrop)` guard in `site.js` so they run on `index.html` too, and in `canopy.css` at `@media (max-width:768px)` add `padding-left: 52px` to `main.canopy + .site-footer address` or increase footer bottom padding so the last link never sits behind the 36px button at `left:16px; bottom:16px`.",
+   "why": "On index.html `.hww-tab` is absent, so `.motion-toggle` never hides on scroll and directly covers 'Instagram · @anarevents' in index-phone-4.jpg (breaking the hard rule that controls never cover text/links), and the header 'Inquire' button stays solid gold even when the form submit button is on screen."
+  },
+  {
+   "where": "weddings.html:142, 194, 217 & about.html:100",
+   "what": "Remove `assets/img/pom-tree-night-1400.jpg 1400w` from the `srcset` attributes of `pom-tree-night.jpg` (whose intrinsic width is `1125` and which only has `800w` and `1125w` in `index.html`).",
+   "why": "Referencing a 1400w candidate for an 1125px-wide source image causes a 404 network error when the browser selects the 1400w candidate on high-DPI displays."
+  },
+  {
+   "where": "assets/css/site.css:12 & 14",
+   "what": "Change `font-display: block` to `font-display: swap` (or `optional`) on both `@font-face` rules.",
+   "why": "`font-display: block` can hide all text (FOIT) for up to 3 seconds on slow 3G/mobile connections if the preloaded font takes time to arrive."
+  },
+  {
+   "where": "assets/js/canopy.js:90",
+   "what": "Track the velocity-shake `gsap.timeline` instance and kill/clearProps it inside `kill()` (or wrap it inside `ctx.add(...)`).",
+   "why": "A velocity shake triggered right before clicking 'Pause motion' is created outside the initial `gsap.context()` execution and will continue animating after motion is paused."
+  }
+ ]
+}

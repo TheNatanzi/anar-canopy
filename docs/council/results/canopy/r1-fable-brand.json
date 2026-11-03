@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "brand",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "assets/css/canopy.css — @media (max-width:768px) main.canopy",
+   "what": "Add `--gutter:36px` for the canopy page on phones (keep --tree-w:120vw). The copy currently runs to within ~4px of the ~22px bark slivers (phone shots 1–3: 'Multi-day celebrations, run to the minute.' touches the trunk).",
+   "why": "On phones the tree reads as a thin brown picture-frame border instead of a tree, and text kissing the bark kills the premium feel."
+  },
+  {
+   "where": "assets/css/canopy.css — @media (max-width:768px), next to `.tree img.fruit-drop{left:…}`",
+   "what": "Replace with `.tree img.fruit-drop{display:none}` on phones.",
+   "why": "At 390px the falling fruit sits at x≈-7..18px over the bark and shows as a cut-off magenta half-disc at the left edge (phone shot 1, y≈620): it reads as a rendering glitch, not motion."
+  },
+  {
+   "where": "index.html — #f-names placeholder",
+   "what": "Shorten to `Sara & Omid` (or `Your names, or a parent's`).",
+   "why": "At the 330px desktop column the placeholder clips to 'Sara & Omid, or a parent's nan' (desktop shot 3); a clipped string is the one sloppy detail on an otherwise exact form."
+  },
+  {
+   "where": "assets/css/canopy.css — .screen--statement .screen__col",
+   "what": "Add `min-height:calc(var(--vh100) - var(--header-h));display:grid;align-content:center` so the eyebrow / Reimagined Heritage / kashida block is centred in the open gap under the canopy instead of pinned to its underside.",
+   "why": "On desktop the statement h2 arrives tucked under the fixed header (desktop shot 2); the one headline of screen 2 should land in the clear middle the art was cut to leave open."
+  },
+  {
+   "where": "assets/css/canopy.css — .screen .eyebrow",
+   "what": "Add `.screen .eyebrow .fa{font-size:20px;line-height:1.5}` (Persian eyebrows on the home screens only).",
+   "why": "At ~16px gold Naskh over a 48px Ramillas h2 the Persian twin reads as a footnote rather than the brand's second voice (desktop shots 2–3)."
+  },
+  {
+   "where": "assets/css/site.css — .site-footer__logo",
+   "what": "Change to `width:min(100%,240px)`.",
+   "why": "On phones the footer logo renders at ~330px, nearly the hero's size (phone shot 4); the hero should be the single display-size appearance of the gold mark, the footer a quiet sign-off."
+  }
+ ]
+}

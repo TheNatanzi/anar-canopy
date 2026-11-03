@@ -45,6 +45,10 @@
       <a class="nav-phone" href="tel:+19252639949">(925) 263-9949</a>
       <a class="btn btn--sm" href="index.html#inquire">Inquire</a>
     </div>
+    <!-- Pause motion / Play motion: a 36px round control in the bar (right, beside Inquire; beside the menu toggle on
+         phones), so it never covers text, inputs or the footer. aria-pressed="true" means paused -->
+    <button class="motion-toggle ghost" type="button" aria-label="Pause motion" aria-pressed="false"><span class="motion-toggle__text">Pause motion</span></button>
+    <p class="motion-toggle__note visually-hidden" hidden>Motion is off because your device asks for reduced motion.</p>
   </div>
 </header>
 
@@ -99,7 +103,7 @@
       </div>
       <div class="story__photos">
         <figure class="reveal">
-          <div class="slot"><img class="reveal-img" src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night.jpg 1125w, assets/img/pom-tree-night-1400.jpg 1400w" sizes="(max-width:767px) 100vw, 33vw" width="1125" height="2000" alt="A pomegranate tree at night, fruit on the branch" loading="lazy" decoding="async"></div>
+          <div class="slot"><img class="reveal-img" src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night.jpg 1125w" sizes="(max-width:767px) 100vw, 33vw" width="1125" height="2000" alt="A pomegranate tree at night, fruit on the branch" loading="lazy" decoding="async"></div>
           <figcaption class="caption">The tree. Roots that stay.</figcaption>
         </figure>
         <figure class="reveal">
@@ -156,22 +160,6 @@
   </div>
 </footer>
 
-<button class="hww-tab ghost" type="button" aria-controls="hww-panel" aria-expanded="false">How we work <span aria-hidden="true">+</span></button>
-<button class="motion-toggle ghost" type="button" aria-label="Pause motion" aria-pressed="false"><span class="motion-toggle__text">Pause motion</span></button>
-<p class="motion-toggle__note visually-hidden" hidden>Motion is off because your device asks for reduced motion.</p>
-<div class="hww-backdrop" hidden></div>
-<aside class="hww-panel" id="hww-panel" role="dialog" aria-modal="true" aria-labelledby="hww-title" tabindex="-1" data-lenis-prevent hidden>
-  <button class="hww-panel__close" type="button" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-  <p class="eyebrow">How we work · <span class="fa" lang="fa" dir="rtl">روش کار ما</span></p>
-  <h2 id="hww-title">Five steps, one line</h2>
-  <ol class="hww-steps">
-    <li><div><h3>Inquiry</h3><p>Write to us, or call. Tell us about your family and your dates.</p></div></li>
-    <li><div><h3>Consultation</h3><p>We meet your family, greet the elders first, and listen. Parents and elders included at the level you choose.</p></div></li>
-    <li><div><h3>Proposal</h3><p>The plan, the price, and what is included: the events covered, the staffing, the hours and the fees.</p></div></li>
-    <li><div><h3>Planning</h3><p>Ritual by ritual, as your family keeps it. A short written summary after every meeting.</p></div></li>
-    <li><div><h3>The wedding days</h3><p>The ceremonies your family chooses, in the order agreed with your family, called with the venue and every vendor.</p></div></li>
-  </ol>
-  <p class="hww-panel__foot"><a class="btn" href="index.html#inquire">Begin the conversation</a> <a class="link" href="how-we-work.html">Read more</a> <span class="hww-panel__phone"><a href="tel:+19252639949">Call (925) 263-9949</a> · <a href="https://wa.me/19252639949" rel="noopener">WhatsApp</a></span></p>
-</aside>
+<!-- Owner decision (2026-11-03): no "How we work +" tab or slide-out panel anywhere; the Pause-motion button lives in the header bar. -->
 </body>
 </html>

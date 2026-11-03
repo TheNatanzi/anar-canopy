@@ -1,0 +1,42 @@
+{
+ "model": "astra",
+ "role": "dev",
+ "score": 6,
+ "blocking": [
+  "The fixed Pause control remains over the footer in desktop screenshot 4, violating the owner's no-controls-over-footer rule.",
+  "The hero's 600px minimum height and viewport-based tree positioning diverge on short screens, allowing the canopy to cross hero content.",
+  "The desktop sprig crops scale the full artwork to the narrow crop width, breaking their intended registration with the tree."
+ ],
+ "fixes": [
+  {
+   "where": "assets/css/site.css .motion-toggle; assets/js/site.js floating-control block",
+   "what": "Move motion-control positioning outside the optional hww-tab block. Give it a reserved area that avoids content and park it above the footer when the footer enters view; preserve keyboard access.",
+   "why": "Removing the home tab also bypassed its shared control logic; the fixed button visibly overlays the footer."
+  },
+  {
+   "where": "assets/css/canopy.css hero height, --tree-top and .screen--statement",
+   "what": "Define one effective hero height, including the 600px minimum, and use it consistently for hero layout, tree placement and statement offsets. Check short landscape screens and enlarged text.",
+   "why": "The hero grows to 600px while tree placement still uses the shorter viewport height."
+  },
+  {
+   "where": "assets/css/canopy.css .tree__sprig img",
+   "what": "Set sprig images to width:var(--tree-w) rather than the inherited width:100%, retaining the existing crop offsets and clipping containers.",
+   "why": "Each 470-art-pixel crop currently rescales the entire 1536px artwork before applying full-scale offsets."
+  },
+  {
+   "where": "assets/js/canopy.js build() scroll-velocity onUpdate and kill()",
+   "what": "Track the shake timeline explicitly and revert it in kill(), or create it through a context-bound callback. Reset shaking state during cleanup.",
+   "why": "Timelines created later inside onUpdate are not reliably captured by the initial context and can continue after Pause or reduced-motion activation."
+  },
+  {
+   "where": "assets/js/canopy.js build(), kill(); assets/css/canopy.css html.canopy-par",
+   "what": "Keep content geometry stable when motion is toggled; compensate tree positioning without switching the statement's normal-flow offset, then refresh remaining triggers after cleanup.",
+   "why": "Pause currently changes --at-1270 and shifts every subsequent section while the reader is using the page."
+  },
+  {
+   "where": "assets/js/canopy.js build() initialization",
+   "what": "Create and retain an empty context before adding animations, wrap construction in try/catch, and revert partial work plus canopy classes on failure.",
+   "why": "Unlike site.js, canopy initialization has no safe rollback; a partial failure can leave positioning classes and animations active."
+  }
+ ]
+}

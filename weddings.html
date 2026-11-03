@@ -45,6 +45,10 @@
       <a class="nav-phone" href="tel:+19252639949">(925) 263-9949</a>
       <a class="btn btn--sm" href="index.html#inquire">Inquire</a>
     </div>
+    <!-- Pause motion / Play motion: a 36px round control in the bar (right, beside Inquire; beside the menu toggle on
+         phones), so it never covers text, inputs or the footer. aria-pressed="true" means paused -->
+    <button class="motion-toggle ghost" type="button" aria-label="Pause motion" aria-pressed="false"><span class="motion-toggle__text">Pause motion</span></button>
+    <p class="motion-toggle__note visually-hidden" hidden>Motion is off because your device asks for reduced motion.</p>
   </div>
 </header>
 
@@ -57,10 +61,21 @@
         <h1 id="page-title" class="h-display">Weddings</h1>
         <p class="fa fa--title" lang="fa" dir="rtl">عروسی</p>
       </div>
-      <p class="lede measure">Our celebrations are built on centuries of poetry, hospitality and sacred tradition, and they deserve more than a cookie-cutter approach. We honor the deep soul of your heritage while stripping away the stress, never the meaning.</p>
+      <p class="lede measure">Our celebrations are built on centuries of poetry, hospitality and sacred tradition, and they deserve more than a cookie-cutter approach. We honor the deep soul of your heritage while stripping away the stress, never the meaning. Elders' seats held at the front, at every ceremony.</p>
       <p class="measure muted" style="margin-top:16px;font-size:16px;line-height:24px">These are examples; we confirm your family's customs and sequence with you and your officiant. Two heritages, different levels of observance, or celebrations not listed here? Tell us what your family keeps.</p>
     </div>
   </section>
+
+  <!-- jump links to the six ceremony sections (one row of gold text links; the Hindu and Sikh ceremonies named) -->
+  <nav class="container jump" aria-label="Ceremonies on this page">
+    <span class="jump__label">Find your ceremony</span>
+    <a href="#sofreh-aghd">Sofreh Aghd</a>
+    <a href="#nikah">Nikah</a>
+    <a href="#mehndi-sangeet">Mehndi &amp; Sangeet</a>
+    <a href="#haldi-pheras">Haldi &amp; Pheras</a>
+    <a href="#anand-karaj">Anand Karaj</a>
+    <a href="#reception-walima">Reception &amp; Walima</a>
+  </nav>
 
   <!-- Sofreh Aghd -->
   <section class="section tradition" id="sofreh-aghd" aria-labelledby="t-sofreh">
@@ -75,7 +90,6 @@
             <p>The spread at the head of the room: mirror, candlesticks, honey, bread, coins, the pomegranate.</p>
             <p>The Persian ceremony. We agree the ceremony wording, the responses and the family cues with the aghed and your family beforehand, then cue each one on the day. We brief your sofreh designer and check the spread against the sofreh key (a one-page guide naming each item on the spread, in the languages listed in your proposal) before the elders are seated.</p>
             <p>The key is coordinated with your printer and set out for the guests, so the other family learns each item at a glance.</p>
-            <p>Elders' seats held at the front, nearest the sofreh, as your family keeps it.</p>
           </div>
         </div>
         <figure class="tradition__media reveal">
@@ -99,7 +113,6 @@
           <div class="stagger">
             <p>The Islamic marriage contract, read before witnesses and both families.</p>
             <p>We cue the officiant and the family, and keep the room quiet and steady.</p>
-            <p>Elders' seats held at the front, as your family keeps it.</p>
             <p>If your family observes the aina mosaf (<span class="fa" lang="fa" dir="rtl">آینه‌مصحف</span>), as many Afghan families do, it has its own moment, at the nikah or at the reception under the shawl, as your family keeps it: the couple's first look in the mirror, the Quran open between them, the elders close. We cue the shawl, the mirror and the reading with your family, and nobody is hurried.</p>
             <p>A one-line programme, coordinated with your printer, explains the ritual so every guest can follow.</p>
           </div>
@@ -128,10 +141,9 @@
             <p class="fa fa--big" lang="fa" dir="rtl">حنابندان · مهندی</p>
           </div>
           <div class="stagger">
-            <p>The henna gathering: hana-bandan for Persian families, khina for Afghan families, mehndi for South Asian families. Henna on the bride's hands, with the elders' blessing as your family keeps it.</p>
-            <p>The sangeet, when both families sing, as your family keeps it; the dholki or the jaggo in the nights before, if your family holds them. Music, dancing and the baraat (the groom's party arriving on the wedding day), if your family chooses.</p>
+            <p>The henna gathering: hana-bandan for Persian families, khina for Afghan families, mehndi for South Asian families. Henna on the bride's hands, with the elders' blessing, as your family keeps it.</p>
+            <p>The sangeet: both families singing and dancing, with the dholki or the jaggo in the nights before if your family holds them.</p>
             <p>Timing agreed around your family's customs.</p>
-            <p>Elders' seats held at the front, close to the henna, as your family keeps it.</p>
           </div>
         </div>
         <figure class="tradition__media reveal">
@@ -150,17 +162,17 @@
         <div class="tradition__text">
           <div class="tradition__title reveal">
             <h2 id="t-hindu">Haldi &amp; Pheras</h2>
+            <p class="eyebrow">Hindu ceremonies</p>
           </div>
           <div class="stagger">
             <p>If your family observes the haldi, the family paints the couple with turmeric before the wedding. The pheras under the mandap, with the pandit, at the muhurat your family's priest has set: your ceremony, in the sequence agreed with your officiant.</p>
-            <p>We coordinate timing with your officiant and religious venue. If your family observes the baraat and the milni, we call them in the order of the agreed programme. We keep the mandap quiet and on time.</p>
-            <p>Elders' seats held at the front, nearest the mandap, as your family keeps it.</p>
+            <p>We coordinate timing with your officiant and religious venue. If your family observes the baraat (the groom's party arriving on the wedding day) and the milni, we call them in the order of the agreed programme. We keep the mandap quiet and on time.</p>
             <p>A one-line programme, coordinated with your printer, explains each ritual so every guest can follow.</p>
           </div>
         </div>
         <figure class="tradition__media reveal">
           <!-- PHOTO SLOT · Haldi & Pheras: the pheras under the mandap (real family, with consent), portrait 4:5 -->
-          <div class="slot"><img class="reveal-img" src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night.jpg 1125w, assets/img/pom-tree-night-1400.jpg 1400w" sizes="(max-width:899px) 100vw, 480px" width="1125" height="2000" alt="A pomegranate tree at night" loading="lazy" decoding="async"></div>
+          <div class="slot"><img class="reveal-img" src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night.jpg 1125w" sizes="(max-width:899px) 100vw, 480px" width="1125" height="2000" alt="A pomegranate tree at night" loading="lazy" decoding="async"></div>
           <figcaption class="caption">The pheras under the mandap, as your family keeps them.</figcaption>
         </figure>
       </div>
@@ -174,11 +186,11 @@
         <div class="tradition__text">
           <div class="tradition__title reveal">
             <h2 id="t-sikh">Anand Karaj</h2>
+            <p class="eyebrow">Sikh ceremony</p>
           </div>
           <div class="stagger">
             <p>The Sikh ceremony before the Guru Granth Sahib: the couple walk the four laavan as the hymns are sung. Your ceremony, in the sequence agreed with your family and the granthi.</p>
-            <p>We coordinate timing with the gurdwara. If your family observes the baraat and the milni, we call them in the order of the agreed programme. We keep the hall quiet and on time.</p>
-            <p>Elders' seats held at the front, as your family and the gurdwara keep it.</p>
+            <p>We coordinate timing with the gurdwara. If your family observes the baraat (the groom's party arriving on the wedding day) and the milni, we call them in the order of the agreed programme. We keep the hall quiet and on time.</p>
             <p>A one-line programme, coordinated with your printer, explains each ritual and what the gurdwara asks of guests (heads covered, shoes off), so every guest can follow.</p>
           </div>
         </div>
@@ -201,16 +213,15 @@
             <p class="fa fa--big" lang="fa" dir="rtl">جشن عروسی · ولیمه</p>
           </div>
           <div class="stagger">
-            <p>The walima, the groom's family's feast after the nikah, and the reception, on one night or two as your family keeps it. We run each your family's way.</p>
+            <p>The walima, the groom's family's feast after the nikah, and the reception, on one night or two as your family keeps it. We run each your way.</p>
             <p>Welcome sign, seating chart and table numbers in the languages listed in your proposal, coordinated with your printer and the venue.</p>
-            <p>The timeline called with the venue and every vendor. Blessings, entrances and dancing as your family wishes, in the order agreed with your family.</p>
-            <p>Elders' table held at the front, nearest the couple, as your family keeps it.</p>
+            <p>The timeline called with the venue and every vendor. Blessings, entrances and dancing in the order agreed with your family.</p>
             <p>The send-off cued for the elders, and a thank-you card that follows.</p>
           </div>
         </div>
         <figure class="tradition__media reveal">
           <!-- PHOTO SLOT · Reception & Walima: the first dance (real family, with consent), portrait 4:5 -->
-          <div class="slot"><img class="reveal-img" src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night.jpg 1125w, assets/img/pom-tree-night-1400.jpg 1400w" sizes="(max-width:899px) 100vw, 480px" width="1125" height="2000" alt="A pomegranate tree at night" loading="lazy" decoding="async"></div>
+          <div class="slot"><img class="reveal-img" src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night.jpg 1125w" sizes="(max-width:899px) 100vw, 480px" width="1125" height="2000" alt="A pomegranate tree at night" loading="lazy" decoding="async"></div>
           <figcaption class="caption">From the sacred vows to the last song.</figcaption>
         </figure>
       </div>
@@ -255,22 +266,6 @@
   </div>
 </footer>
 
-<button class="hww-tab ghost" type="button" aria-controls="hww-panel" aria-expanded="false">How we work <span aria-hidden="true">+</span></button>
-<button class="motion-toggle ghost" type="button" aria-label="Pause motion" aria-pressed="false"><span class="motion-toggle__text">Pause motion</span></button>
-<p class="motion-toggle__note visually-hidden" hidden>Motion is off because your device asks for reduced motion.</p>
-<div class="hww-backdrop" hidden></div>
-<aside class="hww-panel" id="hww-panel" role="dialog" aria-modal="true" aria-labelledby="hww-title" tabindex="-1" data-lenis-prevent hidden>
-  <button class="hww-panel__close" type="button" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-  <p class="eyebrow">How we work · <span class="fa" lang="fa" dir="rtl">روش کار ما</span></p>
-  <h2 id="hww-title">Five steps, one line</h2>
-  <ol class="hww-steps">
-    <li><div><h3>Inquiry</h3><p>Write to us, or call. Tell us about your family and your dates.</p></div></li>
-    <li><div><h3>Consultation</h3><p>We meet your family, greet the elders first, and listen. Parents and elders included at the level you choose.</p></div></li>
-    <li><div><h3>Proposal</h3><p>The plan, the price, and what is included: the events covered, the staffing, the hours and the fees.</p></div></li>
-    <li><div><h3>Planning</h3><p>Ritual by ritual, as your family keeps it. A short written summary after every meeting.</p></div></li>
-    <li><div><h3>The wedding days</h3><p>The ceremonies your family chooses, in the order agreed with your family, called with the venue and every vendor.</p></div></li>
-  </ol>
-  <p class="hww-panel__foot"><a class="btn" href="index.html#inquire">Begin the conversation</a> <a class="link" href="how-we-work.html">Read more</a> <span class="hww-panel__phone"><a href="tel:+19252639949">Call (925) 263-9949</a> · <a href="https://wa.me/19252639949" rel="noopener">WhatsApp</a></span></p>
-</aside>
+<!-- Owner decision (2026-11-03): no "How we work +" tab or slide-out panel anywhere; the Pause-motion button lives in the header bar. -->
 </body>
 </html>

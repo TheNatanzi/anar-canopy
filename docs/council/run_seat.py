@@ -5,14 +5,14 @@ import os, sys, json, subprocess, re, time
 SITE = r'C:\dev\anar-site'; D = os.path.join(SITE, 'docs', 'council'); model, role = sys.argv[1], sys.argv[2]; rnd = sys.argv[3] if len(sys.argv) > 3 else '1'
 os.makedirs(os.path.join(D, 'results'), exist_ok=True)
 rubric = open(os.path.join(D, 'RUBRIC.md'), encoding='utf8').read()
-files = ['index.html', 'weddings.html', 'how-we-work.html', 'about.html', 'assets/css/site.css', 'assets/js/site.js']
+files = ['index.html', 'weddings.html', 'how-we-work.html', 'about.html', 'assets/css/site.css', 'assets/css/canopy.css', 'assets/js/site.js', 'assets/js/canopy.js']
 code = ''.join(f'\n\n===== {f} =====\n' + open(os.path.join(SITE, f), encoding='utf8').read() for f in files if os.path.exists(os.path.join(SITE, f)))
 manifest = json.load(open(os.path.join(D, 'shots', 'manifest.json'), encoding='utf8'))
 shots = [os.path.join(D, 'shots', s['file']) for s in manifest['shots'] if s['page'] == 'index.html'][:10]
 errs = '\n'.join(manifest['errors']) or 'none'
 seat = f"Your seat: model={model}, role={role}. Browser console errors/overflow found by the harness: {errs}.\nScreenshots of the home page (desktop then phone, 5 scroll points each) are at:\n" + '\n'.join(shots)
 prompt = rubric + '\n\n' + seat + '\n\nTHE CODE:' + code
-out = os.path.join(D, 'results', f'r{rnd}-{model}-{role}.json'); t = time.time()
+out = os.path.join(D, 'results', os.environ.get('RESDIR', ''), f'r{rnd}-{model}-{role}.json'); t = time.time()
 if model == 'astra':
     cmd = ['codex.cmd', 'exec', '--skip-git-repo-check', '-m', 'gpt-6-astra', '-C', SITE, '-i', *shots[:6], '-']
     r = subprocess.run(cmd, input=prompt, capture_output=True, text=True, encoding='utf8', errors='replace', cwd=r'C:\Claude', timeout=1500)

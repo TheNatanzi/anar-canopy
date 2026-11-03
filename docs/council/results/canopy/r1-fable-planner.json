@@ -1,0 +1,40 @@
+{
+ "model": "fable",
+ "role": "planner",
+ "score": 6,
+ "blocking": [
+  "Phone: the fixed Pause button sits over the Email input's bottom-left corner (index-phone-3) and over the footer's Instagram link (index-phone-4) at rest, breaking the owner's rule that controls never cover inputs or the footer; a parent tapping the field edge pauses motion instead."
+ ],
+ "fixes": [
+  {
+   "where": "assets/css/site.css .motion-toggle @media (max-width:768px) / site.js syncTab",
+   "what": "On phones, keep the Pause button out of the content: either dock it in the header bar beside the menu toggle, or hide it (is-hidden) whenever .form or .site-footer intersects, not only while scrolling.",
+   "why": "At rest it covers the email field and the footer links on 390px; the 64px reserves only protect the last line."
+  },
+  {
+   "where": "index.html .cel__foot",
+   "what": "Change the link to 'Haldi & pheras, Anand Karaj, walima: every tradition, in its own words' so Hindu and Sikh families see themselves named on the home page.",
+   "why": "The three slots are Persian, Muslim and Mehndi; a Hindu or Sikh parent gets no signal until the inner page."
+  },
+  {
+   "where": "index.html .promises (honoured, realised) vs about.html / weddings.html (honor, Honoring)",
+   "what": "Pick one spelling site-wide; US spelling for a Bay Area studio: 'The elders honored, your vision realized.'",
+   "why": "Mixed British and American spelling reads as two writers and chips at the premium polish."
+  },
+  {
+   "where": "weddings.html every tradition section",
+   "what": "Keep 'Elders' seats held at the front' once in the page intro and cut it from the six sections; trim 'as your family keeps it' from ~15 uses to one per section at most.",
+   "why": "The repetition reads as a template, and parents skimming lose the ritual-specific lines underneath."
+  },
+  {
+   "where": "assets/css/canopy.css --at-1270 / .screen--statement padding-top",
+   "what": "Start the statement eyebrow and h2 at the canopy's underside (row ~1200) instead of below it, so the second screen is never a full viewport of foliage with no words (index-desktop-1).",
+   "why": "On desktop a parent sees one whole screen of painting and may think the page has stalled before any promise appears."
+  },
+  {
+   "where": "index.html hero__line / footer address",
+   "what": "Footer address: put 'Anar Events · San Francisco Bay Area' on its own line with nowrap or shorten to 'San Francisco Bay Area' so 'Area' does not wrap alone (index-desktop-4).",
+   "why": "A dangling single word in the address is the first thing a parent reads before dialing."
+  }
+ ]
+}

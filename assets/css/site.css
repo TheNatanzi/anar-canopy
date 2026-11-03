@@ -5,11 +5,14 @@
    Persian: Noto Naskh Arabic (self-hosted, Arabic subset), never italic/tracked/caps.
    ========================================================= */
 
-/* ---------- Fonts (both preloaded, so font-display:block: no Georgia flash and reflow before Ramillas lands) ---------- */
+/* ---------- Fonts (both preloaded; font-display:swap so slow connections never see blank text; the Latin fallback is
+   Georgia Bold size-adjusted to Ramillas' average advance and vertical metrics, so the swap barely reflows) ---------- */
 /* TRIAL file: replace with licensed TT Ramillas Bold before launch (same file name; see docs/BUILD-NOTES.md) */
-@font-face{font-family:"TT Ramillas";src:url("../fonts/TTRamillas-Bold.woff2") format("woff2");font-weight:700;font-style:normal;font-display:block}
+@font-face{font-family:"TT Ramillas";src:url("../fonts/TTRamillas-Bold.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap}
+/* the metric-matched fallback (fontTools: Ramillas avg advance .484em vs Georgia Bold .530em -> size-adjust 91.4%; ascent 1040 / descent 350 per 1000) */
+@font-face{font-family:"Ramillas Fallback";src:local("Georgia Bold"),local("Georgia-Bold"),local("Georgia");font-weight:700;font-style:normal;size-adjust:91.4%;ascent-override:113.8%;descent-override:38.3%;line-gap-override:0%}
 /* Noto Naskh Arabic: the Arabic-subset variable file from Google Fonts (one woff2 covers 400-700), self-hosted so no cross-origin CSS blocks render */
-@font-face{font-family:"Noto Naskh Arabic";src:url("../fonts/NotoNaskhArabic-arabic.woff2") format("woff2");font-weight:400 700;font-style:normal;font-display:block;unicode-range:U+0600-06FF,U+0750-077F,U+0870-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC}
+@font-face{font-family:"Noto Naskh Arabic";src:url("../fonts/NotoNaskhArabic-arabic.woff2") format("woff2");font-weight:400 700;font-style:normal;font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+0870-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC}
 
 /* ---------- Tokens ---------- */
 :root{
@@ -27,7 +30,7 @@
   --red:#9E1B32;
 
   --tint:rgba(27,34,30,.58);
-  --font-latin:"TT Ramillas",Georgia,"Times New Roman",serif;
+  --font-latin:"TT Ramillas","Ramillas Fallback",Georgia,"Times New Roman",serif;
   --font-fa:"Noto Naskh Arabic",Tahoma,serif;
 
   --s1:8px;--s2:16px;--s3:32px;--s4:64px;
@@ -131,6 +134,8 @@ main > .on-light:last-child{border-bottom:0}
 .site-header{position:absolute;top:0;left:0;right:0;z-index:50;height:var(--header-h);color:var(--parch);transition:background .4s,box-shadow .4s}
 .js .site-header{position:fixed}
 .site-header__inner{height:100%;display:flex;align-items:center;gap:var(--s2);padding-inline:clamp(16px,3vw,40px)}
+/* phones: a 12px gap and no logo margin, so toggle + Pause + logo + Inquire fit a 360px bar */
+@media (max-width:768px){.site-header__inner{gap:12px}.nav-home{margin-right:0}}
 /* the small gold logo: fades in (.4s) once the page is scrolled, on every page; always on inner pages */
 .nav-home{display:block;width:120px;margin-right:var(--s2);flex:0 0 auto;opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s}
 .nav-home img{width:100%;height:auto}
@@ -224,11 +229,9 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
   .hero__mark{width:78vw;top:30%}
   .hero__halo{width:170%;height:250%}
   .hero__line{font-size:14px;padding-inline:4px}
-  /* the tag pair sits on painted leaves: the same shadow as .hero__line, raised clear of the Pause button row
-     (the 36px toggle sits at bottom:16px; the pair starts 12px above its top) */
-  .hero__tag{bottom:calc(64px + env(safe-area-inset-bottom));text-shadow:0 1px 12px rgba(27,34,30,.9)}
+  /* the tag pair sits on painted leaves: the same shadow as .hero__line */
+  .hero__tag{bottom:calc(24px + env(safe-area-inset-bottom));text-shadow:0 1px 12px rgba(27,34,30,.9)}
   .hero__tag .fa{font-size:18px}
-  /* the "How we work +" tab is now a mid-height edge tab on phones too: the tagline stays at the bottom */
 }
 
 /* ---------- Floating leaves (two places; static under reduced motion) ---------- */
@@ -307,9 +310,8 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 }
 .accordion__label{position:absolute;left:var(--s2);top:var(--s2);letter-spacing:.06em;text-transform:uppercase;font-size:16px;z-index:1;display:none;color:var(--gold);text-shadow:0 1px 10px rgba(18,23,20,.95)}
 .accordion__body{position:relative;z-index:3;padding:var(--s4) var(--s2) var(--s3);display:grid;gap:var(--s1);min-height:100%;align-content:end;pointer-events:none}
-/* phones: a 44px right clearance for the mid-height "How we work +" tab and 64px under the text reserved for the
-   fixed Pause button (which stays available here); a compact preview (image + title + Persian) at 280px */
-@media (max-width:768px){.accordion__body{padding-right:44px;padding-bottom:64px}.accordion__panel{min-height:280px}}
+/* phones: a compact preview (image + title + Persian) at 280px */
+@media (max-width:768px){.accordion__panel{min-height:280px}}
 /* "Find your celebration": a compact in-page link row above the panels, six gold text links (the stacked phone list is long) */
 .accordion__index{display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:var(--s1) 20px;margin:0 auto var(--s3);font-size:16px;line-height:24px}
 .accordion__index-label{color:var(--stone);font-size:14px;line-height:20px;letter-spacing:.14em;text-transform:uppercase;flex:0 0 100%;text-align:center}
@@ -455,12 +457,14 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 /* ---------- Form: a 2px gold top rule only; a quiet .55 night surface so the roots composition shows through ---------- */
 .form{display:grid;gap:var(--s3);background:rgba(18,23,20,.55);border:0;border-top:2px solid var(--gold);padding:clamp(20px,4vw,48px)}
 .form__row{display:grid;gap:var(--s3)}
-@media (min-width:600px){.form__row{grid-template-columns:1fr 1fr}}
-/* the first row: names / email as two equal columns; the optional phone sits alone on the row under them */
+/* two equal columns that can shrink (minmax(0,1fr)), so a long placeholder never widens one and the fills stay apart */
+@media (min-width:600px){.form__row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
 .field{display:grid;gap:var(--s1);min-width:0}
 .field label,.fieldset legend{font-size:16px;line-height:22px;color:var(--parch)}
+/* persistent helper text under a label ("Couple or parent names"), linked with aria-describedby */
+.field__help{font-size:14px;line-height:20px;color:var(--stone);margin-top:-4px}
 /* inputs in the underline style (editorial, like the kashida): no perimeter box, a 2px gold rule at .7 (opaque enough to read against the night fill) under a soft night fill; focus = the full gold underline (no 1px hairlines anywhere) */
-.field input,.field textarea,.field select{font:inherit;font-weight:700;color:var(--parch);background:rgba(27,34,30,.55);border:0;border-bottom:2px solid rgba(201,158,92,.7);border-radius:2px 2px 0 0;padding:12px 14px;width:100%;min-height:48px;transition:border-color .3s,background-color .3s}
+.field input,.field textarea,.field select{font:inherit;font-weight:700;color:var(--parch);background:rgba(27,34,30,.55);border:0;border-bottom:2px solid rgba(201,158,92,.7);border-radius:2px 2px 0 0;padding:12px 14px;width:100%;min-width:0;min-height:48px;transition:border-color .3s,background-color .3s}
 /* placeholders in stone (#B9B3A6 on the deep input ground: ~8:1); the one-line inputs carry theirs at 16px, like the other secondary text */
 .field input::placeholder,.field textarea::placeholder{color:var(--stone);opacity:1}
 .field input::placeholder{font-size:16px}
@@ -496,17 +500,17 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .form__more[open] summary::after{content:"\2013"}
 .form__more summary:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 .form__more-body{display:grid;gap:var(--s3);margin-top:var(--s3)}
-/* phones: the form keeps 64px of bottom padding under the closing note, reserved for the fixed Pause button (which stays
-   available here and hides only while the page is scrolling, site.js); every line in the card and the contact line start at the same edge (no indent) */
-@media (max-width:768px){.form{padding-bottom:64px}}
 .form__status a{color:var(--parch)}
 
 /* ---------- Footer (deep night band) ---------- */
 .site-footer{background:var(--deep);color:var(--parch);border-top:2px solid var(--gold);padding-block:var(--s4) var(--s3);position:relative;z-index:2}
 .site-footer__grid{display:grid;gap:var(--s3)}
 @media (min-width:768px){.site-footer__grid{grid-template-columns:1.2fr 1fr 1fr;align-items:start}}
-.site-footer__logo{width:min(100%,320px);height:auto}
+/* the footer mark is a quiet sign-off (240px): the hero is the one display-size appearance of the logo */
+.site-footer__logo{width:min(100%,240px);height:auto}
 .site-footer address{font-style:normal;display:grid;gap:4px}
+/* "Anar Events · San Francisco Bay Area" on one line at every width */
+.site-footer address > span{white-space:nowrap}
 .site-footer address a{border-bottom:2px solid transparent;transition:border-color .3s;width:max-content;max-width:100%}
 .site-footer address a:hover{border-color:var(--gold)}
 .site-footer__fa{font-size:20px;line-height:1.7;text-align:left;color:var(--gold)}
@@ -517,63 +521,24 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .site-footer__soon .fa{font-size:16px}
 .site-footer__legal{margin-top:var(--s3);font-size:14px;line-height:20px;color:var(--stone);display:flex;flex-wrap:wrap;gap:var(--s2);justify-content:space-between}
 
-/* ---------- Ghost buttons: the "How we work +" tab and "Pause motion" (one gold-filled button per screen) ---------- */
+/* ---------- Ghost buttons: the header "Inquire" while another filled button is on screen, and "Pause motion" ---------- */
 .ghost{background:transparent;border:2px solid var(--gold);color:var(--parch);transition:background .3s,color .3s,border-color .3s,transform .3s var(--ease),opacity .3s}
 .ghost:hover,.ghost:focus-visible{background:var(--ruby);border-color:var(--ruby);color:var(--parch)}
 .ghost:focus-visible{outline:2px solid var(--parch);outline-offset:3px}
-/* the tab: one slim vertical tab at the right edge, mid-height, on every screen size; a solid night
-   fill (so it reads as a night object over the parchment sections too) with the 2px gold border;
-   hidden (slides out + fades) while #inquire or the footer is in view */
-.hww-tab{position:fixed;z-index:60;right:0;top:50%;writing-mode:vertical-rl;transform:translateY(-50%) rotate(180deg);letter-spacing:.06em;padding:20px 12px;border-radius:0 2px 2px 0;border-left:0;background-color:var(--night)}
-html:not(.panel-ready) .hww-tab{display:none}
-.hww-tab.is-hidden{transform:translate(110%,-50%) rotate(180deg);opacity:0;pointer-events:none}
-@media (max-width:768px){.hww-tab{padding:14px 8px;font-size:13px;line-height:16px}}
-/* phones: the tab is ~34px wide at mid-height and hidden while the hero is in view (site.js). Centred blocks keep
-   symmetric gutters; only the stacked celebration bodies and the journey stops carry a 44px right clearance (above),
-   and the founder quote gets the same 32px on both sides so it stays centred */
-@media (max-width:768px){
-  .quote blockquote{padding-inline:32px}
-  /* ~44px right clearance for every left-aligned text block the tab can sit over; centred blocks keep symmetric padding */
-  .options > li,.tradition__text,.faq,.step,.you-get li,.letter,.promise li,.behaviour li{padding-right:24px}
-  .statement,.section__head{padding-inline:24px}
-}
-/* phones: the Pause button hides only while actively scrolling down, like the tab (site.js toggles .is-hidden from the same
-   scroll handler); it stays available while the animated sections are on screen (their bodies reserve 64px for it) */
-.motion-toggle.is-hidden{transform:translateY(calc(100% + 24px));opacity:0;pointer-events:none}
-/* Pause motion / Play motion: bottom-left on every screen size and visible the whole page (round, icon-only:
-   36px on phones, 40px on desktop). The accessible name is the fixed aria-label "Pause motion" and
-   aria-pressed="true" means paused, so the name never changes. */
-.motion-toggle{position:fixed;z-index:60;left:var(--s2);bottom:calc(16px + env(safe-area-inset-bottom));width:40px;height:40px;padding:0;border-radius:50%;display:grid;place-items:center;font-size:13px;line-height:1;letter-spacing:0;background-color:var(--night)}
-.motion-toggle[hidden],html:not(.motion-ready) .motion-toggle{display:none}
+/* Pause motion / Play motion: a 36px round control docked IN the header bar on every screen size (the last item of
+   .site-header__inner: at the right beside Inquire on desktop, beside the menu toggle on phones via flex order), so it
+   never covers text, inputs or the footer and needs no scroll-hide. The accessible name is the fixed aria-label
+   "Pause motion" and aria-pressed="true" means paused, so the name never changes. */
+.motion-toggle{position:relative;flex:0 0 auto;width:36px;height:36px;padding:0;border-radius:50%;display:grid;place-items:center;font-size:13px;line-height:1;letter-spacing:0;background-color:var(--night)}
+/* the slot is reserved before site.js binds the control (no header shift when it lands); OS reduced motion hides it ([hidden]) */
+.motion-toggle[hidden]{display:none}
+html:not(.motion-ready) .motion-toggle{visibility:hidden}
+@media (max-width:768px){.nav-toggle{order:-2}.motion-toggle{order:-1}}
 /* the glyph is an inline SVG background (two gold bars = pause, a gold triangle = play), never a font glyph */
 .motion-toggle::before{content:"";width:14px;height:14px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Crect x='2' y='1' width='3.6' height='12' fill='%23C99E5C'/%3E%3Crect x='8.4' y='1' width='3.6' height='12' fill='%23C99E5C'/%3E%3C/svg%3E") center/contain no-repeat}
 .motion-toggle[aria-pressed="true"]::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M3 1.2 12.6 7 3 12.8z' fill='%23C99E5C'/%3E%3C/svg%3E");margin-left:2px}
 .motion-toggle__text{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
-@media (max-width:768px){.motion-toggle{width:36px;height:36px}}
-.hww-backdrop{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.55);opacity:0;transition:opacity .4s}
-.hww-backdrop[hidden]{display:none}
-.hww-backdrop.is-on{opacity:1}
-/* the panel is the scrollable element: data-lenis-prevent (HTML) keeps Lenis off its wheel/touch events, overscroll-behavior:contain keeps the page still */
-.hww-panel{position:fixed;z-index:80;left:0;right:0;bottom:0;max-height:88vh;overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;background:var(--night);color:var(--parch);padding:var(--s3) var(--s3) var(--s4);border-top:2px solid var(--gold);border-radius:12px 12px 0 0;transform:translateY(100%);transition:transform .55s var(--ease)}
-.hww-panel[hidden]{display:none}
-.hww-panel.is-open{transform:translateY(0)}
-@media (min-width:768px){
-  .hww-panel{left:auto;top:0;bottom:0;width:min(540px,92vw);max-height:none;border-top:0;border-left:2px solid var(--gold);border-radius:0;padding:var(--s4);transform:translateX(100%)}
-  .hww-panel.is-open{transform:translateX(0)}
-}
-.hww-panel__close{position:absolute;top:var(--s2);right:var(--s2);width:44px;height:44px;display:grid;place-items:center;font-size:28px;line-height:1;border-radius:50%;color:var(--gold)}
-.hww-panel__close:hover{background:rgba(201,158,92,.14)}
-.hww-panel h2{margin:var(--s1) 0 var(--s3)}
-.hww-steps{display:grid;gap:var(--s2);counter-reset:step;margin-bottom:var(--s3)}
-.hww-steps li{display:grid;grid-template-columns:44px 1fr;gap:var(--s2);padding-top:var(--s1)}
-.hww-steps li::before{counter-increment:step;content:"0" counter(step);color:var(--gold)}
-.hww-steps h3{font-size:20px;line-height:26px;margin-bottom:4px}
-.hww-steps p{font-size:16px;line-height:24px;color:var(--stone)}
-.hww-panel__foot{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s3);align-items:center}
-/* the phone line: the tel: link and the WhatsApp link, plain, on their own line under the two actions (parents call before they type) */
-.hww-panel__phone{flex:0 0 100%;color:var(--stone);font-size:16px;line-height:24px}
-.hww-panel__phone a{transition:color .3s}
-.hww-panel__phone a:hover{color:var(--parch)}
+/* the open phone drawer locks the page scroll (site.js syncInert) */
 body.panel-open{overflow:hidden}
 
 /* ---------- Inner page band ---------- */
@@ -583,6 +548,12 @@ body.panel-open{overflow:hidden}
 .pageband .lede{margin-top:var(--s3);color:var(--stone)}
 
 /* ---------- Weddings page ---------- */
+/* the jump links under the band: one row of gold text links to the six ceremony sections (no boxes, no rules) */
+.jump{display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:var(--s1) 20px;padding-top:clamp(24px,4vh,40px);font-size:16px;line-height:24px}
+.jump__label{color:var(--stone);font-size:14px;line-height:20px;letter-spacing:.14em;text-transform:uppercase;flex:0 0 100%;text-align:center}
+.jump a{color:var(--gold);border-bottom:2px solid transparent;padding-bottom:2px;transition:border-color .3s}
+.jump a:hover{border-bottom-color:var(--gold)}
+@media (min-width:768px){.jump__label{flex:0 0 auto;margin-right:var(--s1)}}
 .tradition+.tradition{padding-top:clamp(48px,8vh,100px)}
 .tradition__grid{display:grid;gap:var(--s3)}
 @media (min-width:900px){
@@ -590,7 +561,7 @@ body.panel-open{overflow:hidden}
   .tradition--flip .tradition__grid > .tradition__text{order:2}
 }
 .tradition__title{display:grid;gap:var(--s1);margin-bottom:var(--s3)}
-@media (min-width:600px){.tradition__title{grid-template-columns:1fr 1fr;align-items:baseline}.tradition__title .fa{text-align:right;color:var(--gold)}}
+@media (min-width:600px){.tradition__title{grid-template-columns:1fr 1fr;align-items:baseline}.tradition__title .fa,.tradition__title .eyebrow{text-align:right;color:var(--gold)}}
 .tradition__text p+p{margin-top:var(--s2)}
 .tradition__media{margin:0}
 .tradition__media .slot{overflow:hidden;background:var(--deep);max-width:480px;margin-inline:auto;aspect-ratio:4/5}

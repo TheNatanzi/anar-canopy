@@ -1,0 +1,36 @@
+{
+ "model": "argon",
+ "role": "planner",
+ "score": 6,
+ "blocking": [
+  "Hard rule violated: The persistent 'How we work +' tab (.hww-tab) and slide-out panel (.hww-panel) are still present on weddings.html, how-we-work.html, and about.html despite the owner decision removing the tab on 2026-11-03.",
+  "Hard rule violated: The fixed .motion-toggle button overlaps the 'Instagram · @anarevents' link in the mobile footer (visible in index-phone-4.jpg) and covers the Sofreh Aghd Persian eyebrow on scroll (visible in index-phone-2.jpg)."
+ ],
+ "fixes": [
+  {
+   "where": "weddings.html:271, how-we-work.html:258, about.html:196 (and assets/js/site.js:230-385)",
+   "what": "Remove the <button class=\"hww-tab\">, <div class=\"hww-backdrop\">, and <aside class=\"hww-panel\"> elements from all inner pages, and move the header 'Inquire' ghosting and mobile .motion-toggle scroll-hiding logic out of the `if (tab && panel && backdrop)` guard in site.js.",
+   "why": "The owner removed the persistent 'How we work +' tab on 2026-11-03, and coupling the mobile Pause button auto-hide to `tab` existing broke auto-hide on the home page."
+  },
+  {
+   "where": "assets/css/canopy.css:191 and assets/css/site.css:545",
+   "what": "Increase `.site-footer` bottom padding on mobile (e.g., `padding-bottom: calc(var(--s4) + 64px + env(safe-area-inset-bottom))`) or dock `.motion-toggle` into the footer flow when scrolled to the bottom.",
+   "why": "In index-phone-4.jpg, the fixed `.motion-toggle` button sits directly on top of the 'Instagram · @anarevents' text, violating the hard rule that controls never cover text or the footer."
+  },
+  {
+   "where": "index.html:142 (and assets/css/canopy.css:160)",
+   "what": "On mobile (`max-width: 768px`), widen `#f-names` input padding/font-size slightly or shorten placeholder to `Sara & Omid, or a parent` so it does not clip on desktop/tablet widths (`Sara & Omid, or a parent's nan` in index-desktop-3.jpg).",
+   "why": "In index-desktop-3.jpg, the placeholder text in the 'Your name(s)' input is truncated mid-word ('parent's nan'), which looks unpolished to families inquiring."
+  },
+  {
+   "where": "index.html:141-145",
+   "what": "Add an optional `Phone / WhatsApp` input field (`<input type=\"tel\" name=\"phone\" autocomplete=\"tel\">`) to the inquiry form alongside Email.",
+   "why": "Persian, Afghan, and South Asian parents frequently prefer a phone call or WhatsApp message over email; asking for their number directly in the form reduces friction."
+  },
+  {
+   "where": "weddings.html:160-217",
+   "what": "Add regional script accents alongside the English titles for `Haldi & Pheras` and `Anand Karaj` (or a subtle gold English eyebrow like `Hindu ceremonies` / `Sikh ceremony`) to match the visual rhythm of the Persian/Arabic script accents on the other four traditions.",
+   "why": "South Asian Hindu and Sikh families should see the same visual care and typographic hierarchy on the Weddings page as Persian, Afghan, and Muslim families."
+  }
+ ]
+}

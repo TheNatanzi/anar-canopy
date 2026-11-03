@@ -45,6 +45,10 @@
       <a class="nav-phone" href="tel:+19252639949">(925) 263-9949</a>
       <a class="btn btn--sm" href="index.html#inquire">Inquire</a>
     </div>
+    <!-- Pause motion / Play motion: a 36px round control in the bar (right, beside Inquire; beside the menu toggle on
+         phones), so it never covers text, inputs or the footer. aria-pressed="true" means paused -->
+    <button class="motion-toggle ghost" type="button" aria-label="Pause motion" aria-pressed="false"><span class="motion-toggle__text">Pause motion</span></button>
+    <p class="motion-toggle__note visually-hidden" hidden>Motion is off because your device asks for reduced motion.</p>
   </div>
 </header>
 
@@ -58,6 +62,39 @@
         <p class="fa fa--title" lang="fa" dir="rtl">روش کار ما</p>
       </div>
       <p class="lede measure">One plan, one person to call, nothing to chase. We plan with your family, ritual by ritual, and we run the day.</p>
+    </div>
+  </section>
+
+  <!-- the two service options first: a family finds the help it needs before reading the five steps -->
+  <section class="section" id="you-get" aria-labelledby="you-get-title">
+    <div class="container container--text">
+      <p class="eyebrow reveal">Two ways to work with us</p>
+      <h2 id="you-get-title" class="reveal" style="margin:8px 0 32px">One plan. One person to call.</h2>
+      <!-- when support begins and the confirmed responsibilities of each -->
+      <ul class="options stagger" aria-label="Two ways to work with us">
+        <li>
+          <h3>Full planning</h3>
+          <p class="option__when">Begins once your proposal is signed · the first conversation is free</p>
+          <ul>
+            <li>Your budget tracked, line by line, once planning begins.</li>
+            <li>Venue and vendor shortlist, booking support, and contract review covering planning requirements and vendor logistics.</li>
+            <li>Planning decisions scheduled ritual by ritual, with a short written summary after each meeting.</li>
+            <li>One written plan: the rituals in order, the days, the price and what is included, with a page for the parents in Persian, Dari, Pashto, Urdu, Hindi, Punjabi or the language your parents read, agreed in your proposal.</li>
+            <li>Every wedding day run: one timeline, called with the venue and every vendor; elders' seats held.</li>
+          </ul>
+        </li>
+        <li>
+          <h3>Wedding-day coordination</h3>
+          <p class="option__when">Begins 6–8 weeks out · we run the days you have planned</p>
+          <ul>
+            <li>Your family has planned already; we read every booking and confirm every time, covering the events, hours and staffing named in the proposal.</li>
+            <li>The handover lists outstanding tasks and agrees who completes them, with a date.</li>
+            <li>Every contract, contact and time in it read and confirmed with the venue and every vendor.</li>
+            <li>One timeline for every day, with the sofreh key or the programme checked against your family's wishes.</li>
+            <li>On the days: elders greeted first, the officiant and family cued, our staff easy to find. You only have to be there.</li>
+          </ul>
+        </li>
+      </ul>
     </div>
   </section>
 
@@ -110,37 +147,12 @@
     </div>
   </section>
 
-  <!-- What you get -->
-  <section class="section band" id="you-get" aria-labelledby="you-get-title">
+  <!-- With either option, and the hard days -->
+  <section class="section band" id="with-either" aria-labelledby="either-title">
     <div class="container container--text">
       <p class="eyebrow reveal">What you get</p>
-      <h2 id="you-get-title" class="reveal" style="margin:8px 0 32px">One plan. One person to call.</h2>
-      <!-- the two service options: when support begins and three confirmed responsibilities each -->
-      <ul class="options stagger" aria-label="Two ways to work with us" style="margin-bottom:48px">
-        <li>
-          <h3>Full planning</h3>
-          <p class="option__when">Begins once your proposal is signed · the first conversation is free</p>
-          <ul>
-            <li>Your budget tracked, line by line, from the first conversation.</li>
-            <li>Venue and vendor shortlist, booking support, and contract review covering planning requirements and vendor logistics.</li>
-            <li>Planning decisions scheduled ritual by ritual, with a short written summary after each meeting.</li>
-            <li>One written plan: the rituals in order, the days, the price and what is included, with a page for the parents in Persian, Dari, Pashto, Urdu, Hindi, Punjabi or the language your parents read, agreed in your proposal.</li>
-            <li>Every wedding day run: one timeline, called with the venue and every vendor; elders' seats held.</li>
-          </ul>
-        </li>
-        <li>
-          <h3>Wedding-day coordination</h3>
-          <p class="option__when">Begins 6–8 weeks out · we run the days you have planned</p>
-          <ul>
-            <li>Your family has planned already; we read every booking and confirm every time, covering the events, hours and staffing named in the proposal.</li>
-            <li>The handover lists outstanding tasks and agrees who completes them, with a date.</li>
-            <li>Every contract, contact and time in it read and confirmed with the venue and every vendor.</li>
-            <li>One timeline for every day, with the sofreh key or the programme checked against your family's wishes.</li>
-            <li>On the days: elders greeted first, the officiant and family cued, our staff easy to find. You only have to be there.</li>
-          </ul>
-        </li>
-      </ul>
-      <!-- how the hard days are handled, directly beside the two options: the procedures, not assurances (who decides, the next option on the list, the family lead, the named backup) -->
+      <h2 id="either-title" class="reveal" style="margin:8px 0 32px">With either option</h2>
+      <!-- how the hard days are handled: the procedures, not assurances (who decides, the next option on the list, the family lead, the named backup) -->
       <p class="eyebrow reveal" style="margin-bottom:24px">On the hard days</p>
       <ul class="you-get stagger" aria-label="How the hard days are handled" style="margin-bottom:64px">
         <li><strong>Decided before the day</strong><span>Priorities and spending approvals are agreed in the proposal.</span></li>
@@ -148,15 +160,12 @@
         <li><strong>A planner who is unwell</strong><span>The named backup planner, briefed on your plan, runs the day.</span></li>
         <li><strong>Two events at once</strong><span>Covered under the same plan; the staffing for each is named in your proposal.</span></li>
       </ul>
-      <p class="eyebrow reveal" style="margin-bottom:24px">With either option</p>
+      <p class="eyebrow reveal" style="margin-bottom:24px">Always included</p>
       <ul class="you-get stagger">
-        <li><strong>One written plan</strong><span>Rituals in order, days, price, what is included. In English, with a page for the parents in the languages listed in your proposal.</span></li>
         <li><strong>One person to call</strong><span>Your planner, from the first message to the thank-you card, for the events listed in your proposal.</span></li>
         <li><strong>A page for the parents</strong><span>A summary they can read alone, in Persian, Dari, Pashto, Urdu, Hindi, Punjabi or the language your parents read, agreed in your proposal. Written translations and spoken language support are confirmed there too.</span></li>
         <li><strong>A summary after every meeting</strong><span>Short, written, the same day. Nothing to chase.</span></li>
-        <li><strong>The timeline, called</strong><span>With the venue and every vendor, to the minute, across the events and hours listed in your proposal.</span></li>
         <li><strong>Signage in your languages</strong><span>Welcome, sofreh key, wayfinding, seating and table numbers in the languages listed in your proposal, coordinated with your printer and the venue for the events listed there.</span></li>
-        <li><strong>Staff on the day</strong><span>Easy to find, for the events and hours listed in your proposal. Elders greeted first.</span></li>
         <li><strong>A reply within one business day</strong><span>Every time, from the first inquiry on.</span></li>
       </ul>
     </div>
@@ -223,22 +232,6 @@
   </div>
 </footer>
 
-<button class="hww-tab ghost" type="button" aria-controls="hww-panel" aria-expanded="false">How we work <span aria-hidden="true">+</span></button>
-<button class="motion-toggle ghost" type="button" aria-label="Pause motion" aria-pressed="false"><span class="motion-toggle__text">Pause motion</span></button>
-<p class="motion-toggle__note visually-hidden" hidden>Motion is off because your device asks for reduced motion.</p>
-<div class="hww-backdrop" hidden></div>
-<aside class="hww-panel" id="hww-panel" role="dialog" aria-modal="true" aria-labelledby="hww-title" tabindex="-1" data-lenis-prevent hidden>
-  <button class="hww-panel__close" type="button" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-  <p class="eyebrow">How we work · <span class="fa" lang="fa" dir="rtl">روش کار ما</span></p>
-  <h2 id="hww-title">Five steps, one line</h2>
-  <ol class="hww-steps">
-    <li><div><h3>Inquiry</h3><p>Write to us, or call. Tell us about your family and your dates.</p></div></li>
-    <li><div><h3>Consultation</h3><p>We meet your family, greet the elders first, and listen. Parents and elders included at the level you choose.</p></div></li>
-    <li><div><h3>Proposal</h3><p>The plan, the price, and what is included: the events covered, the staffing, the hours and the fees.</p></div></li>
-    <li><div><h3>Planning</h3><p>Ritual by ritual, as your family keeps it. A short written summary after every meeting.</p></div></li>
-    <li><div><h3>The wedding days</h3><p>The ceremonies your family chooses, in the order agreed with your family, called with the venue and every vendor.</p></div></li>
-  </ol>
-  <p class="hww-panel__foot"><a class="btn" href="index.html#inquire">Begin the conversation</a> <a class="link" href="how-we-work.html">Read more</a> <span class="hww-panel__phone"><a href="tel:+19252639949">Call (925) 263-9949</a> · <a href="https://wa.me/19252639949" rel="noopener">WhatsApp</a></span></p>
-</aside>
+<!-- Owner decision (2026-11-03): no "How we work +" tab or slide-out panel anywhere; the Pause-motion button lives in the header bar. -->
 </body>
 </html>

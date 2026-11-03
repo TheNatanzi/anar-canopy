@@ -1,0 +1,31 @@
+{
+ "model": "argon",
+ "role": "brand",
+ "score": 8,
+ "blocking": [
+  "Hard rule broken in index-phone-4.jpg: the fixed Pause-motion button sits directly over the word 'Instagram' in the mobile footer (`site.js` only binds the scroll-hide logic for `.motion-toggle` inside `if (tab && panel && backdrop)`, which is skipped on `index.html` because the tab was removed).",
+  "On `index.html`, the header 'Inquire' button stays solid gold even while the inquiry form's 'Begin the conversation' button is on screen (see `index-desktop-4.jpg` and `index-phone-4.jpg`), breaking the 'one gold-filled button per screen' brand rule for the same reason (`site.js` skips the observer when `.hww-tab` is absent)."
+ ],
+ "fixes": [
+  {
+   "where": "assets/js/site.js:295",
+   "what": "Decouple the `motionBtn` scroll-hide and `headerInquire` `.ghost` IntersectionObserver from `if (tab && panel && backdrop)` so they also run on `index.html` where `.hww-tab` is absent.",
+   "why": "Fixes the Pause button overlapping 'Instagram' in the mobile footer (`index-phone-4.jpg`) and restores the single solid-gold CTA per screen rule when the form's submit button is in view."
+  },
+  {
+   "where": "assets/css/canopy.css:118",
+   "what": "Center `.screen .kashida` or align `.cel` / `.screen--inquire` headings consistently: either remove `margin-inline: auto` when the content below is left-aligned, or keep `.kashida--short` centered by ensuring `width: min(320px, 70vw)` doesn't visually drift left relative to centered `h2` titles (see `index-desktop-2.jpg` and `index-desktop-3.jpg` where the gold kashida line starts at the left edge of the heading instead of centering under it).",
+   "why": "In `index-desktop-2.jpg`, `index-desktop-3.jpg`, and `index-phone-1.jpg`–`3.jpg`, the `.kashida-draw` SVG path appears left-shifted under the centered `h2` because `lengthOf(p)` or SVG viewport scaling leaves the visible stroke off-center during scroll."
+  },
+  {
+   "where": "assets/css/canopy.css:90",
+   "what": "Increase `--at-1270` or add `padding-top` on `.screen--statement` so `#statement-title` ('Reimagined Heritage') and its Persian eyebrow clear the lowest hanging pomegranates of the canopy when scrolling between Screen 1 and Screen 2.",
+   "why": "In `index-desktop-2.jpg`, the top of the 'Reimagined Heritage' heading block is clipped/crowded right against the sticky header transition zone just below the canopy."
+  },
+  {
+   "where": "assets/css/site.css:358",
+   "what": "Add `text-overflow: ellipsis` or widen the input / shorten the placeholder on `#f-names` (`placeholder=\"Sara & Omid, or a parent's name\"`).",
+   "why": "In `index-desktop-3.jpg`, the placeholder clips mid-word as `Sara & Omid, or a parent's nan` inside the two-column `.form__row`."
+  }
+ ]
+}

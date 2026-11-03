@@ -1,0 +1,28 @@
+{
+ "model": "argon",
+ "role": "brand",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "assets/css/canopy.css:154-160 (.screen--statement .screen__col)",
+   "what": "Reduce `.screen--statement .screen__col` min-height or add a top margin to `.screen--celebrations` so the statement copy (`statement__one` and `.promises`) does not crowd the top of the `.screen--celebrations` viewport as seen in desktop shot 1 and 2.",
+   "why": "In desktop shot 1, only the heading 'Reimagined Heritage' is visible at the bottom of the canopy frame while the body copy gets pushed into the top of shot 2, splitting the statement composition in half."
+  },
+  {
+   "where": "assets/css/canopy.css:142 (.canopy .tree__band) & phone shots 0-1",
+   "what": "Add a soft top mask (`-webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 40px)`) to `.tree__band` on mobile (`@media (max-width:768px)`) or adjust the canopy bottom crop on phone.",
+   "why": "On phone shot 0 and 1, the transition from the wide canopy to the 21px bare trunk slivers at the screen edges is an abrupt horizontal cut."
+  },
+  {
+   "where": "assets/css/canopy.css:171-174 (.cel figcaption) & desktop shot 3",
+   "what": "Add `margin-bottom: var(--s2)` or increase vertical spacing between `.cel` and `.cel__foot` so the three celebration captions ('Sofreh Aghd', 'Nikah', 'Mehndi & Sangeet') don't sit flush against the sticky header bar when scrolling into the section.",
+   "why": "In desktop shot 3, the captions at the top of the frame feel cramped against the top navigation bar when separated from their photos above."
+  },
+  {
+   "where": "assets/css/site.css:358 (.field textarea)",
+   "what": "Disable the native browser resize handle (`resize: none`) or style the scrollbar/resizer to match the night/gold palette.",
+   "why": "In phone shot 4, the bright default browser diagonal resize grip in the bottom-right corner of the message textarea breaks the editorial gold-underline aesthetic."
+  }
+ ]
+}

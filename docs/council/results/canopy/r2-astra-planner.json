@@ -1,0 +1,33 @@
+{
+ "model": "astra",
+ "role": "planner",
+ "score": 8.3,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "how-we-work.html — #you-get, #steps, #with-either",
+   "what": "Consolidate repeated explanations of parents’ pages, translated signage and proposal scope. Keep service inclusions under the two options; limit each planning step to its decision and deliverable.",
+   "why": "The practical reassurance is strong, but repetition makes couples and parents work too hard to compare services."
+  },
+  {
+   "where": "how-we-work.html — Full planning and Always included",
+   "what": "Replace 'Every wedding day run' with 'We run the events and hours agreed in your proposal.' Place the language-support confirmation beside the first parents’ page promise.",
+   "why": "Broad promises currently precede narrower qualifications, creating avoidable uncertainty about coverage and translation."
+  },
+  {
+   "where": "index.html — .cel celebration links",
+   "what": "Make each photograph link to the same ceremony section as its heading, with an accessible ceremony name and visible focus treatment.",
+   "why": "The large photographs invite tapping, but only the comparatively small titles currently open the details."
+  },
+  {
+   "where": "index.html — inquiry Message field",
+   "what": "Move the dates-and-rituals prompt into persistent helper text associated with the textarea; mark Message as optional without adding fields.",
+   "why": "Families should retain the guidance while typing and understand that an introductory inquiry needs no complete plan."
+  },
+  {
+   "where": "how-we-work.html — Consultation",
+   "what": "Include seating, mobility and quiet-space needs among the priorities discussed, replacing a repeated sentence about parent involvement.",
+   "why": "Concrete accommodation planning makes the promise to honor elders more useful than repeated references to greeting and seating them first."
+  }
+ ]
+}

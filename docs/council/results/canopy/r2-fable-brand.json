@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "brand",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "assets/css/canopy.css: .screen--statement .screen__col (align-content:center; min-height calc(var(--vh100) - var(--header-h) - 170 * var(--s)))",
+   "what": "Change align-content:center to align-content:start with padding-top:clamp(40px,6vh,72px), and drop the min-height to calc(var(--vh100) - var(--header-h) - 420 * var(--s)); then trim .screen--celebrations and .screen--inquire padding-top to clamp(72px,10vh,120px).",
+   "why": "At 1440×900 the desktop-1 shot shows ~200px of empty night under the canopy and a lone 'Reimagined Heritage' at the fold with the kashida, statement and promises below it; the block should arrive together under the fruit, and the 250px voids before 'The celebrations' and 'Tell us about your family' make the mid-page feel like trunks with nothing in them."
+  },
+  {
+   "where": "assets/css/site.css: .form (background:rgba(18,23,20,.55); border-top:2px solid var(--gold)) as used on index.html screen 4",
+   "what": "On .canopy .form remove the panel fill (background:transparent) and keep the gold top rule plus the field fills, or keep the fill and add -webkit-mask-image/mask-image:linear-gradient(to bottom,#000 70%,transparent) so the box has no square bottom edge over the roots.",
+   "why": "Desktop-3/4 and phone-4 show a hard-edged translucent rectangle sitting on the painted roots; it reads as a UI card, the one boxy shape on an otherwise organic page."
+  },
+  {
+   "where": "assets/css/canopy.css: .ground-art img.fruit-roll",
+   "what": "Add filter:saturate(.75) brightness(.85) hue-rotate(-8deg) (or recut the 70px sprite from the ground's own painted fruit) so it matches the ruby of the two big pomegranates.",
+   "why": "In desktop-4 and phone-4 the rolled fruit is a flat magenta disc beside crimson painted fruit; it looks pasted on, not part of the painting."
+  },
+  {
+   "where": "assets/css/canopy.css: @media (max-width:768px) main.canopy{--tree-w:120vw;--gutter:36px}",
+   "what": "Set --tree-w:110vw and --gutter:40px (same content width, ~35px of bark per side instead of ~21px), and re-check the hero canopy width at 390px.",
+   "why": "Phone-1 to phone-3 show the trunks as two thin brown stripes that read as a page border, not a tree; the frame should be recognisably bark."
+  },
+  {
+   "where": "assets/css/site.css: .site-nav a and .nav-phone (header over the hero video on index, before .is-scrolled)",
+   "what": "Add text-shadow:0 1px 10px rgba(27,34,30,.9) to .page-index .site-header:not(.is-scrolled) .site-nav a, .nav-phone, and the same to .hero__line's rule (already there) so the header matches.",
+   "why": "Desktop-0 shows the nav links over white tent drapery with no shadow; a brighter frame of the loop will wash them out while every other hero line already carries the night shadow."
+  },
+  {
+   "where": "index.html screen 3: .cel figure (three stand-in slots) and assets/css/canopy.css .cel",
+   "what": "Give the three figcaptions a fixed 2-line min-height for the description (min-height:48px) and add a 2px gold short rule (24px) above each h3 in the promises' style.",
+   "why": "Desktop-3 shows the three captions ending at different heights; the slot row is the one place the home page shows product, and it should sit as a single ruled band like the promises above it."
+  }
+ ]
+}

@@ -1,0 +1,23 @@
+{
+ "model": "argon",
+ "role": "dev",
+ "score": 9.6,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "index.html:18",
+   "what": "Remove `<link rel=\"preload\" href=\"assets/video/hero-poster-small.jpg\" as=\"image\">` from `<head>` when `prefers-reduced-motion` is not active or keep it low priority (`fetchpriority=\"low\"`).",
+   "why": "Preloading the video poster in `<head>` competes with the critical `tree-full.webp` LCP asset and the two web fonts on initial connection."
+  },
+  {
+   "where": "assets/css/canopy.css:89",
+   "what": "Remove permanent `will-change: transform` from `.tree__canopy`, `.tree__shake`, `.tree__sprig`, `.fruit-drop`, `.ground-art`, and `.fruit-roll` in `canopy.css`.",
+   "why": "Promoting 7+ large masked layers (including the 1536x1260 canopy container) to permanent GPU textures consumes significant VRAM on mobile and mid-tier devices even when motion is paused or off-screen; GSAP handles layer promotion dynamically during active tweens."
+  },
+  {
+   "where": "assets/js/canopy.js:187",
+   "what": "Disconnect the `MutationObserver` or guard `sync()` so it does not re-trigger `ScrollTrigger.refresh()` redundantly right after `site.js` already calls `ScrollTrigger.refresh()` in `initMotion()`.",
+   "why": "When `site.js` adds `html.motion`, both `site.js` and `canopy.js` call `ScrollTrigger.refresh()` in the same startup cycle, causing a double layout measurement pass on load."
+  }
+ ]
+}

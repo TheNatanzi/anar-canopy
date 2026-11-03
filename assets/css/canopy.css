@@ -20,7 +20,7 @@
 main.canopy{
   --art-w:1536;
   --art-h:3714;
-  --tree-w:100vw;                                  /* phones: 120vw (below) */
+  --tree-w:100vw;                                  /* phones: 110vw (below) */
   --s:calc(var(--tree-w) / 1536);                  /* one art pixel */
   --vh100:100vh;
   /* ONE effective hero height (the 600px minimum included), used for the hero, the video box, the tree's top and
@@ -42,15 +42,15 @@ main.canopy{
 @supports (height:1svh){
   main.canopy{--vh100:100svh}
 }
-/* phones: the trunks sit at the art's outer 13%, so 120vw keeps ~21px of bark at both edges with the 1150-row
-   gap (350px at 390) open for the copy; wider than that pushes the trunks off the screen. The 36px gutter keeps
-   the copy clear of the bark slivers */
+/* phones: the trunks sit at the art's outer 13%, so 110vw keeps ~35px of bark at both edges (recognisably bark, not
+   a page border) with the 1150-row gap (330px at 390) open for the copy; wider pushes the trunks off the screen.
+   The 40px gutter keeps the copy clear of the bark (the same ~310px content width as before) */
 @media (max-width:768px){
-  main.canopy{--tree-w:120vw;--gutter:36px}
+  main.canopy{--tree-w:110vw;--gutter:40px}
 }
 
 /* ---------- the video: behind everything, fixed while the motion runs (desktop), fades out under .hero__deepen
-   (site.js block 1) as screen 2 arrives, then display:none (canopy.js) so site.js pauses it; absolute (scrolls
+   (canopy.js block 3) as screen 2 arrives, then display:none (canopy.js) so site.js pauses it; absolute (scrolls
    away with screen 1) without motion and on phones ---------- */
 .hero__bg{position:absolute;top:0;left:0;width:100%;height:var(--hero-h);z-index:0;overflow:hidden;background:var(--night)}
 html.canopy-motion .hero__bg{position:fixed;inset:0;height:auto}
@@ -69,19 +69,22 @@ html.canopy-motion .hero__bg{position:fixed;inset:0;height:auto}
 .canopy .hero__mark{width:min(51vw,760px);top:clamp(100px,calc(var(--tree-top) + 278 * var(--s) - 380px),28%)}
 .canopy .hero__fade,.canopy .hero__rise{position:relative}
 .canopy .hero__halo{width:140%;height:160%;background:radial-gradient(closest-side,rgba(27,34,30,.5),transparent 70%)}
-/* the rise on load (canopy.js block 5) starts from opacity 0 only once site.js has initialised the motion
-   (html.anim-ready, before first paint), so a warm-cache load never flashes the logo before it rises */
-.js.anim-ready .canopy .hero__rise{opacity:0}
+/* the logo, line and tag are visible by default. They start from opacity 0 only under html.canopy-ready, the class
+   canopy.js adds while its own context is live (block 5 takes the rise to 1; the class goes with the context on
+   Pause / failure, and .reduced wins regardless), so a blocked or failed canopy.js never leaves the hero hidden. Both
+   scripts run before first paint, so a warm-cache load never flashes the logo before it rises */
+html.canopy-ready.anim-ready .canopy .hero__rise{opacity:0}
 .reduced .canopy .hero__rise{opacity:1}
 /* in flow under the line (relative, not static: it must paint above the absolutely positioned halo) */
 .canopy .hero__tag{position:relative;right:auto;bottom:auto;justify-content:center;text-align:center;margin-top:clamp(14px,2vh,24px);text-shadow:0 1px 12px rgba(27,34,30,.9)}
 @media (max-width:768px){.canopy .hero__mark{width:78vw;top:30%}.canopy .hero__tag{bottom:auto}}
-/* site.js block 1 tweens a `.hero__canopy`; here the canopy is the tree (.tree__canopy), so that target is an
-   empty hidden element (no GSAP "target not found" warning, nothing moved) */
-.hero__canopy[hidden]{display:none}
+/* the header over the hero video (before .is-scrolled): the links and the phone number carry the same night shadow as
+   the hero line, so a bright frame of the loop never washes them out */
+.page-index .site-header:not(.is-scrolled) .site-nav a,.page-index .site-header:not(.is-scrolled) .nav-phone{text-shadow:0 1px 10px rgba(27,34,30,.9)}
 
 /* ---------- the tree: one absolutely positioned layer the full height of main; canopy.js moves it at 0.9× scroll
-   from screen 3 on (no will-change here: the layer is page-high, GSAP promotes it while the tween runs) ---------- */
+   from screen 3 on (desktop only). No permanent will-change on any layer but .tree__shake: GSAP (force3D) promotes
+   the canopy, the sprigs, the fruit and the ground while their tweens run, so no large texture sits resident ---------- */
 .screen,.tree,.ground-art{position:relative}
 .tree{position:absolute;top:var(--tree-top);bottom:0;left:50%;width:var(--tree-w);margin-left:calc(var(--tree-w) / -2);z-index:1;pointer-events:none}
 .tree img,.ground-art img{display:block;width:100%;max-width:none;height:auto}
@@ -94,7 +97,7 @@ html.canopy-motion .hero__bg{position:fixed;inset:0;height:auto}
 
 /* the canopy: rows 0–1260, the last 60 rows fade out over the opaque trunk layer underneath (bark on bark, so the
    sway's 0.5° misregistration at the seam is invisible); 8px wider than the art so the scroll shake never shows an edge */
-.tree__canopy{position:absolute;top:0;left:-8px;width:calc(100% + 16px);height:calc(1260 * var(--s));overflow:hidden;transform-origin:50% 0;will-change:transform;
+.tree__canopy{position:absolute;top:0;left:-8px;width:calc(100% + 16px);height:calc(1260 * var(--s));overflow:hidden;transform-origin:50% 0;
   -webkit-mask-image:linear-gradient(to bottom,#000 calc(1200 * var(--s)),transparent calc(1260 * var(--s)));mask-image:linear-gradient(to bottom,#000 calc(1200 * var(--s)),transparent calc(1260 * var(--s)))}
 .tree__shake{width:calc(100% - 16px);margin-left:8px;will-change:transform}
 /* the trunk shrubs: rows 1200–1900 (static; opaque, no fade: the layers above it fade) */
@@ -103,7 +106,7 @@ html.canopy-motion .hero__bg{position:fixed;inset:0;height:auto}
 /* two small swaying copies of the shrub branches (rows 1280–1760), each clipped to its side and faded out toward the
    trunk it grows from (x 196 left / 1346 right), rotating about that edge (9s / 11s, canopy.js) over the static copy.
    The image inside each crop is the full tree width (--tree-w, not the crop's 100%), so the crop registers with the tree */
-.tree__sprig{position:absolute;top:calc(1280 * var(--s));width:calc(470 * var(--s));height:calc(480 * var(--s));overflow:hidden;will-change:transform}
+.tree__sprig{position:absolute;top:calc(1280 * var(--s));width:calc(470 * var(--s));height:calc(480 * var(--s));overflow:hidden}
 .tree__sprig img{width:var(--tree-w);margin-top:calc(-1280 * var(--s))}
 .tree__sprig--l{left:0;transform-origin:calc(196 * var(--s)) 50%;
   -webkit-mask-image:linear-gradient(to right,transparent calc(170 * var(--s)),#000 calc(230 * var(--s)));mask-image:linear-gradient(to right,transparent calc(170 * var(--s)),#000 calc(230 * var(--s)))}
@@ -116,22 +119,25 @@ html.canopy-motion .hero__bg{position:fixed;inset:0;height:auto}
   -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 calc(60 * var(--s)));mask-image:linear-gradient(to bottom,transparent 0,#000 calc(60 * var(--s)))}
 @media (max-width:768px){
   .tree__trunk,.tree__sprig{display:none}
-  .tree__band{top:calc(1200 * var(--s));-webkit-mask-image:none;mask-image:none}
+  /* a soft 40px top mask, so the band's bark starts under the canopy's fade instead of as a straight horizontal cut */
+  .tree__band{top:calc(1200 * var(--s));-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 40px);mask-image:linear-gradient(to bottom,transparent 0,#000 40px)}
   /* phones: no falling fruit (at 390px it hung over the 21px bark sliver and read as a cut-off disc at the edge) */
   .tree img.fruit-drop{display:none}
 }
 /* the falling fruit (assets/tree/fruit-drop.webp, 82×91, cut from tile-B): hangs under the left trunk's branch at
    x 150 / row 1000, well left of the statement column, and drops 1.6 screens with scroll (canopy.js), drifting
    30px right (still outside the column) */
-.tree img.fruit-drop{position:absolute;left:calc(150 * var(--s));top:calc(1000 * var(--s));width:calc(82 * var(--s));height:auto;transform-origin:50% 50%;will-change:transform}
+.tree img.fruit-drop{position:absolute;left:calc(150 * var(--s));top:calc(1000 * var(--s));width:calc(82 * var(--s));height:auto;transform-origin:50% 50%}
 
 /* the ground: rows 3080–3714 at the bottom of main, outside the parallax layer (the form and the footer sit on it
    exactly); its top 100 rows fade in over the band; rises 40px into place on screen 4 (canopy.js) */
-.ground-art{position:absolute;left:50%;bottom:0;width:var(--tree-w);height:var(--ground-h);margin-left:calc(var(--tree-w) / -2);overflow:hidden;z-index:1;pointer-events:none;will-change:transform;
+.ground-art{position:absolute;left:50%;bottom:0;width:var(--tree-w);height:var(--ground-h);margin-left:calc(var(--tree-w) / -2);overflow:hidden;z-index:1;pointer-events:none;
   -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 calc(100 * var(--s)));mask-image:linear-gradient(to bottom,transparent 0,#000 calc(100 * var(--s)))}
 .ground-art img{margin-top:calc(-3080 * var(--s))}
-/* the fallen fruit on the moss left of the big pair (x 300 / row 3440), rolls in as the ground arrives (canopy.js) */
-.ground-art img.fruit-roll{position:absolute;left:calc(300 * var(--s));top:calc(360 * var(--s));width:calc(70 * var(--s));height:auto;margin:0;transform-origin:50% 50%;will-change:transform}
+/* the fallen fruit on the moss left of the big pair (x 300 / row 3440), rolls in as the ground arrives (canopy.js);
+   the sprite was cut from the brighter canopy fruit (mean hue 341°, Pillow) and is graded down to the painted ruby of
+   the ground pair (352°): the hue turns +8° toward it (a −8° turn measured further into magenta) */
+.ground-art img.fruit-roll{position:absolute;left:calc(300 * var(--s));top:calc(360 * var(--s));width:calc(70 * var(--s));height:auto;margin:0;transform-origin:50% 50%;filter:saturate(.75) brightness(.85) hue-rotate(8deg)}
 
 /* ---------- the content screens: normal flow above the art (z 2), the middle kept open ---------- */
 .screen{z-index:2}
@@ -141,36 +147,47 @@ html.canopy-motion .hero__bg{position:fixed;inset:0;height:auto}
 .screen .eyebrow{margin-bottom:var(--s1)}
 /* the Persian eyebrows on the home screens: 20px, the brand's second voice over the 48px h2 (not a footnote) */
 .screen .eyebrow .fa{font-size:20px;line-height:1.5}
-/* screen 2: starts right under the canopy's underside for its column (row 1120). The column is the open gap of
-   one viewport at the natural stop, canopy overhead: the viewport minus the header minus the canopy's hanging
-   fringe (rows 950–1120, the solid canopy's last row sitting under the bar), with the block centred in it, so the
-   eyebrow, Reimagined Heritage, the kashida and the promises sit in the clear middle under the fruit. The column
-   stays inside the shrub gap (x 331–1210 at the narrowest) */
+/* screen 2: starts right under the canopy's underside for its column (row 1120). The block is NOT centred in a
+   viewport-derived box: it packs to the top of the column, 40–72px under the canopy clearance boundary, so the
+   eyebrow, Reimagined Heritage, the kashida, the sentence and the promises read as one composition directly under
+   the foliage (at 1440×900 the whole block is in one viewport once the canopy's solid body has passed the bar). The
+   min-height (one viewport minus the header minus 420 art rows) keeps a short tail before the celebrations without
+   the old 200px void. The column stays inside the shrub gap (x 331–1210 at the narrowest) */
 .screen--statement{padding-top:max(0px,calc(var(--at-under) - var(--hero-h)))}
-.screen--statement .screen__col{max-width:min(640px + 2 * var(--gutter),44vw + 2 * var(--gutter));min-height:calc(var(--vh100) - var(--header-h) - 170 * var(--s));display:grid;align-content:center}
+.screen--statement .screen__col{max-width:min(640px + 2 * var(--gutter),44vw + 2 * var(--gutter));min-height:calc(var(--vh100) - var(--header-h) - 420 * var(--s));display:grid;align-content:start;padding-top:clamp(40px,6vh,72px)}
 .screen--statement h2{font-size:clamp(32px,3.3vw,48px)}
 .statement__one{margin:var(--s3) auto 0;font-size:clamp(20px,1.8vw,24px);line-height:1.4;max-width:24em;text-wrap:balance}
 .promises{display:grid;gap:12px;margin:var(--s3) auto 0;color:var(--parch);font-size:clamp(17px,1.4vw,20px);line-height:1.4}
 .promises li{position:relative;padding-top:12px}
 .promises li::before{content:"";position:absolute;left:50%;top:0;width:24px;height:2px;margin-left:-12px;background:var(--gold)}
-/* screen 3: three photo slots side by side in the bare trunks (gap x 196–1349 = 1078px at 1440), each a 4:5 slot */
-.screen--celebrations{padding-top:clamp(96px,14vh,170px)}
+/* screen 3: three photo slots side by side in the bare trunks (gap x 196–1349 = 1078px at 1440), each a 4:5 slot;
+   64–96px under the statement (the condensed journey keeps no empty interval between the promises and the photos) */
+.screen--celebrations{padding-top:clamp(64px,10vh,96px)}
 .screen--celebrations .screen__col{max-width:min(1000px + 2 * var(--gutter),68vw)}
 .cel{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2.4vw,32px);margin-top:clamp(32px,5vh,48px);text-align:left}
 .cel figure{margin:0;display:grid;gap:var(--s1)}
-.cel__slot{overflow:hidden;background:var(--deep);aspect-ratio:4/5}
-.cel__slot img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/5}
-.cel h3{font-size:clamp(20px,1.7vw,24px);margin-top:var(--s1)}
+/* the photograph is a link to the same weddings.html section as its title (aria-label names the ceremony): the image
+   lifts 3% on hover / focus and the global gold focus ring draws around the slot */
+.cel__slot{display:block;overflow:hidden;background:var(--deep);aspect-ratio:4/5}
+.cel__slot img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/5;transition:transform .6s var(--ease)}
+.cel__slot:hover img,.cel__slot:focus-visible img{transform:scale(1.03)}
+.cel__slot:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
+/* each caption is one ruled band like the promises: a 24px gold rule above the title, the description held to two
+   lines (min-height 48px) so the three captions end level */
+.cel h3{position:relative;font-size:clamp(20px,1.7vw,24px);margin-top:var(--s1);padding-top:12px}
+.cel h3::before{content:"";position:absolute;left:0;top:0;width:24px;height:2px;background:var(--gold)}
 /* each title links to its section on weddings.html: a quiet gold underline on hover / focus, no boxes */
 .cel h3 a{border-bottom:2px solid transparent;padding-bottom:2px;transition:border-color .3s,color .3s}
 .cel h3 a:hover,.cel h3 a:focus-visible{border-bottom-color:var(--gold)}
 .cel .fa{font-size:16px;color:var(--gold);text-align:left;display:block;line-height:1.5}
-.cel p{color:var(--stone);font-size:16px;line-height:24px}
-.cel__foot{margin-top:clamp(32px,5vh,48px);font-size:16px;line-height:24px;color:var(--stone);text-wrap:balance}
+.cel p{color:var(--stone);font-size:16px;line-height:24px;min-height:48px}
+.cel__foot{margin-top:calc(clamp(32px,5vh,48px) + var(--s2));font-size:16px;line-height:24px;color:var(--stone);text-wrap:balance}
 /* screen 4: the short form (names, email + phone, message, button) ends above the ground's central fruit; the ground + footer close the page */
 .screen--inquire{padding-top:clamp(96px,14vh,170px);padding-bottom:var(--form-reserve)}
 .screen--inquire .screen__col{max-width:min(680px + 2 * var(--gutter),56vw)}
-.screen--inquire .form{margin-top:var(--s3);text-align:left}
+/* the form on the roots: no panel fill and no gold top rule (the heading's kashida is the one line; a translucent card
+   was the one boxy shape on the organic page); the field fills and the gold underlines carry the form */
+.screen--inquire .form{margin-top:var(--s3);text-align:left;background:transparent;border-top:0;padding:0}
 .inquire__call{margin-top:var(--s3);color:var(--stone);font-size:16px;line-height:24px}
 .inquire__call a{color:var(--parch);border-bottom:2px solid rgba(201,158,92,.5);transition:border-color .3s}
 .inquire__call a:hover{border-color:var(--gold)}
@@ -182,10 +199,10 @@ html.canopy-motion .hero__bg{position:fixed;inset:0;height:auto}
 .screen--celebrations .leaf--1{right:-48px;top:58%;transform:rotate(38deg)}
 .screen--inquire .leaf--3{left:-40px;top:4%;opacity:.7;transform:rotate(20deg)}
 
-/* phones: everything centred at full width (36px gutters), the photos stacked, the leaves off */
+/* phones: everything centred at full width (40px gutters), the photos stacked, the leaves off */
 @media (max-width:768px){
   .screen__col,.screen--statement .screen__col,.screen--celebrations .screen__col,.screen--inquire .screen__col{max-width:none}
-  /* the whole canopy (384px at 390) sits inside screen 1 on phones, so the statement is a compact block after it, not a viewport-high column */
+  /* the whole canopy (352px at 390) sits inside screen 1 on phones, so the statement is a compact block after it, not a viewport-high column */
   .screen--statement .screen__col{min-height:0;padding-block:clamp(40px,6vh,64px)}
   .cel{grid-template-columns:1fr;gap:var(--s3)}
   .cel figure{max-width:420px;margin-inline:auto;width:100%}

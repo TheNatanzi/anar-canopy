@@ -1,0 +1,36 @@
+{
+ "model": "astra",
+ "role": "brand",
+ "score": 7.5,
+ "blocking": [
+  "The desktop canopy-to-statement transition is poorly paced: the second screenshot spends most of its height on foliage, with the heading near the bottom and its supporting content outside the frame.",
+  "The implemented elastic shake, spinning fruit and rolling fruit add theatrical motion that competes with the premium painted-tree concept."
+ ],
+ "fixes": [
+  {
+   "where": "assets/css/canopy.css — .screen--statement .screen__col",
+   "what": "Replace the viewport-derived vertical centering with explicit spacing below the canopy clearance boundary; bring the heading, introductory sentence and promises into one desktop viewport beneath the fixed header.",
+   "why": "The existing statement is fragmented across scroll views instead of delivering one composed brand moment."
+  },
+  {
+   "where": "assets/js/canopy.js — velocity shake and fruit animations",
+   "what": "Remove the velocity-triggered elastic shake and fruit spin/roll animations; retain subtle canopy sway, restrained parallax and the ground reveal.",
+   "why": "A smaller motion vocabulary would feel more assured and keep attention on the studio."
+  },
+  {
+   "where": "assets/css/canopy.css — .screen--celebrations",
+   "what": "Reduce the desktop top padding from 96–170px to 64–96px after tightening the statement layout.",
+   "why": "The large empty interval between the promises and celebrations interrupts the condensed four-screen journey."
+  },
+  {
+   "where": "assets/css/site.css — .form and .form__status:empty",
+   "what": "Remove the form's gold top border, retain the heading kashida and field underlines, and collapse the empty status row's extra grid spacing.",
+   "why": "The inquiry area repeats horizontal rules and leaves an oversized gap below the button, making it feel more administrative than editorial."
+  },
+  {
+   "where": "how-we-work.html — #you-get and #steps",
+   "what": "Keep each service's start timing and core scope visible, but move detailed operational bullets into native expandable details; similarly separate each step's short explanation from its longer logistics.",
+   "why": "Dense paragraphs in an exclusively bold typeface weaken the hierarchy established by the home page."
+  }
+ ]
+}

@@ -14,9 +14,12 @@
 <script>document.documentElement.classList.add('js')</script>
 <link rel="preload" href="assets/fonts/TTRamillas-Bold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/NotoNaskhArabic-arabic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="assets/video/hero-poster-small.jpg" as="image">
-<!-- the one painted tree (1536×3714, transparent): drawn in three layers from this file plus the tiled trunk band -->
-<link rel="preload" href="assets/tree/tree-full.webp" as="image" imagesrcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full.webp 1536w" imagesizes="(max-width:768px) 120vw, 100vw" fetchpriority="high">
+<!-- the poster is preloaded only under reduced motion (where it is the hero); otherwise the video's own poster fetch
+     suffices and the tree (the LCP image) and the two fonts keep the first connection -->
+<link rel="preload" href="assets/video/hero-poster-small.jpg" as="image" media="(prefers-reduced-motion: reduce)">
+<!-- the one painted tree (1536×3714, transparent): drawn in three layers from this file plus the tiled trunk band;
+     three widths (768 / 1024 / 1536), so a 390px phone at DPR 2 (110vw = 858 device px) takes the 1024 file, not the 1536 -->
+<link rel="preload" href="assets/tree/tree-full.webp" as="image" imagesrcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" imagesizes="(max-width:768px) 110vw, 100vw" fetchpriority="high">
 <link rel="stylesheet" href="assets/css/site.css">
 <link rel="stylesheet" href="assets/css/canopy.css">
 <link rel="canonical" href="https://anarevents.com/">
@@ -64,8 +67,9 @@
 <main id="main" class="canopy" tabindex="-1">
 
   <!-- the hero video, behind everything: no src here, site.js block 0 appends the mp4 <source> after window 'load'
-       (not under prefers-reduced-motion or Save-Data); the poster shows until then. Fixed while the motion runs
-       (desktop), it fades to cypress under .hero__deepen as screen 2 arrives (site.js block 1), then canopy.js hides it. -->
+       (not under prefers-reduced-motion or Save-Data; play() only while the tab and the hero are visible); the poster
+       shows until then. Fixed while the motion runs (desktop), it fades to cypress under .hero__deepen as screen 2
+       arrives (canopy.js block 3, which owns every hero motion on this page), then canopy.js hides it. -->
   <div class="hero__bg" aria-hidden="true">
     <video class="hero__video" muted loop playsinline disablepictureinpicture disableremoteplayback preload="none" poster="assets/video/hero-poster-small.jpg" width="1920" height="1080" aria-hidden="true" tabindex="-1" data-src-desktop="assets/video/hero-1080-loop.mp4" data-src-mobile="assets/video/hero-720-loop.mp4"></video>
     <div class="hero__tint"></div>
@@ -74,25 +78,25 @@
 
   <!-- the tree, screen 1 to screen 4 -->
   <div class="tree" aria-hidden="true">
-    <div class="tree__trunk"><img src="assets/tree/tree-full.webp" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 120vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>
+    <div class="tree__trunk"><img src="assets/tree/tree-full.webp" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>
     <div class="tree__band"></div>
-    <div class="tree__sprig tree__sprig--l"><img src="assets/tree/tree-full.webp" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 120vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>
-    <div class="tree__sprig tree__sprig--r"><img src="assets/tree/tree-full.webp" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 120vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>
-    <div class="tree__canopy"><div class="tree__shake"><img src="assets/tree/tree-full.webp" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 120vw, 100vw" width="1536" height="3714" alt="" fetchpriority="high"></div></div>
+    <div class="tree__sprig tree__sprig--l"><img src="assets/tree/tree-full.webp" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>
+    <div class="tree__sprig tree__sprig--r"><img src="assets/tree/tree-full.webp" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>
+    <div class="tree__canopy"><div class="tree__shake"><img src="assets/tree/tree-full.webp" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" fetchpriority="high"></div></div>
     <img class="fruit-drop" src="assets/tree/fruit-drop.webp" width="82" height="91" alt="" loading="lazy" decoding="async">
   </div>
   <div class="ground-art" aria-hidden="true">
-    <img src="assets/tree/tree-full.webp" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 120vw, 100vw" width="1536" height="3714" alt="" decoding="async">
+    <img src="assets/tree/tree-full.webp" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" decoding="async">
     <img class="fruit-roll" src="assets/tree/fruit-drop.webp" width="82" height="91" alt="" loading="lazy" decoding="async">
   </div>
 
   <!-- 1. SCREEN ONE: the video, the plain gold logo (soft cypress halo, no panel edge), one descriptor line and the
        tag pair in the open centre; the canopy rises into the bottom of the screen (its centre starts under the tag pair). -->
   <section class="screen hero" aria-label="Anar Events">
-    <i class="hero__canopy" hidden aria-hidden="true"></i>
     <div class="hero__mark">
-      <!-- .hero__fade: scrubbed to opacity 0 in the last half of screen 1 (canopy.js), so no text sits over the canopy
-           once site.js block 1 has moved the mark down; .hero__rise: the rise on load -->
+      <!-- canopy.js block 3 owns the mark (site.js block 1 skips a hero inside main.canopy): a small downward drift and
+           .hero__fade scrubbed to opacity 0, finished before the drifted text bounds reach the canopy's centre (art row
+           297, measured); .hero__rise: the rise on load (visible by default; hidden only under html.canopy-ready) -->
       <div class="hero__fade"><div class="hero__rise">
         <i class="hero__halo" aria-hidden="true"></i>
         <h1 class="hero__logo"><img src="assets/logo/logo-gold.svg" width="1600" height="552" alt="Anar Events" fetchpriority="high"></h1>
@@ -119,7 +123,8 @@
     </div>
   </section>
 
-  <!-- 3. SCREEN THREE: bare trunks both sides; three photo slots in the open middle.
+  <!-- 3. SCREEN THREE: bare trunks both sides; three photo slots in the open middle. Each photograph links to the same
+       weddings.html section as its title (aria-label names the ceremony; the global gold focus ring shows on the slot).
        PHOTO SLOTS: stand-ins until the real photos arrive (real families, with consent), portrait ~1500×2000 each -->
   <section class="screen screen--celebrations" aria-labelledby="celebrations-title">
     <div class="leaf leaf--3" aria-hidden="true"></div>
@@ -130,19 +135,19 @@
       <svg class="kashida kashida--short kashida-draw" viewBox="0 0 320 2" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M160 1 H0"/><path d="M160 1 H320"/></svg>
       <div class="cel stagger">
         <figure>
-          <div class="cel__slot"><img src="assets/img/pom-open-closeup.jpg" srcset="assets/img/pom-open-closeup-800.jpg 800w, assets/img/pom-open-closeup-1400.jpg 1400w, assets/img/pom-open-closeup.jpg 2000w" sizes="(max-width:768px) 100vw, 330px" width="2000" height="1123" alt="An opened pomegranate, seeds packed tight" loading="lazy" decoding="async"></div>
-          <figcaption><span class="fa" lang="fa" dir="rtl">سفرهٔ عقد</span><h3><a href="weddings.html#sofreh-aghd">Sofreh Aghd</a></h3><p>The Persian ceremony at the spread.</p></figcaption>
+          <a class="cel__slot" href="weddings.html#sofreh-aghd" aria-label="Sofreh Aghd, on the Weddings page"><img src="assets/img/pom-open-closeup.jpg" srcset="assets/img/pom-open-closeup-800.jpg 800w, assets/img/pom-open-closeup-1400.jpg 1400w, assets/img/pom-open-closeup.jpg 2000w" sizes="(max-width:768px) 100vw, 330px" width="2000" height="1123" alt="An opened pomegranate, seeds packed tight" loading="lazy" decoding="async"></a>
+          <figcaption><span class="fa" lang="fa" dir="rtl">سفرهٔ عقد</span><h3><a href="weddings.html#sofreh-aghd">Sofreh Aghd</a></h3><p>The Persian ceremony, at the sofreh.</p></figcaption>
         </figure>
         <figure>
-          <div class="cel__slot"><img src="assets/img/pom-in-hand.jpg" srcset="assets/img/pom-in-hand-800.jpg 800w, assets/img/pom-in-hand-1400.jpg 1400w, assets/img/pom-in-hand.jpg 1500w" sizes="(max-width:768px) 100vw, 330px" width="1500" height="2000" alt="A pomegranate held in an open hand" loading="lazy" decoding="async"></div>
+          <a class="cel__slot" href="weddings.html#nikah" aria-label="Nikah, on the Weddings page"><img src="assets/img/pom-in-hand.jpg" srcset="assets/img/pom-in-hand-800.jpg 800w, assets/img/pom-in-hand-1400.jpg 1400w, assets/img/pom-in-hand.jpg 1500w" sizes="(max-width:768px) 100vw, 330px" width="1500" height="2000" alt="A pomegranate held in an open hand" loading="lazy" decoding="async"></a>
           <figcaption><span class="fa" lang="fa" dir="rtl">نکاح</span><h3><a href="weddings.html#nikah">Nikah</a></h3><p>The contract, read before both families.</p></figcaption>
         </figure>
         <figure>
-          <div class="cel__slot"><img src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night.jpg 1125w" sizes="(max-width:768px) 100vw, 330px" width="1125" height="2000" alt="A pomegranate tree at night" loading="lazy" decoding="async"></div>
+          <a class="cel__slot" href="weddings.html#mehndi-sangeet" aria-label="Mehndi and Sangeet, on the Weddings page"><img src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night.jpg 1125w" sizes="(max-width:768px) 100vw, 330px" width="1125" height="2000" alt="A pomegranate tree at night" loading="lazy" decoding="async"></a>
           <figcaption><span class="fa" lang="fa" dir="rtl">حنابندان · مهندی</span><h3><a href="weddings.html#mehndi-sangeet">Mehndi &amp; Sangeet</a></h3><p>Henna, blessings, music and dancing.</p></figcaption>
         </figure>
       </div>
-      <p class="cel__foot reveal"><a class="link" href="weddings.html">Haldi &amp; pheras, Anand Karaj, walima: every tradition, in its own words</a></p>
+      <p class="cel__foot reveal"><a class="link" href="weddings.html">Haldi &amp; pheras, Anand Karaj, walima and the rukhsati: every ceremony, in its own words</a></p>
     </div>
   </section>
 
@@ -162,7 +167,7 @@
           <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
           <div class="field"><label for="f-phone">Phone / WhatsApp <span class="muted">(optional)</span></label><input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
         </div>
-        <div class="field"><label for="f-message">Message</label><textarea id="f-message" name="message" placeholder="Your families, your dates, the rituals that matter most."></textarea></div>
+        <div class="field"><label for="f-message">Message <span class="muted">(optional)</span></label><p class="field__help" id="f-message-help">Your families, approximate dates and guest count, the rituals that matter most.</p><textarea id="f-message" name="message" aria-describedby="f-message-help"></textarea></div>
         <div><button class="btn" type="submit">Begin the conversation</button></div>
         <p class="form__status" id="form-status" role="status" aria-live="polite" tabindex="-1"></p>
         <p class="form__note">We reply within one business day.</p>

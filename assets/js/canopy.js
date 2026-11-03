@@ -7,21 +7,27 @@
    button and prefers-reduced-motion stop everything here too. Nothing in this
    file is required for the page to read, and nothing here changes the page's
    geometry: every layer and offset is laid out by canopy.css, so Pause / Play
-   moves no content.
-     1. parallax: the tree layer moves at 0.9× scroll from the end of screen 2
-        on (screens 1–2 stay registered with the statement; the band under the
-        ground absorbs the drift)
+   moves no content. html.canopy-ready is present exactly while the context is
+   live (the CSS hides .hero__rise only under it, so a blocked or failed file
+   never hides the logo).
+     1. parallax (desktop only): the tree layer moves at 0.9× scroll from the end
+        of screen 2 on (screens 1–2 stay registered with the statement; the band
+        under the ground absorbs the drift)
      2. sway: the canopy ±0.5° (7 s), two shrub sprigs ±0.5° (9 s / 11 s), paused off
         screen; a scroll-velocity shake (x ±6px, ±0.8°) that eases back, its
         timeline added to the context so Pause reverts it too
-     3. the hero video: fixed while the motion runs (CSS), hidden once screen 1 has
-        scrolled past (site.js then pauses it) and shown again on the way back
+     3. the hero, owned here (site.js block 1 skips a hero inside main.canopy):
+        the mark drifts down a little and .hero__fade goes to 0, the fade finished
+        before the drifted text bounds reach the canopy's centre (art row 297,
+        measured on every refresh); the video deepens to cypress over screen 1 and
+        is hidden once screen 1 has scrolled past (site.js then pauses it), shown
+        again on the way back
      4. the falling pomegranate (scrub, 1.6 screens, 140°, fades in the last 10 %;
         desktop only, the sprite is display:none on phones) and the fallen one
         rolling into place on the ground
      5. the ground rising 40px into place; the logo + line rising on load
-   Leaves (.leaf), kashida draws (.kashida-draw), reveals (.reveal / .stagger) and
-   the hero logo / tag / deepen scrub are site.js blocks 8, 4, 9 and 1.
+   Leaves (.leaf), kashida draws (.kashida-draw) and reveals (.reveal / .stagger)
+   are site.js blocks 8, 4 and 9.
    ========================================================= */
 (function () {
   'use strict';
@@ -44,6 +50,8 @@
   var sprigR = $('.tree__sprig--r', main);
   var hero = $('.hero', main);
   var heroBg = $('.hero__bg', main);
+  var deepen = $('.hero__deepen', main);
+  var mark = $('.hero__mark', main);
   var rise = $('.hero__rise', main);
   var fade = $('.hero__fade', main);
   var stmt = $('.screen--statement', main);
@@ -61,6 +69,13 @@
   var shakeTl = null;
   var shaking = false;
   var lastShake = 0;
+  /* the last global ScrollTrigger.refresh() (site.js refreshes in initMotion, on load and when the fonts land):
+     build() skips its own when one has just run, since triggers measure themselves on creation */
+  var lastRefresh = 0;
+  ScrollTrigger.addEventListener('refresh', function () { lastRefresh = Date.now(); });
+  var refreshUnlessFresh = function () {
+    if (Date.now() - lastRefresh > 100) { ScrollTrigger.refresh(); }
+  };
 
   /* a looping tween that only runs while its element is on screen (same device as the site.js leaves) */
   function loopInView(el, tween) {
@@ -82,9 +97,33 @@
     return Math.max(0, Math.round(top + stmt.offsetHeight - vh()));
   }
 
+  /* one art pixel in CSS px (canopy.css --s), from the tree layer's rendered width */
+  function artPx() { return (tree ? tree.offsetWidth : window.innerWidth) / 1536; }
+
+  /* the hero's clearance: page px between the bottom of the mark's text (untransformed; offsets ignore transforms)
+     and the canopy's centre limit, art row 297, the first foliage inside the logo's column (x 376–1160). Screens
+     1–2 are never parallaxed, so the tree's CSS offset is its page position */
+  function heroClearance() {
+    if (!tree || !hero || !mark) { return 0; }
+    var limit = tree.offsetTop + 297 * artPx();
+    var markBottom = hero.offsetTop + mark.offsetTop + mark.offsetHeight;
+    return Math.max(0, limit - markBottom);
+  }
+  /* the fade runs over FADE_FROM..FADE_TO of the hero's height; the drift is sized so that, at FADE_TO, the drifted
+     mark has used at most the clearance less a 16px reserve (the fade is complete strictly before the bounds touch
+     the foliage): drift = min(DRIFT_MAX, (clearance − 16) / FADE_TO) × hero height. With no clearance there is no
+     drift at all (the fade alone). Measured at 1440×900: clearance 43px, drift 60px, the fade gone at 405px of scroll */
+  var FADE_FROM = 0.1, FADE_TO = 0.45, DRIFT_MAX = 0.35, RESERVE = 16;
+  function heroDrift() {
+    var h = hero ? hero.offsetHeight : vh();
+    var k = Math.min(DRIFT_MAX, Math.max(0, heroClearance() - RESERVE) / (FADE_TO * h));
+    return Math.round(k * h);
+  }
+
   function buildAll() {
-    /* 1. parallax: y = 0.1 × (scrollY − start) from the end of screen 2 to the bottom of the page */
-    if (tree) {
+    /* 1. parallax, desktop only (on phones the layer is the page height × 110vw: promoting it costs memory and jank for
+          a drift nobody reads at 390px): y = 0.1 × (scrollY − start) from the end of screen 2 to the bottom of the page */
+    if (tree && !isPhone()) {
       gsap.to(tree, {
         y: function () { return 0.1 * Math.max(0, ScrollTrigger.maxScroll(window) - parallaxStart()); },
         ease: 'none',
@@ -126,16 +165,20 @@
       loopInView(sprigR, gsap.fromTo(sprigR, { rotation: 0.5 }, { rotation: -0.5, duration: 5.5, ease: 'sine.inOut', yoyo: true, repeat: -1 }));
     }
 
-    /* 3. the logo, line and tag are gone before the mark (site.js block 1, which moves it 45vh down at 35%) reaches
-          the canopy's centre: opacity 1 -> 0 between 25% and 65% of screen 1 */
-    if (hero && fade) {
-      gsap.fromTo(fade, { opacity: 1 }, {
-        opacity: 0, ease: 'none',
-        scrollTrigger: { trigger: hero, start: '25% top', end: '65% top', scrub: true, invalidateOnRefresh: true }
+    /* 3. the hero, scrubbed over its own height: the mark drifts down by heroDrift() (depth: it rises slower than the
+          page), the logo, line and tag fade 1 -> 0 between 10 % and 45 % of the hero, and by 45 % the drift has used
+          at most the measured clearance, so no text is ever over the foliage; the video deepens to cypress meanwhile.
+          Every value is a function: a refresh (resize, fonts, the tree image landing) re-measures */
+    if (hero && mark && fade) {
+      var heroTl = gsap.timeline({
+        scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true, invalidateOnRefresh: true }
       });
+      heroTl.fromTo(mark, { y: 0 }, { y: heroDrift, ease: 'none', duration: 1 }, 0)
+        .fromTo(fade, { opacity: 1 }, { opacity: 0, ease: 'none', duration: FADE_TO - FADE_FROM }, FADE_FROM);
+      if (deepen) { heroTl.fromTo(deepen, { opacity: 0 }, { opacity: 1, ease: 'none', duration: 1 }, 0); }
     }
-    /* the fixed video: gone once screen 1 has scrolled past (site.js block 1 has faded it under .hero__deepen by
-       then; display:none makes its IntersectionObserver pause the file), back on the way up */
+    /* the fixed video: gone once screen 1 has scrolled past (deepened to cypress by then; display:none makes its
+       IntersectionObserver pause the file), back on the way up */
     if (hero && heroBg) {
       var syncBg = function (st) { heroBg.classList.toggle('is-gone', st.progress >= 1); };
       ScrollTrigger.create({
@@ -173,13 +216,14 @@
       }
     }
 
-    /* 5. the logo + line rise on load, once per page: the CSS (.js.anim-ready .hero__rise) holds opacity 0 until
-          this tween takes it to 1, so nothing paints and then snaps back; a rebuild (Play after Pause, the
-          breakpoint change) just shows it */
+    /* 5. the logo + line rise on load, once per page. The CSS holds .hero__rise at opacity 0 only under
+          html.canopy-ready (added by build() with this context), and this fromTo sets the same start inside the
+          context, so nothing paints and then snaps back and a revert restores the visible default; a rebuild (Play
+          after Pause, the breakpoint change) just shows it */
     if (rise) {
       if (!risen) {
         risen = true;
-        gsap.fromTo(rise, { y: 18 }, { opacity: 1, y: 0, duration: 1.1, ease: 'power2.out', delay: 0.1 });
+        gsap.fromTo(rise, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 1.1, ease: 'power2.out', delay: 0.1 });
       } else {
         gsap.set(rise, { opacity: 1, y: 0 });
       }
@@ -190,18 +234,21 @@
     if (on || failed) { return; }
     on = true;
     html.classList.add('canopy-motion');
-    /* the context exists before anything is built, so a throw midway leaves kill() something to revert */
+    /* the context exists before anything is built, so a throw midway leaves kill() something to revert; the
+       canopy-ready key (the only thing that hides .hero__rise) is added with it and removed with it */
     ctx = gsap.context(function () {});
+    html.classList.add('canopy-ready');
     try {
       ctx.add(buildAll);
     } catch (err) {
       failed = true;
       kill();
-      if (rise) { rise.style.opacity = '1'; }
+      if (rise) { rise.style.opacity = '1'; rise.style.transform = 'none'; }
       if (window.console) { console.warn('Anar canopy motion disabled:', err); }
       return;
     }
-    ScrollTrigger.refresh();
+    /* the triggers above measured themselves on creation; a global refresh only if site.js has not just run one */
+    refreshUnlessFresh();
   }
 
   function kill() {
@@ -212,12 +259,15 @@
     observers = [];
     shakeTl = null; shaking = false; lastShake = 0;
     html.classList.remove('canopy-motion');
+    html.classList.remove('canopy-ready');
     if (heroBg) { heroBg.classList.remove('is-gone'); }
     /* the triggers that remain (site.js, still live on a breakpoint rebuild) re-measure after the revert */
     if (html.classList.contains('motion')) { ScrollTrigger.refresh(); }
   }
 
-  /* follow site.js: html.motion present = its tweens are live (initMotion), absent = killed (Pause, reduced motion) */
+  /* follow site.js: html.motion present = its tweens are live (initMotion), absent = killed (Pause, reduced motion).
+     The observer fires for this file's own class changes too (canopy-motion / canopy-ready): sync() then finds
+     nothing to do, since it compares html.motion with `on` only */
   function sync() {
     var want = html.classList.contains('motion');
     if (want && !on) { build(); } else if (!want && on) { kill(); }
@@ -230,9 +280,9 @@
   /* the tree image landing after the first layout changes nothing in flow (the layers are sized by CSS), but the
      ScrollTrigger positions of the fruit and the ground are re-measured to be safe */
   if (treeImg && !treeImg.complete) {
-    treeImg.addEventListener('load', function () { if (on) { ScrollTrigger.refresh(); } }, { once: true });
+    treeImg.addEventListener('load', function () { if (on) { refreshUnlessFresh(); } }, { once: true });
   }
-  /* the phone / desktop layers differ (no sprigs, no falling fruit, 120vw): rebuild on the breakpoint change */
+  /* the phone / desktop layers differ (no sprigs, no falling fruit, no parallax, 110vw): rebuild on the breakpoint change */
   var onMQ = function (mq, fn) {
     if (mq.addEventListener) { mq.addEventListener('change', fn); } else if (mq.addListener) { mq.addListener(fn); }
   };

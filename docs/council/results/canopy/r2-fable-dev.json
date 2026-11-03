@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "dev",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "index.html: every tree-full srcset + the <link rel=preload imagesrcset>",
+   "what": "Add a middle candidate (export assets/tree/tree-full-1024.webp, ~260 KB) to every srcset and the preload: `tree-full-768.webp 768w, tree-full-1024.webp 1024w, tree-full.webp 1536w`.",
+   "why": "At 390px × DPR 2 the sizes value 120vw needs 936 device px, so every real phone skips the 194 KB 768w file and downloads the 491 KB 1536w one; a 1024w step halves the heaviest phone asset."
+  },
+  {
+   "where": "assets/css/canopy.css line `.js.anim-ready .canopy .hero__rise{opacity:0}` + assets/js/canopy.js build()",
+   "what": "Key the hidden state on a class canopy.js itself adds (`html.classList.add('canopy-ready')` at the top of the IIFE, after the `!main || !hasGsap` guard) and change the selector to `.canopy-ready.anim-ready .canopy .hero__rise{opacity:0}`.",
+   "why": "site.js hides the logo and only canopy.js shows it: a 404, a CSP block or a syntax error in canopy.js leaves the hero logo at opacity 0 forever with GSAP otherwise running."
+  },
+  {
+   "where": "assets/js/canopy.js buildAll(), block 1 (the .tree parallax)",
+   "what": "Wrap the tree parallax in `if (tree && !isPhone())`.",
+   "why": "The parallaxed layer is the full page height × 120vw on phones (~2.5 MP, promoted by GSAP); Safari rasterises it whole, costing memory and jank on the audience's main device, for a 0.1× drift nobody reads at 390px."
+  },
+  {
+   "where": "assets/css/site.css: .descend*, .statement*, .pillars/.card, .accordion*, .proof*, .quote*, .journey*, .pills, .ground*, .inquire*, .checks/.check, .form__more*, the html:not(.site-ready) .accordion block",
+   "what": "Delete these rule groups from the canopy build (or move them to a legacy.css not loaded by index.html); site.js blocks 3 and the accordion/[data-track] code can stay since they no-op.",
+   "why": "About 18 KB of the 54 KB stylesheet targets elements that exist on no page in this build; it is render-blocking CSS and a maintenance trap."
+  },
+  {
+   "where": "assets/css/canopy.css `.tree__canopy{...will-change:transform}` and `.tree__shake{will-change:transform}`",
+   "what": "Drop `will-change:transform` from .tree__canopy (keep it on .tree__shake only) and let GSAP promote the canopy while its sway tween runs.",
+   "why": "Two nested promoted layers of ~1440×1180 px each (≈14 MB of GPU texture) sit resident from first paint for a ±0.5° sway; one layer is enough and GSAP's force3D promotes the other on demand."
+  },
+  {
+   "where": "assets/css/site.css `@media (max-width:768px){ html:not(.nav-ready) .site-nav{...} }`",
+   "what": "Gate the no-JS strip on `html:not(.js)` as well: `html:not(.js) .site-nav, html.js:not(.nav-ready) .site-nav{...}` is wrong direction; instead hide the links under `html.js:not(.nav-ready) .site-nav{visibility:hidden}` and keep the strip only for `html:not(.js)`.",
+   "why": "On a slow phone the deferred vendor bundle (~130 KB) runs after first paint, so the full link strip flashes under the bar and then snaps into the drawer; the inline `js` class is set before paint and can suppress it."
+  }
+ ]
+}

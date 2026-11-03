@@ -1,0 +1,23 @@
+{
+ "model": "argon",
+ "role": "planner",
+ "score": 9.5,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "assets/css/canopy.css:131 (.screen--statement .screen__col)",
+   "what": "Change `align-content:center` to `align-content:end` and add `padding-bottom:clamp(40px, 6vh, 80px)` on `.screen--statement .screen__col` at desktop widths.",
+   "why": "On desktop (shot 1), the canopy fills the top ~65% of the viewport, pushing the 'Reimagined Heritage' heading down to the bottom edge while the statement and three promises sit completely off-screen below the fold until the user scrolls past the canopy."
+  },
+  {
+   "where": "weddings.html:125 (#nikah)",
+   "what": "Promote the 'Afghan weddings · عروسی افغان' `.seasonal` callout or mention Afghan traditions (like Aina Mosaf / Shirni-khori) in the first sentence of the `#nikah` section, and link 'Aina Mosaf' in the `.jump` nav.",
+   "why": "Afghan families are one of the three core audiences named in the hero, yet they have no top-level ceremony heading or jump link on the Weddings page and must read halfway through the Nikah section to see themselves explicitly named."
+  },
+  {
+   "where": "index.html:130 (#f-message)",
+   "what": "Change the Message textarea placeholder from `'Your families, your dates, the rituals that matter most.'` to `'Your families, approximate dates and guest count, Bay Area location, and the rituals that matter most.'`",
+   "why": "In Persian, Afghan, and South Asian multi-day weddings, guest count (often 250–600+) and sub-region (Peninsula vs. East Bay vs. South Bay) immediately dictate venue viability and scope; prompting for them upfront makes the first reply far more actionable."
+  }
+ ]
+}

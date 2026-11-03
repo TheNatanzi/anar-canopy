@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "planner",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "weddings.html #reception-walima, 4th paragraph ('The send-off cued for the elders')",
+   "what": "Name it: 'The rukhsati, vidaai or doli, as your family calls the send-off, cued for the elders; a thank-you card follows.'",
+   "why": "For Pakistani and Indian families the send-off is the emotional climax of the wedding; unnamed, the line reads generic and the page's fluency drops exactly where the parents look."
+  },
+  {
+   "where": "weddings.html #anand-karaj, first paragraph ('the couple walk the four laavan')",
+   "what": "Change to 'the couple circle the Guru Granth Sahib four times as the four laavan are sung'",
+   "why": "The laavan are the hymns, not the walk; a Sikh parent notices the slip at once."
+  },
+  {
+   "where": "how-we-work.html #you-get, #steps (03, 04, 05) and #with-either",
+   "what": "Cut 'listed / agreed / named in your proposal' from eleven occurrences to one per section (keep it in step 03 and once under Always included); replace the others with plain statements ('Signage in your languages, coordinated with your printer and the venue.')",
+   "why": "Eleven hedges read as contract language, not hospitality; it undercuts 'one person to call, nothing to chase' and makes the family feel they are being limited before they have signed."
+  },
+  {
+   "where": "weddings.html #sofreh-aghd, after the first paragraph",
+   "what": "Add one sentence: 'If your family holds a bale-boroon or namzadi before the aghd, it goes in the programme and the elders are seated for it.'",
+   "why": "The Afghan block names shirni-khori but the Persian engagement is never mentioned; Persian parents expect the aghd to sit inside that sequence."
+  },
+  {
+   "where": "index.html .cel__foot link text",
+   "what": "Lead with the ceremonies that have no slot: 'Haldi & pheras, Anand Karaj, walima and the rukhsati: every ceremony, in its own words'",
+   "why": "The three slots lean Persian/Afghan/Muslim; a Hindu or Sikh family's only cue on the home page is this one line, so it must name their days clearly."
+  },
+  {
+   "where": "index.html screen 3, Sofreh Aghd figcaption ('The Persian ceremony at the spread.')",
+   "what": "Change to 'The Persian ceremony, at the sofreh.'",
+   "why": "Families say sofreh; 'the spread' is the explanation, not the name, and 'at the spread' reads oddly to the very people it is written for."
+  }
+ ]
+}

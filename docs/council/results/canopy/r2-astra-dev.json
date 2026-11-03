@@ -1,0 +1,36 @@
+{
+ "model": "astra",
+ "role": "dev",
+ "score": 7,
+ "blocking": [
+  "The hero logo and descriptor remain invisible if canopy.js fails to load: site.js enables .anim-ready, but only canopy.js reveals .hero__rise.",
+  "Hero text clearance is not preserved during scrolling: site.js moves the mark downward immediately, while canopy.js delays its protective fade until 25% of the hero has scrolled."
+ ],
+ "fixes": [
+  {
+   "where": "assets/css/canopy.css: .js.anim-ready .canopy .hero__rise; assets/js/canopy.js: build()",
+   "what": "Keep .hero__rise visible by default. Set its initial opacity inside the same GSAP context that creates its entrance animation; restore visibility on initialization failure.",
+   "why": "A failed optional animation script must never remove the business identity and introductory copy."
+  },
+  {
+   "where": "assets/js/site.js: buildTweens() block 1; assets/js/canopy.js: buildAll() block 3",
+   "what": "Give canopy.js sole ownership of the home hero movement and fade. Finish the fade before the translated text bounds reach the painted canopy, using measured geometry instead of fixed 25%–65% thresholds.",
+   "why": "The downward translation consumes the initial artwork clearance before the current fade starts."
+  },
+  {
+   "where": "assets/js/site.js: loadHeroVideo(), playAll(), visibilitychange handler",
+   "what": "Gate every video start on document visibility and actual hero visibility; include both viewport bounds and computed display state. Retain these checks inside the IntersectionObserver callback.",
+   "why": "An observer or load callback can restart playback while the tab is hidden; checking only bottom > 0 is insufficient."
+  },
+  {
+   "where": "assets/css/site.css: .site-footer address > span; header sizing rules",
+   "what": "Allow the footer location line to wrap and add a narrow-width header layout that lets flex items shrink without clipping. Verify at 320 CSS pixels and with enlarged text.",
+   "why": "The footer's forced nowrap and fixed header item widths make reflow fragile; the clean 390px harness result does not cover these cases."
+  },
+  {
+   "where": "assets/js/site.js and assets/css/site.css: obsolete accordion, descend, journey and teaser implementations",
+   "what": "Remove unused implementations after checking selectors across the four pages, and consolidate the remaining hero logic with canopy.js.",
+   "why": "Large dormant components and overlapping animation ownership make this small static site unnecessarily difficult to maintain and regression-test."
+  }
+ ]
+}

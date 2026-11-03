@@ -1,5 +1,5 @@
 /* =========================================================
-   Anar Events — site.js (v2.10, night palette, round-10 fixes, 3 Nov 2026)
+   Anar Events — site.js (v2.11, night palette, canopy round-2 fixes, 3 Nov 2026)
    Loaded (defer, self-hosted in assets/js/vendor/) before this file:
      GSAP 3.12.5 + ScrollTrigger, Lenis 1.1.18
    Content is visible by default. Reveal targets are hidden only
@@ -25,9 +25,6 @@
   /* the phone/desktop threshold: 769px here and in the CSS header block (nav drawer, toggle) */
   var desktopQuery = window.matchMedia('(min-width: 769px)');
   var isDesktop = function () { return desktopQuery.matches; };
-  /* the celebrations accordion keeps its one-open-panel row only from 1100px (CSS); below, every panel is stacked */
-  var wideQuery = window.matchMedia('(min-width: 1100px)');
-  var isWide = function () { return wideQuery.matches; };
   var vh = function () { return window.innerHeight; };
   var $ = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
@@ -40,15 +37,27 @@
      0. Hero video: the src is set only after window 'load',
         only without reduced motion and only when Save-Data is off.
         1080 mp4 on wide screens, 720 mp4 at <=768px (a <source
-        media> attribute is ignored inside <video>). Pauses off
-        screen. The poster shows in every other case.
+        media> attribute is ignored inside <video>). Every start
+        is gated on heroVisible(): the tab visible AND the video
+        rendered (computed display, a box) AND its bounds inside
+        the viewport. Pauses off screen and in a hidden tab. The
+        poster shows in every other case.
      --------------------------------------------------------- */
   var heroVideo = $('.hero__video');
   var videoLoaded = false;
   var videoFailed = false;
-  /* every play() goes through here: the promise rejection (autoplay refused) is swallowed and nothing plays after a failure */
+  /* the one visibility test for every start: the document shown, the element rendered (its own display, and a box:
+     canopy.js hides its parent with display:none once screen 1 has scrolled past) and its bounds in the viewport */
+  var heroVisible = function () {
+    if (!heroVideo || document.hidden) { return false; }
+    if (getComputedStyle(heroVideo).display === 'none' || !heroVideo.getClientRects().length) { return false; }
+    var r = heroVideo.getBoundingClientRect();
+    return r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < vh();
+  };
+  /* every play() goes through here: nothing plays after a failure or while the hero is not visible, and the promise
+     rejection (autoplay refused) is swallowed */
   var playVideo = function () {
-    if (!heroVideo || videoFailed) { return; }
+    if (!heroVideo || videoFailed || !heroVisible()) { return; }
     var p = heroVideo.play();
     if (p && p.catch) { p.catch(function () {}); }
   };
@@ -74,17 +83,17 @@
     source.addEventListener('error', fallback);
     heroVideo.addEventListener('error', fallback);
     heroVideo.appendChild(source);
-    /* load()/play() only while the hero is on screen (a deep link to #inquire lands below it); otherwise the
-       observer starts it when the hero scrolls back in (play() on the preload="none" video fetches the mp4) */
-    var inView = heroVideo.getBoundingClientRect().bottom > 0;
-    if (inView || !('IntersectionObserver' in window)) {
+    /* load()/play() only while the hero is visible (a deep link to #inquire lands below it; a background tab waits);
+       otherwise the observer starts it when the hero scrolls back in (play() on the preload="none" video fetches the
+       mp4). The observer callback re-checks heroVisible() itself: an entry can intersect while the tab is hidden */
+    if (heroVisible() || !('IntersectionObserver' in window)) {
       heroVideo.load();
       playVideo();
     }
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (entries) {
         entries.forEach(function (en) {
-          if (en.isIntersecting && !userPaused && !reduced) { playVideo(); } else { heroVideo.pause(); }
+          if (en.isIntersecting && !userPaused && !reduced && heroVisible()) { playVideo(); } else { heroVideo.pause(); }
         });
       }, { threshold: 0.05 }).observe(heroVideo);
     }
@@ -92,11 +101,11 @@
   if (heroVideo) {
     if (document.readyState === 'complete') { loadHeroVideo(); }
     else { window.addEventListener('load', loadHeroVideo, { once: true }); }
-    /* hidden tab: pause; back in view: resume only while motion is on and the hero is still on screen */
+    /* hidden tab: pause; back in view: resume only while motion is on and the hero is still visible */
     document.addEventListener('visibilitychange', function () {
       if (!videoLoaded) { return; }
       if (document.hidden) { heroVideo.pause(); return; }
-      if (!userPaused && !reduced && heroVideo.getBoundingClientRect().bottom > 0) { playVideo(); }
+      if (!userPaused && !reduced && heroVisible()) { playVideo(); }
     });
   }
 
@@ -278,16 +287,9 @@
   }
 
   /* Same-page anchors (including "index.html#inquire" while on index) and the skip link:
-     the drawer closes first, then the scroll. A target inside a collapsed
-     celebration strip (the "Find your celebration" links) opens that panel on wide screens. */
-  function openPanelFor(target) {
-    var p = target.closest ? target.closest('.accordion__panel') : null;
-    var btn = p ? $('.accordion__trigger', p) : null;
-    if (btn && !btn.hidden) { btn.click(); }
-  }
+     the drawer closes first, then the scroll. */
   function goToAnchor(target) {
     closeNav();
-    openPanelFor(target);
     scrollToEl(target);
   }
   $$('a[href*="#"]').forEach(function (a) {
@@ -312,7 +314,6 @@
     if (landing) {
       setTimeout(function () {
         if (!landing.hasAttribute('tabindex')) { landing.setAttribute('tabindex', '-1'); }
-        openPanelFor(landing);
         /* focus first: the focusin handler (below) marks every .reveal ancestor .is-revealed (transform none), and
            settleReveals() completes the reveals above the fold, so the box measured next is the untransformed one
            (a target inside a not-yet-revealed .reveal sits 24px low until then; the browser's own jump used that box) */
@@ -328,185 +329,19 @@
     }
   }
 
-  /* ---------------------------------------------------------
-     Accordion (The celebrations): hover expands on pointer
-     devices, click/focus expands (touch, keyboard). Each trigger
-     controls its body (aria-controls / id). Under 1100px every body
-     is shown stacked and the triggers are removed (CSS + here).
-     While the .35s flex transition runs the opening panel carries
-     .is-settling (its body stays out of flow, CSS, and fades in from
-     40% of the transition) and the row keeps its height; once settled
-     (transitionend, or the .36s timer) the body is in flow, the row
-     grows to fit its text and ScrollTrigger is refreshed. A
-     ResizeObserver on the accordion refreshes on any later height
-     change (debounced). At every width each description sits in a
-     native <details> "Read more", closed at start (the title, the
-     Persian accent and the intro stay visible). Collapsed bodies carry
-     aria-hidden="true" + inert at every breakpoint; a shown body
-     carries neither (setBodyShown).
-     Wide screens also reserve the row height: every body is measured
-     at the open panel's width (fonts loaded, on resize) and the tallest
-     sets --acc-min on the accordion (CSS min-height), so hovering from
-     a short description to a long one never moves the sections below.
-     --------------------------------------------------------- */
-  var refreshTriggers = function () { if (hasGsap && motionOn) { ScrollTrigger.refresh(); } };
-  var setBodyShown = function (content, shown) {
-    if (!content) { return; }
-    content.inert = !shown;
-    if (shown) { content.removeAttribute('aria-hidden'); } else { content.setAttribute('aria-hidden', 'true'); }
-  };
-  $$('[data-accordion]').forEach(function (acc, ai) {
-    var panels = $$('.accordion__panel', acc);
-    var hoverable = window.matchMedia('(hover: hover)').matches;
-    var settleTimer = null;
-    var settling = null;
-    function settle() {
-      if (!settling) { return; }
-      var p = settling; settling = null;
-      if (settleTimer) { clearTimeout(settleTimer); settleTimer = null; }
-      p.classList.remove('is-settling');
-      acc.style.minHeight = '';
-      /* no ScrollTrigger.refresh() here: the ResizeObserver below refreshes (debounced) when the row height changes */
-    }
-    function open(target) {
-      if (target.classList.contains('is-open')) { return; }
-      settle();
-      /* the row keeps its current height while the flex transition runs */
-      if (isWide()) { acc.style.minHeight = acc.offsetHeight + 'px'; }
-      panels.forEach(function (p) {
-        var on = p === target;
-        p.classList.toggle('is-open', on);
-        p.classList.toggle('is-settling', on);
-        var btn = $('.accordion__trigger', p);
-        if (btn) { btn.setAttribute('aria-expanded', on ? 'true' : 'false'); }
-        setBodyShown($('.accordion__body', p), on);
-      });
-      settling = target;
-      settleTimer = setTimeout(settle, reduced || userPaused ? 0 : 360);
-    }
-    acc.addEventListener('transitionend', function (e) {
-      if (settling && e.target === settling && /flex/.test(e.propertyName)) { settle(); }
-    });
-    /* height changes (a panel settling, a Read more opening): one refresh, 150 ms after the last change, on the next frame */
-    if ('ResizeObserver' in window) {
-      var resizeTimer = null;
-      new ResizeObserver(function () {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(function () { requestAnimationFrame(refreshTriggers); }, 150);
-      }).observe(acc);
-    }
-    panels.forEach(function (p, i) {
-      var btn = $('.accordion__trigger', p);
-      var bodyEl = $('.accordion__body', p);
-      if (bodyEl && !bodyEl.id) { bodyEl.id = 'acc-' + ai + '-' + i; }
-      if (btn && bodyEl) { btn.setAttribute('aria-controls', bodyEl.id); }
-      /* hover opens after a 120 ms hover-intent pause (a pointer crossing the row to reach the CTA opens nothing),
-         unless focus sits inside the open body (its details / summary included) or the keyboard placed focus
-         inside the accordion (a click also focuses, and must not disable hover) */
-      if (hoverable) {
-        var hoverTimer = null;
-        p.addEventListener('mouseenter', function () {
-          if (!isWide()) { return; }
-          clearTimeout(hoverTimer);
-          hoverTimer = setTimeout(function () {
-            hoverTimer = null;
-            var openBody = $('.accordion__panel.is-open .accordion__body', acc);
-            if (openBody && openBody.contains(document.activeElement)) { return; }
-            /* old Safari throws on the :focus-visible pseudo-class: a throw counts as "not keyboard focus" */
-            var keyboardFocus = false;
-            try { keyboardFocus = acc.contains(document.activeElement) && document.activeElement.matches(':focus-visible'); } catch (err) { keyboardFocus = false; }
-            if (keyboardFocus) { return; }
-            open(p);
-          }, 120);
-        });
-        p.addEventListener('mouseleave', function () { clearTimeout(hoverTimer); hoverTimer = null; });
-      }
-      /* keyboard: click / Enter / Space only (focus alone opens nothing; the :has() ring on the panel shows where focus is) */
-      if (btn) {
-        btn.addEventListener('click', function () { if (isWide()) { open(p); } });
-      }
-    });
-    var syncMobile = function () {
-      var mobile = !isWide();
-      panels.forEach(function (p) {
-        var btn = $('.accordion__trigger', p);
-        var content = $('.accordion__body', p);
-        var visible = mobile || p.classList.contains('is-open');
-        if (!mobile && content && content.contains(document.activeElement)) { open(p); visible = true; }
-        setBodyShown(content, visible);
-        if (!btn) { return; }
-        btn.hidden = mobile;
-        if (mobile) { btn.setAttribute('aria-expanded', 'true'); }
-        else { btn.setAttribute('aria-expanded', p.classList.contains('is-open') ? 'true' : 'false'); }
-      });
-      refreshTriggers();
-    };
-    /* the native "Read more": closed at start on every width (the summary stays visible; a reader opens the one they want) */
-    var syncRead = function () {
-      panels.forEach(function (p) {
-        var d = $('.accordion__read', p);
-        if (d) { d.open = false; }
-      });
-    };
-    /* the tallest expanded body at the open panel's width (flex 5 of 5+(n-1), minus the 8px gaps) -> --acc-min.
-       Batched: every measuring style is written first, then every height is read, then every style is restored
-       (one layout, not one per panel) */
-    var bodies = panels.map(function (p) { return $('.accordion__body', p); }).filter(Boolean);
-    var reserveHeight = function () {
-      if (!isWide()) { acc.style.removeProperty('--acc-min'); return; }
-      var n = panels.length;
-      var gap = parseFloat(getComputedStyle(acc).columnGap) || 8;
-      var openW = Math.max(0, (acc.clientWidth - gap * (n - 1)) * 5 / (n + 4));
-      var saved = bodies.map(function (b) { return b.getAttribute('style'); });
-      bodies.forEach(function (b) {
-        b.style.cssText = 'position:absolute;inset:auto;left:0;top:0;width:' + openW + 'px;height:auto;min-height:0;visibility:hidden;opacity:0;transition:none';
-      });
-      var tallest = bodies.reduce(function (m, b) { return Math.max(m, b.scrollHeight); }, 0);
-      bodies.forEach(function (b, i) {
-        if (saved[i] === null) { b.removeAttribute('style'); } else { b.setAttribute('style', saved[i]); }
-      });
-      if (tallest) { acc.style.setProperty('--acc-min', tallest + 'px'); }
-    };
-    var reserveTimer = null;
-    var reserveSoon = function () { clearTimeout(reserveTimer); reserveTimer = setTimeout(function () { reserveHeight(); refreshTriggers(); }, 120); };
-    syncMobile();
-    syncRead();
-    reserveHeight();
-    onMQ(wideQuery, function () { syncMobile(); reserveSoon(); });
-    /* height-only resizes (the mobile URL bar) change no body width: only a width change re-measures */
-    var lastWidth = window.innerWidth;
-    window.addEventListener('resize', function () {
-      if (window.innerWidth === lastWidth) { return; }
-      lastWidth = window.innerWidth;
-      reserveSoon();
-    }, { passive: true });
-    if (document.fonts && document.fonts.ready) { document.fonts.ready.then(reserveSoon); }
-    window.addEventListener('load', reserveSoon, { once: true });
-  });
+  /* the behaviour script is live (CSS may key no-JS fallbacks on html:not(.site-ready)) */
   html.classList.add('site-ready');
 
   /* ---------------------------------------------------------
-     Inquiry form. First, before any other form logic and with or
-     without fetch: the invalid-field handler (a field that fails
-     validation inside the optional <details> opens it, so the
-     browser can show the message); only once it is installed does
-     the <details> close (the HTML renders it open for no-JS users).
-     Then: posts to Formspree with fetch when available; 12 s
-     AbortController timeout; entered values stay on every error
-     (timeout included); on success the form is reset only if its
-     values still match the submitted snapshot (edits made while
-     the request was pending are kept); the submit button is
-     restored in finally; the aria-live region reports success /
-     error. Without fetch the form submits normally.
+     Inquiry form: posts to Formspree with fetch when available;
+     12 s AbortController timeout; entered values stay on every
+     error (timeout included); on success the form is reset only
+     if its values still match the submitted snapshot (edits made
+     while the request was pending are kept); the submit button
+     is restored in finally; the aria-live region reports success
+     / error. Without fetch the form submits normally.
      --------------------------------------------------------- */
   var form = $('.form[data-ajax]');
-  if (form) {
-    form.addEventListener('invalid', function (e) {
-      var more = e.target && e.target.closest ? e.target.closest('details') : null;
-      if (more && !more.open) { more.open = true; }
-    }, true);
-    $$('.form__more', form).forEach(function (more) { more.open = false; });
-  }
   if (form && window.fetch && window.FormData) {
     var status = $('.form__status', form) || $('#form-status');
     var submitBtn = $('button[type="submit"]', form);
@@ -601,7 +436,6 @@
   };
   /* the once-only reveal tweens with their trigger elements (block 9), for settleReveals() */
   var revealTweens = [];
-  var trunkImgs = $$('.descend__trunks img');
 
   /* Drawn lines (.kashida-draw, .track-line) use vector-effect:non-scaling-stroke, so dash values are
      screen pixels, not viewBox units: the dash length is the RENDERED length of the path. Returned as
@@ -682,41 +516,24 @@
   function buildTweens() {
     /* -------------------------------------------------------
        1. HERO (scrubbed over the hero's own height): the logo
-          rises slower than the page and fades (no blur: cheaper);
-          the video tint deepens to solid cypress;
-       2. the canopy-u3 piece moves up and out at 0.6x scroll speed.
+          rises slower than the page and fades, the tag goes
+          first, the video tint deepens to solid cypress. NOT on
+          the canopy home: canopy.js owns that hero (a hero inside
+          main.canopy, or html.canopy-ready while its context is
+          live), fading the mark before its drifted bounds reach
+          the painted canopy; this block must never move it there.
+       2. / 3. (gone) the canopy-u3 piece and the descend strips
+          belonged to the previous home.
        ------------------------------------------------------- */
     var hero = $('.hero');
-    if (hero) {
+    var canopyOwned = html.classList.contains('canopy-ready') || !!(hero && hero.closest && hero.closest('main.canopy'));
+    if (hero && !canopyOwned) {
       gsap.timeline({
         scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true, invalidateOnRefresh: true }
       })
         .to('.hero__mark', { y: function () { return vh() * 0.45; }, opacity: 0.35, ease: 'none', duration: 1 }, 0)
-        .to('.hero__canopy', { y: function () { return vh() * 0.4; }, ease: 'none', duration: 1 }, 0)
         .to('.hero__deepen', { opacity: 1, ease: 'none', duration: 1 }, 0)
         .to('.hero__tag', { opacity: 0, ease: 'none', duration: 0.35 }, 0);
-    }
-
-    /* -------------------------------------------------------
-       3. DESCEND THE TREE: the two edge strips (trunk-left /
-          trunk-right) sit in a sticky, viewport-high frame and
-          scroll past at 0.8x while the statement and the pillars
-          (normal flow) pass at 1x. Travel is clamped to each
-          strip's spare height so no gap opens at the bottom.
-       ------------------------------------------------------- */
-    var descend = $('.descend');
-    if (descend && trunkImgs.length) {
-      trunkImgs.forEach(function (img) {
-        gsap.to(img, {
-          y: function () {
-            var travel = Math.max(0, descend.offsetHeight - vh()) * 0.8;
-            var room = Math.max(0, img.offsetHeight - vh());
-            return -Math.min(travel, room);
-          },
-          ease: 'none',
-          scrollTrigger: { trigger: descend, start: 'top top', end: 'bottom bottom', scrub: true, invalidateOnRefresh: true }
-        });
-      });
     }
 
     /* -------------------------------------------------------
@@ -731,8 +548,8 @@
     });
 
     /* -------------------------------------------------------
-       5. The journey (and the steps line on How we work):
-          [data-track] holds .track-line path(s) and .track-dot(s).
+       5. The steps line on How we work (#steps): [data-track]
+          holds .track-line path(s) and .track-dot(s).
           The sage base line and all the dots are there from the
           start (CSS: no empty state); the gold .track-line overlay
           draws across with scroll and each dot turns gold, with a
@@ -781,17 +598,7 @@
           .kashida-draw as under the statement: block 4 draws it.
        ------------------------------------------------------- */
 
-    /* -------------------------------------------------------
-       7. The roots: roots-floor rises in as the floor while the
-          Inquire section arrives.
-       ------------------------------------------------------- */
-    var ground = $('.ground'), roots = $('.ground__roots');
-    if (ground && roots) {
-      gsap.fromTo(roots, { yPercent: 28 }, {
-        yPercent: 0, ease: 'none',
-        scrollTrigger: { trigger: ground, start: 'top 90%', end: 'top 15%', scrub: true }
-      });
-    }
+    /* 7. (gone) the roots-floor rise belonged to the previous home; canopy.js raises .ground-art. */
 
     /* -------------------------------------------------------
        8. Floating leaves (two places): buildLeaves(), rebuilt on
@@ -902,7 +709,7 @@
     startSmoothScroll();
     if (body.classList.contains('panel-open') && lenis) { lenis.stop(); }
     initMotion();
-    if (heroVideo) { if (!videoLoaded) { loadHeroVideo(); } else if (heroVideo.getBoundingClientRect().bottom > 0) { playVideo(); } }
+    if (heroVideo) { if (!videoLoaded) { loadHeroVideo(); } else { playVideo(); } }
     setToggle(false);
   }
   if (toggle) {
@@ -931,6 +738,5 @@
   if (hasGsap) {
     window.addEventListener('load', function () { if (motionOn) { ScrollTrigger.refresh(); } });
     if (document.fonts && document.fonts.ready) { document.fonts.ready.then(function () { if (motionOn) { ScrollTrigger.refresh(); } }); }
-    trunkImgs.forEach(function (img) { if (!img.complete) { img.addEventListener('load', function () { if (motionOn) { ScrollTrigger.refresh(); } }); } });
   }
 })();

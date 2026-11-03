@@ -1,0 +1,41 @@
+{
+ "model": "astra",
+ "role": "planner",
+ "score": 7.5,
+ "blocking": [
+  "Language support is qualified in the FAQ but promised elsewhere as an included deliverable; Pashto appears in the inquiry form and Afghan copy but disappears from the service language lists.",
+  "The coordination proposal limits covered events, hours and staffing, while 'With either option' promises coverage across every day. Families cannot reliably tell what they are buying."
+ ],
+ "fixes": [
+  {
+   "where": "how-we-work.html — #you-get; shared proposal and footer copy",
+   "what": "Use one consistent promise: 'Translated summaries and spoken language support are agreed before booking and listed in your proposal.' Apply it to Pashto requests too; replace blanket promises of both scripts and digit sets with the family's agreed languages.",
+   "why": "Parents should know precisely which support they can rely on."
+  },
+  {
+   "where": "how-we-work.html — #you-get, 'With either option'",
+   "what": "Change 'across every day' to 'across the events and hours listed in your proposal'; apply that qualification to staffing, signage coordination and post-wedding support.",
+   "why": "The shared benefits currently appear broader than the coordination package."
+  },
+  {
+   "where": "index.html — #celebrations; weddings.html — tradition sections",
+   "what": "Add 'These are examples; we confirm your family's customs and sequence with you and your officiant.' Replace 'Seven circuits under the mandap' with 'Your ceremony, in the sequence agreed with your officiant.' Describe the aina mosaf timing as family-agreed rather than invariably following the contract.",
+   "why": "Specificity earns trust when it leaves room for the family's actual practice."
+  },
+  {
+   "where": "index.html — #how-teaser and #journey",
+   "what": "Move the two service options directly after the three promises. Shorten each journey stage to one sentence and link to the existing detailed process page.",
+   "why": "Couples and paying parents should understand the available help before navigating a long ceremony catalogue."
+  },
+  {
+   "where": "index.html — #f-role, #f-lang and inquiry introduction",
+   "what": "Give both optional selects a blank 'Choose if helpful' default. Add 'Couples and parents are both welcome to inquire' beside the form introduction.",
+   "why": "The collapsed fields currently submit 'the couple' and 'English' even when the visitor never chooses them."
+  },
+  {
+   "where": "assets/css/site.css — .nav-fa__soon at max-width:480px",
+   "what": "Keep 'coming soon' visibly attached to فارسی on phones, or remove the inert label until the language page exists.",
+   "why": "At 390px it looks like an available language switch, creating a dead end for parents."
+  }
+ ]
+}

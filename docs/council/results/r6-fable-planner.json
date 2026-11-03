@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "planner",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "index.html form, first .form__row (Your name(s) / Email) and the Phone field inside <details class=\"form__more\">",
+   "what": "Move the Phone field out of the collapsed 'Share more wedding details' and into the first row beside Email (names / email / phone), keeping it optional; update the note to 'Only names and email are required.'",
+   "why": "Parents and elders call back; a parent who writes without opening the collapsed section leaves the planner no number, and a phone-first family will not dig for it."
+  },
+  {
+   "where": "index.html .pills list (#journey) and the Traditions checkboxes in the form",
+   "what": "Add 'Rukhsati / Vidaai' and 'Patakhti <span class=\"fa\">پاتختی</span>' to both the pills and the Traditions checkboxes.",
+   "why": "The bride's send-off and the Persian day-after gathering are the first things Pakistani, Afghan and Persian parents ask about; their absence reads as a gap in fluency."
+  },
+  {
+   "where": "index.html accordion panel 3 (Mehndi & Sangeet): <p class=\"fa\">حنابندان</p> and the Read more text",
+   "what": "Either remove the Persian label from this South Asian panel or extend the text to earn it: 'The henna night: hana-bandan for Persian families, khina for Afghan families, mehndi for South Asian families. The sangeet, when both families sing and dance…'",
+   "why": "A Persian label floating over mehndi/sangeet/baraat copy reads as decoration to a Punjabi or Gujarati family and as a mismatch to a Persian one."
+  },
+  {
+   "where": "index.html accordion panel 4 (Haldi & Pheras) Read more text",
+   "what": "Change 'We coordinate timing with the mandap' to 'We coordinate timing with the pandit and the venue' (match weddings.html).",
+   "why": "The mandap is the structure; a Hindu family will notice the planner does not know who sets the muhurat timing."
+  },
+  {
+   "where": "index.html: pillar 02 .muted, journey Consultation note, hww-panel Consultation, form closing .form__note",
+   "what": "Keep 'Parents and elders included at the level you choose' once (journey) and reword the other three, e.g. pillar: 'Elders greeted first, and asked, not told.'; form note: 'We reply within one business day. Parents are welcome to write to us directly.'",
+   "why": "The same sentence four times on one page reads as a template line, not a practice, and dulls the one promise parents care most about."
+  },
+  {
+   "where": "index.html #inquire, <p class=\"reveal measure muted\">Thank you for writing…</p>",
+   "what": "Change to 'Write to us in English or your own language; we reply within one business day.'",
+   "why": "Thanking someone before they have written is a copy slip, and inviting the parents' language here does more for inquiries than the footer line."
+  }
+ ]
+}

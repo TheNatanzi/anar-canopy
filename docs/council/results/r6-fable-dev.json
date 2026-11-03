@@ -1,0 +1,40 @@
+{
+ "model": "fable",
+ "role": "dev",
+ "score": 8,
+ "blocking": [
+  "assets/fonts/TTRamillas-Bold.woff2 is still the TRIAL file (site.css line 9 comment says so): the licensed file must replace it before launch, same filename."
+ ],
+ "fixes": [
+  {
+   "where": "assets/css/site.css `.journey__stop{position:relative;display:grid;gap:2px}` (journey block)",
+   "what": "Add `align-content:start` to `.journey__stop`.",
+   "why": "At ≥900px the five stops are stretched grid items, so each stop's three rows spread out: the Persian label and note sit at different heights in every column (see index-desktop-3: Inquiry's درخواست floats 80px below its title while Proposal's hugs it)."
+  },
+  {
+   "where": "assets/css/site.css header block, `@media (max-width:767px){ html:not(.nav-ready) .site-nav{…} }`",
+   "what": "Scope the pre-JS link strip to `html:not(.js) .site-nav` (the `js` class is set inline in <head>), and add `html.js:not(.nav-ready) .site-nav{display:none}`; keep `html:not(.js) .nav-toggle{visibility:hidden}`.",
+   "why": "Today every phone page load paints a deep-night strip of three links under the bar, then collapses it when the deferred site.js (~130 KB of vendors first) runs: a visible flash on slow connections, worse than the no-JS fallback it protects."
+  },
+  {
+   "where": "index.html hero `<img class=\"hero__canopy\" srcset>` and the matching `<link rel=preload imagesrcset>`",
+   "what": "Export `assets/tree/canopy-u3-2048.webp` and add `2048w` to both srcset lists (sizes unchanged).",
+   "why": "On a 390px DPR-3 phone `175vw` resolves to 2047 device px, so the browser skips the 1376w file and preloads the full 2752w canopy (378 KB) before first paint; a 2048w file (~220 KB) halves the phone hero critical path."
+  },
+  {
+   "where": "assets/js/site.js: `desktopQuery.addEventListener('change',…)` (header block, panel block, leaves), `wideQuery.addEventListener`, `compactQuery.addEventListener`",
+   "what": "Add `var onMQ=function(mq,fn){ if(mq.addEventListener){mq.addEventListener('change',fn);} else if(mq.addListener){mq.addListener(fn);} };` next to `rmq` and use it for all five calls.",
+   "why": "Only `rmq` has the `addListener` fallback; on an old Safari the first call throws inside the header block before `nav-ready`, `panel-ready`, the accordion, the AJAX form and motion ever bind, leaving a half-dead page instead of the graceful no-JS fallback the CSS was designed for."
+  },
+  {
+   "where": "assets/img/pom-pile-1400.jpg (359 KB) and pom-pile.jpg (441 KB), used four times across index/weddings/about",
+   "what": "Re-encode the pom-pile set at ~q72 with chroma subsampling (target ≤180 KB for 1400w) or re-run the same export used for pom-open-closeup (131 KB at 1400w).",
+   "why": "Phones choose the 1400w file for every stacked celebration panel (100vw × DPR 3), so the pom-pile stand-in alone costs ~720 KB on index; keep the pipeline lean now so the real photos inherit sane sizes."
+  },
+  {
+   "where": "housekeeping: site.js block 6 comment 'three gold kashida strips'; site.css `@media (min-width:0){ .motion-toggle{…} }`; all four <head>s",
+   "what": "Fix the comment (one `<i>` strip); unwrap the always-true `(min-width:0)` block; add `<link rel=\"canonical\">` per page and a 180px `apple-touch-icon` PNG next to the SVG icon.",
+   "why": "Stale comments mislead the next edit, the empty media query is dead syntax, and Safari/iOS ignore SVG favicons so the home-screen and tab icon are blank there."
+  }
+ ]
+}

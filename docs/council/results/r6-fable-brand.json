@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "brand",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "site.css .journey__stop (desktop ≥900px)",
+   "what": "Add `align-content:start` to `.journey__stop` so the Persian label and note sit directly under each English title; today the shorter stops stretch to the tallest (Proposal) and their Persian lines float at different heights (desktop-3: درخواست at y≈596, پیشنهاد at y≈548).",
+   "why": "Five stops on one line read as one device only when their rows align; the drifting Persian breaks the rhythm."
+  },
+  {
+   "where": "site.css .accordion__panel:not(.is-open) .accordion__media img / ::after (≥1100px)",
+   "what": "Lighten the collapsed strips: drop brightness to .9 (not .75) and give collapsed panels a lighter overlay, e.g. `.accordion__panel:not(.is-open) .accordion__media::after{background:linear-gradient(to top,rgba(18,23,20,.8),rgba(18,23,20,.3))}`.",
+   "why": "The five closed strips render as near-black slabs (desktop-2); the brand wants the row alive with image texture, not dead columns."
+  },
+  {
+   "where": "index.html pillars .card__n (01 · We are always / 02 · We always / 03 · We always)",
+   "what": "Make the three eyebrows uniform numbers only (`01`, `02`, `03`) and let each h3 carry the full owner promise (\"We are always fluent in the unspoken details\" etc.).",
+   "why": "The split eyebrows read as a typo (\"WE ARE ALWAYS\" beside \"WE ALWAYS\") and weaken the typographic system."
+  },
+  {
+   "where": "site.css @media (max-width:768px) `.form > .form__note:last-child,.inquire__contact{padding-left:52px}`",
+   "what": "Remove the 52px left padding on the closing note; instead give `.form` 56px bottom padding on phones (the Pause button is fixed bottom-left, so the indent rarely lines up with it).",
+   "why": "On phone-4 the note is indented 52px while every field above starts at the card edge: a visible ragged margin on the one conversion screen."
+  },
+  {
+   "where": "site.css .journey .leaf--3 (≤768px)",
+   "what": "Move the phone leaf off the heading: `left:-40px;top:-24px` (or opacity .25) so it no longer sits behind the eyebrow “FIVE STEPS ON ONE LINE” (phone-3).",
+   "why": "Decoration behind type reads as clutter, not framing; the tree art should stay at the edges."
+  },
+  {
+   "where": "site.css .field input,.field textarea,.field select (border:1px solid var(--stone))",
+   "what": "Use the system weight: `border:2px solid rgba(185,179,166,.6)` (and 2px gold on focus) to match every other rule on the site.",
+   "why": "The form inputs are the only 1px hairlines on the site and look thin next to the 2px gold rules and the 2px ghost tab."
+  }
+ ]
+}

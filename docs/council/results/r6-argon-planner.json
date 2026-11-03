@@ -1,0 +1,14 @@
+{
+ "model": "argon",
+ "role": "planner",
+ "score": 9,
+ "blocking": [],
+ "fixes": [
+  {"where": "index.html journey Proposal note, hww-panel Proposal step (all pages), how-we-work.html steps/you-get/FAQ, footer language line, weddings.html, about.html", "what": "Add 'Pashto' to the parents' page language list everywhere ('in Persian, Dari, Pashto, Urdu, Hindi or Punjabi').", "why": "The form and the Afghan weddings section invite Pashto-speaking elders, so omitting Pashto from the proposal language promise reads as an inconsistency."},
+  {"where": "weddings.html, how-we-work.html, about.html footer address block", "what": "Add the WhatsApp link to the footer on all three inner pages to match index.html.", "why": "Persian, Afghan and South Asian parents and overseas relatives prefer WhatsApp for first contact."},
+  {"where": "index.html Mehndi & Sangeet panel, weddings.html #mehndi-sangeet, index.html pills", "what": "Pair حنابندان with مهندی on the Mehndi & Sangeet label (or an inclusive label) and add خینه (khina) alongside بله‌برون / شیرینی‌خوری in the pills.", "why": "Only the Iranian term over a South Asian heading feels mismatched; khina names the Afghan henna night."},
+  {"where": "index.html #inquire traditions checkboxes", "what": "Add checkboxes for Bale-boroon and Aina Mosaf.", "why": "Bale-boroon is in the pills right above the form; aina mosaf is the Afghan differentiator."},
+  {"where": "assets/css/site.css .motion-toggle on phones / .accordion__body", "what": "Hide or reposition the motion toggle when an accordion body is in the lower viewport on phones, or add padding-bottom:52px to .accordion__body at ≤768px.", "why": "In the phone shots the Pause button sits over the last lines of the open celebration text."}
+ ],
+ "note": "Captured from the Gemini web app (4 Argon) on the pass-5 build; 6th fix truncated in capture."
+}

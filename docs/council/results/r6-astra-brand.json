@@ -1,0 +1,40 @@
+{
+ "model": "astra",
+ "role": "brand",
+ "score": 7.5,
+ "blocking": [
+  "The stylesheet identifies TT Ramillas as a trial font requiring replacement before launch."
+ ],
+ "fixes": [
+  {
+   "where": "assets/css/site.css — @font-face",
+   "what": "Replace the trial font with licensed TT Ramillas Bold webfont files before launch.",
+   "why": "The defining brand typeface needs a production-ready asset."
+  },
+  {
+   "where": "assets/css/site.css — .journey__stop",
+   "what": "Use consistent desktop grid rows for the English title and Persian accent, then top-align every description; add align-content:start.",
+   "why": "The screenshot shows five descriptions starting at different heights, making the timeline look unfinished."
+  },
+  {
+   "where": "index.html — .statement; assets/css/site.css — .statement__text",
+   "what": "Keep the approved wording but remove forced line breaks on phones; reduce tracking and use balanced wrapping within the available width.",
+   "why": "Six prescribed desktop lines become a lengthy, fragmented headline inside the narrow mobile text column."
+  },
+  {
+   "where": "index.html — #journey and #how-teaser",
+   "what": "Keep the service comparison, shorten each homepage journey description to one sentence, and place the fuller explanations on how-we-work.html.",
+   "why": "Repeated process explanations flatten the editorial rhythm and delay the inquiry."
+  },
+  {
+   "where": "assets/css/site.css — .nav-fa__soon at max-width:480px",
+   "what": "Keep a visible coming-soon qualifier beside or below فارسی on phones.",
+   "why": "The mobile screenshot presents an unavailable language option as if it were actionable."
+  },
+  {
+   "where": "assets/css/site.css — .leaf and .journey .leaf--3",
+   "what": "Reduce the detached journey sprig substantially and anchor it more tightly to the edge.",
+   "why": "Its oversized floating treatment feels like an added ornament beside the more convincing painted tree frame."
+  }
+ ]
+}

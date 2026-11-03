@@ -1,0 +1,36 @@
+{
+ "model": "astra",
+ "role": "dev",
+ "score": 7,
+ "blocking": [
+  "Desktop accordion fallback can clip ceremony descriptions when site.js fails: collapsed bodies retain absolute positioning inside overflow-hidden panels.",
+  "The stylesheet identifies the deployed Latin font as a trial file requiring replacement before launch."
+ ],
+ "fixes": [
+  {
+   "where": "assets/css/site.css — html:not(.site-ready) accordion fallback",
+   "what": "Reset every accordion body to position:relative; inset:auto; pointer-events:auto, and let each panel grow with its expanded details.",
+   "why": "The fallback restores visibility but leaves desktop positioning and pointer restrictions that can clip text and prevent Read more interaction."
+  },
+  {
+   "where": "assets/fonts/TTRamillas-Bold.woff2",
+   "what": "Replace the documented trial asset with the licensed production TT Ramillas Bold webfont.",
+   "why": "The source explicitly marks this asset as unfinished launch work."
+  },
+  {
+   "where": "assets/css/site.css — .accordion__trigger and .accordion__body",
+   "what": "Draw keyboard focus on the panel using :has(.accordion__trigger:focus-visible), above its body and media layers.",
+   "why": "The trigger's focus outline sits at z-index 2 beneath the open body at z-index 3, making the indicator vulnerable to obscuring."
+  },
+  {
+   "where": "assets/css/site.css and assets/js/site.js — navigation breakpoints",
+   "what": "Use the same desktop threshold for navigation CSS and desktopQuery, and close the drawer when crossing that threshold.",
+   "why": "CSS switches navigation at 768px while JavaScript switches at 769px; resizing an open drawer to exactly 768px hides its toggle without clearing the drawer state."
+  },
+  {
+   "where": "assets/js/site.js — accordion open(), settle(), and ResizeObserver",
+   "what": "Reserve enough desktop row height for the tallest expanded description at the current width, recalculating after fonts load and viewport changes.",
+   "why": "The current height lock ends after each hover transition, allowing differing description heights to move all following sections and refresh scroll animations."
+  }
+ ]
+}

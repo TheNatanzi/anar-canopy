@@ -17,7 +17,12 @@
   var body = document.body;
   var rmq = window.matchMedia('(prefers-reduced-motion: reduce)');
   var reduced = rmq.matches;
+  /* every matchMedia change binding goes through this (addEventListener, with the addListener fallback for old Safari) */
+  var onMQ = function (mq, fn) {
+    if (mq.addEventListener) { mq.addEventListener('change', fn); } else if (mq.addListener) { mq.addListener(fn); }
+  };
   var hasGsap = typeof window.gsap !== 'undefined' && typeof window.ScrollTrigger !== 'undefined';
+  /* the phone/desktop threshold: 769px here and in the CSS header block (nav drawer, toggle) */
   var desktopQuery = window.matchMedia('(min-width: 769px)');
   var isDesktop = function () { return desktopQuery.matches; };
   /* the celebrations accordion keeps its one-open-panel row only from 1100px (CSS); below, every panel is stacked */
@@ -142,7 +147,7 @@
     });
     /* the drawer closes when a link is activated and when the viewport grows past the phone breakpoint */
     $$('.site-nav a', header).forEach(function (a) { a.addEventListener('click', closeNav); });
-    desktopQuery.addEventListener('change', function (e) { if (e.matches) { closeNav(); } });
+    onMQ(desktopQuery, function (e) { if (e.matches) { closeNav(); } });
     /* the links are visible by default (CSS); only now, with the toggle wired, do they collapse into the drawer */
     html.classList.add('nav-ready');
   }
@@ -256,7 +261,7 @@
     };
     tab.addEventListener('blur', function () { setTimeout(syncTab, 0); });
     if (motionBtn) { motionBtn.addEventListener('blur', function () { setTimeout(syncTab, 0); }); }
-    desktopQuery.addEventListener('change', syncTab);
+    onMQ(desktopQuery, syncTab);
     window.addEventListener('scroll', function () {
       var next = window.scrollY;
       if (Math.abs(next - lastScroll) > 2) { hideWhileScrolling = next > lastScroll; }
@@ -321,6 +326,10 @@
      accordion refreshes on any later height change (debounced).
      Phones: each description sits in a native <details> "Read more";
      wider screens open every one (the summary is hidden there).
+     Wide screens also reserve the row height: every body is measured
+     at the open panel's width (fonts loaded, on resize) and the tallest
+     sets --acc-min on the accordion (CSS min-height), so hovering from
+     a short description to a long one never moves the sections below.
      --------------------------------------------------------- */
   var refreshTriggers = function () { if (hasGsap && motionOn) { ScrollTrigger.refresh(); } };
   var compactQuery = window.matchMedia('(max-width: 768px)');
@@ -399,10 +408,33 @@
         if (d) { d.open = !compact || i === 0; }
       });
     };
+    /* the tallest expanded body at the open panel's width (flex 6 of 6+(n-1), minus the 8px gaps) -> --acc-min */
+    var reserveHeight = function () {
+      if (!isWide()) { acc.style.removeProperty('--acc-min'); return; }
+      var n = panels.length;
+      var gap = parseFloat(getComputedStyle(acc).columnGap) || 8;
+      var openW = Math.max(0, (acc.clientWidth - gap * (n - 1)) * 6 / (n + 5));
+      var tallest = 0;
+      panels.forEach(function (p) {
+        var b = $('.accordion__body', p);
+        if (!b) { return; }
+        var saved = b.getAttribute('style');
+        b.style.cssText = 'position:absolute;inset:auto;left:0;top:0;width:' + openW + 'px;height:auto;min-height:0;visibility:hidden;opacity:0;transition:none';
+        tallest = Math.max(tallest, b.scrollHeight);
+        if (saved === null) { b.removeAttribute('style'); } else { b.setAttribute('style', saved); }
+      });
+      if (tallest) { acc.style.setProperty('--acc-min', tallest + 'px'); }
+    };
+    var reserveTimer = null;
+    var reserveSoon = function () { clearTimeout(reserveTimer); reserveTimer = setTimeout(function () { reserveHeight(); refreshTriggers(); }, 120); };
     syncMobile();
     syncRead();
-    wideQuery.addEventListener('change', syncMobile);
-    compactQuery.addEventListener('change', syncRead);
+    reserveHeight();
+    onMQ(wideQuery, function () { syncMobile(); reserveSoon(); });
+    onMQ(compactQuery, syncRead);
+    window.addEventListener('resize', reserveSoon, { passive: true });
+    if (document.fonts && document.fonts.ready) { document.fonts.ready.then(reserveSoon); }
+    window.addEventListener('load', reserveSoon, { once: true });
   });
   html.classList.add('site-ready');
 
@@ -651,8 +683,8 @@
     });
 
     /* -------------------------------------------------------
-       6. How we work teaser: three gold kashida strips slide in
-          from the right as the section arrives, then the cards.
+       6. How we work teaser: ONE gold kashida strip (<i>) slides in
+          from the right as the section arrives, then the options.
        ------------------------------------------------------- */
     var teaser = $('.teaser');
     if (teaser) {
@@ -725,7 +757,7 @@
       }
     });
   }
-  desktopQuery.addEventListener('change', function () { if (motionOn) { buildLeaves(); } });
+  onMQ(desktopQuery, function () { if (motionOn) { buildLeaves(); } });
 
   /* ---------------------------------------------------------
      Pause motion / Play motion (bottom-left ghost button) and
@@ -778,7 +810,7 @@
     syncReducedControl();
     if (reduced) { pauseAll(false); } else if (!userPaused) { playAll(false); }
   };
-  if (rmq.addEventListener) { rmq.addEventListener('change', onReduceChange); } else if (rmq.addListener) { rmq.addListener(onReduceChange); }
+  onMQ(rmq, onReduceChange);
 
   /* ---- start ---- */
   if (!hasGsap || reduced || userPaused) {

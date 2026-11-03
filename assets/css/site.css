@@ -91,6 +91,8 @@ main{position:relative;z-index:2;display:block}
 .section--tight{padding-block:clamp(48px,7vh,88px)}
 .section__head{text-align:center;margin-bottom:clamp(24px,4vh,32px)}
 .section__head .kashida{margin:var(--s2) auto 0}
+/* one short qualifying line under a section head (the celebrations: "These are examples…") */
+.section__intro{color:var(--stone);font-size:16px;line-height:24px;max-width:38em;margin:var(--s2) auto 0;text-wrap:balance}
 .pair{display:grid;gap:var(--s1)}
 @media (min-width:768px){
   .pair{grid-template-columns:1fr 1fr;align-items:baseline}
@@ -131,23 +133,27 @@ main{position:relative;z-index:2;display:block}
 .nav-home{display:block;width:120px;margin-right:var(--s2);flex:0 0 auto;opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s}
 .nav-home img{width:100%;height:auto}
 .site-header--solid .nav-home,.site-header.is-scrolled .nav-home{opacity:1;visibility:visible}
-/* the links are visible by default; on phones they collapse into the drawer only once site.js has bound
-   the toggle (html.nav-ready). Until then they sit in a deep-night strip under the bar and the toggle is hidden. */
+/* the links are visible by default; on phones they collapse into the drawer once site.js has bound the toggle
+   (html.nav-ready). Without JS at all (html:not(.js), the class is set inline in <head>) they sit in a deep-night
+   strip under the bar and the toggle is hidden; with JS they stay hidden until the toggle is wired (no flash).
+   Phone/desktop threshold: 769px here and in site.js desktopQuery. */
 .site-nav{display:block}
 .site-nav ul{display:flex;flex-wrap:wrap;gap:clamp(16px,2.4vw,36px)}
-@media (max-width:767px){
-  html:not(.nav-ready) .site-nav{position:absolute;top:var(--header-h);left:0;right:0;background:var(--deep);border-top:2px solid var(--gold);padding:var(--s2) var(--gutter)}
-  html:not(.nav-ready) .nav-toggle{visibility:hidden}
+@media (max-width:768px){
+  html:not(.js) .site-nav{position:absolute;top:var(--header-h);left:0;right:0;background:var(--deep);border-top:2px solid var(--gold);padding:var(--s2) var(--gutter)}
+  html:not(.js) .nav-toggle{visibility:hidden}
+  html.js:not(.nav-ready) .site-nav{display:none}
   html.nav-ready .site-nav{display:none}
 }
 .site-nav a{display:inline-block;padding-block:4px;border-bottom:2px solid transparent;transition:border-color .3s,color .3s;letter-spacing:.02em}
 .site-nav a:hover,.site-nav a[aria-current="page"]{border-bottom-color:var(--gold)}
 .nav-right{margin-left:auto;display:flex;align-items:center;gap:clamp(12px,2vw,28px)}
-/* فارسی · به‌زودی: an inert stone label (no title / aria-label); the "soon" drops under the word on phones */
-.nav-fa{font-size:20px;line-height:1;color:var(--stone);cursor:default;text-align:center}
+/* فارسی · به‌زودی: an inert stone label (no title / aria-label); the "soon" drops under the word on phones
+   and stays visible (a tiny 10px line) on the smallest phones, so the word never reads as a live switch */
+.nav-fa{font-size:20px;line-height:1;color:var(--stone);cursor:default;text-align:center;white-space:nowrap}
 .nav-fa__soon{font-size:14px}
-@media (max-width:767px){.nav-fa{font-size:18px}.nav-fa__soon{display:block;font-size:12px;line-height:1.3;margin-top:2px}}
-@media (max-width:480px){.nav-fa__soon{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}}
+@media (max-width:768px){.nav-fa{font-size:18px}.nav-fa__soon{display:block;font-size:12px;line-height:1.3;margin-top:2px}}
+@media (max-width:480px){.nav-fa__soon{font-size:10px;line-height:1.2}}
 .nav-toggle{width:44px;height:44px;display:grid;place-items:center;margin-left:-8px}
 .nav-toggle__bar{display:block;width:24px;height:2px;background:currentColor;position:relative;transition:background .2s}
 .nav-toggle__bar::before,.nav-toggle__bar::after{content:"";position:absolute;left:0;width:24px;height:2px;background:currentColor;transition:transform .3s}
@@ -163,7 +169,7 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 /* solid once scrolled, and on inner pages */
 .site-header--solid,.site-header.is-scrolled{background:rgba(27,34,30,.96)}
 @supports (backdrop-filter:blur(8px)){.site-header--solid,.site-header.is-scrolled{backdrop-filter:blur(8px)}}
-@media (min-width:768px){
+@media (min-width:769px){
   .nav-toggle{display:none}
   .nav-home{width:150px}
 }
@@ -233,6 +239,8 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .statement .kashida--short{margin:var(--s2) auto var(--s3)}
 .statement__text{font-size:clamp(24px,3.6vw,48px);line-height:1.2;letter-spacing:.05em;text-transform:uppercase;color:var(--parch);max-width:20em;margin-inline:auto}
 .statement__line{display:block}
+/* phones: no forced line breaks (the six desktop lines flow as one balanced block), tighter tracking */
+@media (max-width:768px){.statement__line{display:inline}.statement__text{letter-spacing:.02em;text-wrap:balance}}
 .statement__sub{margin-top:var(--s3);color:var(--stone);font-size:18px;line-height:28px;max-width:34em;margin-inline:auto}
 
 /* three pillars as cards */
@@ -245,9 +253,9 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .card__n .fa{display:inline;font-size:18px;color:var(--parch);letter-spacing:0}
 .card p{color:var(--parch)}
 .card p.muted{color:var(--stone);font-size:16px;line-height:24px}
-/* the three pillars are lighter than the teaser cards: no box fill, no top rule (the gold numbering eyebrow carries the structure), 12-16px sides, h3 22-24px balanced so pillar 02 wraps to <=4 lines at 1440 */
+/* the three pillars are lighter than the teaser cards: no box fill, no top rule (the gold number eyebrow carries the structure), 12-16px sides; the h3 carries the full owner promise at 20-22px balanced so pillar 02 wraps to <=4 lines at 1440 */
 .pillars .card{background:transparent;border-top:0;padding:var(--s2) clamp(12px,1.1vw,16px)}
-.pillars .card h3{font-size:clamp(22px,2vw,24px);text-wrap:balance}
+.pillars .card h3{font-size:clamp(20px,1.55vw,22px);text-wrap:balance}
 
 /* ---------- The celebrations: accordion ---------- */
 .accordion{display:grid;gap:var(--s2)}
@@ -258,6 +266,11 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .accordion__trigger{position:absolute;inset:0;width:100%;text-align:left;z-index:2}
 .accordion__trigger[hidden]{display:none}
 .accordion__trigger:focus-visible{outline:2px solid var(--gold);outline-offset:-6px}
+/* keyboard focus is drawn on the PANEL (its outline paints above the media and body layers), not on the trigger at z-index 2 under the open body */
+@supports selector(:has(a)){
+  .accordion__trigger:focus-visible{outline:none}
+  .accordion__panel:has(.accordion__trigger:focus-visible){outline:2px solid var(--gold);outline-offset:-2px}
+}
 .accordion__label{position:absolute;left:var(--s2);top:var(--s2);letter-spacing:.1em;text-transform:uppercase;font-size:14px;z-index:1;display:none;color:var(--gold)}
 .accordion__body{position:relative;z-index:3;padding:var(--s4) var(--s2) var(--s3);display:grid;gap:var(--s1);min-height:100%;align-content:end;pointer-events:none}
 /* phones: a 44px right clearance for the mid-height "How we work +" tab; a compact preview (image + title + Persian) at 280px */
@@ -279,10 +292,13 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
    the .7s flex transition has settled (site.js adds .is-settling for that moment, so the still-narrow text never
    spikes the row height); collapsed bodies are out of flow. */
 @media (min-width:1100px){
-  .accordion{display:flex;gap:var(--s1);min-height:min(70vh,640px)}
+  /* --acc-min: the tallest expanded body at the current width (site.js measures every body after fonts load and on resize), so the row never jumps between hovers */
+  .accordion{display:flex;gap:var(--s1);min-height:max(min(70vh,640px),var(--acc-min,0px))}
   .accordion__panel{flex:1 1 0;min-height:0;transition:flex .7s var(--ease)}
   .accordion__panel.is-open{flex:6 1 0}
-  .accordion__panel:not(.is-open) .accordion__media img{filter:blur(6px) brightness(.75);transform:scale(1.08)}
+  /* collapsed strips keep their image texture: a light blur, brightness .9 and a lighter overlay than the open panel */
+  .accordion__panel:not(.is-open) .accordion__media img{filter:blur(6px) brightness(.9);transform:scale(1.08)}
+  .accordion__panel:not(.is-open) .accordion__media::after{background:linear-gradient(to top,rgba(18,23,20,.8),rgba(18,23,20,.35))}
   .accordion__panel:not(.is-open) .accordion__body,.accordion__panel.is-settling .accordion__body{position:absolute;inset:0}
   /* collapsed bodies leave the accessibility tree (visibility:hidden after the fade) */
   .accordion__panel:not(.is-open) .accordion__body{opacity:0;visibility:hidden;transition:opacity .25s,visibility 0s .25s}
@@ -334,10 +350,11 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 
 /* ---------- The journey: the five planning stages on one gold line, then the celebrations as loose pills ---------- */
 .journey{position:relative;padding-top:clamp(40px,7vh,88px)}
-/* the leaf hangs above the section head and never crosses the gold line or the Enquiry column */
-.journey .leaf--3{left:0;top:-4vh;opacity:.7;z-index:0}
-@media (min-width:900px){.journey .leaf--3{transform:translateY(-20%)}}
-@media (max-width:768px){.journey .leaf--3{top:0;opacity:.4}}
+/* the leaf: a small sprig (scale .55) tight to the left edge above the section head; it never crosses the gold line or the Inquiry column,
+   and on phones it sits off the edge at .35 so it is never behind the eyebrow */
+.journey .leaf--3{left:-20px;top:-4vh;opacity:.7;z-index:0;transform:scale(.55);transform-origin:top left}
+@media (min-width:900px){.journey .leaf--3{transform:translateY(-20%) scale(.55)}}
+@media (max-width:768px){.journey .leaf--3{left:-40px;top:-24px;opacity:.35;transform:scale(.6)}}
 .journey__order{text-align:center;color:var(--stone);font-size:16px;line-height:24px;max-width:38em;margin:0 auto clamp(24px,4vh,40px);text-wrap:balance}
 .journey__track{position:relative;z-index:1}
 .journey__line{position:absolute;pointer-events:none}
@@ -347,7 +364,8 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .journey__line--h{display:none}
 .journey__line--v{left:11px;top:0;width:2px;height:100%}
 .journey__stops{display:grid;gap:var(--s3);padding-left:40px}
-.journey__stop{position:relative;display:grid;gap:2px}
+/* every stop has the same three rows (title / Persian / note) packed at the top, so the Persian label sits directly under each title at every width */
+.journey__stop{position:relative;display:grid;grid-template-rows:auto auto auto;align-content:start;gap:2px}
 @media (max-width:768px){.journey__stop{padding-right:44px}}
 /* all five dots show at once (sage); site.js block 5 turns each gold as the line reaches it */
 .journey__dot{position:absolute;left:-40px;top:10px;width:14px;height:14px;border-radius:50%;background:var(--sage);transform-origin:center}
@@ -359,7 +377,7 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
   .journey__line--h{display:block;left:0;right:0;top:7px;width:100%;height:2px}
   .journey__line--v{display:none}
   .journey__stops{grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--s3);padding-left:0;padding-top:var(--s4)}
-  .journey__stop{text-align:center;justify-items:center;gap:4px}
+  .journey__stop{text-align:center;justify-items:center;align-content:start;gap:4px}
   .journey__dot{left:50%;top:-64px;margin-left:-7px}
   .journey__en{font-size:20px;line-height:26px}
   .journey__fa{text-align:center}
@@ -391,9 +409,12 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .form{display:grid;gap:var(--s3);background:rgba(18,23,20,.78);border:0;border-top:2px solid var(--gold);padding:clamp(20px,4vw,48px)}
 .form__row{display:grid;gap:var(--s3)}
 @media (min-width:600px){.form__row{grid-template-columns:1fr 1fr}}
+/* the first row: names / email / phone side by side from 768px (two columns at 600-767, phone wraps alone) */
+@media (min-width:768px){.form__row--3{grid-template-columns:1fr 1fr 1fr}}
 .field{display:grid;gap:var(--s1);min-width:0}
 .field label,.fieldset legend{font-size:16px;line-height:22px;color:var(--parch)}
-.field input,.field textarea,.field select{font:inherit;font-weight:700;color:var(--parch);background:transparent;border:1px solid var(--stone);border-radius:2px;padding:12px 14px;width:100%;min-height:48px}
+/* inputs carry the system weight: 2px stone rule at .6, 2px gold on focus (no 1px hairlines anywhere) */
+.field input,.field textarea,.field select{font:inherit;font-weight:700;color:var(--parch);background:transparent;border:2px solid rgba(185,179,166,.6);border-radius:2px;padding:12px 14px;width:100%;min-height:48px}
 /* placeholders in stone (#B9B3A6 on the deep input ground: ~8:1) */
 .field input::placeholder,.field textarea::placeholder{color:var(--stone);opacity:1}
 .field input:focus-visible,.field textarea:focus-visible,.field select:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-color:var(--gold)}
@@ -425,8 +446,9 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .form__more[open] summary::after{content:"\2013"}
 .form__more summary:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 .form__more-body{display:grid;gap:var(--s3);margin-top:var(--s3)}
-/* phones: the fixed Pause button (bottom-left) never covers the closing note or the contact line */
-@media (max-width:768px){.form > .form__note:last-child,.inquire__contact{padding-left:52px}}
+/* phones: the fixed Pause button (bottom-left) never covers the contact line; the form keeps 56px of bottom padding
+   under the closing note (no indent on the note: every line in the card starts at the same edge) */
+@media (max-width:768px){.inquire__contact{padding-left:52px}.form{padding-bottom:56px}}
 
 /* ---------- Footer (deep night band) ---------- */
 .site-footer{background:var(--deep);color:var(--parch);border-top:2px solid var(--gold);padding-block:var(--s4) var(--s3);position:relative;z-index:2}
@@ -468,13 +490,11 @@ html:not(.panel-ready) .hww-tab{display:none}
    aria-pressed="true" means paused, so the name never changes. */
 .motion-toggle{position:fixed;z-index:60;left:var(--s2);bottom:calc(16px + env(safe-area-inset-bottom));font-size:13px;line-height:18px;letter-spacing:.06em;padding:8px 14px;border-radius:999px;background-color:var(--night)}
 .motion-toggle[hidden],html:not(.motion-ready) .motion-toggle{display:none}
-@media (min-width:0){
-  .motion-toggle{width:40px;height:40px;padding:0;border-radius:50%;display:grid;place-items:center;line-height:1;letter-spacing:0}
-  /* the glyph is an inline SVG background (two gold bars = pause, a gold triangle = play), never a font glyph */
-  .motion-toggle::before{content:"";width:14px;height:14px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Crect x='2' y='1' width='3.6' height='12' fill='%23C99E5C'/%3E%3Crect x='8.4' y='1' width='3.6' height='12' fill='%23C99E5C'/%3E%3C/svg%3E") center/contain no-repeat}
-  .motion-toggle[aria-pressed="true"]::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M3 1.2 12.6 7 3 12.8z' fill='%23C99E5C'/%3E%3C/svg%3E");margin-left:2px}
-  .motion-toggle__text{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
-}
+.motion-toggle{width:40px;height:40px;padding:0;border-radius:50%;display:grid;place-items:center;line-height:1;letter-spacing:0}
+/* the glyph is an inline SVG background (two gold bars = pause, a gold triangle = play), never a font glyph */
+.motion-toggle::before{content:"";width:14px;height:14px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Crect x='2' y='1' width='3.6' height='12' fill='%23C99E5C'/%3E%3Crect x='8.4' y='1' width='3.6' height='12' fill='%23C99E5C'/%3E%3C/svg%3E") center/contain no-repeat}
+.motion-toggle[aria-pressed="true"]::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M3 1.2 12.6 7 3 12.8z' fill='%23C99E5C'/%3E%3C/svg%3E");margin-left:2px}
+.motion-toggle__text{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 @media (max-width:768px){.motion-toggle{width:36px;height:36px}}
 .hww-backdrop{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.55);opacity:0;transition:opacity .4s}
 .hww-backdrop[hidden]{display:none}
@@ -580,11 +600,13 @@ body.panel-open{overflow:hidden}
 .reduced .track-line path,html:not(.anim-ready) .track-line path{stroke-dashoffset:0!important}
 .reduced .track-dot,html:not(.anim-ready) .track-dot{background:var(--gold)}
 .reduced *, .reduced *::before, .reduced *::after{transition-duration:.01ms!important;animation-duration:.01ms!important}
-/* Keep all celebrations readable if the behavior script is unavailable. */
+/* Keep all celebrations readable if the behavior script is unavailable: every panel stacked, every body in flow
+   (no absolute positioning, no blur, pointer events on so the native Read more toggles) and each panel grows with its expanded details. */
 html:not(.site-ready) .accordion{display:grid;min-height:0}
-html:not(.site-ready) .accordion__panel{min-height:360px}
-html:not(.site-ready) .accordion__body{opacity:1;visibility:visible}
-html:not(.site-ready) .accordion__trigger,html:not(.site-ready) .accordion__label{display:none}
+html:not(.site-ready) .accordion__panel{min-height:360px;height:auto}
+html:not(.site-ready) .accordion__panel .accordion__body{position:relative;inset:auto;pointer-events:auto;opacity:1;visibility:visible;transition:none}
+html:not(.site-ready) .accordion__panel .accordion__media img{filter:none;transform:none}
+html:not(.site-ready) .accordion__trigger,html:not(.site-ready) .accordion__panel .accordion__label{display:none}
 
 /* ---------- Reduced motion: everything visible, nothing scrubs ---------- */
 @media (prefers-reduced-motion:reduce){

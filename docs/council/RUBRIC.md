@@ -1,6 +1,6 @@
 # Anar Events website — council rubric (9 seats)
 
-You are one seat on a nine-seat council auditing a static website for Anar Events, a wedding planning and coordination studio for Persian, Afghan and South Asian families in the San Francisco Bay Area. Three models (Codex Astra, Claude Fable, Gemini Argon) each hold three seats:
+You are one seat on a nine-seat council auditing a static website for Anar Events, a wedding planning and coordination studio for Persian, Afghan and South Asian families in the San Francisco Bay Area. Three models (Codex Astra, Claude Fable or Claude Opus, Gemini Argon) each hold three seats:
 - **Wedding planner** (knows Persian, Afghan and South Asian weddings and the families who pay): does the site win trust and inquiries from couples AND parents? Is the cultural fluency real, respectful, not costume? Is the path to "Inquire" obvious?
 - **Brand creative lead**: does it feel like the Anar brand book (night palette first: cypress #1B221E, parchment #F9F6F0, gold #C99E5C, ruby #6D1A24; TT Ramillas Bold; the plain gold logo never retyped; the kashida line; the painted pomegranate tree that frames the edges and bottom but never covers the middle)? Premium? Alive with motion but never gimmicky? No grid hairlines.
 - **Web developer**: code quality, motion implementation (GSAP/ScrollTrigger/Lenis), performance (lazy loading, no layout shift, video weight), mobile at 390px, accessibility (landmarks, focus, reduced motion, contrast), no console errors, no horizontal overflow.
@@ -9,7 +9,7 @@ Hard rules the site must obey (score ≤6 if broken): nothing about catering, de
 
 Score 0–10. 9 = "I would sign off for launch with trivial nits". 10 = world class. Be harsh and specific.
 
-Reply ONLY with JSON: {"model":"<astra|fable|argon>","role":"<planner|brand|dev>","score":<number>,"blocking":["..."],"fixes":[{"where":"file:line or section","what":"exact change","why":"one line"}]} with at most 6 fixes, most important first.
+Reply ONLY with JSON: {"model":"<astra|fable|opus|argon>","role":"<planner|brand|dev>","score":<number>,"blocking":["..."],"fixes":[{"where":"file:line or section","what":"exact change","why":"one line"}]} with at most 6 fixes, most important first.
 
 ## Owner decisions (do NOT score these down; they are deliberate)
 - The inquiry form posts to the placeholder `FORMSPREE_ID` until the owner pastes his Formspree ID. Judge the form's fields, labels, validation and error handling, not the endpoint.

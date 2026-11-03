@@ -13,14 +13,10 @@
      1. parallax (desktop only): the tree layer moves at 0.9× scroll from the end
         of screen 2 on (screens 1–2 stay registered with the statement; the band
         under the ground absorbs the drift)
-     2. the layered canopy: four tonal slices parallaxed past each other over
-        the hero (×0.985 / .993 / 1 / 1.008 of the scroll, the spread between
-        the first and the last capped at 8px), swayed about their top (L1
-        ±0.2° / 11 s, L2 ±0.3° / 8 s, L3 ±0.45° / 6 s) and nudged on a fast
-        scroll move (from the current y to −4 / −6 / −8px, then a soft settle,
-        a fresh timeline per kick, |velocity| > 900, ≤ 1 per 400 ms); two
-        shrub sprigs ±0.3° about their base (9 s / 11 s); all paused off
-        screen and reverted on Pause
+     2. the canopy, one connected painting: a very gentle whole-canopy sway
+        (±0.25° / 9 s about the trunk tops, from rest); two shrub sprigs
+        ±1.2° / 6 s and ±1.6° / 7 s about their base, out of phase; all paused
+        off screen and reverted on Pause
      3. the hero, owned here (site.js block 1 skips a hero inside main.canopy):
         the mark drifts down a little; .hero__text (the descriptor + the tag
         pair) goes to 0 over the first px of scroll, complete before the morphing
@@ -43,6 +39,8 @@
    exists): the mark's rendered height is written to --hero-content on main,
    so canopy.css can size the hero to the real text (short phones: nothing
    under the fixed bar, nothing in the foliage).
+   The celebrations accordion (screen 3) is wired before the motion guard, so it
+   works without the motion and without the vendors.
    Leaves (.leaf), kashida draws (.kashida-draw) and reveals (.reveal / .stagger)
    are site.js blocks 8, 4 and 9.
    ========================================================= */
@@ -90,15 +88,6 @@
   var on = false;
   var failed = false;
   var risen = false;
-  /* the scroll bounce of the canopy layers: the live kick timeline, the kick function and the bounced imgs (set in
-     buildAll; the timeline is built per kick, outside the context, so kill() kills it and clears the imgs), the time
-     of the last kick and the canopy's in-view flag (written by an IntersectionObserver, never measured per frame)
-     live here so kill() can reset them */
-  var bounceTl = null;
-  var kickBounce = null;
-  var bounceImgs = [];
-  var lastBounce = 0;
-  var canopyInView = false;
 
   /* the mark's rendered content height (logo + descriptor + tag pair; the halo is absolute and not counted) goes to
      --hero-content on main, so the CSS hero height reserves the real text: short phones (390×700, 360×640) and
@@ -123,6 +112,86 @@
   }, { passive: true });
   window.addEventListener('load', fitHero);
   if (document.fonts && document.fonts.ready) { document.fonts.ready.then(fitHero); }
+
+  /* the celebrations accordion (screen 3; adapted from the Arch version). Registered BEFORE the motion guard: it is
+     an interface, not motion, so it works under Pause, reduced motion and a failed vendor request alike. On the strip
+     (769px wide AND 701px tall) one panel is open: hover opens a strip after 80 ms (a pass across the strip opens
+     nothing; pointer devices only), click / Enter / Space and keyboard focus open it (a focus that comes from a click
+     does not open twice), the arrow keys, Home and End move between the triggers. A closed panel's body is inert and
+     aria-hidden (it is faded out), the open one is live. Stacked cards (phones, short viewports): every body shown,
+     the overlay triggers hidden (out of the tab order). The strip CSS applies only once all this is wired
+     (.accordion-ready). When an expansion settles, ScrollTrigger re-measures the page (the strip's height follows
+     the open body) */
+  var stripQuery = window.matchMedia('(min-width: 769px) and (min-height: 701px)');
+  var isStrip = function () { return stripQuery.matches; };
+  var onMQ = function (mq, fn) {
+    if (mq.addEventListener) { mq.addEventListener('change', fn); } else if (mq.addListener) { mq.addListener(fn); }
+  };
+  $$('[data-accordion]', main).forEach(function (acc) {
+    var panels = $$('.accordion__panel', acc);
+    var triggers = panels.map(function (p) { return $('.accordion__trigger', p); });
+    var hoverable = window.matchMedia('(hover: hover)').matches;
+    var hoverTimer = 0, settleTimer = 0, pointerFocus = false;
+    function settle() {
+      clearTimeout(settleTimer);
+      settleTimer = setTimeout(function () {
+        if (hasGsap && html.classList.contains('motion')) { ScrollTrigger.refresh(); }
+      }, html.classList.contains('reduced') ? 50 : 760);
+    }
+    function syncBodies() {
+      var stacked = !isStrip();
+      panels.forEach(function (p, i) {
+        var bodyEl = $('.accordion__body', p);
+        if (triggers[i]) { triggers[i].hidden = stacked; }
+        if (!bodyEl) { return; }
+        var closed = !stacked && !p.classList.contains('is-open');
+        bodyEl.inert = closed;
+        if (closed) { bodyEl.setAttribute('aria-hidden', 'true'); } else { bodyEl.removeAttribute('aria-hidden'); }
+      });
+    }
+    function open(target) {
+      if (target.classList.contains('is-open')) { return; }
+      panels.forEach(function (p, i) {
+        var isOn = p === target;
+        p.classList.toggle('is-open', isOn);
+        if (triggers[i]) { triggers[i].setAttribute('aria-expanded', isOn ? 'true' : 'false'); }
+      });
+      syncBodies();
+      if (isStrip()) { settle(); }
+    }
+    panels.forEach(function (p, i) {
+      var btn = triggers[i];
+      if (hoverable) {
+        p.addEventListener('mouseenter', function () {
+          clearTimeout(hoverTimer);
+          hoverTimer = setTimeout(function () { if (isStrip()) { open(p); } }, 80);
+        });
+        p.addEventListener('mouseleave', function () { clearTimeout(hoverTimer); });
+      }
+      if (!btn) { return; }
+      btn.addEventListener('pointerdown', function () { pointerFocus = true; });
+      btn.addEventListener('pointercancel', function () { pointerFocus = false; });
+      btn.addEventListener('click', function () { pointerFocus = false; open(p); });
+      btn.addEventListener('focus', function () {
+        if (pointerFocus) { pointerFocus = false; return; }   /* the click that follows opens it */
+        if (isStrip()) { open(p); }
+      });
+      btn.addEventListener('keydown', function (e) {
+        var next = null;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { next = (i + 1) % triggers.length; }
+        else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { next = (i - 1 + triggers.length) % triggers.length; }
+        else if (e.key === 'Home') { next = 0; }
+        else if (e.key === 'End') { next = triggers.length - 1; }
+        if (next === null || !triggers[next]) { return; }
+        e.preventDefault();
+        triggers[next].focus();
+        open(panels[next]);
+      });
+    });
+    syncBodies();
+    onMQ(stripQuery, function () { syncBodies(); settle(); });
+    acc.classList.add('accordion-ready');   /* only now does the strip layout apply (canopy.css) */
+  });
 
   /* ---- everything from here on is the motion: nothing without GSAP + ScrollTrigger ---- */
   if (!hasGsap) { return; }
@@ -197,88 +266,32 @@
         scrollTrigger: { start: parallaxStart, end: 'max', scrub: true, invalidateOnRefresh: true }
       });
     }
-    /* 2. the layered canopy (four tonal slices, .tree__layer--0..3; the static junction bark sits above them in CSS,
-          so nothing here moves a trunk). Three motions per layer, on two elements so no property is driven twice:
-          a. parallax: the outer div's y = (1 − m) × the page scroll over the hero (L0 ×0.985, L1 ×0.993, L2 ×1, L3
-             ×1.008 of the scroll), scrubbed from the top of the page to the hero's bottom and held after it, and the
-             spread between L0 and L3 capped at 8px (every offset scaled down together past that), so the layers slide
-             a few px past each other while the canopy rises and never drift far enough to read as a second copy
-             (5.2 / 2.4 / 0 / −2.8px at 1440×900); written with gsap.quickSetter (no per-frame tween lookup);
-          b. sway: the outer div rotates about its top centre (L1 ±0.2° / 11 s, L2 ±0.3° / 8 s, L3 ±0.45° / 6 s, yoyo
-             sine; L0 still), paused off screen;
-          c. bounce: on a scroll update with |velocity| > 900 px/s while the canopy is on screen (the in-view flag comes
-             from an IntersectionObserver, not a per-frame layout read) the imgs lift (−4 / −6 / −8px for L1 / L2 / L3,
-             2 / 3 / 4 on phones) from wherever they are and come back: a 1px undershoot, then a soft sine settle to
-             0 (no elastic overshoot), 40 ms stagger, at most once per 400 ms */
-    var layers = $$('.tree__layer', main);
-    if (canopy && layers.length === 4) {
-      var mult = [0.985, 0.993, 1, 1.008];
-      var SPREAD_MAX = 8;
-      var sway = [null, [0.2, 5.5], [0.3, 4], [0.45, 3]];
-      var amp = isPhone() ? [0, 2, 3, 4] : [0, 4, 6, 8];
-      var layerImgs = layers.map(function (l) { return $('img', l); });
-      /* a. parallax, applied directly from the trigger's scroll (no tween, so the layers track the page exactly) */
-      var setY = layers.map(function (l) { return gsap.quickSetter(l, 'y', 'px'); });
-      var applyParallax = function (self) {
-        var s = Math.max(0, Math.min(self.scroll(), hero ? hero.offsetHeight : vh()));
-        var spread = (mult[3] - mult[0]) * s;
-        var k = spread > SPREAD_MAX ? SPREAD_MAX / spread : 1;
-        for (var i = 0; i < 4; i++) { setY[i](Math.round((1 - mult[i]) * s * k * 10) / 10); }
-      };
-      ScrollTrigger.create({
-        trigger: hero, start: 'top top', end: 'bottom top', invalidateOnRefresh: true,
-        onUpdate: applyParallax, onRefresh: applyParallax
-      });
-      /* b. sway */
-      layers.forEach(function (l, i) {
-        if (!sway[i]) { return; }
-        loopInView(l, gsap.fromTo(l, { rotation: -sway[i][0] }, { rotation: sway[i][0], duration: sway[i][1], ease: 'sine.inOut', yoyo: true, repeat: -1 }));
-      });
-      /* c. bounce (round 7): each kick glides from the img's CURRENT y up to the offset (.2 s, power2.out), back to a 1px
-         undershoot (.4 s) and settles to 0 (.5 s); no instantaneous jump to −amp, also when a kick lands mid-bounce.
-         A fresh timeline of .to() tweens per kick (each tween reads its start when the playhead reaches it), the
-         previous one killed first; built from a ScrollTrigger callback, i.e. outside the context, so kill() kills
-         the live one and clears the imgs' transform itself */
-      bounceImgs = layerImgs.filter(function (img, i) { return !!img && !!amp[i]; });
-      kickBounce = function () {
-        if (bounceTl) { bounceTl.kill(); }
-        bounceTl = gsap.timeline();
-        layerImgs.forEach(function (img, i) {
-          if (!amp[i] || !img) { return; }
-          var at = (i - 1) * 0.04;
-          bounceTl.to(img, { y: -amp[i], duration: 0.2, ease: 'power2.out' }, at)
-            .to(img, { y: 1, duration: 0.4, ease: 'sine.inOut' }, at + 0.2)
-            .to(img, { y: 0, duration: 0.5, ease: 'sine.inOut' }, at + 0.6);
-        });
-      };
-      canopyInView = false;
-      if ('IntersectionObserver' in window) {
-        var cio = new IntersectionObserver(function (entries) {
-          entries.forEach(function (en) { canopyInView = en.isIntersecting; });
-        });
-        cio.observe(canopy);
-        observers.push(cio);
-      } else { canopyInView = true; }
-      ScrollTrigger.create({
-        start: 0, end: 'max',
-        onUpdate: function (self) {
-          if (!kickBounce || !canopyInView) { return; }
-          var now = Date.now();
-          if (Math.abs(self.getVelocity()) < 900 || now - lastBounce < 400) { return; }
-          lastBounce = now;
-          kickBounce();
-        }
-      });
+    /* 2. the canopy: ONE connected painting (tree-full rows 0–1200 in .tree__canopy; the tonal-slice stack is retired:
+          moving the slices past each other left a dark "previous mark" where each fruit had been). The only motion is
+          a very gentle whole-canopy sway, ±0.25° about the trunk tops (art row 1200, centre: the junction under the
+          static bark barely moves, < 1px at row 1000; the crown tips ≤ 4px at 1440, inside the img's static 0.6 %
+          horizontal over-scan, canopy.css), 9 s per full cycle, yoyo sine, started mid-stroke at rest (0) so a load
+          or a Play lands on the painting itself; paused off screen. Real per-branch motion will come from separately
+          painted branch sprites */
+    if (canopy) {
+      var CANOPY_SWAY = 0.25, CANOPY_CYCLE = 9;
+      var cTw = gsap.fromTo(canopy, { rotation: -CANOPY_SWAY }, { rotation: CANOPY_SWAY, duration: CANOPY_CYCLE / 2, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+      cTw.totalTime(CANOPY_CYCLE / 4);
+      loopInView(canopy, cTw);
     }
 
-    /* each shrub ±0.3° about the bottom of its crop at the trunk edge (9 s / 11 s: the tips move ~2px, the cut edges
-       stay still) */
-    if (shown(sprigL)) {
-      loopInView(sprigL, gsap.fromTo(sprigL, { rotation: -0.3 }, { rotation: 0.3, duration: 4.5, ease: 'sine.inOut', yoyo: true, repeat: -1 }));
-    }
-    if (shown(sprigR)) {
-      loopInView(sprigR, gsap.fromTo(sprigR, { rotation: 0.3 }, { rotation: -0.3, duration: 5.5, ease: 'sine.inOut', yoyo: true, repeat: -1 }));
-    }
+    /* each shrub sways about the bottom of its crop at the trunk edge, the two out of phase (left ±1.2° / 6 s, right
+       ±1.6° / 7 s per full cycle; each starts at rest mid-stroke, the two mirrored). The crop holds no bark
+       (canopy.css: its mask opens just inside the trunk edge, over a static strip of the same pixels) and fades out
+       over its last 25 rows onto the static copy below, so neither the trunk edge nor the cut moves as a seam */
+    var sprigSway = function (el, deg, cycle, dir) {
+      var half = cycle / 2;
+      var tw = gsap.fromTo(el, { rotation: -deg * dir }, { rotation: deg * dir, duration: half, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+      tw.totalTime(half / 2);
+      loopInView(el, tw);
+    };
+    if (shown(sprigL)) { sprigSway(sprigL, 1.2, 6, -1); }
+    if (shown(sprigR)) { sprigSway(sprigR, 1.6, 7, 1); }
 
     /* the morph geometry (block 6), measured ONCE per refresh by the morph trigger's onRefreshInit (a global
        "refreshInit" listener: every onRefreshInit fires before any trigger re-measures, and the create-time refresh
@@ -470,19 +483,13 @@
     if (!on) { return; }
     on = false;
     try { if (ctx) { ctx.revert(); ctx = null; } } catch (e) { /* ignore */ }
-    /* the parallax y of the layers and the morph's x / y / scale are written by gsap.quickSetter (no tween for the
-       context to revert): cleared with clearProps, which empties GSAP's transform cache too (an emptied inline style
-       alone left the cached y, re-rendered by the first rotation write after Play); the copy's img width likewise */
-    $$('.tree__layer', main).forEach(function (l) { gsap.set(l, { clearProps: 'transform' }); });
-    /* the live bounce timeline sits outside the context (built per kick): killed here, the imgs' y cleared */
-    if (bounceTl) { bounceTl.kill(); }
-    bounceImgs.forEach(function (img) { gsap.set(img, { clearProps: 'transform' }); });
-    bounceImgs = [];
+    /* the morph's x / y / scale are written by gsap.quickSetter (no tween for the context to revert): cleared with
+       clearProps, which empties GSAP's transform cache too (an emptied inline style alone left the cached y,
+       re-rendered by the next transform write after Play); the copy's img width likewise */
     if (morph) { gsap.set(morph, { clearProps: 'transform' }); }
     if (morphImg) { morphImg.style.width = ''; }
     observers.forEach(function (o) { o.disconnect(); });
     observers = [];
-    bounceTl = null; kickBounce = null; lastBounce = 0; canopyInView = false;
     html.classList.remove('canopy-motion');
     html.classList.remove('canopy-ready');
     html.classList.remove('logo-morphing');
@@ -510,8 +517,5 @@
     treeImg.addEventListener('load', function () { if (on) { refreshUnlessFresh(); } }, { once: true });
   }
   /* the phone / desktop layers differ (no sprigs, no falling fruit, no parallax, 110vw): rebuild on the breakpoint change */
-  var onMQ = function (mq, fn) {
-    if (mq.addEventListener) { mq.addEventListener('change', fn); } else if (mq.addListener) { mq.addListener(fn); }
-  };
   onMQ(phoneQuery, function () { if (on) { kill(); sync(); } });
 })();

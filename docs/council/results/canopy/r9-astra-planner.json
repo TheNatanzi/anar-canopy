@@ -1,0 +1,36 @@
+{
+ "model": "astra",
+ "role": "planner",
+ "score": 8.2,
+ "blocking": [
+  "The main consultation copy protects the couple's decisions, but the repeated slide-out panel omits that protection and leads with elders first.",
+  "Several ceremony descriptions prescribe participants and sequences despite the surrounding promise to follow each family's practice."
+ ],
+ "fixes": [
+  {
+   "where": "All pages: #hww-panel Consultation",
+   "what": "Replace the consultation paragraph with: \"We hear the couple's priorities and agree how parents and elders participate. The couple approves personal and ceremony choices; spending approvals are agreed with those paying.\"",
+   "why": "The most accessible process summary should reassure couples and paying parents equally."
+  },
+  {
+   "where": "weddings.html: #sofreh-aghd details",
+   "what": "Introduce the three requests for consent and honey sequence with \"If your family follows this sequence\"; replace \"straight after\" with \"at the point agreed with you and your officiant.\"",
+   "why": "Specific knowledge builds trust when presented as a practice to confirm rather than a compulsory script."
+  },
+  {
+   "where": "weddings.html: #anand-karaj opening and details",
+   "what": "Replace \"For the rituals you choose\" with \"Within the ceremony requirements confirmed by your gurdwara and granthi\"; describe family preferences separately from the religious sequence.",
+   "why": "The current repeated template makes religious requirements sound interchangeable with optional celebration customs."
+  },
+  {
+   "where": "weddings.html: #nikah, #haldi-pheras and #anand-karaj",
+   "what": "Replace \"a one-line programme\" with \"a concise ceremony guide\" and specify that its content is approved by the officiant or religious venue.",
+   "why": "One line cannot credibly explain several rituals or guest expectations to an unfamiliar family."
+  },
+  {
+   "where": "how-we-work.html: #you-get, #steps and #with-either",
+   "what": "Keep service scope under the three options, approvals under Consultation and Proposal, and communication commitments under \"Always included\"; remove duplicate explanations from the other sections.",
+   "why": "Families need to understand what they are buying without repeatedly reading the same promises."
+  }
+ ]
+}

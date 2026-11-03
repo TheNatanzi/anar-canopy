@@ -446,9 +446,9 @@
      button is actually on screen: the form's own submit button (not the whole section, whose heading arrives a
      viewport before the button), the footer, and every main .btn to #inquire */
   var hideFor = [$('#inquire'), $('.site-footer')].filter(Boolean);
-  /* phones only: the home page's photo row (.cel, three slots that are links, full width at 390) hides the tab too, so
-     it never sits over a slot's right edge */
-  var hideForPhone = [$('main.canopy .cel')].filter(Boolean);
+  /* phones only: the home page's celebrations accordion (stacked cards with title links, full width at 390) hides the
+     tab too, so it never sits over a card's right edge */
+  var hideForPhone = [$('main.canopy .accordion')].filter(Boolean);
   var submitFor = [$('#inquire .form button[type="submit"]'), $('.site-footer')].filter(Boolean).concat($$('main .btn[href$="#inquire"]'));
   var ghostFor = hideFor.concat(hideForPhone, submitFor).filter(function (el, i, all) { return all.indexOf(el) === i; });
   /* measureDestinations (set below when the observer exists): re-reads every destination's visibility from its rect

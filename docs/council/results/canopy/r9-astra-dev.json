@@ -1,0 +1,36 @@
+{
+ "model": "astra",
+ "role": "dev",
+ "score": 8.3,
+ "blocking": [
+  "Motion initialization failure can leave the control reporting playback while animations remain disabled.",
+  "Desktop parallax transforms the entire page-height tree; rendering cost needs device-level verification before launch sign-off."
+ ],
+ "fixes": [
+  {
+   "where": "assets/js/site.js — playAll(), initMotion(), setToggle()",
+   "what": "Use initMotion()'s result to update playback state. If initialization fails, preserve the paused state and stop video playback; make the next activation retry initialization.",
+   "why": "Currently playAll() ignores failure, starts the video and displays Pause even after initMotion() has disabled animation."
+  },
+  {
+   "where": "assets/js/canopy.js — buildAll(), block 1; assets/css/canopy.css — .tree",
+   "what": "Move desktop parallax onto bounded artwork sections instead of transforming the full-height .tree; profile scrolling with the inquiry textarea expanded.",
+   "why": "A page-height composited artwork layer can become expensive as content grows; clean console and overflow checks do not establish smooth rendering."
+  },
+  {
+   "where": "assets/js/canopy.js — block 5; assets/css/canopy.css — .hero__rise",
+   "what": "Keep the hero logo visible from first paint and animate only its small vertical displacement, removing the opacity-zero start and delay.",
+   "why": "The current enhancement hides an already available primary brand asset for a 1.1-second reveal, delaying readable content and potentially LCP."
+  },
+  {
+   "where": "assets/js/site.js — loadHeroVideo()",
+   "what": "Listen for changes to the connection's Save-Data preference and recheck it before each video start; pause and avoid loading when it becomes enabled.",
+   "why": "Save-Data is captured only once, so later preference changes cannot stop the background video's data use."
+  },
+  {
+   "where": "assets/js/canopy.js — fitHero(); assets/css/canopy.css — --hero-content",
+   "what": "Measure layout shift on cold-font loads at 390px and short viewport heights; tune the initial content-height reservations to match the measured layouts.",
+   "why": "Writing the measured height after font loading changes hero height and downstream section positions; font metric matching alone does not verify zero layout shift."
+  }
+ ]
+}

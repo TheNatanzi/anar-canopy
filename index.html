@@ -18,11 +18,10 @@
      suffices and the tree (the LCP image, preloaded only without reduced motion so the two never compete) and the two
      fonts keep the first connection -->
 <link rel="preload" href="assets/video/hero-poster-small.jpg" as="image" media="(prefers-reduced-motion: reduce)">
-<!-- the first-screen tree pixels are the four canopy layers (assets/tree/layers), not tree-full (which paints from
-     screen 2 down and is fetched when its imgs are parsed): the base and the dark leaves are preloaded, each in three
-     widths (768 / 1024 / 1536), so a 390px phone at DPR 2 (110vw = 858 device px) takes the 1024 file, not the 1536 -->
-<link rel="preload" href="assets/tree/layers/canopy-L0.webp" as="image" imagesrcset="assets/tree/layers/canopy-L0-768.webp 768w, assets/tree/layers/canopy-L0-1024.webp 1024w, assets/tree/layers/canopy-L0.webp 1536w" imagesizes="(max-width:768px) 110vw, 100vw" fetchpriority="high" media="(prefers-reduced-motion: no-preference)">
-<link rel="preload" href="assets/tree/layers/canopy-L1.webp" as="image" imagesrcset="assets/tree/layers/canopy-L1-768.webp 768w, assets/tree/layers/canopy-L1-1024.webp 1024w, assets/tree/layers/canopy-L1.webp 1536w" imagesizes="(max-width:768px) 110vw, 100vw" fetchpriority="high" media="(prefers-reduced-motion: no-preference)">
+<!-- the first-screen tree pixels are the canopy (tree-full, the one connected painting; the same file paints every tree
+     layer below), preloaded in three widths (768 / 1024 / 1536), so a 390px phone at DPR 2 (110vw = 858 device px)
+     takes the 1024 file, not the 1536 -->
+<link rel="preload" href="assets/tree/tree-full.webp" as="image" imagesrcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" imagesizes="(max-width:768px) 110vw, 100vw" fetchpriority="high" media="(prefers-reduced-motion: no-preference)">
 <!-- the plain gold logo paints before the deferred bundles land on a cold load (it is the first thing on screen) -->
 <link rel="preload" href="assets/logo/logo-gold.svg" as="image" fetchpriority="high">
 <link rel="stylesheet" href="assets/css/site.css">
@@ -100,7 +99,7 @@
        shows until then. Fixed while the motion runs (desktop), it fades to cypress under .hero__deepen as screen 2
        arrives (canopy.js block 3, which owns every hero motion on this page), then canopy.js hides it. -->
   <div class="hero__bg" aria-hidden="true">
-    <video class="hero__video" muted loop playsinline disablepictureinpicture disableremoteplayback preload="none" poster="assets/video/hero-poster-small.jpg" width="1920" height="1080" aria-hidden="true" tabindex="-1" data-src-desktop="assets/video/hero-1080-loop.mp4" data-src-mobile="assets/video/hero-720-loop.mp4"></video>
+    <video class="hero__video" muted loop playsinline disablepictureinpicture disableremoteplayback preload="none" poster="assets/video/hero-poster-small.jpg" width="1920" height="1080" aria-hidden="true" tabindex="-1" data-src-desktop="assets/video/hero-1080-full.mp4" data-src-mobile="assets/video/hero-720-full.mp4"></video>
     <div class="hero__tint"></div>
     <div class="hero__deepen"></div>
   </div>
@@ -111,18 +110,10 @@
     <div class="tree__band"></div>
     <div class="tree__sprig tree__sprig--l"><img src="assets/tree/tree-full.webp" loading="lazy" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>
     <div class="tree__sprig tree__sprig--r"><img src="assets/tree/tree-full.webp" loading="lazy" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>
-    <!-- the canopy as four tonal slices of tree-full rows 0–1300 (assets/tree/layers, same coordinate space): L0 the
-         soft darkened base WITHOUT the fruit and bright-leaf regions (the front layer owns them, so motion never
-         doubles a fruit; moves least), L1 dark leaves, L2 mid leaves, L3 bright leaves + every fruit (front). Three
-         widths each (768 / 1024 / 1536, Pillow). Each layer is parallaxed, swayed and bounced by canopy.js block 2
-         (the outer div: parallax y + sway rotation about its top centre; the img: the bounce), so the branches move
-         around each other -->
-    <div class="tree__canopy">
-      <div class="tree__layer tree__layer--0"><img src="assets/tree/layers/canopy-L0.webp" srcset="assets/tree/layers/canopy-L0-768.webp 768w, assets/tree/layers/canopy-L0-1024.webp 1024w, assets/tree/layers/canopy-L0.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="1300" alt="" fetchpriority="high" decoding="async"></div>
-      <div class="tree__layer tree__layer--1"><img src="assets/tree/layers/canopy-L1.webp" srcset="assets/tree/layers/canopy-L1-768.webp 768w, assets/tree/layers/canopy-L1-1024.webp 1024w, assets/tree/layers/canopy-L1.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="1300" alt="" fetchpriority="high" decoding="async"></div>
-      <div class="tree__layer tree__layer--2"><img src="assets/tree/layers/canopy-L2.webp" srcset="assets/tree/layers/canopy-L2-768.webp 768w, assets/tree/layers/canopy-L2-1024.webp 1024w, assets/tree/layers/canopy-L2.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="1300" alt="" decoding="async"></div>
-      <div class="tree__layer tree__layer--3"><img src="assets/tree/layers/canopy-L3.webp" srcset="assets/tree/layers/canopy-L3-768.webp 768w, assets/tree/layers/canopy-L3-1024.webp 1024w, assets/tree/layers/canopy-L3.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="1300" alt="" decoding="async"></div>
-    </div>
+    <!-- the canopy: rows 0–1200 of the one connected painting (tree-full), swayed gently as a whole about the trunk
+         tops by canopy.js block 2 (the four tonal-slice layers in assets/tree/layers are retired: moved apart, they
+         left a dark mark where each fruit had been) -->
+    <div class="tree__canopy"><img src="assets/tree/tree-full.webp" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" fetchpriority="high" decoding="async"></div>
     <!-- the static bark at the canopy junction (rows 1000–1272, bark columns only), ABOVE the moving layers: the trunks
          never move while the branches and leaves do -->
     <div class="tree__bark"><img src="assets/tree/tree-full.webp" loading="lazy" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>
@@ -173,33 +164,60 @@
     </div>
   </section>
 
-  <!-- 3. SCREEN THREE: bare trunks both sides; three photo slots in the open middle. Each photograph is clickable to the
-       same weddings.html section as its title, but out of the tab order and the accessibility tree (tabindex -1,
-       aria-hidden): one link per destination, the title, so a keyboard user meets three stops, not six.
-       PHOTO SLOTS: stand-ins until the real photos arrive (real families, with consent), portrait ~1500×2000 each -->
+  <!-- 3. SCREEN THREE: bare trunks both sides; the celebrations strip accordion in the open middle (four ceremonies,
+       each title links to its weddings.html section).
+       PHOTOS: stand-ins until the real photos arrive (real families, with consent) -->
   <section class="screen screen--celebrations" aria-labelledby="celebrations-title">
     <div class="leaf leaf--3" aria-hidden="true"></div>
     <div class="screen__col">
       <p class="eyebrow reveal"><span class="fa" lang="fa" dir="rtl">جشن‌ها</span></p>
       <h2 id="celebrations-title" class="reveal">The celebrations</h2>
       <svg class="kashida kashida--short kashida-draw" viewBox="0 0 320 2" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M160 1 H0"/><path d="M160 1 H320"/></svg>
-      <div class="cel stagger">
-        <figure>
-          <!-- the 4:5 crop of the landscape stand-in (Pillow, round 6: 898×1123 at the seed star's centre, plus a 640w
-               file), so the slot no longer pulls a 1400–2000w landscape file it crops anyway; sizes ≥ the rendered slot
-               (round 7: ~247px at 1440 and ~280px on tablets, so 260px to 1181px wide, then 22vw; the 420px-capped
-               figure on phones), so a DPR 2 laptop takes the 640w file, not the 898w -->
-          <a class="cel__slot" href="weddings.html#sofreh-aghd" tabindex="-1" aria-hidden="true"><img src="assets/img/pom-open-closeup-4x5.jpg" srcset="assets/img/pom-open-closeup-4x5-640.jpg 640w, assets/img/pom-open-closeup-4x5.jpg 898w" sizes="(max-width:768px) min(100vw,420px), (max-width:1181px) 260px, 22vw" width="898" height="1123" alt="An opened pomegranate, seeds packed tight" loading="lazy" decoding="async"></a>
-          <figcaption><span class="fa" lang="fa" dir="rtl">سفرهٔ عقد</span><h3><a href="weddings.html#sofreh-aghd">Sofreh Aghd</a></h3><p>The Persian ceremony, at the sofreh.</p></figcaption>
-        </figure>
-        <figure>
-          <a class="cel__slot" href="weddings.html#nikah" tabindex="-1" aria-hidden="true"><img src="assets/img/pom-in-hand.jpg" srcset="assets/img/pom-in-hand-800.jpg 800w, assets/img/pom-in-hand-1400.jpg 1400w, assets/img/pom-in-hand.jpg 1500w" sizes="(max-width:768px) min(100vw,420px), (max-width:1181px) 260px, 22vw" width="1500" height="2000" alt="A pomegranate held in an open hand" loading="lazy" decoding="async"></a>
-          <figcaption><span class="fa" lang="fa" dir="rtl">نکاح</span><h3><a href="weddings.html#nikah">Nikah</a></h3><p>The marriage contract; aina mosaf where your family observes it.</p></figcaption>
-        </figure>
-        <figure>
-          <a class="cel__slot" href="weddings.html#mehndi-sangeet" tabindex="-1" aria-hidden="true"><img src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night.jpg 1125w" sizes="(max-width:768px) min(100vw,420px), (max-width:1181px) 260px, 22vw" width="1125" height="2000" alt="A pomegranate tree at night" loading="lazy" decoding="async"></a>
-          <figcaption><span class="fa" lang="fa" dir="rtl">حنابندان · مهندی</span><h3><a href="weddings.html#mehndi-sangeet">Mehndi &amp; Sangeet</a></h3><p>Henna, blessings, music and dancing.</p></figcaption>
-        </figure>
+      <!-- the celebrations as a strip accordion (adapted from the Arch version; canopy.js wires it, before its motion guard):
+           one wide open panel (photo, Persian accent, title linked to its weddings.html section, one line) and three
+           narrow photo strips with vertical gold labels and a "+"; hover (80 ms intent), click, focus and the arrow keys
+           open a strip. Stacked cards with every body shown on phones, on viewports 700px tall or less and without JS -->
+      <div class="accordion reveal" data-accordion>
+        <article class="accordion__panel is-open">
+          <div class="accordion__media"><img src="assets/img/pom-open-closeup-1400.jpg" srcset="assets/img/pom-open-closeup-800.jpg 800w, assets/img/pom-open-closeup-1400.jpg 1400w, assets/img/pom-open-closeup.jpg 2000w" sizes="(min-width:769px) 46vw, 100vw" width="2000" height="1123" alt="An opened pomegranate, seeds packed tight" loading="lazy" decoding="async"></div>
+          <button class="accordion__trigger" type="button" aria-expanded="true" aria-controls="acc-sofreh"><span class="visually-hidden">Show Sofreh Aghd</span></button>
+          <span class="accordion__label" aria-hidden="true">Sofreh Aghd</span>
+          <div class="accordion__body" id="acc-sofreh">
+            <p class="fa" lang="fa" dir="rtl">سفرهٔ عقد</p>
+            <h3><a href="weddings.html#sofreh-aghd">Sofreh Aghd</a></h3>
+            <p>The Persian ceremony, at the sofreh.</p>
+          </div>
+        </article>
+        <article class="accordion__panel">
+          <div class="accordion__media"><img src="assets/img/pom-split-leaves-1200.jpg" srcset="assets/img/pom-split-leaves-800.jpg 800w, assets/img/pom-split-leaves-1200.jpg 1200w, assets/img/pom-split-leaves.jpg 1280w" sizes="(min-width:769px) 46vw, 100vw" width="1280" height="1920" alt="A split pomegranate among its leaves" loading="lazy" decoding="async"></div>
+          <button class="accordion__trigger" type="button" aria-expanded="false" aria-controls="acc-nikah"><span class="visually-hidden">Show Nikah</span></button>
+          <span class="accordion__label" aria-hidden="true">Nikah</span>
+          <div class="accordion__body" id="acc-nikah">
+            <p class="fa" lang="fa" dir="rtl">نکاح</p>
+            <h3><a href="weddings.html#nikah">Nikah</a></h3>
+            <p>The marriage contract; aina mosaf where your family observes it.</p>
+          </div>
+        </article>
+        <article class="accordion__panel">
+          <div class="accordion__media"><img src="assets/img/pom-seeds-tray-1200.jpg" srcset="assets/img/pom-seeds-tray-800.jpg 800w, assets/img/pom-seeds-tray-1200.jpg 1200w, assets/img/pom-seeds-tray.jpg 1920w" sizes="(min-width:769px) 46vw, 100vw" width="1920" height="1355" alt="Pomegranate seeds in a bowl on a tray" loading="lazy" decoding="async"></div>
+          <button class="accordion__trigger" type="button" aria-expanded="false" aria-controls="acc-mehndi"><span class="visually-hidden">Show Mehndi and Sangeet</span></button>
+          <span class="accordion__label" aria-hidden="true">Mehndi &amp; Sangeet</span>
+          <div class="accordion__body" id="acc-mehndi">
+            <p class="fa" lang="fa" dir="rtl">حنابندان · مهندی</p>
+            <h3><a href="weddings.html#mehndi-sangeet">Mehndi &amp; Sangeet</a></h3>
+            <p>Henna, blessings, music and dancing.</p>
+          </div>
+        </article>
+        <article class="accordion__panel">
+          <div class="accordion__media"><img src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night.jpg 1125w" sizes="(min-width:769px) 46vw, 100vw" width="1125" height="2000" alt="A pomegranate tree at night" loading="lazy" decoding="async"></div>
+          <button class="accordion__trigger" type="button" aria-expanded="false" aria-controls="acc-reception"><span class="visually-hidden">Show Reception and Walima</span></button>
+          <span class="accordion__label" aria-hidden="true">Reception &amp; Walima</span>
+          <div class="accordion__body" id="acc-reception">
+            <p class="fa" lang="fa" dir="rtl">جشن عروسی</p>
+            <h3><a href="weddings.html#reception-walima">Reception &amp; Walima</a></h3>
+            <p>The blessing, the entrances, the dance floor.</p>
+          </div>
+        </article>
       </div>
       <p class="cel__foot reveal">Explore haldi, pheras, Anand Karaj, nikah, walima and more on the <a class="link" href="weddings.html">Weddings page</a>.</p>
     </div>

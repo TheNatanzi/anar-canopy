@@ -1,0 +1,28 @@
+{
+ "model": "astra",
+ "role": "brand",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "assets/css/canopy.css — .tree__band",
+   "what": "Replace the visibly repetitive bare-trunk tile with a longer, varied bark segment; preserve the existing edge positions and open center.",
+   "why": "The long straight trunks read as brown curtains beside the form, weakening the illusion of one continuous painting."
+  },
+  {
+   "where": "assets/js/canopy.js — buildAll(), blocks 2 and 4",
+   "what": "Remove velocity-triggered canopy bouncing and the separate falling and rolling fruit animations; retain restrained sway and scroll parallax.",
+   "why": "The combined choreography risks making the painted identity feel like an interactive storybook rather than a premium wedding studio."
+  },
+  {
+   "where": "assets/css/canopy.css — .screen--statement h2, phone breakpoint",
+   "what": "Constrain the mobile heading to the clear space between the trunks and deliberately balance it across two lines when necessary.",
+   "why": "At 390px, “Reimagined Heritage” nearly touches both bark edges, losing the generous clearance established around the hero logo."
+  },
+  {
+   "where": "assets/css/site.css — .options .option__when and .option__more summary",
+   "what": "Keep short category labels uppercase, but set long timing statements and disclosure labels in sentence case with normal tracking, retaining TT Ramillas Bold.",
+   "why": "Long passages of small, tracked capitals flatten the inner-page hierarchy and make operational detail feel visually insistent."
+  }
+ ]
+}

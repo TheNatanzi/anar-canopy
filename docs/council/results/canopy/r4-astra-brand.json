@@ -1,0 +1,30 @@
+{
+ "model": "astra",
+ "role": "brand",
+ "score": 7,
+ "blocking": [
+  "The canopy has visibly doubled fruit and translucent foliage in desktop screenshot 2. This reads as a compositing defect and prevents launch sign-off."
+ ],
+ "fixes": [
+  {
+   "where": "assets/js/canopy.js: buildAll(), layered canopy motion",
+   "what": "Keep the tonal slices registered as one painting; apply a shared restrained sway and remove independent slice translation and elastic bounce. If independent movement remains, use complete branch cutouts instead of tonal slices.",
+   "why": "The current separation produces ghosted fruit and muddy foliage instead of convincing botanical movement."
+  },
+  {
+   "where": "assets/css/canopy.css: --at-under and .screen--statement .screen__col",
+   "what": "Move the statement upward within the existing clear central opening, measuring clearance against the actual heading width and maximum foliage movement.",
+   "why": "Desktop screenshot 2 spends most of its height on dense foliage while the heading sits near the bottom, weakening the condensed scroll rhythm."
+  },
+  {
+   "where": "assets/js/canopy.js: falling and rolling fruit animations",
+   "what": "Remove the 140-degree falling-fruit spin and 220-degree rolling entrance; retain subtle branch motion and the ground reveal.",
+   "why": "Multiple fruit tricks compete with the logo morph and make the premium painted world feel more theatrical than refined."
+  },
+  {
+   "where": "assets/css/canopy.css: .screen--inquire .form__note",
+   "what": "Center the reply-time note beneath the centered submit button, keeping field labels and helper text left-aligned.",
+   "why": "Desktop screenshot 5 breaks the closing composition with a lone left-aligned assurance between centered actions."
+  }
+ ]
+}

@@ -1,0 +1,28 @@
+{
+ "model": "argon",
+ "role": "brand",
+ "score": 9,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "assets/css/site.css:358",
+   "what": "Change `.site-footer__bottom{...border-top:1px solid rgba(201,158,92,.3)...}` to `border-top:2px solid rgba(201,158,92,.35)`",
+   "why": "The brand book and stylesheet rule strictly forbid 1px hairlines anywhere; every horizontal rule must be a 2px kashida-weight stroke."
+  },
+  {
+   "where": "assets/css/canopy.css:93",
+   "what": "Increase `.canopy .hero__halo` opacity from `rgba(27,34,30,.62)` to `rgba(27,34,30,.75)` and height to `190%`",
+   "why": "In desktop-0, the bright white table linens in the hero video right beneath the kashida line slightly compete with the small parchment descriptor lines."
+  },
+  {
+   "where": "assets/css/canopy.css:281",
+   "what": "Add `margin-bottom:var(--s2)` to `.inquire__call` or reduce `--form-reserve` from `calc(534 * var(--s))` to `calc(490 * var(--s))`",
+   "why": "In desktop-4, there is a slightly wide dark gap between the 'Call · WhatsApp' line and the top of the painted pomegranates on the ground."
+  },
+  {
+   "where": "assets/css/site.css:395",
+   "what": "Give `.hww-tab` a subtle `box-shadow:-4px 0 16px rgba(18,23,20,.6)`",
+   "why": "When the vertical 'How we work +' tab sits over the painted tree bark on desktop-2, its left edge blends into the dark brown/cypress tones of the trunk."
+  }
+ ]
+}

@@ -18,9 +18,11 @@
      suffices and the tree (the LCP image, preloaded only without reduced motion so the two never compete) and the two
      fonts keep the first connection -->
 <link rel="preload" href="assets/video/hero-poster-small.jpg" as="image" media="(prefers-reduced-motion: reduce)">
-<!-- the one painted tree (1536×3714, transparent): drawn in three layers from this file plus the tiled trunk band;
-     three widths (768 / 1024 / 1536), so a 390px phone at DPR 2 (110vw = 858 device px) takes the 1024 file, not the 1536 -->
-<link rel="preload" href="assets/tree/tree-full.webp" as="image" imagesrcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" imagesizes="(max-width:768px) 110vw, 100vw" fetchpriority="high" media="(prefers-reduced-motion: no-preference)">
+<!-- the first-screen tree pixels are the four canopy layers (assets/tree/layers), not tree-full (which paints from
+     screen 2 down and is fetched when its imgs are parsed): the base and the dark leaves are preloaded, each in three
+     widths (768 / 1024 / 1536), so a 390px phone at DPR 2 (110vw = 858 device px) takes the 1024 file, not the 1536 -->
+<link rel="preload" href="assets/tree/layers/canopy-L0.webp" as="image" imagesrcset="assets/tree/layers/canopy-L0-768.webp 768w, assets/tree/layers/canopy-L0-1024.webp 1024w, assets/tree/layers/canopy-L0.webp 1536w" imagesizes="(max-width:768px) 110vw, 100vw" fetchpriority="high" media="(prefers-reduced-motion: no-preference)">
+<link rel="preload" href="assets/tree/layers/canopy-L1.webp" as="image" imagesrcset="assets/tree/layers/canopy-L1-768.webp 768w, assets/tree/layers/canopy-L1-1024.webp 1024w, assets/tree/layers/canopy-L1.webp 1536w" imagesizes="(max-width:768px) 110vw, 100vw" fetchpriority="high" media="(prefers-reduced-motion: no-preference)">
 <!-- the plain gold logo paints before the deferred bundles land on a cold load (it is the first thing on screen) -->
 <link rel="preload" href="assets/logo/logo-gold.svg" as="image" fetchpriority="high">
 <link rel="stylesheet" href="assets/css/site.css">
@@ -66,9 +68,10 @@
       </ul>
     </nav>
     <!-- right of the nav, left of Inquire: a handset (tel:) and an envelope (mailto:) as gold line icons, 44px hit areas;
-         on phones the bar is full (toggle + Pause + logo + Inquire at 360px), so the drawer carries them instead -->
+         from 1200px the number "(925) 263-9949" shows in 14px gold after the handset (parents call before they type);
+         below 1025px the bar is full (toggle + Pause + logo + Inquire at 360px), so the drawer carries the contact rows -->
     <div class="nav-right">
-      <a class="nav-icon" href="tel:+19252639949" title="Call (925) 263-9949"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span class="visually-hidden">Call (925) 263-9949</span></a>
+      <a class="nav-icon nav-icon--tel" href="tel:+19252639949" title="Call (925) 263-9949"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span class="visually-hidden">Call </span><span class="nav-icon__num">(925) 263-9949</span></a>
       <a class="nav-icon" href="mailto:hello@anarevents.com" title="Email hello@anarevents.com"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg><span class="visually-hidden">Email hello@anarevents.com</span></a>
       <a class="btn btn--sm" href="index.html#inquire">Inquire</a>
     </div>
@@ -106,14 +109,16 @@
     <div class="tree__sprig tree__sprig--l"><img src="assets/tree/tree-full.webp" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>
     <div class="tree__sprig tree__sprig--r"><img src="assets/tree/tree-full.webp" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>
     <!-- the canopy as four tonal slices of tree-full rows 0–1300 (assets/tree/layers, same coordinate space): L0 the
-         soft darkened base (moves least), L1 dark leaves, L2 mid leaves, L3 bright leaves + every fruit (front). Each
-         layer is parallaxed, swayed and bounced by canopy.js block 2 (the outer div: parallax y + sway rotation about
-         its top centre; the img: the spring bounce), so the branches move around each other -->
+         soft darkened base WITHOUT the fruit and bright-leaf regions (the front layer owns them, so motion never
+         doubles a fruit; moves least), L1 dark leaves, L2 mid leaves, L3 bright leaves + every fruit (front). Three
+         widths each (768 / 1024 / 1536, Pillow). Each layer is parallaxed, swayed and bounced by canopy.js block 2
+         (the outer div: parallax y + sway rotation about its top centre; the img: the bounce), so the branches move
+         around each other -->
     <div class="tree__canopy">
-      <div class="tree__layer tree__layer--0"><img src="assets/tree/layers/canopy-L0.webp" width="1536" height="1300" alt="" fetchpriority="high"></div>
-      <div class="tree__layer tree__layer--1"><img src="assets/tree/layers/canopy-L1.webp" width="1536" height="1300" alt="" fetchpriority="high"></div>
-      <div class="tree__layer tree__layer--2"><img src="assets/tree/layers/canopy-L2.webp" width="1536" height="1300" alt="" decoding="async"></div>
-      <div class="tree__layer tree__layer--3"><img src="assets/tree/layers/canopy-L3.webp" width="1536" height="1300" alt="" decoding="async"></div>
+      <div class="tree__layer tree__layer--0"><img src="assets/tree/layers/canopy-L0.webp" srcset="assets/tree/layers/canopy-L0-768.webp 768w, assets/tree/layers/canopy-L0-1024.webp 1024w, assets/tree/layers/canopy-L0.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="1300" alt="" fetchpriority="high" decoding="async"></div>
+      <div class="tree__layer tree__layer--1"><img src="assets/tree/layers/canopy-L1.webp" srcset="assets/tree/layers/canopy-L1-768.webp 768w, assets/tree/layers/canopy-L1-1024.webp 1024w, assets/tree/layers/canopy-L1.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="1300" alt="" fetchpriority="high" decoding="async"></div>
+      <div class="tree__layer tree__layer--2"><img src="assets/tree/layers/canopy-L2.webp" srcset="assets/tree/layers/canopy-L2-768.webp 768w, assets/tree/layers/canopy-L2-1024.webp 1024w, assets/tree/layers/canopy-L2.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="1300" alt="" decoding="async"></div>
+      <div class="tree__layer tree__layer--3"><img src="assets/tree/layers/canopy-L3.webp" srcset="assets/tree/layers/canopy-L3-768.webp 768w, assets/tree/layers/canopy-L3-1024.webp 1024w, assets/tree/layers/canopy-L3.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="1300" alt="" decoding="async"></div>
     </div>
     <!-- the static bark at the canopy junction (rows 1000–1272, bark columns only), ABOVE the moving layers: the trunks
          never move while the branches and leaves do -->
@@ -136,7 +141,8 @@
         <i class="hero__halo" aria-hidden="true"></i>
         <h1 class="hero__logo"><img src="assets/logo/logo-gold.svg" width="1600" height="552" alt="Anar Events" fetchpriority="high"></h1>
         <p class="hero__line">Wedding planning and coordination for Persian, Afghan and South Asian families<span class="hero__place">San Francisco Bay Area</span></p>
-        <p class="hero__tag"><span>Reimagined Heritage</span> <span class="fa" lang="fa" dir="rtl">میراث، از نو</span></p>
+        <!-- the owner's second line here (screen 2's h2 is "Reimagined Heritage": the brand's first two statements are not the same four words twice) -->
+        <p class="hero__tag"><span>Honoring the roots. Elevating the vibe.</span> <span class="fa" lang="fa" dir="rtl">میراث، از نو</span></p>
       </div></div>
     </div>
   </section>

@@ -22,9 +22,12 @@
     if (mq.addEventListener) { mq.addEventListener('change', fn); } else if (mq.addListener) { mq.addListener(fn); }
   };
   var hasGsap = typeof window.gsap !== 'undefined' && typeof window.ScrollTrigger !== 'undefined';
-  /* the phone/desktop threshold: 769px here and in the CSS header block (nav drawer, toggle) */
+  /* two thresholds, kept apart: desktopQuery (769px) is the MOTION / video / tab-behaviour threshold (phones get the
+     720 mp4, the scrubbed leaves, the scroll-hidden tab); navQuery (1025px) is the HEADER threshold, the same as the
+     CSS header block (the drawer and the toggle through 1024px, the full bar with the centred logo from 1025px) */
   var desktopQuery = window.matchMedia('(min-width: 769px)');
   var isDesktop = function () { return desktopQuery.matches; };
+  var navQuery = window.matchMedia('(min-width: 1025px)');
   var vh = function () { return window.innerHeight; };
   var $ = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
@@ -152,7 +155,8 @@
   function scrollToEl(el) {
     if (!el.hasAttribute('tabindex')) { el.setAttribute('tabindex', '-1'); }
     el.focus({ preventScroll: true });
-    if (lenis) { lenis.scrollTo(el, { offset: headerOffset(), duration: 1.4, onComplete: settleReveals }); }
+    /* wrapped: Lenis passes its instance to onComplete, which settleReveals(noRefresh) would read as "skip the refresh" */
+    if (lenis) { lenis.scrollTo(el, { offset: headerOffset(), duration: 1.4, onComplete: function () { settleReveals(); } }); }
     else {
       el.scrollIntoView({ behavior: reduced || userPaused ? 'auto' : 'smooth', block: 'start' });
       setTimeout(settleReveals, reduced || userPaused ? 50 : 900);
@@ -261,7 +265,7 @@
     });
     /* the drawer closes when a link is activated, on a click outside the header (capture: before the target's own
        handler, so the "How we work +" tab's open runs on a page that is no longer inert), when focus leaves the
-       header (Tab past the last link) and when the viewport grows past the phone breakpoint */
+       header (Tab past the last link) and when the viewport grows past the nav breakpoint (1025px) */
     $$('.site-nav a', header).forEach(function (a) { a.addEventListener('click', closeNav); });
     document.addEventListener('click', function (e) {
       if (header.classList.contains('nav-open') && !header.contains(e.target)) { closeNav(); }
@@ -269,7 +273,7 @@
     header.addEventListener('focusout', function (e) {
       if (header.classList.contains('nav-open') && e.relatedTarget && !header.contains(e.relatedTarget)) { closeNav(); }
     });
-    onMQ(desktopQuery, function (e) { if (e.matches) { closeNav(); } });
+    onMQ(navQuery, function (e) { if (e.matches) { closeNav(); } });
     window.addEventListener('resize', syncNav, { passive: true });
     /* the links are visible by default (CSS); only now, with the toggle wired, do they collapse into the drawer */
     html.classList.add('nav-ready');
@@ -371,7 +375,11 @@
       idleTimer = setTimeout(function () { hideWhileScrolling = false; syncTab(true); }, 700);
     };
     tab.addEventListener('blur', function () { setTimeout(function () { syncTab(true); }, 0); });
+    /* keyboard focus reaching the tab (it stays focusable until its settle timeout runs) un-hides it at once, visually
+       and for the keyboard (settled: the class, aria-hidden and tabIndex change together) */
+    tab.addEventListener('focus', function () { syncTab(true); });
     onMQ(desktopQuery, function () { syncTab(true); });
+    onMQ(navQuery, function () { syncTab(true); });
     scrollFns.push(function () {
       var next = window.scrollY;
       if (Math.abs(next - lastScroll) > 2) { hideWhileScrolling = next > lastScroll; }
@@ -402,8 +410,11 @@
      button is actually on screen: the form's own submit button (not the whole section, whose heading arrives a
      viewport before the button), the footer, and every main .btn to #inquire */
   var hideFor = [$('#inquire'), $('.site-footer')].filter(Boolean);
+  /* phones only: the home page's photo row (.cel, three slots that are links, full width at 390) hides the tab too, so
+     it never sits over a slot's right edge */
+  var hideForPhone = [$('main.canopy .cel')].filter(Boolean);
   var submitFor = [$('#inquire .form button[type="submit"]'), $('.site-footer')].filter(Boolean).concat($$('main .btn[href$="#inquire"]'));
-  var ghostFor = hideFor.concat(submitFor.filter(function (el) { return hideFor.indexOf(el) === -1; }));
+  var ghostFor = hideFor.concat(hideForPhone, submitFor).filter(function (el, i, all) { return all.indexOf(el) === i; });
   if ((headerInquire || syncTab) && ghostFor.length && 'IntersectionObserver' in window) {
     var ghostInView = new Map();
     var ghostObserver = new IntersectionObserver(function (entries) {
@@ -412,7 +423,7 @@
       ghostInView.forEach(function (v, el) {
         if (!v) { return; }
         if (submitFor.indexOf(el) !== -1) { filledInquire = true; }
-        if (hideFor.indexOf(el) !== -1) { hideAtDestination = true; }
+        if (hideFor.indexOf(el) !== -1 || (!isDesktop() && hideForPhone.indexOf(el) !== -1)) { hideAtDestination = true; }
       });
       if (headerInquire && headerInquire.classList.contains('ghost') !== filledInquire) { headerInquire.classList.toggle('ghost', filledInquire); }
       /* the tab follows at once (visual); its keyboard state settles 700 ms later, like the scroll handler's */

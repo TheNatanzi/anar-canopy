@@ -1,0 +1,31 @@
+{
+ "model": "astra",
+ "role": "dev",
+ "score": 6,
+ "blocking": [
+  "The desktop header activates at 769px while retaining a centered 150px logo and both contact icons. At narrow tablet widths, the navigation overlaps the logo, violating the protected-logo rule.",
+  "The tablet celebration layout is broken by CSS source order: the later .cel rule overrides the intended two-column grid."
+ ],
+ "fixes": [
+  {
+   "where": "assets/css/site.css — header media queries; assets/js/site.js — desktopQuery",
+   "what": "Keep the drawer navigation through 1024px and activate the full desktop header at 1025px. Separate the navigation breakpoint from video and motion breakpoints; verify header clearance at 769, 800, 900 and 1024px.",
+   "why": "The centered logo occupies space already used by the left navigation at narrow desktop widths."
+  },
+  {
+   "where": "assets/css/canopy.css — tablet media query and subsequent .cel rule",
+   "what": "Move the 769–1024px .cel overrides below the base .cel declaration, preserving two equal columns and the centered third card.",
+   "why": "Equal-specificity source order currently restores three columns while leaving the third card's spanning and width overrides active."
+  },
+  {
+   "where": "assets/js/site.js — setShown(), syncTab() and tab focus handling",
+   "what": "When keyboard focus reaches the tab, immediately remove is-hidden and restore its visible state; synchronize tabindex with visual hiding rather than leaving a 700ms invisible-focus window.",
+   "why": "The tab remains keyboard-focusable briefly after it becomes transparent and moves offscreen, with no focus handler to reveal it immediately."
+  },
+  {
+   "where": "index.html — .tree__layer images and tree preload",
+   "what": "Supply responsive 768/1024/1536-width candidates for all four canopy layers, with matching sizes. Prioritize the actual first-screen canopy asset and defer full-tree imagery used below the fold.",
+   "why": "Phones currently request four full-width canopy images alongside the preloaded full tree; the responsive full-tree srcset does not reduce those layer downloads or decoded dimensions."
+  }
+ ]
+}

@@ -22,7 +22,8 @@ def save(name, rgb, alpha):
     im.save(os.path.join(OUT, f'{name}.webp'), 'WEBP', quality=86, method=6); print(name, im.size, os.path.getsize(os.path.join(OUT, f'{name}.webp')) // 1024, 'KB'); return im
 rgb = np.dstack([r, g, b])
 # L0: whole canopy, darkened and softened, so gaps opened by motion never show the background
-base = Image.fromarray(np.dstack([rgb * 0.72, al * 255]).astype(np.uint8), 'RGBA').filter(ImageFilter.GaussianBlur(1.5))
+hole = bands['canopy-L3']
+base = Image.fromarray(np.dstack([rgb * 0.72, al * (1 - 0.9 * hole) * 255]).astype(np.uint8), 'RGBA').filter(ImageFilter.GaussianBlur(1.5))  # no fruit/bright leaves in the base: the front layer owns them, so motion never doubles them
 base.save(os.path.join(OUT, 'canopy-L0.webp'), 'WEBP', quality=84, method=6); print('canopy-L0', base.size)
 layers = [base]
 for n, m in bands.items(): layers.append(save(n, rgb, al * m))

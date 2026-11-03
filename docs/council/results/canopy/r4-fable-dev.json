@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "dev",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "assets/css/canopy.css, phone block (@media max-width:768px) — .cel figure",
+   "what": "Add `.cel figure{padding-right:24px}` (or `width:calc(100% - 24px)`) so the photo slot ends ~64px from the right edge; the slot itself has no clearance, only .cel figcaption does.",
+   "why": "index-phone-2.jpg: the settled 'How we work +' tab sits ~18px over the right edge of the Nikah photo link; a fixed control over a clickable slot breaks the 'controls never cover content' rule on phones."
+  },
+  {
+   "where": "index.html <head>: the tree-full.webp preload and the four .tree__layer <img>",
+   "what": "Preload canopy-L0.webp and canopy-L1.webp (as=image, fetchpriority=high, same reduced-motion media) and drop tree-full from the preload list; give the .tree__trunk--low, .tree__sprig, .tree__bark and .ground-art imgs `loading=\"lazy\"`.",
+   "why": "On screen 1 the only tree pixels are the four layers; tree-full (the largest file) paints from screen 2 down yet is fetched first at high priority, delaying the layers that are actually in the first paint."
+  },
+  {
+   "where": "index.html .tree__layer <img> ×4 (canopy-L0..L3.webp)",
+   "what": "Add 768 / 1024 variants with `srcset` and `sizes=\"(max-width:768px) 110vw, 100vw\"`, matching tree-full's three widths.",
+   "why": "A 390px phone at DPR 2 needs ~858 device px but downloads four 1536-wide layers; the tree-full comment already documents the right sizing and the layers skip it."
+  },
+  {
+   "where": "assets/js/site.js scrollToEl(): `lenis.scrollTo(el, { ..., onComplete: settleReveals })`",
+   "what": "Wrap it: `onComplete: function () { settleReveals(); }`.",
+   "why": "Lenis passes its instance as the first argument, so `noRefresh` is truthy and the ScrollTrigger.refresh() the comment promises after an anchor jump never runs."
+  },
+  {
+   "where": "assets/js/canopy.js block 2c (the bounce ScrollTrigger onUpdate)",
+   "what": "Replace the per-frame `canopy.getBoundingClientRect()` with a cached in-view flag from the existing IntersectionObserver (loopInView already observes the layers), checked after the velocity gate.",
+   "why": "With Lenis every frame is a scroll update; a layout read inside the fast-scroll path forces sync layout exactly when the page is busiest."
+  },
+  {
+   "where": "assets/css/site.css .hww-tab / phone comment ('~34px wide')",
+   "what": "Measure the rendered tab at 390px (index-phone-2.jpg shows ~58px, not 34) and set an explicit `inline-size`/`width` (e.g. 36px) with `line-height:16px` honoured in vertical-rl, then re-derive the 24px/44px clearances from the real width.",
+   "why": "Every phone clearance in site.css and canopy.css is computed from a 34px assumption that the screenshots contradict."
+  }
+ ]
+}

@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "planner",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "weddings.html · Sofreh Aghd, paragraph 2 (kaleh ghand)",
+   "what": "Change 'the sugar cones rubbed over the couple as the vows are read' to 'the sugar cones rubbed together over the cloth held above the couple's heads by the happily married women your family names for it'.",
+   "why": "A Persian mother reads this line; the cloth (ghand-sabi) and the women holding it are the detail that proves fluency, and the current wording is wrong."
+  },
+  {
+   "where": "site.js · hideFor list (tab) / canopy.css phone block",
+   "what": "On phones hide the 'How we work +' tab while the three photo slots (.cel) are in view (add $('.cel') to hideFor), or give .cel figure 36px right clearance on ≤768px.",
+   "why": "Phone screenshot 3 shows the tab sitting over the right edge of the Nikah photo link; the owner's rule is that controls cover nothing clickable."
+  },
+  {
+   "where": "site.css · .nav-icon (header, ≥1200px)",
+   "what": "Show the number as text beside the handset on wide desktops: '(925) 263-9949' in 14px gold after the icon (the header comment already promises it).",
+   "why": "Parents call before they type; a bare icon hides the number until the footer, and on the home page the footer is four screens down."
+  },
+  {
+   "where": "how-we-work.html · FAQ 'What does it cost?'",
+   "what": "Add one owner-input line slot: 'Full planning from $X · Wedding-day coordination from $Y' before 'quoted after the first conversation'.",
+   "why": "Families compare three planners on price before they write; no starting figure costs inquiries, especially from the parents paying."
+  },
+  {
+   "where": "weddings.html · Haldi & Pheras, paragraph 1",
+   "what": "Add one line naming the regional ceremonies: 'Gujarati, Punjabi or South Indian (saptapadi, mangalsutra, the muhurtam your family's priest sets): the sequence your family keeps.'",
+   "why": "'Pheras' alone reads North Indian; the South Bay's Tamil and Telugu families look for their own words before trusting the page."
+  },
+  {
+   "where": "weddings.html · Nikah, paragraph 1",
+   "what": "Cut 'For Afghan families who observe the shirni-khori or the aina mosaf, we agree their place in the programme with your family.' so paragraph 3 and the Afghan box are the only mentions.",
+   "why": "The same two Afghan rituals are introduced three times in one section; the repetition reads as filler to an Afghan reader."
+  }
+ ]
+}

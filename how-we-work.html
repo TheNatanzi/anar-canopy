@@ -54,9 +54,10 @@
       </ul>
     </nav>
     <!-- right of the nav, left of Inquire: a handset (tel:) and an envelope (mailto:) as gold line icons, 44px hit areas;
-         on phones the bar is full (toggle + Pause + logo + Inquire at 360px), so the drawer carries them instead -->
+         from 1200px the number "(925) 263-9949" shows in 14px gold after the handset (parents call before they type);
+         below 1025px the bar is full (toggle + Pause + logo + Inquire at 360px), so the drawer carries the contact rows -->
     <div class="nav-right">
-      <a class="nav-icon" href="tel:+19252639949" title="Call (925) 263-9949"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span class="visually-hidden">Call (925) 263-9949</span></a>
+      <a class="nav-icon nav-icon--tel" href="tel:+19252639949" title="Call (925) 263-9949"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span class="visually-hidden">Call </span><span class="nav-icon__num">(925) 263-9949</span></a>
       <a class="nav-icon" href="mailto:hello@anarevents.com" title="Email hello@anarevents.com"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg><span class="visually-hidden">Email hello@anarevents.com</span></a>
       <a class="btn btn--sm" href="index.html#inquire">Inquire</a>
     </div>
@@ -120,6 +121,9 @@
           </details>
         </li>
       </ul>
+      <!-- the third way: partial or multi-event planning (a venue's own coordinator who runs the generic day, a family
+           that needs the rituals and the other days bridged), quoted like the two above -->
+      <p class="options__note reveal">Partial planning, or one or two events of a multi-day celebration (a venue's own coordinator may run the generic day; the sofreh, the nikah, the mehndi and the other days still need calling): quoted the same way, to the events, days and staffing it covers.</p>
     </div>
   </section>
 
@@ -189,17 +193,24 @@
       <p class="eyebrow reveal" style="margin-bottom:24px">On the hard days</p>
       <ul class="you-get stagger" role="list" aria-label="How the hard days are handled" style="margin-bottom:64px">
         <li><strong>Decided before the day</strong><span>Priorities and spending approvals are agreed before anything is booked.</span></li>
-        <li><strong>A venue that changes, a vendor who is late</strong><span>We call the next option on the list we built together and tell the family lead first.</span></li>
+        <li><strong>A venue that changes, a vendor who is late</strong><span>We assess the impact, confirm available alternatives and any spending approval, then re-issue the timeline.</span></li>
         <li><strong>A planner who is unwell</strong><span>The named backup planner, briefed on your plan, runs the day.</span></li>
         <li><strong>Two events at once</strong><span>Covered under the same plan, with the staffing for each named up front.</span></li>
       </ul>
-      <p class="eyebrow reveal" style="margin-bottom:24px">Always included</p>
-      <ul class="you-get stagger" role="list">
-        <li><strong>One person to call</strong><span>Your planner, from the first message to the thank-you card.</span></li>
-        <li><strong>A page for the parents</strong><span>A summary they can read alone. Parents' pages in the language agreed in your proposal; translation and spoken support confirmed before booking.</span></li>
-        <li><strong>A summary after every meeting</strong><span>Short, written, the same day. Nothing to chase.</span></li>
-        <li><strong>Signage in the languages agreed</strong><span>Welcome, sofreh key, wayfinding, seating and table numbers, as named in your proposal. We write and coordinate them with your printer and the venue; the printed pieces are supplied by your printer.</span></li>
+      <!-- two lists, so nothing proposal-dependent hides under "always": what both options include with no exception,
+           then what is named (and priced) in the proposal -->
+      <p class="eyebrow reveal" style="margin-bottom:24px">Always included, with either option</p>
+      <ul class="you-get stagger" role="list" style="margin-bottom:64px">
+        <li><strong>One person to call</strong><span>Your planner, from the first message to the last call.</span></li>
+        <li><strong>A summary after every meeting</strong><span>Short, written, the same day, in English. Nothing to chase.</span></li>
+        <li><strong>A page for the parents</strong><span>A summary they can read alone, in English, with every plan.</span></li>
         <li><strong>A reply within one business day</strong><span>Every time, from the first inquiry on.</span></li>
+      </ul>
+      <p class="eyebrow reveal" style="margin-bottom:24px">Named in your proposal, before anything is booked</p>
+      <ul class="you-get stagger" role="list">
+        <li><strong>Parents' pages in another language</strong><span>Persian, Dari, Pashto, Urdu, Hindi, Punjabi or another you name; translation and spoken support confirmed before booking.</span></li>
+        <li><strong>Signage in the languages agreed</strong><span>Welcome, sofreh key, wayfinding, seating and table numbers. We write and coordinate them with your printer and the venue; the printed pieces are supplied by your printer.</span></li>
+        <li><strong>The thank-you card and the handover</strong><span>The card as named in your proposal, the files handed over, and one last call to close the plan.</span></li>
       </ul>
     </div>
   </section>
@@ -236,7 +247,8 @@
         </details>
         <details>
           <summary>What does it cost?</summary>
-          <p class="faq__a">Every proposal is priced to the events, days and staffing it covers. Full planning and wedding-day coordination are quoted after the first conversation.</p>
+          <!-- OWNER INPUT: the starting figures. Replace $X / $Y and remove the hidden attribute; the line stays hidden until then -->
+          <p class="faq__a">Every proposal is priced to the events, days and staffing it covers. <span class="faq__from" data-owner-input hidden>Full planning from $X · Wedding-day coordination from $Y. </span>Full planning and wedding-day coordination are quoted after the first conversation.</p>
         </details>
       </div>
       <p class="reveal" style="margin-top:48px"><a class="btn" href="index.html#inquire">Begin the conversation</a></p>

@@ -54,9 +54,10 @@
       </ul>
     </nav>
     <!-- right of the nav, left of Inquire: a handset (tel:) and an envelope (mailto:) as gold line icons, 44px hit areas;
-         on phones the bar is full (toggle + Pause + logo + Inquire at 360px), so the drawer carries them instead -->
+         from 1200px the number "(925) 263-9949" shows in 14px gold after the handset (parents call before they type);
+         below 1025px the bar is full (toggle + Pause + logo + Inquire at 360px), so the drawer carries the contact rows -->
     <div class="nav-right">
-      <a class="nav-icon" href="tel:+19252639949" title="Call (925) 263-9949"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span class="visually-hidden">Call (925) 263-9949</span></a>
+      <a class="nav-icon nav-icon--tel" href="tel:+19252639949" title="Call (925) 263-9949"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span class="visually-hidden">Call </span><span class="nav-icon__num">(925) 263-9949</span></a>
       <a class="nav-icon" href="mailto:hello@anarevents.com" title="Email hello@anarevents.com"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg><span class="visually-hidden">Email hello@anarevents.com</span></a>
       <a class="btn btn--sm" href="index.html#inquire">Inquire</a>
     </div>
@@ -103,11 +104,16 @@
             <h2 id="t-sofreh">Sofreh Aghd</h2>
             <p class="fa fa--big" lang="fa" dir="rtl">سفرهٔ عقد</p>
           </div>
+          <!-- each ceremony leads with the coordination work; the longer ritual description sits in a native <details> -->
           <div class="stagger">
-            <p>The Persian marriage ceremony, at the sofreh: we agree the ceremony wording, the responses and the family cues with the aghed and your family beforehand, then cue each one on the day.</p>
-            <p>The spread at the head of the room: mirror, candlesticks, honey, bread, coins, the pomegranate. The kaleh ghand, the sugar cones rubbed over the couple as the vows are read, is cued with the women your family names for it. We brief your sofreh designer and check the spread against the sofreh key (a one-page guide naming each item on the spread, in the languages listed in your proposal) before the elders are seated.</p>
+            <p>The Persian marriage ceremony, at the sofreh: we agree the ceremony wording, the responses and the family cues with the aghed and your family beforehand, then cue each one on the day: the three-time ask before the bride's baleh (the playful answer the first two times, timed with the aghed, the family and the photographer), the honey after it, and the kaleh ghand with the women your family names for it.</p>
+            <p>We brief your sofreh designer and check the spread against the sofreh key (a one-page guide naming each item on the spread, in the languages listed in your proposal) before the elders are seated. The key is coordinated with your printer and set out for the guests, so the other family learns each item at a glance.</p>
             <p>If your family holds a bale-boroon or namzadi before the aghd, it goes in the programme and the elders are seated for it.</p>
-            <p>The key is coordinated with your printer and set out for the guests, so the other family learns each item at a glance.</p>
+            <details class="option__more tradition__more">
+              <summary>Details we confirm with your family</summary>
+              <p>The spread at the head of the room: mirror, candlesticks, honey, bread, coins, the pomegranate. The kaleh ghand: the sugar cones rubbed together over the cloth held above the couple's heads by the happily married women your family names for it, as the vows are read.</p>
+              <p>The baleh: the aghed asks three times, the bride's answer comes after the third, and the honey is shared from the fingertip straight after. Who holds the cloth, who rubs the cones and who speaks for the family: your family names them, and we cue them.</p>
+            </details>
           </div>
         </div>
         <figure class="tradition__media reveal">
@@ -129,10 +135,13 @@
             <p class="fa fa--big" lang="fa" dir="rtl">نکاح</p>
           </div>
           <div class="stagger">
-            <p>The Islamic marriage contract, read before witnesses and both families; for Pakistani and Indian Muslim families with the mehndi before it and the rukhsati after. For Afghan families who observe the shirni-khori or the aina mosaf, we agree their place in the programme with your family.</p>
-            <p>We cue the officiant and the family, and keep the room quiet and steady.</p>
-            <p>If your family observes the aina mosaf (<span class="fa" lang="fa" dir="rtl">آینه‌مصحف</span>), as many Afghan families do, it has its own moment, at the nikah or at the reception under the shawl, as your family keeps it: the couple's first look in the mirror, the Quran open between them, the elders close. We cue the shawl, the mirror and the reading with your family, and nobody is hurried.</p>
-            <p>A one-line programme, coordinated with your printer, explains the ritual so every guest can follow.</p>
+            <p>The Islamic marriage contract, read before witnesses and both families. For families who include mehndi or rukhsati, we agree their timing with you and your officiant.</p>
+            <p>We cue the officiant and the family, and keep the room quiet and steady. A one-line programme, coordinated with your printer, explains the ritual so every guest can follow.</p>
+            <details class="option__more tradition__more">
+              <summary>Details we confirm with your family</summary>
+              <p>If your family observes the aina mosaf (<span class="fa" lang="fa" dir="rtl">آینه‌مصحف</span>), as many Afghan families do, it has its own moment, at the nikah or at the reception under the shawl, as your family keeps it: the couple's first look in the mirror, the Quran open between them, the elders close. We cue the shawl, the mirror and the reading with your family, and nobody is hurried.</p>
+              <p>The witnesses, the wali, who signs and where, and the mahr as the families have agreed it: confirmed with your officiant before the day, so the reading is not interrupted.</p>
+            </details>
           </div>
           <!-- Afghan weddings: how the family names its ceremonies, languages and participants -->
           <div class="seasonal reveal" style="margin-top:32px">
@@ -159,9 +168,13 @@
             <p class="fa fa--big" lang="fa" dir="rtl">حنابندان · مهندی</p>
           </div>
           <div class="stagger">
-            <p>The henna gathering: hana-bandan for Persian families, khina for Afghan families, mehndi for South Asian families. Henna on the bride's hands, with the elders' blessing, as your family keeps it.</p>
-            <p>The sangeet: both families singing and dancing. In the nights before, if your family holds them: the mayun, dholki or jaggo, or the gaye holud for Bengali families.</p>
-            <p>Timing agreed around your family's customs.</p>
+            <p>The henna night and the sangeet, timed around your family's customs: we agree the order of the evening with you (the henna, the elders' blessing, the entrances, the dances each family has rehearsed) and run it with the venue, the musicians and the henna artist, so the elders are seated before the first song and the bride's henna is dry before she is called.</p>
+            <p>The nights before, if your family holds them, go in the same plan with their own timeline and staffing.</p>
+            <details class="option__more tradition__more">
+              <summary>Details we confirm with your family</summary>
+              <p>The henna gathering: hana-bandan for Persian families, khina for Afghan families, mehndi for South Asian families. Henna on the bride's hands, with the elders' blessing, as your family keeps it.</p>
+              <p>The sangeet: both families singing and dancing. In the nights before, if your family holds them: the mayun, dholki or jaggo, or the gaye holud for Bengali families.</p>
+            </details>
           </div>
         </div>
         <figure class="tradition__media reveal">
@@ -183,9 +196,14 @@
             <p class="eyebrow">Hindu ceremonies</p>
           </div>
           <div class="stagger">
-            <p>If your family observes the haldi, the family paints the couple with turmeric before the wedding. The pheras under the mandap, with the pandit, at the muhurat your family's priest has set: your ceremony, in the sequence agreed with your officiant.</p>
-            <p>We coordinate timing with your officiant and religious venue. If your family observes the baraat (the groom's party arriving on the wedding day) and the milni, we call them in the order of the agreed programme. We keep the mandap quiet and on time.</p>
+            <p>We coordinate timing with your officiant and the religious venue, at the muhurtam your family's priest sets, and call the day in the order of the agreed programme: the baraat (the groom's party arriving) and the milni, the kanya aagman (the bride's entrance, cued with her family), the kanyadaan (the parents' moment: we confirm with them beforehand who gives the bride away and where they sit for the pheras), then the pheras. We keep the mandap quiet and on time.</p>
+            <p>Gujarati, Punjabi or South Indian (saptapadi, mangalsutra, the muhurtam your family's priest sets): the sequence your family keeps, confirmed with your pandit and written into the programme.</p>
             <p>A one-line programme, coordinated with your printer, explains each ritual so every guest can follow.</p>
+            <details class="option__more tradition__more">
+              <summary>Details we confirm with your family</summary>
+              <p>If your family observes the haldi, the family paints the couple with turmeric before the wedding; we schedule it with the family and the photographer, and keep the outfits for the wedding day clear of it.</p>
+              <p>The pheras under the mandap, with the pandit, at the muhurat your family's priest has set: the number of rounds, who leads which, the mangalsutra and the sindoor, the saptapadi's seven steps, as your family keeps them.</p>
+            </details>
           </div>
         </div>
         <figure class="tradition__media reveal">
@@ -207,9 +225,12 @@
             <p class="eyebrow">Sikh ceremony</p>
           </div>
           <div class="stagger">
-            <p>The Sikh ceremony before the Guru Granth Sahib: the couple circle the Guru Granth Sahib four times as the four laavan are sung. Your ceremony, in the sequence agreed with your family and the granthi.</p>
-            <p>We coordinate timing with the gurdwara. If your family observes the baraat (the groom's party arriving on the wedding day) and the milni, we call them in the order of the agreed programme. We keep the hall quiet and on time.</p>
+            <p>We coordinate timing with the gurdwara and the granthi, and call the morning in the order of the agreed programme: the baraat (the groom's party arriving) and the milni, the families seated, the palla placed in the bride's hand by her father, the four laavan. We keep the hall quiet and on time.</p>
             <p>A one-line programme, coordinated with your printer, explains each ritual and what the gurdwara asks of guests (heads covered, shoes off), so every guest can follow.</p>
+            <details class="option__more tradition__more">
+              <summary>Details we confirm with your family</summary>
+              <p>The Sikh ceremony before the Guru Granth Sahib: the couple circle the Guru Granth Sahib four times as the four laavan are sung, the parents and the elders seated close. Your ceremony, in the sequence agreed with your family and the granthi; the langar after it, with the gurdwara.</p>
+            </details>
           </div>
         </div>
         <figure class="tradition__media reveal">
@@ -231,10 +252,13 @@
             <p class="fa fa--big" lang="fa" dir="rtl">جشن عروسی · ولیمه</p>
           </div>
           <div class="stagger">
-            <p>The walima, the groom's family's feast after the nikah, and the reception, on one night or two as your family keeps it. We run each your way.</p>
+            <p>The timeline called with the venue and every vendor: blessings, entrances and dancing in the order agreed with your family, on one night or two as your family keeps it.</p>
             <p>Welcome sign, seating chart and table numbers in the languages listed in your proposal, coordinated with your printer and the venue.</p>
-            <p>The timeline called with the venue and every vendor. Blessings, entrances and dancing in the order agreed with your family.</p>
             <p>The rukhsati, vidaai or doli, as your family calls the send-off, cued for the elders; a thank-you card follows.</p>
+            <details class="option__more tradition__more">
+              <summary>Details we confirm with your family</summary>
+              <p>The walima, the groom's family's feast after the nikah, and the reception: which family hosts which night, who speaks and in which order, the first dance or none, the knife, the cake or the sweets, and the hour the elders leave. We run each your way.</p>
+            </details>
           </div>
         </div>
         <figure class="tradition__media reveal">

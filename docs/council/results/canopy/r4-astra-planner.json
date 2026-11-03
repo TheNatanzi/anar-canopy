@@ -1,0 +1,33 @@
+{
+ "model": "astra",
+ "role": "planner",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "how-we-work.html — #with-either",
+   "what": "Reconcile “Always included” with proposal-dependent deliverables: identify which signage, translations and follow-up services both packages include and which require explicit agreement.",
+   "why": "Parents comparing services should not discover that an apparently included deliverable costs extra or falls outside their package."
+  },
+  {
+   "where": "weddings.html — #nikah opening paragraph",
+   "what": "Replace the categorical sequence with: “For families who include mehndi or rukhsati, we agree their timing with you and your officiant.”",
+   "why": "The opening should demonstrate the same family-specific approach promised elsewhere instead of assigning a sequence by nationality."
+  },
+  {
+   "where": "weddings.html — ceremony sections",
+   "what": "Lead each section with the concrete coordination work; move longer ritual descriptions into an expandable “Details we confirm with your family” block.",
+   "why": "The current page makes families read extensive explanations of their own traditions before finding what they are hiring you to do."
+  },
+  {
+   "where": "how-we-work.html — #with-either, “A venue that changes, a vendor who is late”",
+   "what": "Replace the automatic fallback promise with: “We assess the impact, confirm available alternatives and any spending approval, then update your designated family lead.”",
+   "why": "A late vendor and a lost venue require different responses; a credible contingency process builds more trust than an implied ready replacement."
+  },
+  {
+   "where": "index.html — inquiry form; assets/css/site.css — .form__row",
+   "what": "Give the email and phone inputs visibly separate underlines with a clear gap; retain the existing fields and labels.",
+   "why": "In the desktop screenshot, the adjoining rules read as one long input, making the form less immediately understandable."
+  }
+ ]
+}

@@ -1,0 +1,28 @@
+{
+ "model": "argon",
+ "role": "dev",
+ "score": 9.6,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "index.html:103-104",
+   "what": "Add `decoding=\"async\"` to the `canopy-L0.webp` and `canopy-L1.webp` `<img>` tags.",
+   "why": "Prevents synchronous image decoding of the large 1536x1300 WebP layers from blocking the main thread during initial load."
+  },
+  {
+   "where": "assets/css/site.css:302",
+   "what": "Increase `.motion-toggle` width and height from `36px` to `44px` (or add an invisible `::after` hit area of `inset:-4px`).",
+   "why": "Meets the 44x44px touch target accessibility guideline (WCAG 2.5.5) matching the adjacent `.nav-toggle` and `.nav-icon` controls."
+  },
+  {
+   "where": "assets/css/site.css:291",
+   "what": "Replace `border-top:1px solid rgba(201,158,92,.3)` on `.site-footer__bottom` with `border-top:2px solid rgba(201,158,92,.3)` (or remove the border and rely on spacing).",
+   "why": "Strictly enforces the brand and codebase rule of no 1px hairlines anywhere (`2px` rules only)."
+  },
+  {
+   "where": "assets/js/canopy.js:187-194",
+   "what": "Wrap `gsap.quickSetter(l, 'y', 'px')` outside `applyParallax` instead of calling `gsap.set(l, ...)` inside the `ScrollTrigger` `onUpdate` loop.",
+   "why": "Avoids object allocation and tween-lookup overhead on all four canopy layers on every single scroll tick."
+  }
+ ]
+}

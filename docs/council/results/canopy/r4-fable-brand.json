@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "brand",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "index.html hero .hero__tag + screen-2 h2#statement-title",
+   "what": "The hero tag says \"Reimagined Heritage\" and the very next headline one screen later says \"Reimagined Heritage\" again. Keep the h2; change the hero tag pair to \"Honoring the roots. Elevating the vibe.\" with its Persian twin (or vice versa).",
+   "why": "The brand's first two statements are the same four words twice within one scroll; it reads as a template, not a voice."
+  },
+  {
+   "where": "assets/css/site.css .site-footer__bottom",
+   "what": "Replace border-top:1px solid rgba(201,158,92,.3) with border-top:2px solid rgba(201,158,92,.35) (or a centred .kashida--short above the row).",
+   "why": "The brand book bans hairlines and the whole site keeps 2px rules; this 1px rule is the one hairline on every page."
+  },
+  {
+   "where": "assets/js/canopy.js block 2c (bounce)",
+   "what": "Raise the kick threshold to |velocity| > 900, the cooldown to 400 ms, amplitudes to 4/6/8 px (2/3/4 on phones) and the ease to power3.out (or elastic.out(1,0.75)).",
+   "why": "A 12px elastic boing on every wheel notch while the canopy is on screen tips from alive into springy-toy; premium motion settles, it does not twang."
+  },
+  {
+   "where": "assets/css/canopy.css @media (max-width:768px) main.canopy --tree-top and .canopy .hero__mark",
+   "what": "On phones land the first foliage at 52% of the hero instead of 60% (--tree-top:calc(var(--hero-h) * .52 - 169 * var(--s))) and move the mark's bottom to calc(var(--hero-h) * .48 + 16px).",
+   "why": "In index-phone-0 the canopy is a 350px pair of shrubs in the bottom third; it needs more of screen 1 to read as the one tree overhead it is on desktop."
+  },
+  {
+   "where": "assets/css/canopy.css @media (max-width:768px) .promises,.cel figcaption,.screen--inquire .form rule",
+   "what": "Add .cel figure to that selector (or give .cel__slot the same padding-right:max(0px,44px - var(--gutter))) so the slot ends 44px from the edge.",
+   "why": "In index-phone-2 the \"How we work +\" tab sits over the right edge of the Nikah photo slot, which is a link; the owner's hard rule is that controls never cover content."
+  },
+  {
+   "where": "assets/css/canopy.css .screen--inquire .form__submit",
+   "what": "Add .screen--inquire .form__note{text-align:center} beside it.",
+   "why": "On the roots screen the button and the call line are centred but \"We reply within one business day.\" hangs left (desktop-4, phone-4); one axis, as the comment promises."
+  }
+ ]
+}

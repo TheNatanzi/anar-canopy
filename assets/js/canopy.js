@@ -14,20 +14,22 @@
         of screen 2 on (screens 1–2 stay registered with the statement; the band
         under the ground absorbs the drift)
      2. the layered canopy: four tonal slices parallaxed past each other over
-        the hero (×0.97 / .985 / 1 / 1.02 of the scroll), swayed about their
-        top (L1 ±0.2° / 11 s, L2 ±0.3° / 8 s, L3 ±0.45° / 6 s) and bounced on
-        every scroll move (a spring, −6 / −9 / −12px, one timeline restarted
-        per kick, ≤ 1 per 120 ms); two shrub sprigs ±0.3° about their base
-        (9 s / 11 s); all paused off screen and reverted on Pause
+        the hero (×0.985 / .993 / 1 / 1.008 of the scroll, the spread between
+        the first and the last capped at 8px), swayed about their top (L1
+        ±0.2° / 11 s, L2 ±0.3° / 8 s, L3 ±0.45° / 6 s) and nudged on a fast
+        scroll move (−4 / −6 / −8px, power2.out then a soft settle, one
+        timeline restarted per kick, |velocity| > 900, ≤ 1 per 400 ms); two
+        shrub sprigs ±0.3° about their base (9 s / 11 s); all paused off
+        screen and reverted on Pause
      3. the hero, owned here (site.js block 1 skips a hero inside main.canopy):
         the mark drifts down a little and .hero__fade goes to 0, the fade finished
         before the drifted text bounds reach the canopy's centre (art row 297,
         measured on every refresh); the video deepens to cypress over screen 1 and
         is hidden once screen 1 has scrolled past (site.js then pauses it), shown
         again on the way back
-     4. the falling pomegranate (scrub, 1.6 screens, 140°, fades in the last 10 %;
-        desktop only, the sprite is display:none on phones) and the fallen one
-        rolling into place on the ground
+     4. the falling pomegranate (scrub, 1.6 screens, 40° of spin, fades in the
+        last 10 %; desktop only, the sprite is display:none on phones) and the
+        fallen one nudged 30° into place on the ground
      5. the ground rising 40px into place; the logo + line rising on load
      6. the logo morph: the hero logo travels up and shrinks into the centre
         of the header bar over the first 70 % of the hero and docks there
@@ -76,10 +78,12 @@
   var on = false;
   var failed = false;
   var risen = false;
-  /* the scroll bounce of the canopy layers: ONE reusable timeline (built in buildAll, inside the context) and the
-     time of the last kick live here so kill() can reset them */
+  /* the scroll bounce of the canopy layers: ONE reusable timeline (built in buildAll, inside the context), the time
+     of the last kick and the canopy's in-view flag (written by an IntersectionObserver, never measured per frame)
+     live here so kill() can reset them */
   var bounceTl = null;
   var lastBounce = 0;
+  var canopyInView = false;
   /* the last global ScrollTrigger.refresh() (site.js refreshes in initMotion, on load and when the fonts land):
      build() skips its own when one has just run, since triggers measure themselves on creation */
   var lastRefresh = 0;
@@ -143,24 +147,32 @@
     }
     /* 2. the layered canopy (four tonal slices, .tree__layer--0..3; the static junction bark sits above them in CSS,
           so nothing here moves a trunk). Three motions per layer, on two elements so no property is driven twice:
-          a. parallax: the outer div's y = (1 − m) × the page scroll over the hero (L0 ×0.97, L1 ×0.985, L2 ×1, L3
-             ×1.02 of the scroll), scrubbed from the top of the page to the hero's bottom and held after it, so the
-             layers slide a few px past each other while the canopy rises (27 / 13 / 0 / −18px at 1440×900);
+          a. parallax: the outer div's y = (1 − m) × the page scroll over the hero (L0 ×0.985, L1 ×0.993, L2 ×1, L3
+             ×1.008 of the scroll), scrubbed from the top of the page to the hero's bottom and held after it, and the
+             spread between L0 and L3 capped at 8px (every offset scaled down together past that), so the layers slide
+             a few px past each other while the canopy rises and never drift far enough to read as a second copy
+             (5.2 / 2.4 / 0 / −2.8px at 1440×900); written with gsap.quickSetter (no per-frame tween lookup);
           b. sway: the outer div rotates about its top centre (L1 ±0.2° / 11 s, L2 ±0.3° / 8 s, L3 ±0.45° / 6 s, yoyo
              sine; L0 still), paused off screen;
-          c. bounce: on every scroll update with |velocity| > 300 px/s the imgs spring up (−6 / −9 / −12px for L1 / L2
-             / L3, half on phones) and settle (elastic.out(1, .4), 1.2 s, 40 ms stagger): ONE timeline, built here in
-             the context and restarted per kick, at most once per 120 ms (overwrite: auto on the tweens) */
+          c. bounce: on a scroll update with |velocity| > 900 px/s while the canopy is on screen (the in-view flag comes
+             from an IntersectionObserver, not a per-frame layout read) the imgs lift (−4 / −6 / −8px for L1 / L2 / L3,
+             2 / 3 / 4 on phones) and come back: power2.out to a 1px undershoot, then a soft sine settle to 0 (no
+             elastic overshoot), 40 ms stagger: ONE timeline, built here in the context and restarted per kick, at
+             most once per 400 ms (overwrite: auto on the tweens) */
     var layers = $$('.tree__layer', main);
     if (canopy && layers.length === 4) {
-      var mult = [0.97, 0.985, 1, 1.02];
+      var mult = [0.985, 0.993, 1, 1.008];
+      var SPREAD_MAX = 8;
       var sway = [null, [0.2, 5.5], [0.3, 4], [0.45, 3]];
-      var amp = isPhone() ? [0, 3, 4.5, 6] : [0, 6, 9, 12];
+      var amp = isPhone() ? [0, 2, 3, 4] : [0, 4, 6, 8];
       var layerImgs = layers.map(function (l) { return $('img', l); });
       /* a. parallax, applied directly from the trigger's scroll (no tween, so the layers track the page exactly) */
+      var setY = layers.map(function (l) { return gsap.quickSetter(l, 'y', 'px'); });
       var applyParallax = function (self) {
         var s = Math.max(0, Math.min(self.scroll(), hero ? hero.offsetHeight : vh()));
-        layers.forEach(function (l, i) { gsap.set(l, { y: Math.round((1 - mult[i]) * s * 10) / 10 }); });
+        var spread = (mult[3] - mult[0]) * s;
+        var k = spread > SPREAD_MAX ? SPREAD_MAX / spread : 1;
+        for (var i = 0; i < 4; i++) { setY[i](Math.round((1 - mult[i]) * s * k * 10) / 10); }
       };
       ScrollTrigger.create({
         trigger: hero, start: 'top top', end: 'bottom top', invalidateOnRefresh: true,
@@ -175,16 +187,24 @@
       bounceTl = gsap.timeline({ paused: true });
       layerImgs.forEach(function (img, i) {
         if (!amp[i] || !img) { return; }
-        bounceTl.fromTo(img, { y: -amp[i] }, { y: 0, duration: 1.2, ease: 'elastic.out(1, 0.4)', overwrite: 'auto' }, (i - 1) * 0.04);
+        var at = (i - 1) * 0.04;
+        bounceTl.fromTo(img, { y: -amp[i] }, { y: 1, duration: 0.4, ease: 'power2.out', overwrite: 'auto' }, at)
+          .to(img, { y: 0, duration: 0.5, ease: 'sine.inOut' }, at + 0.4);
       });
+      canopyInView = false;
+      if ('IntersectionObserver' in window) {
+        var cio = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) { canopyInView = en.isIntersecting; });
+        });
+        cio.observe(canopy);
+        observers.push(cio);
+      } else { canopyInView = true; }
       ScrollTrigger.create({
         start: 0, end: 'max',
         onUpdate: function (self) {
-          if (!bounceTl) { return; }
+          if (!bounceTl || !canopyInView) { return; }
           var now = Date.now();
-          if (Math.abs(self.getVelocity()) < 300 || now - lastBounce < 120) { return; }
-          var r = canopy.getBoundingClientRect();
-          if (r.bottom < 0 || r.top > vh()) { return; }
+          if (Math.abs(self.getVelocity()) < 900 || now - lastBounce < 400) { return; }
           lastBounce = now;
           bounceTl.restart();
         }
@@ -223,8 +243,8 @@
     }
 
     /* 4a. the falling pomegranate (desktop: the sprite is display:none on phones): from its branch, 1.6 screens down
-           over 0.8 screens of scroll once it has reached 40% of the viewport, 140° of spin, a slight drift right,
-           fading out in the last 10 % */
+           over 0.8 screens of scroll once it has reached 40% of the viewport, 40° of spin in all (a fruit falls, it
+           does not tumble), a slight drift right, fading out in the last 10 % */
     if (shown(drop)) {
       gsap.timeline({
         scrollTrigger: { trigger: drop, start: 'top 40%', end: function () { return '+=' + Math.round(vh() * 0.8); }, scrub: true, invalidateOnRefresh: true }
@@ -232,19 +252,20 @@
         .fromTo(drop, { y: 0, x: 0, rotation: 0 }, {
           y: function () { return vh() * 1.6; },
           x: function () { return isPhone() ? -30 : 30; },
-          rotation: 140, ease: 'power2.in', duration: 1
+          rotation: 40, ease: 'power2.in', duration: 1
         }, 0)
         .fromTo(drop, { opacity: 1 }, { opacity: 0, ease: 'none', duration: 0.1 }, 0.9);
     }
 
-    /* 4b. the fallen fruit rolls into place on the moss as the ground arrives; 5. the ground rises 40px */
+    /* 4b. the fallen fruit settles into place on the moss as the ground arrives (a short 30° nudge over 70px, not a
+           rolling entrance); 5. the ground rises 40px */
     if (ground) {
       gsap.fromTo(ground, { y: 40 }, {
         y: 0, ease: 'none',
         scrollTrigger: { trigger: ground, start: 'top bottom', end: 'top 55%', scrub: true, invalidateOnRefresh: true }
       });
       if (roll) {
-        gsap.fromTo(roll, { x: -70, rotation: -220 }, {
+        gsap.fromTo(roll, { x: -70, rotation: -30 }, {
           x: 0, rotation: 0, ease: 'power2.out',
           scrollTrigger: { trigger: ground, start: 'top 95%', end: 'top 40%', scrub: true, invalidateOnRefresh: true }
         });
@@ -329,9 +350,11 @@
     if (!on) { return; }
     on = false;
     try { if (ctx) { ctx.revert(); ctx = null; } } catch (e) { /* ignore */ }
+    /* the parallax y is written by gsap.quickSetter (no tween for the context to revert): cleared by hand */
+    $$('.tree__layer', main).forEach(function (l) { l.style.transform = ''; });
     observers.forEach(function (o) { o.disconnect(); });
     observers = [];
-    bounceTl = null; lastBounce = 0;
+    bounceTl = null; lastBounce = 0; canopyInView = false;
     html.classList.remove('canopy-motion');
     html.classList.remove('canopy-ready');
     html.classList.remove('logo-morphing');

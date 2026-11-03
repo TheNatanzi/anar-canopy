@@ -139,14 +139,15 @@ main > .on-light:last-child{border-bottom:0}
 @media (max-width:768px){.site-header__inner{gap:12px}.nav-home{width:min(120px,calc(100vw - 230px))}.nav-right{min-width:0}}
 /* 320px (and enlarged text): the bar's fixed items (toggle 44 + Pause 36 + Inquire) leave the logo ~70px; the button loses 6px of padding and nothing clips */
 @media (max-width:360px){.site-header__inner{padding-inline:12px}.btn--sm{padding:10px 14px}}
-/* the links are visible by default, on every page and at every width. On phones they collapse into the drawer ONLY
-   once site.js has bound the toggle (html.nav-ready): until then (no JS, a failed or slow script request) they sit in
-   a deep-night strip under the bar with the toggle hidden (it has no handler yet), so the three inner pages are always
-   reachable; the inline html.js class alone never hides them. Phone/desktop threshold: 769px here and in site.js
-   desktopQuery. */
+/* the links are visible by default, on every page and at every width. Through 1024px (phones and tablets: the centred
+   logo and the left links would meet at 769–1024) they collapse into the drawer ONLY once site.js has bound the toggle
+   (html.nav-ready): until then (no JS, a failed or slow script request) they sit in a deep-night strip under the bar
+   with the toggle hidden (it has no handler yet), so the three inner pages are always reachable; the inline html.js
+   class alone never hides them. The NAV threshold is 1025px here and in site.js navQuery; the motion / video threshold
+   (769px, desktopQuery) is a different thing and stays where it is */
 .site-nav{display:block}
 .site-nav ul{display:flex;flex-wrap:wrap;gap:clamp(16px,2.4vw,36px)}
-@media (max-width:768px){
+@media (max-width:1024px){
   html:not(.nav-ready) .site-nav{position:absolute;top:var(--header-h);left:0;right:0;background:var(--deep);border-top:2px solid var(--gold);padding:var(--s2) var(--gutter)}
   html:not(.nav-ready) .nav-toggle{visibility:hidden}
   html.nav-ready .site-nav{display:none}
@@ -155,10 +156,10 @@ main > .on-light:last-child{border-bottom:0}
    boxes), drawn in the brand's simple line style: gold, 1.5 stroke, round joins; used in the header, the drawer and
    the footer (no icon library) ---------- */
 .icon{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
-/* phone-only drawer lines: the contact rows (phone, WhatsApp, email, each with its icon) and the "فارسی · coming soon"
-   note (the bar carries no فارسی label at any width; the footer repeats the note) */
+/* drawer-only lines (through 1024px): the contact rows (phone, WhatsApp, email, each with its icon) and the "فارسی ·
+   coming soon" note (the bar carries no فارسی label at any width; the footer repeats the note) */
 .site-nav__contact,.site-nav__fa{display:none}
-@media (max-width:768px){
+@media (max-width:1024px){
   .site-nav__contact{display:grid;gap:var(--s1);margin-top:var(--s1)}
   .site-nav .site-nav__contact a{display:inline-flex;align-items:center;gap:12px;font-size:18px;line-height:28px;color:var(--parch)}
   .site-nav__contact .icon{color:var(--gold)}
@@ -170,11 +171,19 @@ main > .on-light:last-child{border-bottom:0}
 .site-header.nav-open .site-nav .site-nav__contact a{font-size:18px}
 .nav-right{margin-left:auto;display:flex;align-items:center;gap:clamp(8px,1.5vw,20px)}
 /* the two gold line icons right of the nav, left of Inquire: a handset (tel:) and an envelope (mailto:), 20px glyphs
-   in 44px hit areas, parchment on hover / focus; the accessible name is the visually-hidden text (plus a title).
+   in 44px hit areas, parchment on hover / focus; the accessible name is "Call (925) 263-9949" / "Email …" at every
+   width (the visually-hidden "Call " + the number span, which is itself visually hidden below 1200px, plus a title).
    Phones: the bar (toggle + Pause + logo + Inquire) has no room for them at 360px, so they live in the drawer */
 .nav-icon{display:none;width:44px;height:44px;place-items:center;color:var(--gold);transition:color .3s;border-radius:50%}
 .nav-icon:hover,.nav-icon:focus-visible{color:var(--parch)}
 @media (min-width:769px){.nav-icon{display:inline-grid}.nav-icon + .nav-icon{margin-left:-6px}}
+.nav-icon__num{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+/* wide desktops (≥1200px): the number shows beside the handset, 14px gold (parents call before they type; on the home
+   page the footer's number is four screens down), parchment with the icon on hover; the hit area grows with it */
+@media (min-width:1200px){
+  .nav-icon--tel{grid-auto-flow:column;width:auto;gap:6px;padding:0 12px 0 10px;border-radius:22px}
+  .nav-icon__num{position:static;width:auto;height:auto;margin:0;overflow:visible;clip:auto;font-size:14px;line-height:20px;letter-spacing:.02em;color:inherit}
+}
 .nav-toggle{width:44px;height:44px;display:grid;place-items:center;margin-left:-8px}
 .nav-toggle__bar{display:block;width:24px;height:2px;background:currentColor;position:relative;transition:background .2s}
 .nav-toggle__bar::before,.nav-toggle__bar::after{content:"";position:absolute;left:0;width:24px;height:2px;background:currentColor;transition:transform .3s}
@@ -199,7 +208,9 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 @media (min-width:769px) and (hover:hover){
   @supports (backdrop-filter:blur(8px)){.site-header--solid,.site-header.is-scrolled{backdrop-filter:blur(8px)}}
 }
-@media (min-width:769px){
+/* the full desktop header (links left, the 150px centred logo, icons + Inquire + Pause right) from 1025px; 769–1024
+   keeps the toggle, the drawer and the 120px logo (verified 820×1180, 1024×768, 1025: nothing meets the logo) */
+@media (min-width:1025px){
   .nav-toggle{display:none}
   .nav-home{width:150px}
 }
@@ -271,12 +282,22 @@ html.logo-morphing .logo-morph{visibility:visible;will-change:transform}
 .option__more[open] summary::after{content:"\2013"}
 .option__more summary:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 .option__more ul{margin-top:var(--s2)}
+/* the third note under the two options (partial / multi-event planning, quoted the same way) */
+.options__note{margin-top:var(--s3);color:var(--stone);font-size:16px;line-height:24px;max-width:38em}
+/* the owner-input price line in the FAQ ("Full planning from $X · …"): hidden until filled, then a plain run of the answer */
+.faq__from{display:inline}
+.faq__from[hidden]{display:none}
+/* the ceremony sections (Weddings): "Details we confirm with your family", the longer ritual description under the
+   coordination paragraphs, in the same type as the text around it */
+.tradition__more{margin-top:var(--s2)}
+.tradition__more > p:first-of-type{margin-top:var(--s2)}
 
 /* ---------- Form: a 2px gold top rule and a quiet .55 night surface by default; the canopy home strips both (canopy.css) so the roots show through ---------- */
 .form{display:grid;gap:var(--s3);background:rgba(18,23,20,.55);border:0;border-top:2px solid var(--gold);padding:clamp(20px,4vw,48px)}
 .form__row{display:grid;gap:var(--s3)}
-/* two equal columns that can shrink (minmax(0,1fr)), so a long placeholder never widens one and the fills stay apart */
-@media (min-width:600px){.form__row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+/* two equal columns that can shrink (minmax(0,1fr)), so a long placeholder never widens one, with a 48–64px column gap
+   so the two gold underlines (email, phone) read as two inputs, never one long rule */
+@media (min-width:600px){.form__row{grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:clamp(48px,5vw,64px)}}
 .field{display:grid;gap:var(--s1);min-width:0}
 .field label{font-size:16px;line-height:22px;color:var(--parch)}
 /* persistent helper text under a label ("Couple or parent names"), linked with aria-describedby */
@@ -305,7 +326,7 @@ html.logo-morphing .logo-morph{visibility:visible;will-change:transform}
 
 /* ---------- Footer (deep night band, owner's layout, round 3): three columns on one baseline at container width,
    72px top / bottom, 48px gaps. 1 the wordmark + one line; 2 "Contact" with icon rows (phone, WhatsApp, email);
-   3 "Follow" (Instagram) + the Persian line right-aligned. Then a 1px gold rule (.3) and the two-column bottom row,
+   3 "Follow" (Instagram) + the Persian line right-aligned. Then a 2px gold rule (.35; no hairlines anywhere) and the two-column bottom row,
    with the language line as one quiet centred line under it. Phones: one column, 32px gaps, 200px wordmark ---------- */
 .site-footer{background:var(--deep);color:var(--parch);border-top:2px solid var(--gold);padding-block:56px 40px;position:relative;z-index:2}
 .site-footer__grid{display:grid;gap:var(--s3);align-items:start}
@@ -325,7 +346,7 @@ html.logo-morphing .logo-morph{visibility:visible;will-change:transform}
 .site-footer__list .icon{width:18px;height:18px;color:var(--gold)}
 /* the Persian line: one line, gold, right-aligned at every width */
 .site-footer__fa{margin-top:var(--s3);font-size:18px;line-height:1.7;color:var(--gold);text-align:right;white-space:nowrap}
-.site-footer__bottom{margin-top:48px;padding-top:var(--s3);border-top:1px solid rgba(201,158,92,.3);display:flex;flex-wrap:wrap;justify-content:space-between;gap:var(--s1) var(--s2);font-size:13px;line-height:20px;color:rgba(249,246,240,.7)}
+.site-footer__bottom{margin-top:48px;padding-top:var(--s3);border-top:2px solid rgba(201,158,92,.35);display:flex;flex-wrap:wrap;justify-content:space-between;gap:var(--s1) var(--s2);font-size:13px;line-height:20px;color:rgba(249,246,240,.7)}
 .site-footer__lang{margin-top:var(--s2);font-size:12px;line-height:18px;color:rgba(249,246,240,.6);text-align:center;text-wrap:balance}
 /* "فارسی · coming soon" rides the same quiet line */
 .site-footer__soon{display:inline;margin-left:6px;white-space:nowrap}
@@ -339,12 +360,16 @@ html.logo-morphing .logo-morph{visibility:visible;will-change:transform}
    fill (so it reads as a night object over the parchment sections too) with the 2px gold border;
    hidden (slides out + fades, site.js) while the hero / page band, #inquire or the footer is in view,
    while the phone drawer is open, and on phones while the page scrolls down */
-.hww-tab{position:fixed;z-index:60;right:0;top:50%;writing-mode:vertical-rl;transform:translateY(-50%) rotate(180deg);letter-spacing:.06em;padding:20px 12px;border-radius:0 2px 2px 0;border-left:0;background-color:var(--night)}
+.hww-tab{position:fixed;z-index:60;right:0;top:50%;writing-mode:vertical-rl;transform:translateY(-50%) rotate(180deg);letter-spacing:.06em;padding:20px 12px;border-radius:0 2px 2px 0;border-left:0;background-color:var(--night);
+  /* a soft night shadow on its left edge, so the tab stands off the painted bark on the home page */
+  box-shadow:-4px 0 16px rgba(18,23,20,.6)}
 html:not(.panel-ready) .hww-tab{display:none}
 .hww-tab.is-hidden{transform:translate(110%,-50%) rotate(180deg);opacity:0;pointer-events:none}
-@media (max-width:768px){.hww-tab{padding:14px 8px;font-size:13px;line-height:16px}}
-/* phones (inner pages, 20px gutter): the tab is ~34px wide at mid-height, so every left-aligned text block it can sit
-   over carries 24px of right clearance on top of the gutter (~44px); centred blocks keep symmetric padding.
+/* phones: an explicit 36px width (measured 34px rendered at 390 before: 2px border + 8px padding each side + the 16px
+   line; the label "How we work +" is 134px tall and scrolls nowhere), so every clearance below derives from 36 */
+@media (max-width:768px){.hww-tab{width:36px;padding:14px 8px;font-size:13px;line-height:16px}}
+/* phones (inner pages, 20px gutter): the tab is 36px wide at mid-height, so every left-aligned text block it can sit
+   over carries 24px of right clearance on top of the gutter (44px); centred blocks keep symmetric padding.
    The canopy home's 40px gutter is topped up in canopy.css */
 @media (max-width:768px){
   .options > li,.tradition__text,.faq,.step,.you-get li,.letter,.promise li,.behaviour li,.measure,.caption{padding-right:24px}
@@ -354,6 +379,8 @@ html:not(.panel-ready) .hww-tab{display:none}
    never covers text, inputs or the footer and needs no scroll-hide. The accessible name is the fixed aria-label
    "Pause motion" and aria-pressed="true" means paused, so the name never changes. */
 .motion-toggle{position:relative;flex:0 0 auto;width:36px;height:36px;padding:0;border-radius:50%;display:grid;place-items:center;font-size:13px;line-height:1;letter-spacing:0;background-color:var(--night)}
+/* the hit area is 44px (an invisible ring 4px outside the 36px visual, WCAG 2.5.5 like the toggle and the icons) */
+.motion-toggle::after{content:"";position:absolute;inset:-4px;border-radius:50%}
 /* the slot is reserved before site.js binds the control (no header shift when it lands); OS reduced motion hides it ([hidden]) */
 .motion-toggle[hidden]{display:none}
 html:not(.motion-ready) .motion-toggle{visibility:hidden}

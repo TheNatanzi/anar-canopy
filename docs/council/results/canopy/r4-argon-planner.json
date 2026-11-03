@@ -1,0 +1,28 @@
+{
+ "model": "argon",
+ "role": "planner",
+ "score": 9.5,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "weddings.html:198 (#haldi-pheras) and weddings.html:222 (#anand-karaj)",
+   "what": "Explicitly name the bride's entrance (kanya aagman) and the parents' role in the ritual (kanyadaan / pazaoni, or sitting beside the couple during the pheras / laavan) alongside the baraat and milni.",
+   "why": "South Asian parents paying for a Hindu or Sikh wedding look specifically for how the bride's family and elders are honored and cued at the mandap or in the gurdwara, not just the groom's arrival."
+  },
+  {
+   "where": "weddings.html:113 (#sofreh-aghd)",
+   "what": "Mention coordinating the 'baleh' timing—specifically the playful three-time ask (for picking golab / flowers) before the bride says baleh—and the honey sharing (asal) immediately after.",
+   "why": "In Persian weddings, the three-time ask and the honey finger-dipping are the two signature emotional peaks at the sofreh that parents and couples expect a culturally fluent coordinator to cue with the officiant and photographer."
+  },
+  {
+   "where": "index.html:131 (#celebrations) and assets/css/canopy.css:235",
+   "what": "Increase the visual affordance on the ceremony titles (`Sofreh Aghd`, `Nikah`, `Mehndi & Sangeet`) or add a subtle persistent underline/arrow so visitors on touch devices immediately recognize the cards click through to their detailed ritual breakdowns.",
+   "why": "Because the canopy home page is intentionally condensed to ~120 words, the deep cultural proof that converts discerning parents lives on `weddings.html`; on mobile, without hover states, the titles look like static captions rather than links."
+  },
+  {
+   "where": "how-we-work.html:103 (.options)",
+   "what": "Add a third brief note or sentence beneath the two service options clarifying support for multi-event partial planning or cultural ritual consulting when a venue already provides a generic day-of coordinator.",
+   "why": "Many luxury Bay Area venues (especially in Napa/Sonoma and SF hotels) mandate an in-house coordinator who does not know what an aina mosaf, sofreh key, or milni is; families frequently hire Anar specifically to bridge that cultural and multi-day gap."
+  }
+ ]
+}

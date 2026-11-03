@@ -1,0 +1,41 @@
+{
+ "model": "astra",
+ "role": "brand",
+ "score": 7,
+ "blocking": [
+  "The visual identity is recognizable, but the interior page rhythm and mobile typography are not yet polished enough for launch sign-off.",
+  "The mobile founder quote loses excessive reading width through cumulative right padding."
+ ],
+ "fixes": [
+  {
+   "where": "assets/css/site.css — mobile .container and .quote blockquote",
+   "what": "Remove the additional 40px right padding from the quote; retain one shared clearance for the persistent tab and center the quote within that usable area.",
+   "why": "At 390px, cumulative padding squeezes the quote into roughly 246px and makes the composition visibly lopsided."
+  },
+  {
+   "where": "assets/css/site.css — .descend__content, .section, .section__head",
+   "what": "Reduce the combined spacing between the promises and celebrations; use approximately 64–80px between sections and 24–32px between headings and their content.",
+   "why": "The desktop capture has a large empty interval that disconnects the promises from the next visual chapter."
+  },
+  {
+   "where": "index.html — .teaser",
+   "what": "Keep the two service options as the homepage summary and move their detailed responsibility lists to how-we-work.html; remove the overlapping Plan and Run the day cards.",
+   "why": "Repeated service explanations turn the middle of the homepage into a dense brochure and weaken the editorial pacing."
+  },
+  {
+   "where": "assets/css/site.css — .pillars .card",
+   "what": "Remove the three repeated top borders, reduce horizontal card padding, and use the gold numbering with generous whitespace to organize the promises.",
+   "why": "The repeated ruled columns feel like a generic service grid rather than the distinctive painted-tree and kashida identity."
+  },
+  {
+   "where": "assets/css/site.css — .hero__line",
+   "what": "Keep TT Ramillas Bold, but use sentence case, less tracking, and a 14px mobile size; separate the Bay Area location onto its own short line.",
+   "why": "The small all-caps descriptor reads like fine print beneath a strong, readable logo."
+  },
+  {
+   "where": "assets/css/site.css — .pill",
+   "what": "Present the celebration names as an unboxed typographic list with generous gaps instead of gold-outlined capsules.",
+   "why": "The capsules resemble clickable filters and compete with the inquiry buttons for visual attention."
+  }
+ ]
+}

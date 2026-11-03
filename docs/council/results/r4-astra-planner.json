@@ -1,0 +1,41 @@
+{
+ "model": "astra",
+ "role": "planner",
+ "score": 7,
+ "blocking": [
+  "Cultural fluency is asserted more convincingly than demonstrated: distinct Hindu and Sikh ceremonies share one section, while Afghan families receive little dedicated recognition beyond Dari.",
+  "Several service descriptions prescribe a ceremony sequence or celebration style despite promising to follow each family's practice."
+ ],
+ "fixes": [
+  {
+   "where": "weddings.html #haldi-pheras-anand-karaj; index.html #celebrations",
+   "what": "Give Anand Karaj its own section and photo slot. Replace the blanket 'seven circuits' description with 'We confirm the ceremony sequence with your family and officiant.' Replace 'We cue the pandit or the granthi' with 'We coordinate timing with your officiant and religious venue.'",
+   "why": "Distinct religious ceremonies deserve distinct treatment, with religious authority clearly respected."
+  },
+  {
+   "where": "weddings.html; index.html #celebrations",
+   "what": "Add a dedicated Afghan wedding planning passage describing how the family identifies its ceremonies, preferred names, languages and participants; distinguish its henna celebration from the existing Mehndi & Sangeet grouping.",
+   "why": "Afghan families are a headline audience but currently receive little specific recognition in the celebration content."
+  },
+  {
+   "where": "weddings.html #reception-walima; shared .hww-steps; how-we-work.html #steps",
+   "what": "Make dancing, blessings and event order conditional on the family's wishes. Replace the shared panel's prescribed wedding-day list with 'The ceremonies your family chooses, in the order agreed with you and your officiants.'",
+   "why": "A walima, dance reception and mixed-faith wedding should not appear to follow one default programme."
+  },
+  {
+   "where": "index.html #inquire .form",
+   "what": "State 'Only names and email are required.' Rename 'Budget range' to 'Estimated total wedding budget across all events'; add 'Not sure yet'. Add an optional event-count field and label guest count 'Largest event guest count'.",
+   "why": "Families can inquire sooner, and multi-day budgets and attendance become interpretable."
+  },
+  {
+   "where": "index.html #journey; shared .hww-steps; how-we-work.html #steps",
+   "what": "Use the same five stages everywhere: Enquiry & consultation, Proposal, Planning, Wedding days, Thank-you. In Proposal, explain that the agreed scope identifies covered events, staffing, hours and fees before booking.",
+   "why": "Parents comparing financial commitments need one consistent process and clear coverage."
+  },
+  {
+   "where": "index.html #how-teaser; assets/css/site.css mobile celebration layout",
+   "what": "Move a concise two-option service comparison directly after the three promises, with an inquiry link. Keep detailed responsibilities on How we work and shorten the five stacked mobile celebration panels to summaries linking to Weddings.",
+   "why": "Visitors should understand what they can hire before scrolling through a long cultural introduction."
+  }
+ ]
+}

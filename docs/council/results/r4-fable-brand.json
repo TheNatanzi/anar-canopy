@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "brand",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "assets/css/site.css · .check input (Form section)",
+   "what": "Replace the native checkbox with appearance:none; width/height 18px; border:2px solid var(--stone); border-radius:2px; background:transparent; on :checked set background:var(--gold); border-color:var(--gold) and draw a cypress tick via an inline SVG background; keep :focus-visible gold outline.",
+   "why": "Thirteen bright white native squares are the loudest thing in the Inquire section, brighter than the one gold button, and read as stock-form, not Anar."
+  },
+  {
+   "where": "assets/css/site.css · .hww-tab under @media (max-width:768px) + site.js syncTab",
+   "what": "On phones hide the tab while the hero is in view (reuse the hero IntersectionObserver already driving the motion toggle: add .is-hidden to .hww-tab when heroInView), so it slides in only once the user scrolls past the first screen.",
+   "why": "At 390px the tab sits at mid-height right beside the hero tagline, crowding the one calm composition on the site (index-phone-0)."
+  },
+  {
+   "where": "assets/css/site.css · .journey .leaf--3",
+   "what": "Change to left:0; top:-4vh; opacity:.7 (and on >=900px add transform:translateY(-20%)) so the leaf hangs above the section head and never crosses the gold line or the Enquiry column.",
+   "why": "On desktop the leaf tip overlaps the start of the journey line and 'Enquiry' (index-desktop-3), muddying the one-line device the section is built on."
+  },
+  {
+   "where": "assets/css/site.css · .hero__canopy under @media (max-width:768px)",
+   "what": "Use width:175vw; bottom:-8%; so the canopy rises to roughly a third of the phone hero at the sides while the middle stays open.",
+   "why": "On phones the painted tree is a thin strip across the bottom (index-phone-0); the brand frame of edges-and-bottom barely registers."
+  },
+  {
+   "where": "assets/css/site.css · .pill",
+   "what": "Soften to border:2px solid rgba(201,158,92,.45); padding:6px 16px; and give the .pill .fa the gold at .7 instead of stone, keeping the full gold only on hover.",
+   "why": "Ten full-strength gold outlines under the journey read as a tag cloud and dilute the gold, which the brand reserves for the logo, the line and the one button."
+  },
+  {
+   "where": "assets/css/site.css · .descend__content padding-bottom and #celebrations .section padding-top",
+   "what": "Reduce .descend__content padding-bottom to clamp(40px,6vh,80px) and the ::after fade height to 140px, so the gap between the three pillars and 'The celebrations' is about one card height, not a near-empty screen.",
+   "why": "index-desktop-1 shows roughly 250px of dead cypress between the pillars and the next title; the descent loses momentum."
+  }
+ ]
+}

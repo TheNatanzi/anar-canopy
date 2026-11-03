@@ -1,0 +1,36 @@
+{
+ "model": "astra",
+ "role": "dev",
+ "score": 7.5,
+ "blocking": [
+  "Desktop celebration panels combine fixed height, overflow:hidden and unrestricted copy; expanded content can be clipped at narrower desktop widths or increased text size.",
+  "On phones, the motion control disappears after the hero although scroll-driven motion continues below it."
+ ],
+ "fixes": [
+  {
+   "where": "assets/css/site.css — desktop .accordion, .accordion__panel and .accordion__body",
+   "what": "Let expanded panels grow to fit their text, or switch to the stacked layout whenever the available width or height cannot accommodate the body. Verify every panel at 200% text size.",
+   "why": "Essential celebration descriptions must remain readable without clipping."
+  },
+  {
+   "where": "assets/js/site.js — syncToggle; assets/css/site.css — .motion-toggle.is-hidden",
+   "what": "Keep the motion control available throughout mobile pages; use the stable accessible label 'Pause animations' with aria-pressed=true meaning paused.",
+   "why": "Visitors need to stop motion where they encounter it, and 'Motion, pressed' does not clearly communicate the current state."
+  },
+  {
+   "where": "assets/css/site.css — .anim-ready .teaser__strips i; assets/js/site.js — buildTweens block 6",
+   "what": "Remove the CSS translateX(102%) initialization and let GSAP exclusively set xPercent from 102 to 0, with x explicitly set to 0.",
+   "why": "CSS translation and GSAP xPercent can compound, leaving the gold strips displaced at the animation endpoint."
+  },
+  {
+   "where": "assets/js/site.js — buildTweens block 8 and desktopQuery change handlers",
+   "what": "Rebuild the leaf animations when crossing the 769px breakpoint, reverting the previous animation before creating its replacement.",
+   "why": "Resizing currently preserves whichever infinite drift or scroll animation was selected at initial load."
+  },
+  {
+   "where": "assets/js/site.js — buildTweens block 5",
+   "what": "Derive each dot's activation point from its actual position along the rendered track and recalculate after layout changes.",
+   "why": "Equal index-based timing does not match unevenly spaced mobile steps, so dots change color before or after the drawn line reaches them."
+  }
+ ]
+}

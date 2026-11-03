@@ -1,7 +1,7 @@
 /* =========================================================
-   Anar Events — site.js (v2.3, night palette, round-3 fixes, 3 Nov 2026)
-   Loaded (defer, pinned) before this file:
-     GSAP 3.12.5 + ScrollTrigger (cdnjs), Lenis 1.1.18 (unpkg)
+   Anar Events — site.js (v2.4, night palette, round-4 fixes, 3 Nov 2026)
+   Loaded (defer, self-hosted in assets/js/vendor/) before this file:
+     GSAP 3.12.5 + ScrollTrigger, Lenis 1.1.18
    Content is visible by default. Reveal targets are hidden only
    AFTER GSAP + ScrollTrigger have initialised (html.anim-ready);
    if that init throws, nothing is ever hidden. The "Pause motion"
@@ -20,6 +20,9 @@
   var hasGsap = typeof window.gsap !== 'undefined' && typeof window.ScrollTrigger !== 'undefined';
   var desktopQuery = window.matchMedia('(min-width: 769px)');
   var isDesktop = function () { return desktopQuery.matches; };
+  /* the celebrations accordion keeps its one-open-panel row only from 1100px (CSS); below, every panel is stacked */
+  var wideQuery = window.matchMedia('(min-width: 1100px)');
+  var isWide = function () { return wideQuery.matches; };
   var vh = function () { return window.innerHeight; };
   var $ = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
@@ -144,7 +147,10 @@
      ghost tab, night panel, close ×, Esc closes, backdrop closes,
      focus trap, main content inert (aria-hidden fallback), close
      timer cancelled on reopen, focus returns to the tab. The tab
-     hides while #inquire or the footer is in view.
+     hides while #inquire or the footer is in view, and on phones
+     also while scrolling down and while the hero (or the inner-page
+     band) is still in view: it slides in once the first screen has
+     scrolled past.
      --------------------------------------------------------- */
   var tab = $('.hww-tab'), panel = $('#hww-panel'), backdrop = $('.hww-backdrop');
   var closePanel = function () {};
@@ -226,11 +232,11 @@
       if (panelOpen && !panel.contains(e.target)) { (closeBtn || panel).focus(); }
     });
     /* Keep focused controls visible; synchronize visual and keyboard availability. */
-    var hideAtDestination = false, hideWhileScrolling = false, idleTimer;
+    var hideAtDestination = false, hideWhileScrolling = false, heroInView = true, idleTimer;
     var lastScroll = window.scrollY;
     var syncTab = function () {
       var hidden = !panelOpen && document.activeElement !== tab &&
-        (hideAtDestination || (!isDesktop() && hideWhileScrolling));
+        (hideAtDestination || (!isDesktop() && (hideWhileScrolling || heroInView)));
       tab.classList.toggle('is-hidden', hidden);
       tab.setAttribute('aria-hidden', hidden ? 'true' : 'false');
       tab.tabIndex = hidden ? -1 : 0;
@@ -256,6 +262,14 @@
       }, { threshold: 0.05 });
       hideFor.forEach(function (el) { tabObserver.observe(el); });
     }
+    /* the hero observer (index: .hero; inner pages: .pageband): on phones the tab stays out of the first screen */
+    var heroEl = $('.hero') || $('.pageband');
+    if (heroEl && 'IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) { heroInView = en.isIntersecting; });
+        syncTab();
+      }, { threshold: 0 }).observe(heroEl);
+    } else { heroInView = false; syncTab(); }
   }
 
   /* Same-page anchors (including "index.html#inquire" while on index):
@@ -283,21 +297,29 @@
   /* ---------------------------------------------------------
      Accordion (The celebrations): hover expands on pointer
      devices, click/focus expands (touch, keyboard). Each trigger
-     controls its body (aria-controls / id). On <=768px every body
+     controls its body (aria-controls / id). Under 1100px every body
      is shown stacked and the triggers are removed (CSS + here).
+     While the .7s flex transition runs the opening panel carries
+     .is-settling (its body stays out of flow, CSS); once settled the
+     body is in flow and the row grows to fit its text.
      --------------------------------------------------------- */
   $$('[data-accordion]').forEach(function (acc, ai) {
     var panels = $$('.accordion__panel', acc);
     var hoverable = window.matchMedia('(hover: hover)').matches;
+    var settleTimer = null;
     function open(target) {
+      if (target.classList.contains('is-open')) { return; }
+      if (settleTimer) { clearTimeout(settleTimer); settleTimer = null; }
       panels.forEach(function (p) {
         var on = p === target;
         p.classList.toggle('is-open', on);
+        p.classList.toggle('is-settling', on);
         var btn = $('.accordion__trigger', p);
         if (btn) { btn.setAttribute('aria-expanded', on ? 'true' : 'false'); }
         var content = $('.accordion__body', p);
         if (content) { content.inert = !on; content.setAttribute('aria-hidden', on ? 'false' : 'true'); }
       });
+      settleTimer = setTimeout(function () { target.classList.remove('is-settling'); settleTimer = null; }, reduced || userPaused ? 0 : 720);
     }
     panels.forEach(function (p, i) {
       var btn = $('.accordion__trigger', p);
@@ -305,14 +327,14 @@
       if (bodyEl && !bodyEl.id) { bodyEl.id = 'acc-' + ai + '-' + i; }
       if (btn && bodyEl) { btn.setAttribute('aria-controls', bodyEl.id); }
       /* hover opens unless the keyboard placed focus inside the accordion (a click also focuses, and must not disable hover) */
-      if (hoverable) { p.addEventListener('mouseenter', function () { if (isDesktop() && !(acc.contains(document.activeElement) && document.activeElement.matches(':focus-visible'))) { open(p); } }); }
+      if (hoverable) { p.addEventListener('mouseenter', function () { if (isWide() && !(acc.contains(document.activeElement) && document.activeElement.matches(':focus-visible'))) { open(p); } }); }
       if (btn) {
-        btn.addEventListener('click', function () { if (isDesktop()) { open(p); } });
-        btn.addEventListener('focus', function () { if (isDesktop()) { open(p); } });
+        btn.addEventListener('click', function () { if (isWide()) { open(p); } });
+        btn.addEventListener('focus', function () { if (isWide()) { open(p); } });
       }
     });
     var syncMobile = function () {
-      var mobile = !isDesktop();
+      var mobile = !isWide();
       panels.forEach(function (p) {
         var btn = $('.accordion__trigger', p);
         var content = $('.accordion__body', p);
@@ -326,7 +348,7 @@
       });
     };
     syncMobile();
-    desktopQuery.addEventListener('change', syncMobile);
+    wideQuery.addEventListener('change', syncMobile);
   });
   html.classList.add('site-ready');
 
@@ -399,6 +421,23 @@
   var motionOn = false;
   var leafTweens = [];
   var trunkImgs = $$('.descend__trunks img');
+
+  /* Drawn lines (.kashida-draw, .track-line) use vector-effect:non-scaling-stroke, so dash values are
+     screen pixels, not viewBox units: the dash length is the RENDERED length of the path. Returned as
+     functions so GSAP re-evaluates them on every refresh (invalidateOnRefresh) and resize. */
+  var lengthOf = function (p) {
+    return function () { var r = p.getBoundingClientRect(); return Math.max(r.width, r.height) || 1; };
+  };
+  var dashOf = function (p) {
+    var len = lengthOf(p);
+    return function () { var l = len(); return l + 'px ' + l + 'px'; };
+  };
+  /* an element's offset along one axis inside an ancestor, summed up the offsetParent chain (transform-independent) */
+  var offsetWithin = function (el, root, prop) {
+    var v = 0;
+    while (el && el !== root) { v += el[prop]; el = el.offsetParent; }
+    return v;
+  };
 
   /* Keyboard focus inside a reveal target: mark every animated ancestor
      .is-revealed at once (CSS forces it visible) so nobody tabs into
@@ -500,12 +539,9 @@
           scroll (stroke-dashoffset from full length to 0)
        ------------------------------------------------------- */
     $$('.kashida-draw path').forEach(function (p) {
-      var len = p.getTotalLength();
-      p.style.strokeDasharray = len;
-      p.style.strokeDashoffset = len;
-      gsap.to(p, {
+      gsap.fromTo(p, { strokeDasharray: dashOf(p), strokeDashoffset: lengthOf(p) }, {
         strokeDashoffset: 0, ease: 'none',
-        scrollTrigger: { trigger: p.closest('svg'), start: 'top 88%', end: 'top 45%', scrub: true }
+        scrollTrigger: { trigger: p.closest('svg'), start: 'top 88%', end: 'top 45%', scrub: true, invalidateOnRefresh: true }
       });
     });
 
@@ -515,25 +551,43 @@
           The sage base line and all the dots are there from the
           start (CSS: no empty state); the gold .track-line overlay
           draws across with scroll and each dot turns gold, with a
-          small pulse, as the line reaches it.
+          small pulse, as the line reaches it. Each dot's activation
+          point comes from its layout position along the track (not
+          an even split) and is re-measured on every refresh.
        ------------------------------------------------------- */
     $$('[data-track]').forEach(function (track) {
       var paths = $$('.track-line path', track);
       var dots = $$('.track-dot', track);
       if (!paths.length) { return; }
+      /* the visible track line runs horizontally when its rendered width beats its height (the other one is display:none) */
+      var horizontal = function () {
+        return paths.some(function (p) { var r = p.getBoundingClientRect(); return r.width > r.height; });
+      };
+      var ats = [];
+      var measure = function () {
+        var h = horizontal();
+        var size = (h ? track.offsetWidth : track.offsetHeight) || 1;
+        ats = dots.map(function (d) { return Math.min(1, Math.max(0, (offsetWithin(d, track, h ? 'offsetLeft' : 'offsetTop') + 7) / size)); });
+      };
+      /* each dot: sage -> gold with a small pulse, played when the line reaches it, reversed when it draws back */
+      var dotTls = dots.map(function (d) {
+        return gsap.timeline({ paused: true })
+          .fromTo(d, { backgroundColor: '#5D625F' }, { backgroundColor: '#C99E5C', ease: 'none', duration: 0.25 }, 0)
+          .fromTo(d, { scale: 1 }, { scale: 1.35, ease: 'power1.inOut', duration: 0.18, yoyo: true, repeat: 1 }, 0);
+      });
+      var syncDots = function (st) {
+        var pr = st.progress;
+        dotTls.forEach(function (t, i) { if (pr >= ats[i]) { t.play(); } else { t.reverse(); } });
+      };
+      measure();
       var tl = gsap.timeline({
-        scrollTrigger: { trigger: track, start: 'top 78%', end: 'bottom 60%', scrub: true }
+        scrollTrigger: {
+          trigger: track, start: 'top 78%', end: 'bottom 60%', scrub: true, invalidateOnRefresh: true,
+          onRefreshInit: measure, onRefresh: syncDots, onUpdate: syncDots
+        }
       });
       paths.forEach(function (p) {
-        var len = p.getTotalLength();
-        p.style.strokeDasharray = len;
-        p.style.strokeDashoffset = len;
-        tl.to(p, { strokeDashoffset: 0, ease: 'none', duration: 1 }, 0);
-      });
-      dots.forEach(function (d, i) {
-        var at = Math.max(0, (i + 0.5) / dots.length - 0.04);
-        tl.fromTo(d, { backgroundColor: '#5D625F' }, { backgroundColor: '#C99E5C', ease: 'none', duration: 0.05 }, at);
-        tl.fromTo(d, { scale: 1 }, { scale: 1.35, ease: 'power1.inOut', duration: 0.03, yoyo: true, repeat: 1 }, at);
+        tl.fromTo(p, { strokeDasharray: dashOf(p), strokeDashoffset: lengthOf(p) }, { strokeDashoffset: 0, ease: 'none', duration: 1 }, 0);
       });
     });
 
@@ -544,8 +598,9 @@
     var teaser = $('.teaser');
     if (teaser) {
       var strips = $$('.teaser__strips i', teaser);
+      /* GSAP alone positions the strips (no CSS translate to compound with xPercent) */
       gsap.timeline({ scrollTrigger: { trigger: teaser, start: 'top 75%', end: 'top 20%', scrub: true } })
-        .fromTo(strips, { xPercent: 102 }, { xPercent: 0, ease: 'power1.inOut', duration: 0.6, stagger: 0.15 }, 0);
+        .fromTo(strips, { xPercent: 102, x: 0 }, { xPercent: 0, x: 0, ease: 'power1.inOut', duration: 0.6, stagger: 0.15 }, 0);
     }
 
     /* -------------------------------------------------------
@@ -561,17 +616,10 @@
     }
 
     /* -------------------------------------------------------
-       8. Floating leaves (two places): desktop runs the slow
-          yoyo drift loop; phones get the scroll-scrub drift
-          instead. Never both: the same `y` is driven once.
+       8. Floating leaves (two places): buildLeaves(), rebuilt on
+          the 769px breakpoint change (see below buildTweens).
        ------------------------------------------------------- */
-    $$('.leaf').forEach(function (leaf, i) {
-      if (isDesktop()) {
-        leafTweens.push(gsap.to(leaf, { y: 18 + i * 6, x: i % 2 ? -10 : 10, rotation: i % 2 ? -3 : 3, duration: 6 + i * 1.5, ease: 'sine.inOut', yoyo: true, repeat: -1 }));
-      } else {
-        gsap.to(leaf, { y: '+=' + (40 + i * 10), ease: 'none', scrollTrigger: { trigger: leaf.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } });
-      }
-    });
+    buildLeaves();
 
     /* -------------------------------------------------------
        9. Section reveals (fade + rise, 0.9s ease-out), once;
@@ -595,13 +643,38 @@
     });
   }
 
+  /* -------------------------------------------------------
+     8. Floating leaves (two places): desktop runs the slow
+        yoyo drift loop; phones get the scroll-scrub drift
+        instead. Never both: the same `y` is driven once, and
+        relative (+=) so a CSS translate on the leaf is kept.
+        Crossing the 769px breakpoint kills the old tweens
+        (and their triggers) and builds the other kind.
+     ------------------------------------------------------- */
+  function killLeaves() {
+    leafTweens.forEach(function (t) { if (t.scrollTrigger) { t.scrollTrigger.kill(); } t.kill(); });
+    leafTweens = [];
+    gsap.set($$('.leaf'), { clearProps: 'transform' });
+  }
+  function buildLeaves() {
+    killLeaves();
+    $$('.leaf').forEach(function (leaf, i) {
+      if (isDesktop()) {
+        leafTweens.push(gsap.to(leaf, { y: '+=' + (18 + i * 6), x: '+=' + (i % 2 ? -10 : 10), rotation: '+=' + (i % 2 ? -3 : 3), duration: 6 + i * 1.5, ease: 'sine.inOut', yoyo: true, repeat: -1 }));
+      } else {
+        leafTweens.push(gsap.to(leaf, { y: '+=' + (40 + i * 10), ease: 'none', scrollTrigger: { trigger: leaf.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } }));
+      }
+    });
+  }
+  desktopQuery.addEventListener('change', function () { if (motionOn) { buildLeaves(); } });
+
   /* ---------------------------------------------------------
      Pause motion / Play motion (bottom-left ghost button) and
      the prefers-reduced-motion change event.
      --------------------------------------------------------- */
   var toggle = $('.motion-toggle');
-  /* the visible text lives in .motion-toggle__text (hidden on desktop, where CSS draws the glyph);
-     the accessible name is the fixed aria-label "Motion" and is never changed here */
+  /* the visible text lives in .motion-toggle__text (hidden where CSS draws the glyph); the accessible name is the
+     fixed aria-label "Pause motion" and is never changed here: aria-pressed="true" means paused */
   var toggleText = toggle ? ($('.motion-toggle__text', toggle) || toggle) : null;
   var setToggle = function (pressed) {
     if (!toggle) { return; }
@@ -628,25 +701,10 @@
   }
   if (toggle) {
     toggle.hidden = !hasGsap && !heroVideo;
-    if (!toggle.hasAttribute('aria-label')) { toggle.setAttribute('aria-label', 'Motion'); }
+    if (!toggle.hasAttribute('aria-label')) { toggle.setAttribute('aria-label', 'Pause motion'); }
     html.classList.add('motion-ready');
+    /* the control stays visible the whole page on every screen size: motion continues below the hero, so must the way to stop it */
     toggle.addEventListener('click', function () { if (userPaused || reduced) { playAll(true); } else { pauseAll(true); } });
-    /* phones: the toggle hides (CSS .is-hidden under 768px) once the hero (or the inner-page band) has scrolled out */
-    var heroEl = $('.hero') || $('.pageband');
-    var heroInView = true;
-    var syncToggle = function () {
-      var hidden = !isDesktop() && !heroInView && document.activeElement !== toggle;
-      toggle.classList.toggle('is-hidden', hidden);
-      toggle.setAttribute('aria-hidden', hidden ? 'true' : 'false');
-      toggle.tabIndex = hidden ? -1 : 0;
-    };
-    desktopQuery.addEventListener('change', syncToggle);
-    toggle.addEventListener('blur', function () { setTimeout(syncToggle, 0); });
-    if (heroEl && 'IntersectionObserver' in window) {
-      new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) { heroInView = en.isIntersecting; syncToggle(); });
-      }, { threshold: 0 }).observe(heroEl);
-    }
   }
   var onReduceChange = function (e) {
     reduced = e.matches;

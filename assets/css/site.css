@@ -2,11 +2,13 @@
    Anar Events — site.css (v2, night palette, 3 Nov 2026)
    One file. Mobile first. No grid hairlines anywhere.
    Latin: TT Ramillas Bold only (TRIAL font: buy before launch).
-   Persian: Noto Naskh Arabic (Google Fonts), never italic/tracked/caps.
+   Persian: Noto Naskh Arabic (self-hosted, Arabic subset), never italic/tracked/caps.
    ========================================================= */
 
 /* ---------- Fonts ---------- */
 @font-face{font-family:"TT Ramillas";src:url("../fonts/TTRamillas-Bold.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap}
+/* Noto Naskh Arabic: the Arabic-subset variable file from Google Fonts (one woff2 covers 400-700), self-hosted so no cross-origin CSS blocks render */
+@font-face{font-family:"Noto Naskh Arabic";src:url("../fonts/NotoNaskhArabic-arabic.woff2") format("woff2");font-weight:400 700;font-style:normal;font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+0870-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC}
 
 /* ---------- Tokens ---------- */
 :root{
@@ -84,9 +86,9 @@ h3{font-size:clamp(22px,2.6vw,28px);line-height:1.2}
 .container{width:100%;max-width:var(--container);margin-inline:auto;padding-inline:var(--gutter)}
 .container--text{max-width:calc(var(--narrow) + 2*var(--gutter))}
 main{position:relative;z-index:2;display:block}
-.section{position:relative;padding-block:clamp(72px,12vh,150px)}
+.section{position:relative;padding-block:clamp(64px,9vh,80px)}
 .section--tight{padding-block:clamp(48px,7vh,88px)}
-.section__head{text-align:center;margin-bottom:clamp(32px,6vh,72px)}
+.section__head{text-align:center;margin-bottom:clamp(24px,4vh,32px)}
 .section__head .kashida{margin:var(--s2) auto 0}
 .pair{display:grid;gap:var(--s1)}
 @media (min-width:768px){
@@ -179,15 +181,16 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .hero__halo{position:absolute;left:50%;top:50%;width:150%;height:220%;transform:translate(-50%,-50%);background:radial-gradient(closest-side,rgba(27,34,30,.6),transparent 70%);pointer-events:none}
 .hero__logo{position:relative;margin:0;line-height:0}
 .hero__logo img{width:100%;height:auto}
-.hero__line{position:relative;margin:clamp(12px,1.6vh,20px) auto 0;text-align:center;color:var(--parch);font-size:clamp(12px,1.1vw,15px);line-height:1.5;letter-spacing:.08em;text-transform:uppercase;opacity:.92}
+.hero__line{position:relative;margin:clamp(12px,1.6vh,20px) auto 0;text-align:center;color:var(--parch);font-size:clamp(14px,1.15vw,16px);line-height:1.5;letter-spacing:.04em;opacity:.92;text-wrap:balance}
+.hero__place{display:block}
 /* bottom-left sits 64px up so the "Pause motion" button never covers it */
 .hero__scroll{position:absolute;left:clamp(16px,3vw,40px);bottom:calc(clamp(16px,3vh,32px) + 64px);font-size:14px;line-height:20px;letter-spacing:.12em;text-transform:uppercase;color:var(--parch);opacity:.9}
 .hero__tag{position:absolute;right:clamp(16px,3vw,40px);bottom:clamp(14px,2.6vh,28px);font-size:22px;line-height:1.4;color:var(--parch);text-align:right}
 @media (max-width:768px){
-  .hero__canopy{width:140vw;top:auto;bottom:-4%}
+  .hero__canopy{width:175vw;top:auto;bottom:-8%}
   .hero__mark{width:78vw;top:30%}
   .hero__halo{width:170%;height:250%}
-  .hero__line{font-size:12px;letter-spacing:.06em;padding-inline:4px;text-shadow:0 1px 12px rgba(27,34,30,.9)}
+  .hero__line{font-size:14px;padding-inline:4px;text-shadow:0 1px 12px rgba(27,34,30,.9)}
   .hero__scroll{bottom:calc(16px + env(safe-area-inset-bottom) + 4px);left:64px;font-size:12px}
   .hero__tag{font-size:18px;bottom:calc(16px + env(safe-area-inset-bottom) + 2px)}
   /* the "How we work +" tab is now a mid-height edge tab on phones too: the tagline stays at the bottom */
@@ -216,8 +219,8 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .descend__trunk--r{clip-path:inset(0 0 0 max(0px,calc(100% - var(--edge-space))))}
 @media (min-width:769px) and (max-width:1023px){.descend__trunk{width:26vw;max-width:26vw}}
 @media (max-width:768px){.descend__trunk{width:34vw;max-width:34vw}.descend__trunk--r{display:none}}
-.descend::after{content:"";position:absolute;left:0;right:0;bottom:0;height:220px;background:linear-gradient(to bottom,rgba(18,23,20,0),var(--night) 85%);pointer-events:none;z-index:0}
-.descend__content{position:relative;z-index:1;margin-top:-100vh;margin-top:-100svh;padding-block:clamp(72px,14vh,170px) clamp(72px,12vh,150px)}
+.descend::after{content:"";position:absolute;left:0;right:0;bottom:0;height:140px;background:linear-gradient(to bottom,rgba(18,23,20,0),var(--night) 85%);pointer-events:none;z-index:0}
+.descend__content{position:relative;z-index:1;margin-top:-100vh;margin-top:-100svh;padding-block:clamp(72px,14vh,170px) clamp(40px,6vh,80px)}
 /* phones: no trunk strips at all (a clean phone; the sliver at the top of #celebrations is gone), so the content no longer pulls up over the sticky frame */
 @media (max-width:768px){.descend__trunks{display:none}.descend__content{margin-top:0}}
 .descend__content .container--text{max-width:calc(var(--descend-col) + 2*var(--gutter))}
@@ -238,8 +241,8 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .card__n .fa{display:inline;font-size:18px;color:var(--parch);letter-spacing:0}
 .card p{color:var(--parch)}
 .card p.muted{color:var(--stone);font-size:16px;line-height:24px}
-/* the three pillars are lighter than the teaser cards: no box fill, the gold top rule only, narrower sides, h3 24-26px */
-.pillars .card{background:transparent;padding:var(--s3) clamp(16px,2vw,24px)}
+/* the three pillars are lighter than the teaser cards: no box fill, no top rule (the gold numbering eyebrow carries the structure), 16px sides, h3 24-26px */
+.pillars .card{background:transparent;border-top:0;padding:var(--s2) 16px}
 .pillars .card h3{font-size:clamp(24px,2.2vw,26px)}
 
 /* ---------- The celebrations: accordion ---------- */
@@ -253,15 +256,22 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .accordion__trigger:focus-visible{outline:2px solid var(--gold);outline-offset:-6px}
 .accordion__label{position:absolute;left:var(--s2);top:var(--s2);letter-spacing:.1em;text-transform:uppercase;font-size:14px;z-index:1;display:none;color:var(--gold)}
 .accordion__body{position:relative;z-index:3;padding:var(--s4) var(--s2) var(--s3);display:grid;gap:var(--s1);min-height:100%;align-content:end;pointer-events:none}
+/* phones: a 44px right clearance for the mid-height "How we work +" tab */
+@media (max-width:768px){.accordion__body{padding-right:44px}}
 .accordion__body h3{font-size:clamp(26px,3vw,38px)}
 .accordion__body .fa{color:var(--gold)}
 .accordion__body p:last-child{max-width:34em;color:var(--parch)}
 .accordion__more{pointer-events:auto;margin-top:var(--s1);justify-self:start}
-@media (min-width:769px){
-  .accordion{display:flex;gap:var(--s1);height:min(70vh,640px)}
+/* the wide layout (one open panel + narrow strips) only from 1100px; below that every panel is stacked and readable.
+   No fixed height: the row is at least min(70vh,640px) and grows to fit the open body. The open body is in flow once
+   the .7s flex transition has settled (site.js adds .is-settling for that moment, so the still-narrow text never
+   spikes the row height); collapsed bodies are out of flow. */
+@media (min-width:1100px){
+  .accordion{display:flex;gap:var(--s1);min-height:min(70vh,640px)}
   .accordion__panel{flex:1 1 0;min-height:0;transition:flex .7s var(--ease)}
   .accordion__panel.is-open{flex:6 1 0}
   .accordion__panel:not(.is-open) .accordion__media img{filter:blur(6px) brightness(.75);transform:scale(1.08)}
+  .accordion__panel:not(.is-open) .accordion__body,.accordion__panel.is-settling .accordion__body{position:absolute;inset:0}
   /* collapsed bodies leave the accessibility tree (visibility:hidden after the fade) */
   .accordion__panel:not(.is-open) .accordion__body{opacity:0;visibility:hidden;transition:opacity .25s,visibility 0s .25s}
   .accordion__panel.is-open .accordion__body{opacity:1;visibility:visible;transition:opacity .6s .25s,visibility 0s}
@@ -301,11 +311,11 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .options ul li{padding-left:18px;position:relative}
 .options ul li::before{content:"";position:absolute;left:0;top:11px;width:8px;height:2px;background:var(--gold)}
 .teaser__strips{position:relative;height:2px;margin-block:var(--s3) var(--s4);display:grid;gap:0}
+/* the strips start off-screen through GSAP only (block 6: xPercent 102 -> 0 with x:0); no CSS translate to compound */
 .teaser__strips i{position:absolute;left:0;right:0;height:2px;background:var(--gold);transform-origin:right center}
 .teaser__strips i:nth-child(1){top:-14px;opacity:.9}
 .teaser__strips i:nth-child(2){top:0}
 .teaser__strips i:nth-child(3){top:14px;opacity:.6}
-.anim-ready .teaser__strips i{transform:translateX(102%)}
 .teaser__grid{display:grid;gap:var(--s3)}
 @media (min-width:768px){.teaser__grid{grid-template-columns:1fr 1fr;gap:var(--s4)}}
 .teaser .card h3{font-size:clamp(28px,3.4vw,40px)}
@@ -313,9 +323,11 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 
 /* ---------- The journey: the five planning stages on one gold line, then the celebrations as loose pills ---------- */
 .journey{position:relative;padding-top:clamp(40px,7vh,88px)}
-.journey .leaf--3{left:2vw;top:8vh;z-index:0}
+/* the leaf hangs above the section head and never crosses the gold line or the Enquiry column */
+.journey .leaf--3{left:0;top:-4vh;opacity:.7;z-index:0}
+@media (min-width:900px){.journey .leaf--3{transform:translateY(-20%)}}
 @media (max-width:768px){.journey .leaf--3{top:0;opacity:.4}}
-.journey__order{text-align:center;color:var(--stone);font-size:16px;line-height:24px;max-width:38em;margin:0 auto clamp(32px,6vh,72px);text-wrap:balance}
+.journey__order{text-align:center;color:var(--stone);font-size:16px;line-height:24px;max-width:38em;margin:0 auto clamp(24px,4vh,40px);text-wrap:balance}
 .journey__track{position:relative;z-index:1}
 .journey__line{position:absolute;pointer-events:none}
 /* the full line is there at once in sage at 35%; the gold .track-line overlay draws across it with scroll */
@@ -325,6 +337,7 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .journey__line--v{left:11px;top:0;width:2px;height:100%}
 .journey__stops{display:grid;gap:var(--s3);padding-left:40px}
 .journey__stop{position:relative;display:grid;gap:2px}
+@media (max-width:768px){.journey__stop{padding-right:44px}}
 /* all five dots show at once (sage); site.js block 5 turns each gold as the line reaches it */
 .journey__dot{position:absolute;left:-40px;top:10px;width:14px;height:14px;border-radius:50%;background:var(--sage);transform-origin:center}
 .journey__en{color:var(--parch);font-size:18px;line-height:24px;text-wrap:balance}
@@ -342,11 +355,14 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
   .journey__note{font-size:16px;line-height:24px}
 }
 /* the celebrations a family may choose: a loose group under the line, no connecting line, no numbering */
-.journey__extras{margin-top:clamp(48px,8vh,96px);text-align:center}
+.journey__extras{margin-top:clamp(40px,6vh,64px);text-align:center}
 .journey__extras .eyebrow{margin-bottom:var(--s2)}
 .pills{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--s1) 12px}
-.pill{display:inline-flex;align-items:baseline;gap:10px;border:2px solid var(--gold);border-radius:999px;padding:8px 18px;font-size:15px;line-height:20px;color:var(--parch);white-space:nowrap}
-.pill .fa{font-size:14px;line-height:1.4;color:var(--stone)}
+/* softer than the one gold button: outline at .45, the Persian in gold at .7, full gold on hover/focus */
+.pill{display:inline-flex;align-items:baseline;gap:10px;border:2px solid rgba(201,158,92,.45);border-radius:999px;padding:6px 16px;font-size:15px;line-height:20px;color:var(--parch);white-space:nowrap;transition:border-color .3s}
+.pill .fa{font-size:14px;line-height:1.4;color:rgba(201,158,92,.7);transition:color .3s}
+.pill:hover,.pill:focus-visible{border-color:var(--gold)}
+.pill:hover .fa,.pill:focus-visible .fa{color:var(--gold)}
 
 /* ---------- The roots and the floor; Inquire sits on the ground ---------- */
 .ground{position:relative;overflow:hidden;background:var(--night)}
@@ -385,7 +401,10 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .checks{display:grid;gap:var(--s1) var(--s2);grid-template-columns:1fr 1fr}
 @media (min-width:600px){.checks{grid-template-columns:repeat(3,1fr)}}
 .check{display:flex;gap:10px;align-items:center;font-size:16px;line-height:22px;min-height:32px}
-.check input{width:18px;height:18px;accent-color:var(--gold);margin:0;flex:0 0 auto}
+/* custom 18px box: 2px stone outline, transparent; checked = gold with a cypress tick (inline SVG) */
+.check input{appearance:none;-webkit-appearance:none;width:18px;height:18px;margin:0;flex:0 0 auto;border:2px solid var(--stone);border-radius:2px;background:transparent center/12px no-repeat;cursor:pointer;transition:background-color .2s,border-color .2s}
+.check input:checked{background-color:var(--gold);border-color:var(--gold);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6.3 4.8 9 10 3.2' fill='none' stroke='%231B221E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.check input:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .form__note{font-size:14px;line-height:20px;color:var(--stone)}
 
 /* ---------- Footer (deep night band) ---------- */
@@ -412,19 +431,17 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 html:not(.panel-ready) .hww-tab{display:none}
 .hww-tab.is-hidden{transform:translate(110%,-50%) rotate(180deg);opacity:0;pointer-events:none}
 @media (max-width:768px){.hww-tab{padding:14px 8px;font-size:13px;line-height:16px}}
-/* phones: the tab is ~34px wide at mid-height; text keeps clear of it (the container's right padding grows to 44px,
-   the stacked celebration bodies and the founder quote clear it further) */
+/* phones: the tab is ~34px wide at mid-height and hidden while the hero is in view (site.js). Centred blocks keep
+   symmetric gutters; only the stacked celebration bodies and the journey stops carry a 44px right clearance (above),
+   and the founder quote gets the same 32px on both sides so it stays centred */
 @media (max-width:768px){
-  .container{padding-right:max(var(--gutter),44px)}
-  .accordion__body{padding-right:56px}
-  .quote blockquote{padding-right:40px}
+  .quote blockquote{padding-inline:32px}
 }
-/* Pause motion / Play motion: bottom-left. Phones: a small pill that hides once the hero has scrolled
-   out (site.js adds .is-hidden). Desktop: a 40px round icon-only button; the accessible name is the
-   fixed aria-label "Motion" and aria-pressed carries the state, so the name never changes. */
+/* Pause motion / Play motion: bottom-left on every screen size and visible the whole page (round, icon-only:
+   36px on phones, 40px on desktop). The accessible name is the fixed aria-label "Pause motion" and
+   aria-pressed="true" means paused, so the name never changes. */
 .motion-toggle{position:fixed;z-index:60;left:var(--s2);bottom:calc(16px + env(safe-area-inset-bottom));font-size:13px;line-height:18px;letter-spacing:.06em;padding:8px 14px;border-radius:999px;background-color:var(--night)}
 .motion-toggle[hidden],html:not(.motion-ready) .motion-toggle{display:none}
-@media (max-width:768px){.motion-toggle.is-hidden{transform:translateY(140%);opacity:0;pointer-events:none}}
 @media (min-width:0){
   .motion-toggle{width:40px;height:40px;padding:0;border-radius:50%;display:grid;place-items:center;line-height:1;letter-spacing:0}
   /* the glyph is an inline SVG background (two gold bars = pause, a gold triangle = play), never a font glyph */
@@ -432,6 +449,7 @@ html:not(.panel-ready) .hww-tab{display:none}
   .motion-toggle[aria-pressed="true"]::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M3 1.2 12.6 7 3 12.8z' fill='%23C99E5C'/%3E%3C/svg%3E");margin-left:2px}
   .motion-toggle__text{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 }
+@media (max-width:768px){.motion-toggle{width:36px;height:36px}}
 .hww-backdrop{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.55);opacity:0;transition:opacity .4s}
 .hww-backdrop[hidden]{display:none}
 .hww-backdrop.is-on{opacity:1}
@@ -529,7 +547,6 @@ body.panel-open{overflow:hidden}
 .anim-ready .stagger > *{opacity:0;transform:translateY(16px)}
 .reduced .reveal,.reduced .stagger > *{opacity:1;transform:none}
 .reduced .reveal-img{transform:none}
-.reduced .teaser__strips i{transform:none}
 /* keyboard focus inside a reveal target: site.js marks the animated ancestors .is-revealed at once */
 .anim-ready .reveal.is-revealed,.anim-ready .reveal-img.is-revealed,.anim-ready .stagger.is-revealed > *,.anim-ready .stagger > .is-revealed{opacity:1!important;transform:none!important}
 /* without motion the track is complete: gold line, gold dots */
@@ -537,7 +554,7 @@ body.panel-open{overflow:hidden}
 .reduced .track-dot,html:not(.anim-ready) .track-dot{background:var(--gold)}
 .reduced *, .reduced *::before, .reduced *::after{transition-duration:.01ms!important;animation-duration:.01ms!important}
 /* Keep all celebrations readable if the behavior script is unavailable. */
-html:not(.site-ready) .accordion{display:grid;height:auto}
+html:not(.site-ready) .accordion{display:grid;min-height:0}
 html:not(.site-ready) .accordion__panel{min-height:360px}
 html:not(.site-ready) .accordion__body{opacity:1;visibility:visible}
 html:not(.site-ready) .accordion__trigger,html:not(.site-ready) .accordion__label{display:none}
@@ -548,7 +565,6 @@ html:not(.site-ready) .accordion__trigger,html:not(.site-ready) .accordion__labe
   *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}
   .anim-ready .reveal,.anim-ready .stagger > *{opacity:1;transform:none}
   .anim-ready .reveal-img{transform:none}
-  .anim-ready .teaser__strips i{transform:none}
   .track-line path{stroke-dashoffset:0!important}
   .track-dot{background:var(--gold)}
 }

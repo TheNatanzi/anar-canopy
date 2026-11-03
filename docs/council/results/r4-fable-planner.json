@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "planner",
+ "score": 7,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "index.html #celebrations accordion + .pills + form .checks",
+   "what": "Add the Afghan rituals the site promises to serve: a 'Shirni-khori' (شیرینی‌خوری, engagement sweets) pill and checkbox, an 'Aina Mosaf' (آینه‌مصحف, the mirror-and-Quran moment) line inside the Nikah panel, and 'Attan' or 'Henna (khina)' named once; add 'Shirni-khori' to the five celebration panels or to the Nikah body.",
+   "why": "Afghan families are named second in the hero line yet no ritual on the page is theirs; the sofreh, mehndi, pheras and walima all belong to someone else."
+  },
+  {
+   "where": "index.html form select#f-lang (Reply in)",
+   "what": "Add 'Urdu', 'Hindi' and 'Punjabi' options before 'Other', and change the footer/teaser line 'Persian and Dari pages for the parents' to also name 'Urdu or Punjabi on request'.",
+   "why": "South Asian parents have no language path anywhere on the page; the FAQ's 'other languages on request' is hidden under 'Other' in the form."
+  },
+  {
+   "where": "index.html .journey__extras, after the pills",
+   "what": "Add <p class=\"center reveal\" style=\"margin-top:40px\"><a class=\"btn\" href=\"#inquire\">Begin the conversation</a></p>.",
+   "why": "From the hero to the form is six screens with no inline call to action; parents scrolling on a phone lose the header pill behind the drawer."
+  },
+  {
+   "where": "index.html #celebration-3 body (Mehndi & Sangeet)",
+   "what": "Change 'The baraat, arriving with music. Each run to the minute.' to 'On the wedding day, the baraat arrives with music. Each night run to the minute.' or move the baraat sentence into the Haldi/Pheras panel.",
+   "why": "The baraat is the groom's wedding-day procession, not part of the mehndi or sangeet night; a South Asian parent reads this as a planner who has not run one."
+  },
+  {
+   "where": "index.html .journey__stop Enquiry note",
+   "what": "Replace 'Thank you for writing. Tell us about your family. We reply within one business day.' with 'Write to us, or call. Tell us about your family and your dates.'",
+   "why": "Thanking someone for writing before they have written reads like a copied form confirmation and breaks the calm voice."
+  },
+  {
+   "where": "index.html teaser__foot, journey Enquiry note, inquire sub-line, form__note",
+   "what": "Keep 'We reply within one business day' in the inquire sub-line and the form note only; drop it from the teaser foot and the journey note.",
+   "why": "The same promise five times on one page reads as nervous rather than reliable; once near the form is where it earns trust."
+  }
+ ]
+}

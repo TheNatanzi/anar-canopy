@@ -1,0 +1,40 @@
+{
+ "model": "fable",
+ "role": "dev",
+ "score": 7,
+ "blocking": [
+  "Track-line draw length is wrong: the .track-line paths use vector-effect:non-scaling-stroke, so stroke-dasharray/offset set from getTotalLength() (1000 or 1200 user units) are applied in SCREEN pixels, not scaled to the rendered line. The phone journey (phone-3 shot) shows the gold line already past the Proposal dot while that dot is still sage; on how-we-work.html the vertical steps track is far taller than 1000px, so the overlay shows a 1000px gold run, a 1000px sage gap, then gold again, and never reads as one drawn line."
+ ],
+ "fixes": [
+  {
+   "where": "assets/js/site.js block 5 (and block 4 kashida) — `var len = p.getTotalLength()`",
+   "what": "Measure the rendered length instead: `var r = p.getBoundingClientRect(); var len = Math.max(r.width, r.height);` and pass dash values as functions (`fromTo(p,{strokeDashoffset:function(){return len()}},{strokeDashoffset:0})`) with `invalidateOnRefresh:true` on the timeline's scrollTrigger; or drop dashes entirely and scrub `scaleX/scaleY` (transformOrigin '0 50%' / '50% 0') on the overlay svg.",
+   "why": "Under non-scaling-stroke the dash pattern is in device pixels, so a viewBox-based length breaks on any track taller/wider than the viewBox."
+  },
+  {
+   "where": "assets/js/site.js block 5 — `var at = Math.max(0, (i + 0.5) / dots.length - 0.04)`",
+   "what": "Compute each dot's position from layout, not an even split: vertical `at = (d.offsetTop + 7) / track.offsetHeight`, horizontal `at = (d.getBoundingClientRect().left - track.getBoundingClientRect().left + 7) / track.offsetWidth`; recompute inside a function used by the timeline (rebuild on ScrollTrigger 'refreshInit').",
+   "why": "Journey stops have different heights on phones and the steps on How we work are very uneven, so the dots turn gold at the wrong moment relative to the line."
+  },
+  {
+   "where": "index.html / weddings.html / how-we-work.html / about.html <head> — the three defer <script> tags",
+   "what": "Self-host gsap.min.js, ScrollTrigger.min.js and lenis.min.js under assets/js/vendor/ (≈125 KB total) and drop the cdnjs/unpkg preconnects; if the CDN must stay, add `integrity=\"sha384-…\"` hashes to all three tags.",
+   "why": "Pinned-but-unhashed third-party scripts can be swapped upstream; two extra origins also sit on the critical path for motion."
+  },
+  {
+   "where": "index.html (all pages) `<button class=\"motion-toggle\" aria-label=\"Motion\" aria-pressed=\"false\">` + site.js setToggle()",
+   "what": "Rename the fixed accessible name to `aria-label=\"Pause motion\"` and keep aria-pressed=\"true\" meaning paused; leave the visible text as is.",
+   "why": "\"Motion, pressed\" is announced as motion ON while the site is actually paused: a toggle's name must describe the pressed state."
+  },
+  {
+   "where": "<head> — `<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic…\">`",
+   "what": "Self-host the Arabic-subset woff2 of Noto Naskh Arabic (400 + 700) under assets/fonts/, declare it with @font-face font-display:swap in site.css and preload the 400 file like TTRamillas-Bold.",
+   "why": "The Google Fonts CSS is a render-blocking cross-origin request on every page; the hero tag and nav فارسی flash in Tahoma on first paint."
+  },
+  {
+   "where": "assets/css/site.css `@media (max-width:768px){ .container{padding-right:max(var(--gutter),44px)} }`",
+   "what": "Keep the 44px only where text can collide with the tab (`.accordion__body`, `.quote blockquote`, `.journey__stop`) and give centred blocks matching left padding: `.section__head,.statement,.journey__order,.journey__extras,.teaser__foot{padding-left:24px}`.",
+   "why": "At 390px every centred heading, kashida and pill row sits 12px left of centre (visible in phone-1 and phone-3), reading as a layout mistake."
+  }
+ ]
+}

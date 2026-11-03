@@ -1,0 +1,23 @@
+{
+ "model": "argon",
+ "role": "dev",
+ "score": 9,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "index.html:100-124",
+   "what": "Add `loading=\"lazy\"` to `<img src=\"assets/tree/tree-full.webp\" ...>` inside `.tree__trunk`, `.tree__sprig`, and `.ground-art` (keep eager loading on `.tree__bark` only if it enters Screen 1).",
+   "why": "Prevents the full-tree image (rows 0–3714) from competing with the preloaded canopy slices (`canopy-L0` to `L3`) for initial network bandwidth on Screen 1."
+  },
+  {
+   "where": "assets/js/canopy.js:244",
+   "what": "Inside `measureMorph()`, wrap `var r = navImg.getBoundingClientRect();` by temporarily disabling CSS transitions or reading `offsetLeft`/`offsetTop` relative to `.site-header__inner` instead of `getBoundingClientRect()`.",
+   "why": "`getBoundingClientRect()` reads live transform values, which could theoretically capture mid-transition geometry if a layout refresh happens during a CSS transition."
+  },
+  {
+   "where": "assets/css/canopy.css:202",
+   "what": "Add `will-change: transform` to `html.canopy-motion .tree__sprig` only while intersecting, or let GSAP handle 3D promotion automatically (`force3D: true`).",
+   "why": "Ensures consistent GPU layer promotion behaviour across desktop browsers during continuous yoyo rotation tweens."
+  }
+ ]
+}

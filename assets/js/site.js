@@ -533,6 +533,51 @@
     var snapshot = function () {
       try { return new URLSearchParams(new FormData(form)).toString(); } catch (err) { return null; }
     };
+    /* a persistent error state per field (round 5): the native bubble vanishes after a few seconds and iOS VoiceOver
+       does not announce it, so the `invalid` event (it does not bubble: captured) sets aria-invalid on the control
+       and writes a .field__error line after it, linked by aria-describedby (appended to the helper's id, never
+       replacing it); cleared on the next input. The message comes from the control's own validity state */
+    var errorText = function (el) {
+      var v = el.validity;
+      if (v.valueMissing) { return el.type === 'email' ? 'Please enter your email address.' : 'Please fill in this field.'; }
+      if (v.typeMismatch && el.type === 'email') { return 'Please enter a valid email address, like name@example.com.'; }
+      return el.validationMessage || 'Please check this field.';
+    };
+    var errorFor = function (el) {
+      var field = el.closest('.field') || el.parentNode;
+      var err = $('.field__error', field);
+      if (!err) {
+        err = document.createElement('p');
+        err.className = 'field__error';
+        err.id = (el.id || el.name || 'field') + '-error';
+        field.appendChild(err);
+      }
+      return err;
+    };
+    var setInvalid = function (el) {
+      var err = errorFor(el);
+      err.textContent = errorText(el);
+      el.setAttribute('aria-invalid', 'true');
+      var ids = (el.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean);
+      if (ids.indexOf(err.id) === -1) { ids.push(err.id); el.setAttribute('aria-describedby', ids.join(' ')); }
+    };
+    var clearInvalid = function (el) {
+      if (el.getAttribute('aria-invalid') !== 'true') { return; }
+      el.removeAttribute('aria-invalid');
+      var field = el.closest('.field') || el.parentNode;
+      var err = $('.field__error', field);
+      if (err) {
+        err.textContent = '';
+        var ids = (el.getAttribute('aria-describedby') || '').split(/\s+/).filter(function (id) { return id && id !== err.id; });
+        if (ids.length) { el.setAttribute('aria-describedby', ids.join(' ')); } else { el.removeAttribute('aria-describedby'); }
+      }
+    };
+    form.addEventListener('invalid', function (e) {
+      if (e.target && e.target.willValidate) { setInvalid(e.target); }
+    }, true);
+    form.addEventListener('input', function (e) {
+      if (e.target && e.target.willValidate && e.target.checkValidity()) { clearInvalid(e.target); }
+    });
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       if (!form.checkValidity()) { form.reportValidity(); return; }

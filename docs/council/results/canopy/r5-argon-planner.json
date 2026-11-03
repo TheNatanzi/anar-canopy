@@ -1,0 +1,28 @@
+{
+ "model": "argon",
+ "role": "planner",
+ "score": 9,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "assets/css/canopy.css:187",
+   "what": "Increase .screen--statement min-height or reduce .screen--statement padding-top so the statement text and promises do not get scrolled off-screen before the user finishes reading Screen 2 on desktop",
+   "why": "In desktop-1.jpg, 'Reimagined Heritage' sits at the very bottom while the promises are still below the fold, and in desktop-2.jpg the title is already scrolled out of view behind the header, splitting the core brand pitch across two scroll stops."
+  },
+  {
+   "where": "weddings.html:194",
+   "what": "Add Urdu/Arabic script (ولیمہ / رخصتی) or Gurmukhi/Devanagari accents alongside the Persian script on the South Asian ceremony sections (Haldi & Pheras, Anand Karaj, Reception & Walima) or keep their eyebrows strictly English",
+   "why": "Having Persian script on Nikah and Walima works for Persian/Afghan families, but South Asian Hindu and Sikh parents looking at Haldi & Pheras and Anand Karaj only see small English eyebrows ('HINDU CEREMONIES') where other sections have rich calligraphic script."
+  },
+  {
+   "where": "index.html:173",
+   "what": "Add a placeholder attribute to the #f-message textarea (e.g., placeholder=\"e.g. Persian & Gujarati wedding, Spring 2027, ~250 guests in Napa\")",
+   "why": "The helper text above the textarea is helpful, but a concrete multi-heritage example inside the box lowers friction for couples and parents unsure how much detail to write on first contact."
+  },
+  {
+   "where": "how-we-work.html:92",
+   "what": "Move the 'Partial planning, or one or two events of a multi-day celebration' paragraph (.options__note) into a third grid card or give it a bold subheading",
+   "why": "South Asian and Afghan families very frequently book venues with an in-house coordinator and specifically need a culturally fluent planner just for the Nikah, Sofreh, or Sangeet; burying this high-converting service in a muted footnote misses inquiries."
+  }
+ ]
+}

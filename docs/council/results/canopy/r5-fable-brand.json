@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "brand",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "assets/css/site.css .hero__tint (the 'tint grades the loop' rule) / index.html header over the hero",
+   "what": "Add a top scrim as a second background layer: linear-gradient(rgba(27,34,30,.55) 0, rgba(27,34,30,0) 180px) above the existing .34→.66 ramp, so the bar's links, the gold (925) number and the envelope sit on cypress at scroll 0.",
+   "why": "In index-desktop-0 the gold number and parchment links sit on the loop's white drapery; gold on near-white is ~1.8:1 and the night-first rule is lost on the first glance."
+  },
+  {
+   "where": "assets/css/canopy.css .canopy .hero__halo",
+   "what": "Deepen the halo: radial-gradient(closest-side, rgba(27,34,30,.85), rgba(27,34,30,.5) 55%, transparent 80%), height 190%→230%.",
+   "why": "The thin Persian kashida stroke under ANAR EVENTS runs across the pale roses in the footage (desktop-0, y≈450) and nearly vanishes; the logo must read plainly as one mark, Latin and Persian."
+  },
+  {
+   "where": "assets/js/canopy.js block 3 (heroTl, the .hero__deepen tween)",
+   "what": "Finish the deepen earlier: duration 1 → 0.8 (solid cypress by 80 % of the hero), so the fixed video is gone before the canopy's underside and the statement arrive.",
+   "why": "index-desktop-1 shows a faint lighter rectangle (the ghosted table) between the trunks behind 'Reimagined Heritage'; the open middle must be clean night, not a muddy patch."
+  },
+  {
+   "where": "assets/css/canopy.css phone block, .canopy .hero__tag > span:first-child",
+   "what": "Replace text-wrap:balance with display:block;max-width:20ch;margin-inline:auto so the caps line breaks at the full stop ('HONORING THE ROOTS.' / 'ELEVATING THE VIBE.').",
+   "why": "index-phone-0 breaks the owner's line as 'ELEVATING / THE VIBE.', a widow on the brand statement."
+  },
+  {
+   "where": "assets/css/canopy.css .promises li (and .cel p)",
+   "what": "Add text-wrap:balance.",
+   "why": "index-phone-1 leaves 'realized.' and 'minute.' as one-word orphans under the three promises; the ruled-band device looks careless with a dangling word."
+  },
+  {
+   "where": "assets/css/canopy.css .tree__band (desktop background)",
+   "what": "Add an inner-edge shade layer over the tile: linear-gradient(to right, rgba(27,34,30,0) 9%, rgba(27,34,30,.35) 12.8%, rgba(27,34,30,.35) 87.2%, rgba(27,34,30,0) 91%) so each trunk darkens toward the open middle and reads as a round trunk.",
+   "why": "index-desktop-3 shows the tiled band as two soft flat curtains, noticeably less painterly than the crisp canopy and roots on the screens around it."
+  }
+ ]
+}

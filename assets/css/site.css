@@ -51,7 +51,9 @@ html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;background:var(--night
 html.lenis{scroll-behavior:auto}
 html.reduced{scroll-behavior:auto}
 [id]{scroll-margin-top:calc(var(--header-h) + 16px)}
-body{margin:0;background:var(--night);color:var(--parch);font-family:var(--font-latin);font-weight:700;font-size:18px;line-height:28px;overflow-x:hidden}
+/* font-synthesis:none (round 5): the body is 700 and the Persian 400, so no browser ever fakes a bold or an oblique
+   during a font swap or in a fallback state (Ramillas Bold and Noto Naskh are served as drawn) */
+body{margin:0;background:var(--night);color:var(--parch);font-family:var(--font-latin);font-weight:700;font-size:18px;line-height:28px;overflow-x:hidden;font-synthesis:none}
 img,video,svg{display:block;max-width:100%}
 /* the hidden attribute always wins (the inline icon sprite is an svg[hidden]; the display:block above must not show it) */
 [hidden]{display:none}
@@ -80,12 +82,27 @@ h3{font-size:clamp(22px,2.6vw,28px);line-height:1.2}
 .caption{font-size:14px;line-height:20px;color:var(--stone)}
 .on-light .caption{color:var(--sage)}
 .lede{font-size:clamp(20px,2.2vw,24px);line-height:1.45}
-.fa,[lang="fa"]{font-family:var(--font-fa);font-style:normal!important;letter-spacing:0!important;text-transform:none!important;font-weight:400;font-size:115%;line-height:1.7;direction:rtl;unicode-bidi:isolate}
+.fa,[lang="fa"]{font-family:var(--font-fa);font-style:normal!important;letter-spacing:0!important;text-transform:none!important;font-weight:400;font-size:115%;line-height:1.7;direction:rtl;unicode-bidi:isolate;font-synthesis:none}
+/* the Urdu accents (ولیمہ · رخصتی) set in the same Naskh as the Persian; the Devanagari / Gurmukhi accents (हल्दी · फेरे,
+   ਅਨੰਦ ਕਾਰਜ) in the system's Indic faces (Nirmala UI on Windows, Kohinoor / Devanagari MT on Apple, Noto on Android),
+   left to right, never bold-synthesised or tracked */
+[lang="ur"]{font-family:var(--font-fa)}
+[lang="hi"],[lang="pa"]{font-family:"Nirmala UI","Kohinoor Devanagari","Devanagari MT","Noto Sans Devanagari","Noto Sans Gurmukhi","Mukta",Tahoma,sans-serif;direction:ltr;unicode-bidi:isolate;font-weight:400;font-style:normal!important;letter-spacing:0!important;text-transform:none!important;font-synthesis:none}
 .fa--big{font-size:clamp(26px,4.2vw,40px);line-height:1.5}
 .fa--title{font-size:clamp(34px,5.4vw,60px);line-height:1.4}
 .measure{max-width:38em}
 .muted{color:var(--stone)}
 .on-light .muted{color:var(--sage)}
+/* the inner pages' spacing rhythm in three utilities and one heading modifier (round 5: no inline margin styles,
+   so a style-src CSP without 'unsafe-inline' drops nothing): .h2--tight = a section h2 under its eyebrow */
+.h2--tight{margin:8px 0 32px}
+.mt-16{margin-top:16px}
+.mt-32{margin-top:32px}
+.mt-48{margin-top:48px}
+/* a text container nested in a page container keeps its measure, not a second gutter */
+.container .container--text{padding-inline:0}
+/* a small note (16/24) under a lede or a paragraph */
+.note{font-size:16px;line-height:24px}
 
 /* ---------- Layout ---------- */
 .container{width:100%;max-width:var(--container);margin-inline:auto;padding-inline:var(--gutter)}
@@ -147,11 +164,23 @@ main > .on-light:last-child{border-bottom:0}
    (769px, desktopQuery) is a different thing and stays where it is */
 .site-nav{display:block}
 .site-nav ul{display:flex;flex-wrap:wrap;gap:clamp(16px,2.4vw,36px)}
+/* the no-JS / failed-script fallback (round 5): the whole header sits in NORMAL FLOW (relative, not fixed), the bar
+   keeps its height and the three links wrap under it as a deep-night strip, so the strip reserves its own height
+   and the page (the inner pages' top padding, the canopy hero) starts below it; nothing is covered. The contact
+   rows and the فارسی note stay in the enhanced drawer only (the footer carries them for everyone) */
 @media (max-width:1024px){
-  html:not(.nav-ready) .site-nav{position:absolute;top:var(--header-h);left:0;right:0;background:var(--deep);border-top:2px solid var(--gold);padding:var(--s2) var(--gutter)}
+  html:not(.nav-ready) .site-header{position:relative;height:auto}
+  html:not(.nav-ready) .site-header__inner{flex-wrap:wrap;height:auto;min-height:var(--header-h)}
+  html:not(.nav-ready) .site-header__inner > *:not(.site-nav):not(.nav-home):not(.motion-toggle__note){margin-top:calc((var(--header-h) - 44px) / 2);margin-bottom:calc((var(--header-h) - 44px) / 2)}
+  html:not(.nav-ready) .nav-home{top:calc(var(--header-h) / 2)}
+  html:not(.nav-ready) .site-nav{flex:0 0 100%;order:10;margin:0 calc(-1 * clamp(16px,3vw,40px));background:var(--deep);border-top:2px solid var(--gold);padding:var(--s2) var(--gutter)}
+  html:not(.nav-ready) .site-nav__contact,html:not(.nav-ready) .site-nav__fa{display:none}
   html:not(.nav-ready) .nav-toggle{visibility:hidden}
+  html:not(.nav-ready) .page-top{padding-top:0}
   html.nav-ready .site-nav{display:none}
 }
+/* while canopy.js measures the header slot (block 6): no transition can be mid-flight on the read */
+.site-header.is-measuring,.site-header.is-measuring *{transition:none!important}
 /* ---------- Line icons: one inline SVG sprite per page (<symbol> phone / WhatsApp / mail / Instagram, 24-unit
    boxes), drawn in the brand's simple line style: gold, 1.5 stroke, round joins; used in the header, the drawer and
    the footer (no icon library) ---------- */
@@ -282,8 +311,14 @@ html.logo-morphing .logo-morph{visibility:visible;will-change:transform}
 .option__more[open] summary::after{content:"\2013"}
 .option__more summary:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 .option__more ul{margin-top:var(--s2)}
-/* the third note under the two options (partial / multi-event planning, quoted the same way) */
-.options__note{margin-top:var(--s3);color:var(--stone);font-size:16px;line-height:24px;max-width:38em}
+/* the third card (partial / multi-event planning, quoted the same way): the full row under the two, so the three
+   read as three ways to work with us (round 5: it was a muted footnote) */
+.options > li.option--wide{grid-column:1 / -1;max-width:38em}
+/* the "with either option" lists: 64px between one list and the next eyebrow, 24px under an eyebrow that heads one */
+.eyebrow + .you-get{margin-top:24px}
+.you-get + .eyebrow{margin-top:64px}
+/* the seasonal note's eyebrow sits 8px over its line */
+.seasonal .eyebrow{margin-bottom:8px}
 /* the owner-input price line in the FAQ ("Full planning from $X · …"): hidden until filled, then a plain run of the answer */
 .faq__from{display:inline}
 .faq__from[hidden]{display:none}
@@ -304,6 +339,12 @@ html.logo-morphing .logo-morph{visibility:visible;will-change:transform}
 .field__help{font-size:14px;line-height:20px;color:var(--stone);margin-top:-4px}
 /* inputs in the underline style (editorial, like the kashida): no perimeter box, a 2px gold rule at .7 (opaque enough to read against the night fill) under a soft night fill; focus = the full gold underline (no 1px hairlines anywhere) */
 .field input,.field textarea,.field select{font:inherit;font-weight:700;color:var(--parch);background:rgba(27,34,30,.55);border:0;border-bottom:2px solid rgba(201,158,92,.7);border-radius:2px 2px 0 0;padding:12px 14px;width:100%;min-width:0;min-height:48px;transition:border-color .3s,background-color .3s}
+/* a field that failed validation (site.js: the `invalid` event, captured): aria-invalid on the control, the gold
+   underline turns ruby, and a persistent .field__error line (linked by aria-describedby) names the problem until the
+   value changes; the native bubble still shows, this stays */
+.field [aria-invalid="true"]{border-bottom-color:var(--ruby)}
+.field__error{font-size:14px;line-height:20px;color:#E8A2AB;margin-top:-2px}
+.field__error:empty{display:none}
 /* placeholders in stone (#B9B3A6 on the deep input ground: ~8:1); the one-line inputs carry theirs at 16px, like the other secondary text */
 .field input::placeholder,.field textarea::placeholder{color:var(--stone);opacity:1}
 .field input::placeholder{font-size:16px}
@@ -368,11 +409,13 @@ html:not(.panel-ready) .hww-tab{display:none}
 /* phones: an explicit 36px width (measured 34px rendered at 390 before: 2px border + 8px padding each side + the 16px
    line; the label "How we work +" is 134px tall and scrolls nowhere), so every clearance below derives from 36 */
 @media (max-width:768px){.hww-tab{width:36px;padding:14px 8px;font-size:13px;line-height:16px}}
-/* phones (inner pages, 20px gutter): the tab is 36px wide at mid-height, so every left-aligned text block it can sit
-   over carries 24px of right clearance on top of the gutter (44px); centred blocks keep symmetric padding.
-   The canopy home's 40px gutter is topped up in canopy.css */
+/* phones (inner pages, 20px gutter): the tab is 36px wide at mid-height, so EVERY content container it can sit over
+   (section heads, jump links, notes, lists: the whole .container, round 5) carries 24px of right clearance on top
+   of the gutter (44px); the photo figures pull the 24px back so the slots stay centred on the page. The band at the
+   top hides the tab on phones. The canopy home's gutter is topped up in canopy.css */
 @media (max-width:768px){
-  .options > li,.tradition__text,.faq,.step,.you-get li,.letter,.promise li,.behaviour li,.measure,.caption{padding-right:24px}
+  main .container{padding-right:calc(var(--gutter) + 24px)}
+  .tradition__media,.story__photos{margin-right:-24px}
 }
 /* Pause motion / Play motion: a 36px round control docked IN the header bar on every screen size (the last item of
    .site-header__inner: at the right beside Inquire on desktop, beside the menu toggle on phones via flex order), so it
@@ -442,6 +485,9 @@ body.panel-open{overflow:hidden}
   .tradition__grid{grid-template-columns:1fr 1fr;align-items:start;gap:var(--s4)}
   .tradition--flip .tradition__grid > .tradition__text{order:2}
 }
+/* a kicker over a ceremony title ("Hindu ceremonies" / "Sikh ceremony"), 8px above it; the title's right cell then
+   carries the script accent like the other sections */
+.tradition__text > .eyebrow{margin-bottom:var(--s1)}
 .tradition__title{display:grid;gap:var(--s1);margin-bottom:var(--s3)}
 @media (min-width:600px){.tradition__title{grid-template-columns:1fr 1fr;align-items:baseline}.tradition__title .fa,.tradition__title .eyebrow{text-align:right;color:var(--gold)}}
 .tradition__text p+p{margin-top:var(--s2)}

@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "planner",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "index.html .hero__tag (phone) / canopy.css .canopy .hero__tag > span:first-child",
+   "what": "Wrap each sentence of the owner's line in its own nowrap span (\"Honoring the roots.\" / \"Elevating the vibe.\") so the phone break falls at the full stop; the 390px shot breaks as \"…ELEVATING / THE VIBE.\" (text-wrap:balance did not take).",
+   "why": "The first brand line a parent reads on a phone is split mid-sentence."
+  },
+  {
+   "where": "weddings.html #haldi-pheras, paragraphs 1–2",
+   "what": "Use one spelling (muhurat or muhurtam) across the section and the details block, and say \"the muhurat your family's priest sets\" once, not in both consecutive paragraphs.",
+   "why": "A Hindu family notices the inconsistent transliteration and the repeated clause; it reads as pasted, not fluent."
+  },
+  {
+   "where": "weddings.html jump nav + Nikah section .seasonal (Afghan weddings)",
+   "what": "Give the Afghan block id=\"afghan\" and add \"Afghan weddings\" to the \"Find your ceremony\" row; move the block above the nikah <details>, not after it.",
+   "why": "Afghan families are one of three named audiences but have no visible entry point on the Weddings page; their block sits under a Persian-named section."
+  },
+  {
+   "where": "index.html #f-message-help",
+   "what": "Append \"…and the language your parents prefer.\" to the message helper text.",
+   "why": "The footer invites families to tell us their language, but the form never asks; parents who plan in Dari or Urdu need the cue where they type."
+  },
+  {
+   "where": "index.html screen 3, Nikah figcaption",
+   "what": "Change \"The contract, read before both families.\" to \"The contract before both families; the Afghan aina mosaf.\"",
+   "why": "The home page names Afghan families twice but shows nothing Afghan in the three celebrations; one clause fixes it within the word cap."
+  },
+  {
+   "where": "weddings.html #sofreh-aghd, first paragraph",
+   "what": "Reorder to the ritual order: the three-time ask and the baleh, the kaleh ghand rubbed during the reading, then the honey after it.",
+   "why": "The sentence currently lists the honey before the kaleh ghand; a Persian mother reads the sequence as wrong."
+  }
+ ]
+}

@@ -1,0 +1,28 @@
+{
+ "model": "argon",
+ "role": "brand",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "assets/css/canopy.css:202",
+   "what": "Increase `padding-top` on `.screen--statement .screen__col` from `clamp(40px,6vh,72px)` to `clamp(140px,18vh,220px)` on desktop (`@media (min-width:769px)`).",
+   "why": "In desktop shot 1, 'Reimagined Heritage' sits stranded at the bottom edge of the viewport under an overwhelming mass of canopy; pushing it down lets the canopy arch breathe on scroll 1 and frames the full statement block cleanly on scroll 2."
+  },
+  {
+   "where": "assets/css/canopy.css:278",
+   "what": "Reduce mobile `--gutter` from `40px` to `28px` (or `clamp(24px, 7vw, 40px)`) inside `@media (max-width:768px) { main.canopy { ... } }` and adjust the `.hww-tab` clearance rule at line 292 accordingly.",
+   "why": "At 390px, a 40px gutter leaves only 310px for text, forcing awkward orphan wraps on mobile ('realized.', 'minute.', and 'every / ceremony' with a broken two-tier underline in phone shots 1 and 3)."
+  },
+  {
+   "where": "assets/css/canopy.css:248",
+   "what": "Change `.screen--inquire` `padding-top` from `clamp(96px,14vh,170px)` to `clamp(64px,9vh,110px)` and reduce `.form` `gap` inside `.screen--inquire` from `var(--s3)` (32px) to `24px`.",
+   "why": "Desktop shots 3 and 4 show the inquiry section split awkwardly across viewports—the inputs sit in shot 3 while the 'Begin the conversation' button is stranded at the very top of shot 4 against the header bar."
+  },
+  {
+   "where": "assets/css/site.css:35",
+   "what": "Add `font-synthesis: none;` to `body` and `.fa, [lang=\"fa\"]`.",
+   "why": "Body sets `font-weight: 700` globally while `.fa` sets `400`; preventing browser synthetic bolding or oblique synthesis protects both TT Ramillas Bold and Noto Naskh Arabic during font swap or fallback states."
+  }
+ ]
+}

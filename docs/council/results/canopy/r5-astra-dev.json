@@ -1,0 +1,37 @@
+{
+ "model": "astra",
+ "role": "dev",
+ "score": 6,
+ "blocking": [
+  "The independently positioned logo morph can cross the still-visible hero descriptor during intermediate scroll positions, violating the no-overlap rule.",
+  "On short phone viewports, the bottom-anchored hero content can extend into the fixed header; the 600px minimum does not reserve space for the rendered text.",
+  "The mobile no-JavaScript navigation fallback expands over the hero instead of reserving layout space."
+ ],
+ "fixes": [
+  {
+   "where": "assets/js/canopy.js: applyMorph() and heroTl",
+   "what": "Coordinate the morph with the descriptor and tagline: fade those lines completely before the moving logo reaches their bounds, or change its trajectory to maintain clearance. Check intermediate scroll positions, not just endpoints.",
+   "why": "The logo moves upward more slowly than the text beneath it, allowing their visible rectangles to intersect."
+  },
+  {
+   "where": "assets/css/canopy.css: mobile .canopy .hero__mark and --hero-h",
+   "what": "Reserve header clearance plus the actual hero content height before placing the canopy. Increase the effective hero height when necessary; verify 390×600, landscape and enlarged text.",
+   "why": "Anchoring the content bottom to 52% of the hero protects foliage clearance but leaves its top unconstrained."
+  },
+  {
+   "where": "assets/css/site.css: html:not(.nav-ready) .site-nav",
+   "what": "Put the fallback navigation in normal flow and account for its height in the hero placement; keep contact rows inside the enhanced drawer or a compact fallback disclosure.",
+   "why": "The absolute fallback includes navigation and contact rows but reserves no space beneath the header."
+  },
+  {
+   "where": "assets/js/canopy.js: measureMorph(), applyMorph() and kill()",
+   "what": "Explicitly clear the inline transform on .logo-morph and width on its image during kill(), or register all callback-driven gsap.set calls with the context.",
+   "why": "ScrollTrigger callbacks execute after context construction; their repeated gsap.set calls are not reliably covered by the existing context cleanup."
+  },
+  {
+   "where": "assets/css/site.css: mobile .hww-tab clearance",
+   "what": "Apply the tab's reserved right gutter to every inner-page content container where it can appear, including section headings, jump links and .options__note; verify while scrolling upward.",
+   "why": "The current selector list protects selected paragraphs but leaves other text exposed to the fixed 36px tab."
+  }
+ ]
+}

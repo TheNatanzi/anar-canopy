@@ -1,0 +1,35 @@
+{
+ "model": "astra",
+ "role": "brand",
+ "score": 7.5,
+ "blocking": [
+  "The detached fruit sprites look pasted onto the painting: the bright magenta fruit on the left trunk and beside the roots breaks the otherwise cohesive palette and painted lighting."
+ ],
+ "fixes": [
+  {
+   "where": "assets/css/canopy.css — .fruit-drop and .fruit-roll",
+   "what": "Match both sprites to adjacent painted fruit in hue, saturation, edge softness and shadow; apply the correction to the falling fruit as well as the rolling fruit.",
+   "why": "The conspicuous magenta cutouts undermine the premium, single-painting illusion."
+  },
+  {
+   "where": "assets/css/canopy.css — mobile .hero__tag",
+   "what": "Break the English tagline after “roots.” at 390px and retain the Persian accent on its own line.",
+   "why": "The current “HONORING THE ROOTS. ELEVATING / THE VIBE.” wrap weakens the cadence and looks accidental."
+  },
+  {
+   "where": "assets/css/site.css — hero header .nav-icon__num",
+   "what": "Use parchment for the phone number over the video while retaining gold icons; restore gold text on the solid header.",
+   "why": "In the desktop hero, the small gold number loses definition against the bright drapery."
+  },
+  {
+   "where": "assets/css/canopy.css — .promises li::before and .cel h3::before",
+   "what": "Remove the repeated short rules above promise lines and card titles; preserve the heading kashidas and linked-title underlines.",
+   "why": "Repeated decorative dashes dilute the distinctive kashida and make the central composition feel mechanically ornamented."
+  },
+  {
+   "where": "weddings.html — Sofreh Aghd and Haldi & Pheras; how-we-work.html — step 05",
+   "what": "Keep a short coordination summary visible and move the long ritual sequences and operational explanations into the existing disclosure pattern.",
+   "why": "Dense paragraphs set entirely in Ramillas Bold flatten hierarchy and weaken the editorial restraint established on the home page."
+  }
+ ]
+}

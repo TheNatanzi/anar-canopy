@@ -1,0 +1,35 @@
+{
+ "model": "astra",
+ "role": "planner",
+ "score": 8,
+ "blocking": [
+  "The Weddings page promises family-led planning but repeatedly presents specific participants and ritual sequences as defaults. That inconsistency needs correction before cultural fluency earns launch sign-off."
+ ],
+ "fixes": [
+  {
+   "where": "weddings.html — Sofreh Aghd, Haldi & Pheras, Anand Karaj",
+   "what": "Make the detailed sequences conditional within each section: 'For the rituals you choose, we confirm the order and participants with you and your officiant.' Replace prescribed fathers, parents and married women with the participants the couple names; retain specific traditions as optional examples.",
+   "why": "The introductory qualification does not fully counter later assumptions about family structure and observance."
+  },
+  {
+   "where": "weddings.html — Nikah details",
+   "what": "Replace 'the mahr as the families have agreed it' with 'the mahr as agreed by the couple and confirmed with their officiant'; describe family participation separately.",
+   "why": "The current wording gives families ownership of a decision that should explicitly center the couple."
+  },
+  {
+   "where": "weddings.html — ceremony section opening paragraphs",
+   "what": "Keep two short sentences of coordination work visible per ceremony; move the long lists of ritual cues into the existing 'Details we confirm with your family' disclosures.",
+   "why": "Parents and couples should quickly understand the help being offered without reading a ceremony manual."
+  },
+  {
+   "where": "how-we-work.html — Full planning scope and FAQ",
+   "what": "Replace 'every wedding day run' with 'the wedding events agreed in your proposal'; make the FAQ use the same scope.",
+   "why": "The prominent promise currently sounds broader than the event, staffing and hour limits explained below."
+  },
+  {
+   "where": "index.html — inquiry section",
+   "what": "Move the existing Call / WhatsApp line directly above the form, below the heading divider.",
+   "why": "Parents who prefer speaking should see that route before working through the form, especially on phones."
+  }
+ ]
+}

@@ -104,10 +104,10 @@
 
   <!-- the tree, screen 1 to screen 4 -->
   <div class="tree" aria-hidden="true">
-    <div class="tree__trunk tree__trunk--low"><img src="assets/tree/tree-full.webp" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>
+    <div class="tree__trunk tree__trunk--low"><img src="assets/tree/tree-full.webp" loading="lazy" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>
     <div class="tree__band"></div>
-    <div class="tree__sprig tree__sprig--l"><img src="assets/tree/tree-full.webp" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>
-    <div class="tree__sprig tree__sprig--r"><img src="assets/tree/tree-full.webp" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>
+    <div class="tree__sprig tree__sprig--l"><img src="assets/tree/tree-full.webp" loading="lazy" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>
+    <div class="tree__sprig tree__sprig--r"><img src="assets/tree/tree-full.webp" loading="lazy" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>
     <!-- the canopy as four tonal slices of tree-full rows 0–1300 (assets/tree/layers, same coordinate space): L0 the
          soft darkened base WITHOUT the fruit and bright-leaf regions (the front layer owns them, so motion never
          doubles a fruit; moves least), L1 dark leaves, L2 mid leaves, L3 bright leaves + every fruit (front). Three
@@ -126,23 +126,29 @@
     <img class="fruit-drop" src="assets/tree/fruit-drop.webp" width="82" height="91" alt="" loading="lazy" decoding="async">
   </div>
   <div class="ground-art" aria-hidden="true">
-    <img src="assets/tree/tree-full.webp" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" decoding="async">
-    <img class="fruit-roll" src="assets/tree/fruit-drop.webp" width="82" height="91" alt="" loading="lazy" decoding="async">
+    <img src="assets/tree/tree-full.webp" loading="lazy" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" decoding="async">
+    <img class="fruit-roll" src="assets/tree/fruit-roll.webp" width="82" height="91" alt="" loading="lazy" decoding="async">
   </div>
 
   <!-- 1. SCREEN ONE: the video, the plain gold logo (soft cypress halo, no panel edge), one descriptor line and the
        tag pair in the open centre; the canopy rises into the bottom of the screen (its centre starts under the tag pair). -->
   <section class="screen hero" aria-label="Anar Events">
     <div class="hero__mark">
-      <!-- canopy.js block 3 owns the mark (site.js block 1 skips a hero inside main.canopy): a small downward drift and
-           .hero__fade scrubbed to opacity 0, finished before the drifted text bounds reach the canopy's centre (art row
-           297, measured); .hero__rise: the rise on load (visible by default; hidden only under html.canopy-ready) -->
+      <!-- canopy.js block 3 owns the mark (site.js block 1 skips a hero inside main.canopy): a small downward drift;
+           .hero__text (the descriptor line + the tag pair) is scrubbed to opacity 0 over the first few px of scroll,
+           complete BEFORE the morphing logo's box reaches the text's top (the cross point is solved from measured
+           rects on every refresh, block 3); .hero__fade (the halo and the hero's own logo) fades 10–45 %, finished
+           before the drifted bounds reach the canopy's centre (art row 297, measured); .hero__rise: the rise on load
+           (visible by default; hidden only under html.canopy-ready) -->
       <div class="hero__fade"><div class="hero__rise">
         <i class="hero__halo" aria-hidden="true"></i>
         <h1 class="hero__logo"><img src="assets/logo/logo-gold.svg" width="1600" height="552" alt="Anar Events" fetchpriority="high"></h1>
-        <p class="hero__line">Wedding planning and coordination for Persian, Afghan and South Asian families<span class="hero__place">San Francisco Bay Area</span></p>
-        <!-- the owner's second line here (screen 2's h2 is "Reimagined Heritage": the brand's first two statements are not the same four words twice) -->
-        <p class="hero__tag"><span>Honoring the roots. Elevating the vibe.</span> <span class="fa" lang="fa" dir="rtl">میراث، از نو</span></p>
+        <div class="hero__text">
+          <p class="hero__line">Wedding planning and coordination for Persian, Afghan and South Asian families<span class="hero__place">San Francisco Bay Area</span></p>
+          <!-- the owner's second line here (screen 2's h2 is "Reimagined Heritage": the brand's first two statements are not
+               the same four words twice); each sentence in its own nowrap span, so a phone breaks the line at the full stop -->
+          <p class="hero__tag"><span class="hero__tag-en"><span>Honoring the roots.</span> <span>Elevating the vibe.</span></span> <span class="fa" lang="fa" dir="rtl">میراث، از نو</span></p>
+        </div>
       </div></div>
     </div>
   </section>
@@ -182,7 +188,7 @@
         </figure>
         <figure>
           <a class="cel__slot" href="weddings.html#nikah" tabindex="-1" aria-hidden="true"><img src="assets/img/pom-in-hand.jpg" srcset="assets/img/pom-in-hand-800.jpg 800w, assets/img/pom-in-hand-1400.jpg 1400w, assets/img/pom-in-hand.jpg 1500w" sizes="(max-width:768px) 100vw, 330px" width="1500" height="2000" alt="A pomegranate held in an open hand" loading="lazy" decoding="async"></a>
-          <figcaption><span class="fa" lang="fa" dir="rtl">نکاح</span><h3><a href="weddings.html#nikah">Nikah</a></h3><p>The contract, read before both families.</p></figcaption>
+          <figcaption><span class="fa" lang="fa" dir="rtl">نکاح</span><h3><a href="weddings.html#nikah">Nikah</a></h3><p>The contract before both families; the Afghan aina mosaf.</p></figcaption>
         </figure>
         <figure>
           <a class="cel__slot" href="weddings.html#mehndi-sangeet" tabindex="-1" aria-hidden="true"><img src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night.jpg 1125w" sizes="(max-width:768px) 100vw, 330px" width="1125" height="2000" alt="A pomegranate tree at night" loading="lazy" decoding="async"></a>
@@ -193,12 +199,14 @@
     </div>
   </section>
 
-  <!-- 4. SCREEN FOUR: the roots and the ground; Inquire (names, email + optional phone, message) above the fallen fruit, the footer below the ground -->
+  <!-- 4. SCREEN FOUR: the roots and the ground; the call line, then Inquire (names, email + optional phone, message) above the fallen fruit, the footer below the ground -->
   <section class="screen screen--inquire" id="inquire" aria-labelledby="inquire-title">
     <div class="screen__col">
       <p class="eyebrow reveal"><span class="fa" lang="fa" dir="rtl">شروع برنامه‌ریزی</span></p>
       <h2 id="inquire-title" class="reveal">Tell us about your family</h2>
       <svg class="kashida kashida--short kashida-draw" viewBox="0 0 320 2" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M160 1 H0"/><path d="M160 1 H320"/></svg>
+      <!-- parents who prefer to speak see the call line before the form (planners, round 5): under the kashida, above the fields -->
+      <p class="inquire__call reveal"><a href="tel:+19252639949">Call (925) 263-9949</a> · <a href="https://wa.me/19252639949" rel="noopener">WhatsApp</a></p>
       <!-- Formspree: replace FORMSPREE_ID with the real form id (also noted in docs/BUILD-NOTES.md); the form carries no reveal class -->
       <form class="form" action="https://formspree.io/f/FORMSPREE_ID" method="POST" data-ajax>
         <input type="hidden" name="_subject" value="New inquiry from anarevents.com">
@@ -208,12 +216,11 @@
           <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
           <div class="field"><label for="f-phone">Phone / WhatsApp <span class="muted">(optional)</span></label><input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
         </div>
-        <div class="field"><label for="f-message">Message <span class="muted">(optional)</span></label><p class="field__help" id="f-message-help">Your families, approximate dates and guest count, the rituals that matter most.</p><textarea id="f-message" name="message" aria-describedby="f-message-help"></textarea></div>
+        <div class="field"><label for="f-message">Message <span class="muted">(optional)</span></label><p class="field__help" id="f-message-help">Your families, approximate dates and guest count, the rituals that matter most, and the language your parents prefer.</p><textarea id="f-message" name="message" aria-describedby="f-message-help"></textarea></div>
         <div class="form__submit"><button class="btn" type="submit">Begin the conversation</button></div>
         <p class="form__status" id="form-status" role="status" aria-live="polite" tabindex="-1"></p>
         <p class="form__note">We reply within one business day.</p>
       </form>
-      <p class="inquire__call reveal"><a href="tel:+19252639949">Call (925) 263-9949</a> · <a href="https://wa.me/19252639949" rel="noopener">WhatsApp</a></p>
     </div>
   </section>
 

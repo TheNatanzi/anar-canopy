@@ -1,0 +1,33 @@
+{
+ "model": "fable",
+ "role": "dev",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "assets/css/canopy.css — `html.canopy-motion .tree__layer,html.canopy-motion .tree__layer img{will-change:transform}`",
+   "what": "Drop the `img` half: keep will-change on the four layer divs only. GSAP force3D promotes the img for the 0.9 s bounce and demotes it after.",
+   "why": "Eight resident full-width RGBA textures (≈26 MB each at 1440×DPR2, plus the masked bark/sprig layers) is the one real scroll-jank risk on integrated GPUs; four is enough."
+  },
+  {
+   "where": "index.html .hero__tag + canopy.css `.canopy .hero__tag > span:first-child{text-wrap:balance}`",
+   "what": "Wrap each sentence in its own span (`<span>Honoring the roots.</span> <span>Elevating the vibe.</span>`) with `display:inline-block`, and remove the balance rule.",
+   "why": "index-phone-0.jpg shows the line breaking at 'ELEVATING / THE VIBE.', not at the full stop the CSS comment promises."
+  },
+  {
+   "where": "assets/js/canopy.js kill() — `l.style.transform = ''`",
+   "what": "Replace with `gsap.set(l, {clearProps:'transform'})` for each .tree__layer.",
+   "why": "Clearing the inline style leaves GSAP's `_gsap` transform cache holding the quickSetter y, so the first rotation write after Play-after-Pause re-renders the stale offset."
+  },
+  {
+   "where": "assets/js/site.js — inquiry form block, before `form.reportValidity()`",
+   "what": "Listen for `invalid` (capture) on the form: set `aria-invalid=\"true\"` and a `.field__error` message linked by `aria-describedby` on the failing field; clear it on `input`.",
+   "why": "Native validation bubbles vanish after a few seconds and VoiceOver on iOS does not announce them; the gold-underline inputs have no persistent error state."
+  },
+  {
+   "where": "weddings.html / how-we-work.html / about.html — inline `style=\"margin:…\"` attributes (≈14)",
+   "what": "Move the margin tweaks into two or three utility classes in site.css (e.g. `.mt-16`, `.mb-32`, `.h2--tight`).",
+   "why": "A `style-src` CSP without 'unsafe-inline' silently drops them, and the spacing rhythm lives in two places."
+  }
+ ]
+}

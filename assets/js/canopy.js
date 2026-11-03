@@ -22,18 +22,26 @@
         shrub sprigs ±0.3° about their base (9 s / 11 s); all paused off
         screen and reverted on Pause
      3. the hero, owned here (site.js block 1 skips a hero inside main.canopy):
-        the mark drifts down a little and .hero__fade goes to 0, the fade finished
-        before the drifted text bounds reach the canopy's centre (art row 297,
-        measured on every refresh); the video deepens to cypress over screen 1 and
-        is hidden once screen 1 has scrolled past (site.js then pauses it), shown
-        again on the way back
+        the mark drifts down a little; .hero__text (the descriptor + the tag
+        pair) goes to 0 over the first px of scroll, complete before the morphing
+        logo's box (block 6) reaches the text's top (the cross point is solved
+        from the measured rects on every refresh); .hero__fade (the halo and the
+        hero's own logo) goes to 0 between 10 % and 45 %, finished before the
+        drifted bounds reach the canopy's centre (art row 297, measured); the
+        video deepens to cypress by 80 % of screen 1 and is hidden once screen 1
+        has scrolled past (site.js then pauses it), shown again on the way back
      4. the falling pomegranate (scrub, 1.6 screens, 40° of spin, fades in the
         last 10 %; desktop only, the sprite is display:none on phones) and the
         fallen one nudged 30° into place on the ground
      5. the ground rising 40px into place; the logo + line rising on load
      6. the logo morph: the hero logo travels up and shrinks into the centre
-        of the header bar over the first 70 % of the hero and docks there
-        (one ScrollTrigger; html.logo-morphing / html.logo-docked)
+        of the header bar over the first 70 % of the hero (eased out: it moves
+        fastest first, so the text scrolling up under it meets its box as late
+        as possible) and docks there (one ScrollTrigger; html.logo-morphing /
+        html.logo-docked)
+   fitHero() (no motion needed): the mark's rendered height is written to
+   --hero-content on main, so canopy.css can size the hero to the real text
+   (short phones: nothing under the fixed bar, nothing in the foliage).
    Leaves (.leaf), kashida draws (.kashida-draw) and reveals (.reveal / .stagger)
    are site.js blocks 8, 4 and 9.
    ========================================================= */
@@ -62,6 +70,8 @@
   var mark = $('.hero__mark', main);
   var rise = $('.hero__rise', main);
   var fade = $('.hero__fade', main);
+  var text = $('.hero__text', main);
+  var header = $('.site-header');
   var stmt = $('.screen--statement', main);
   var drop = $('.fruit-drop', main);
   var ground = $('.ground-art', main);
@@ -124,16 +134,48 @@
     var markBottom = hero.offsetTop + mark.offsetTop + mark.offsetHeight;
     return Math.max(0, limit - markBottom);
   }
-  /* the fade runs over FADE_FROM..FADE_TO of the hero's height; the drift is sized so that, at FADE_TO, the drifted
-     mark has used at most the clearance less a 16px reserve (the fade is complete strictly before the bounds touch
-     the foliage): drift = min(DRIFT_MAX, (clearance − 16) / FADE_TO) × hero height. With no clearance there is no
-     drift at all (the fade alone). Measured at 1440×900: clearance 43px, drift 60px, the fade gone at 405px of scroll */
+  /* the halo + logo fade runs over FADE_FROM..FADE_TO of the hero's height; the drift is sized so that, at FADE_TO,
+     the drifted mark has used at most the clearance less a 16px reserve (every fade is complete strictly before the
+     bounds touch the foliage): drift = min(DRIFT_MAX, (clearance − 16) / FADE_TO) × hero height. With no clearance
+     there is no drift at all. Measured at 1440×900: clearance 43px, drift 60px, the halo gone at 405px of scroll */
   var FADE_FROM = 0.1, FADE_TO = 0.45, DRIFT_MAX = 0.35, RESERVE = 16;
+  /* the morph: over the first MORPH_END of the hero's height, eased (power2.out: q = 1 − (1 − p)²) */
+  var MORPH_END = 0.7;
+  var morphEase = function (p) { return 1 - (1 - p) * (1 - p); };
   function heroDrift() {
     var h = hero ? hero.offsetHeight : vh();
     var k = Math.min(DRIFT_MAX, Math.max(0, heroClearance() - RESERVE) / (FADE_TO * h));
     return Math.round(k * h);
   }
+  /* an element's page top, summed up the offsetParent chain to main (transforms ignored: the untransformed box) */
+  function pageTop(el) {
+    var top = 0;
+    while (el && el !== main) { top += el.offsetTop; el = el.offsetParent; }
+    return top + main.offsetTop;
+  }
+
+  /* the mark's rendered content height (logo + descriptor + tag pair; the halo is absolute and not counted) goes to
+     --hero-content on main, so the CSS hero height reserves the real text: short phones (390×700, 360×640) and
+     enlarged text get a taller hero instead of text under the fixed bar. Independent of the motion (it runs under
+     Pause and reduced motion too); re-measured on resize, when the fonts land and on load. The hero's height does
+     not feed back into the mark's height (its width is viewport-based), so the write never loops */
+  var fitTimer = null;
+  function fitHero() {
+    if (!mark) { return; }
+    var h = mark.offsetHeight;
+    if (!h) { return; }
+    var next = h + 'px';
+    if (main.style.getPropertyValue('--hero-content') === next) { return; }
+    main.style.setProperty('--hero-content', next);
+    if (on) { ScrollTrigger.refresh(); }
+  }
+  fitHero();
+  window.addEventListener('resize', function () {
+    clearTimeout(fitTimer);
+    fitTimer = setTimeout(fitHero, 120);
+  }, { passive: true });
+  window.addEventListener('load', fitHero);
+  if (document.fonts && document.fonts.ready) { document.fonts.ready.then(fitHero); }
 
   function buildAll() {
     /* 1. parallax, desktop only (on phones the layer is the page height × 110vw: promoting it costs memory and jank for
@@ -220,17 +262,70 @@
       loopInView(sprigR, gsap.fromTo(sprigR, { rotation: 0.3 }, { rotation: -0.3, duration: 5.5, ease: 'sine.inOut', yoyo: true, repeat: -1 }));
     }
 
+    /* the morph geometry (block 6), measured here so block 3 can solve the text's cross point against it. A = the hero
+       logo's untransformed page rect, summed up the offsetParent chain (the mark's drift / rise transforms ignored;
+       its translateX(-50%) taken off); B = the header slot's img rect (fixed, so viewport = page), read with the
+       bar's transitions disabled (.is-measuring) so a mid-transition frame can never be captured. The copy's img is
+       sized by a plain style write (no callback-driven gsap.set outside the context); kill() clears it */
+    var A = null, B = null;
+    var canMorph = !!(morph && morphImg && heroLogo && navImg && hero && mark);
+    var measureMorph = function () {
+      if (!canMorph) { return; }
+      var el = heroLogo, left = 0, top = 0;
+      while (el && el !== main) { left += el.offsetLeft; top += el.offsetTop; el = el.offsetParent; }
+      left -= mark.offsetWidth / 2;
+      A = { left: left + main.offsetLeft, top: top + main.offsetTop, w: heroLogo.offsetWidth, h: heroLogo.offsetHeight };
+      if (header) { header.classList.add('is-measuring'); }
+      var r = navImg.getBoundingClientRect();
+      if (header) { header.classList.remove('is-measuring'); }
+      B = { left: r.left, top: r.top, w: r.width };
+      morphImg.style.width = A.w + 'px';
+    };
+    /* the scroll position (px) by which the descriptor + tag pair must be gone: the first px where the morphing
+       logo's box bottom (rising from A to B with the eased progress, shrinking about its top-left corner) comes
+       within TEXT_RESERVE of the text's top (scrolling up at 1× less the mark's drift), less 2px, so the fade is
+       complete strictly before the box reaches the text's bounds; never later than FADE_TO of the hero (the
+       foliage clearance). Scanned in 2px steps from 0 (the eased morph makes the gap a quadratic in the scroll).
+       Measured: 1440×900 → ~66px linear, later eased; 390×844 → ~24px linear */
+    var TEXT_RESERVE = 8;
+    var textFadeEnd = function () {
+      var H = hero.offsetHeight;
+      var cap = Math.round(FADE_TO * H);
+      if (!text || !canMorph) { return cap; }
+      measureMorph();
+      var L = Math.round(H * MORPH_END);
+      var scaleEnd = B.w / A.w;
+      var tTop = pageTop(text);
+      var drift = heroDrift() / H;
+      for (var s = 0; s <= cap; s += 2) {
+        var q = morphEase(Math.min(1, s / L));
+        var boxBottom = A.top + (B.top - A.top) * q + A.h * (1 + (scaleEnd - 1) * q);
+        var textTop = tTop - s + drift * s;
+        if (textTop <= boxBottom + TEXT_RESERVE) { return Math.max(1, s - 2); }
+      }
+      return cap;
+    };
+
     /* 3. the hero, scrubbed over its own height: the mark drifts down by heroDrift() (depth: it rises slower than the
-          page), the logo, line and tag fade 1 -> 0 between 10 % and 45 % of the hero, and by 45 % the drift has used
-          at most the measured clearance, so no text is ever over the foliage; the video deepens to cypress meanwhile.
-          Every value is a function: a refresh (resize, fonts, the tree image landing) re-measures */
+          page); the halo and the hero's own logo (.hero__fade) fade 1 -> 0 between 10 % and 45 % of the hero, and by
+          45 % the drift has used at most the measured clearance, so nothing is ever over the foliage; the video
+          deepens to cypress by 80 % of the hero (the open middle under the canopy is clean night before screen 2).
+          The descriptor + tag pair (.hero__text) fade on their own trigger, 1 -> 0 from the top of the page to
+          textFadeEnd(): gone before the morphing logo's box reaches them. Every value is a function: a refresh
+          (resize, fonts, the tree image landing) re-measures */
     if (hero && mark && fade) {
       var heroTl = gsap.timeline({
         scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true, invalidateOnRefresh: true }
       });
       heroTl.fromTo(mark, { y: 0 }, { y: heroDrift, ease: 'none', duration: 1 }, 0)
         .fromTo(fade, { opacity: 1 }, { opacity: 0, ease: 'none', duration: FADE_TO - FADE_FROM }, FADE_FROM);
-      if (deepen) { heroTl.fromTo(deepen, { opacity: 0 }, { opacity: 1, ease: 'none', duration: 1 }, 0); }
+      if (deepen) { heroTl.fromTo(deepen, { opacity: 0 }, { opacity: 1, ease: 'none', duration: 0.8 }, 0); }
+      if (text) {
+        gsap.fromTo(text, { opacity: 1 }, {
+          opacity: 0, ease: 'none',
+          scrollTrigger: { trigger: hero, start: 'top top', end: function () { return '+=' + textFadeEnd(); }, scrub: true, invalidateOnRefresh: true }
+        });
+      }
     }
     /* the fixed video: gone once screen 1 has scrolled past (deepened to cypress by then; display:none makes its
        IntersectionObserver pause the file), back on the way up */
@@ -273,40 +368,34 @@
     }
 
     /* 6. the logo morph: the hero logo travels up and shrinks into the centre of the header bar over the first 70 % of
-          the hero's height, and docks there. ONE ScrollTrigger (no tween: progress is applied directly, so the copy
-          tracks the page pixel for pixel). A = the hero logo's untransformed page rect, summed up the offsetParent
-          chain (the mark's drift / rise transforms ignored; its translateX(-50%) taken off); B = the header slot's
-          img rect (fixed, so viewport = page). At progress p the fixed copy sits at lerp(A in the viewport, B, p) with
-          scale lerp(1, B.w / A.w, p) about its top-left corner; at p = 0 the hero's own logo shows, between the ends
-          the copy (html.logo-morphing hides the hero img), at p = 1 the header logo (html.logo-docked) in the same
-          place. Re-measured on every refresh (resize, fonts) */
-    if (morph && morphImg && heroLogo && navImg && hero) {
-      var A = null, B = null;
-      var measureMorph = function () {
-        var el = heroLogo, left = 0, top = 0;
-        while (el && el !== main) { left += el.offsetLeft; top += el.offsetTop; el = el.offsetParent; }
-        left -= mark.offsetWidth / 2;
-        A = { left: left + main.offsetLeft, top: top + main.offsetTop, w: heroLogo.offsetWidth };
-        var r = navImg.getBoundingClientRect();
-        B = { left: r.left, top: r.top, w: r.width };
-        gsap.set(morphImg, { width: A.w });
-      };
+          the hero's height, and docks there. ONE ScrollTrigger (no tween: the progress is applied directly through
+          three gsap.quickSetters, so the copy tracks the page pixel for pixel and no per-frame tween is recorded).
+          At progress p, q = power2.out(p): the fixed copy sits at lerp(A in the viewport, B, q) with scale
+          lerp(1, B.w / A.w, q) about its top-left corner (fastest first: the text scrolling up under it meets its
+          box as late as possible, block 3 fades the text before that); at p = 0 the hero's own logo shows, between
+          the ends the copy (html.logo-morphing hides the hero img), at p = 1 the header logo (html.logo-docked) in
+          the same place, never overshooting the bar. Re-measured on every refresh (resize, fonts); kill() clears
+          the copy's transform (clearProps, the GSAP cache included) and its img width */
+    if (canMorph) {
+      /* scaleX + scaleY, not "scale": the alias is resolved only by a tween, a quickSetter on it writes nothing
+         (verified on 3.12.5: style.transform stayed translate-only, the copy never shrank) */
+      var setMorphX = gsap.quickSetter(morph, 'x', 'px');
+      var setMorphY = gsap.quickSetter(morph, 'y', 'px');
+      var setMorphSX = gsap.quickSetter(morph, 'scaleX');
+      var setMorphSY = gsap.quickSetter(morph, 'scaleY');
       var applyMorph = function (self) {
         if (!A || !B) { return; }
-        var p = self.progress;
-        /* a straight line in the viewport from the hero logo's rect (where the hero logo is at scroll 0) to the slot:
-           the logo rises slower than the page (the line and the tag scroll away beneath it) and never overshoots the bar */
-        gsap.set(morph, {
-          x: A.left + (B.left - A.left) * p,
-          y: A.top + (B.top - A.top) * p,
-          scale: 1 + (B.w / A.w - 1) * p
-        });
+        var p = self.progress, q = morphEase(p), k = 1 + (B.w / A.w - 1) * q;
+        setMorphX(A.left + (B.left - A.left) * q);
+        setMorphY(A.top + (B.top - A.top) * q);
+        setMorphSX(k);
+        setMorphSY(k);
         html.classList.toggle('logo-morphing', p > 0 && p < 1);
         html.classList.toggle('logo-docked', p >= 1);
       };
       measureMorph();
       ScrollTrigger.create({
-        trigger: hero, start: 'top top', end: function () { return '+=' + Math.round(hero.offsetHeight * 0.7); },
+        trigger: hero, start: 'top top', end: function () { return '+=' + Math.round(hero.offsetHeight * MORPH_END); },
         onRefreshInit: measureMorph, onRefresh: applyMorph, onUpdate: applyMorph
       });
     }
@@ -350,8 +439,12 @@
     if (!on) { return; }
     on = false;
     try { if (ctx) { ctx.revert(); ctx = null; } } catch (e) { /* ignore */ }
-    /* the parallax y is written by gsap.quickSetter (no tween for the context to revert): cleared by hand */
-    $$('.tree__layer', main).forEach(function (l) { l.style.transform = ''; });
+    /* the parallax y of the layers and the morph's x / y / scale are written by gsap.quickSetter (no tween for the
+       context to revert): cleared with clearProps, which empties GSAP's transform cache too (an emptied inline style
+       alone left the cached y, re-rendered by the first rotation write after Play); the copy's img width likewise */
+    $$('.tree__layer', main).forEach(function (l) { gsap.set(l, { clearProps: 'transform' }); });
+    if (morph) { gsap.set(morph, { clearProps: 'transform' }); }
+    if (morphImg) { morphImg.style.width = ''; }
     observers.forEach(function (o) { o.disconnect(); });
     observers = [];
     bounceTl = null; lastBounce = 0; canopyInView = false;

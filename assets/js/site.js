@@ -1,5 +1,5 @@
 /* =========================================================
-   Anar Events — site.js (v2.7, night palette, round-7 fixes, 3 Nov 2026)
+   Anar Events — site.js (v2.8, night palette, round-8 fixes, 3 Nov 2026)
    Loaded (defer, self-hosted in assets/js/vendor/) before this file:
      GSAP 3.12.5 + ScrollTrigger, Lenis 1.1.18
    Content is visible by default. Reveal targets are hidden only
@@ -45,26 +45,46 @@
      --------------------------------------------------------- */
   var heroVideo = $('.hero__video');
   var videoLoaded = false;
+  var videoFailed = false;
+  /* every play() goes through here: the promise rejection (autoplay refused) is swallowed and nothing plays after a failure */
+  var playVideo = function () {
+    if (!heroVideo || videoFailed) { return; }
+    var p = heroVideo.play();
+    if (p && p.catch) { p.catch(function () {}); }
+  };
   function loadHeroVideo() {
-    if (!heroVideo || videoLoaded || reduced || saveData || userPaused) { return; }
+    if (!heroVideo || videoLoaded || videoFailed || reduced || saveData || userPaused) { return; }
     var src = isDesktop() ? heroVideo.getAttribute('data-src-desktop') : heroVideo.getAttribute('data-src-mobile');
     if (!src) { return; }
     videoLoaded = true;
     var source = document.createElement('source');
     source.type = 'video/mp4';
     source.src = src;
+    /* a failed fetch or decode (restrictive data policies, a missing file): the source is removed and load() puts
+       the poster back, silently; no later play() is attempted */
+    var fallback = function () {
+      if (videoFailed) { return; }
+      videoFailed = true;
+      try {
+        heroVideo.pause();
+        if (source.parentNode) { heroVideo.removeChild(source); }
+        heroVideo.load();
+      } catch (e) { /* the poster is already showing */ }
+    };
+    source.addEventListener('error', fallback);
+    heroVideo.addEventListener('error', fallback);
     heroVideo.appendChild(source);
     /* load()/play() only while the hero is on screen (a deep link to #inquire lands below it); otherwise the
        observer starts it when the hero scrolls back in (play() on the preload="none" video fetches the mp4) */
     var inView = heroVideo.getBoundingClientRect().bottom > 0;
     if (inView || !('IntersectionObserver' in window)) {
       heroVideo.load();
-      heroVideo.play().catch(function () {});
+      playVideo();
     }
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (entries) {
         entries.forEach(function (en) {
-          if (en.isIntersecting && !userPaused && !reduced) { heroVideo.play().catch(function () {}); } else { heroVideo.pause(); }
+          if (en.isIntersecting && !userPaused && !reduced) { playVideo(); } else { heroVideo.pause(); }
         });
       }, { threshold: 0.05 }).observe(heroVideo);
     }
@@ -76,7 +96,7 @@
     document.addEventListener('visibilitychange', function () {
       if (!videoLoaded) { return; }
       if (document.hidden) { heroVideo.pause(); return; }
-      if (!userPaused && !reduced && heroVideo.getBoundingClientRect().bottom > 0) { heroVideo.play().catch(function () {}); }
+      if (!userPaused && !reduced && heroVideo.getBoundingClientRect().bottom > 0) { playVideo(); }
     });
   }
 
@@ -103,16 +123,21 @@
   startSmoothScroll();
   function headerOffset() { var h = $('.site-header'); return -(h ? h.offsetHeight : 0); }
   /* After an anchor jump (or a load with a hash) the once-only reveals whose trigger start is now above the
-     scroll position are forced to their end state, so nothing arrives invisible; ScrollTrigger is refreshed first */
-  function settleReveals() {
+     scroll position are forced to their end state, so nothing arrives invisible; ScrollTrigger is refreshed first.
+     The same settle runs (without the refresh) when ordinary scrolling ends, so a fast flick or a scrollbar jump
+     past a whole trigger range (limitCallbacks:true can skip its callback) never strands a .reveal / .stagger */
+  function settleReveals(noRefresh) {
     if (!hasGsap || !motionOn) { return; }
-    ScrollTrigger.refresh();
-    var y = window.scrollY || window.pageYOffset;
-    ScrollTrigger.getAll().forEach(function (st) {
-      if (st.vars.once && st.animation && st.start < y && st.animation.progress() < 1) {
-        st.animation.progress(1);
-        st.kill();
-      }
+    if (!noRefresh) { ScrollTrigger.refresh(); }
+    /* the reveal tweens are tracked in revealTweens (block 9): a once-only trigger that was jumped over may already have
+       killed itself without playing, so ScrollTrigger.getAll() cannot find it; the trigger element's position can */
+    var limit = vh() * 0.88;
+    revealTweens = revealTweens.filter(function (r) {
+      if (r.tween.progress() >= 1) { return false; }
+      if (r.el.getBoundingClientRect().top >= limit) { return true; }
+      r.tween.progress(1);
+      if (r.tween.scrollTrigger) { r.tween.scrollTrigger.kill(); }
+      return false;
     });
   }
   function scrollToEl(el) {
@@ -146,7 +171,11 @@
      scroll event): each block pushes its handler into scrollFns; every handler writes the DOM only on a change */
   var scrollFns = [];
   var scrollQueued = false;
+  var scrollEndTimer = null;
   window.addEventListener('scroll', function () {
+    /* scroll end (150 ms after the last event): complete any once-only reveal whose trigger range has been passed */
+    clearTimeout(scrollEndTimer);
+    scrollEndTimer = setTimeout(function () { settleReveals(true); }, 150);
     if (scrollQueued) { return; }
     scrollQueued = true;
     requestAnimationFrame(function () {
@@ -161,22 +190,38 @@
   }
   scrollFns.push(onScrollState);
   onScrollState();
+  /* the toggle's aria-expanded and the inert <main> always follow the drawer's class (also re-synced on resize) */
+  function syncNav() {
+    if (!header || !navToggle) { return; }
+    var open = header.classList.contains('nav-open');
+    navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (mainEl) { mainEl.inert = open; }
+  }
   function closeNav() {
     if (!header || !navToggle) { return; }
     header.classList.remove('nav-open');
-    navToggle.setAttribute('aria-expanded', 'false');
+    syncNav();
   }
   if (navToggle) {
     navToggle.addEventListener('click', function () {
-      var open = header.classList.toggle('nav-open');
-      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      header.classList.toggle('nav-open');
+      syncNav();
     });
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && header.classList.contains('nav-open')) { closeNav(); navToggle.focus(); }
     });
-    /* the drawer closes when a link is activated and when the viewport grows past the phone breakpoint */
+    /* the drawer closes when a link is activated, on a click outside the header (capture: before the target's own
+       handler, so the "How we work +" tab's open runs on a page that is no longer inert), when focus leaves the
+       header (Tab past the last link) and when the viewport grows past the phone breakpoint */
     $$('.site-nav a', header).forEach(function (a) { a.addEventListener('click', closeNav); });
+    document.addEventListener('click', function (e) {
+      if (header.classList.contains('nav-open') && !header.contains(e.target)) { closeNav(); }
+    }, true);
+    header.addEventListener('focusout', function (e) {
+      if (header.classList.contains('nav-open') && e.relatedTarget && !header.contains(e.relatedTarget)) { closeNav(); }
+    });
     onMQ(desktopQuery, function (e) { if (e.matches) { closeNav(); } });
+    window.addEventListener('resize', syncNav, { passive: true });
     /* the links are visible by default (CSS); only now, with the toggle wired, do they collapse into the drawer */
     html.classList.add('nav-ready');
   }
@@ -273,8 +318,9 @@
       if (panelOpen && !panel.contains(e.target)) { (closeBtn || panel).focus(); }
     });
     /* Keep focused controls visible; synchronize visual and keyboard availability.
-       While the page scrolls only the class changes (visual); aria-hidden / tabIndex are written in the settle
-       timeout (700 ms after the last scroll or observer change), never while the control holds focus. */
+       Showing: the class, aria-hidden and tabIndex change together, at once. Hiding: while the page scrolls only
+       the class changes (visual); aria-hidden / tabIndex follow in the settle timeout (700 ms after the last
+       scroll or observer change). A control that holds focus is never hidden, visually or from the keyboard. */
     var hideAtDestination = false, hideWhileScrolling = false, heroInView = true, underContent = false, idleTimer;
     var lastScroll = window.scrollY;
     var motionBtn = $('.motion-toggle');
@@ -283,8 +329,9 @@
     /* the index hero hides the tab on every screen size; the inner-page band only on phones */
     var heroHides = function () { return heroInView && (!isDesktop() || (heroEl && heroEl.classList.contains('hero'))); };
     var setShown = function (el, hidden, settled) {
+      if (hidden && el.contains(document.activeElement)) { hidden = false; }
       if (el.classList.contains('is-hidden') !== hidden) { el.classList.toggle('is-hidden', hidden); }
-      if (!settled || el.contains(document.activeElement)) { return; }
+      if (hidden && !settled) { return; }
       var aria = hidden ? 'true' : 'false';
       if (el.getAttribute('aria-hidden') !== aria) { el.setAttribute('aria-hidden', aria); }
       var ti = hidden ? -1 : 0;
@@ -337,8 +384,8 @@
         settleSoon();
       }, { threshold: 0 }).observe(heroEl);
     } else { heroInView = false; syncTab(true); }
-    /* phones: the celebrations and the form, watched in the bottom 10% of the viewport (where the Pause button sits) */
-    var underFor = [$('.accordion'), $('.form')].filter(Boolean);
+    /* phones: the teaser options, the celebrations, the journey and the form, watched in the bottom 10% of the viewport (where the Pause button sits) */
+    var underFor = [$('.teaser'), $('.accordion'), $('.journey'), $('.form')].filter(Boolean);
     if (motionBtn && underFor.length && 'IntersectionObserver' in window) {
       var underView = new Map();
       var underObserver = new IntersectionObserver(function (entries) {
@@ -385,8 +432,11 @@
      .7s timer) the body is in flow, fades in, the row grows to fit
      its text and ScrollTrigger is refreshed. A ResizeObserver on the
      accordion refreshes on any later height change (debounced).
-     Phones: each description sits in a native <details> "Read more";
-     wider screens open every one (the summary is hidden there).
+     Phones: each description sits in a native <details> "Read more",
+     every one closed at first; wider screens open every one (the
+     summary is hidden there, CSS). Collapsed bodies carry
+     aria-hidden="true" + inert at every breakpoint; a shown body
+     carries neither (setBodyShown).
      Wide screens also reserve the row height: every body is measured
      at the open panel's width (fonts loaded, on resize) and the tallest
      sets --acc-min on the accordion (CSS min-height), so hovering from
@@ -394,6 +444,11 @@
      --------------------------------------------------------- */
   var refreshTriggers = function () { if (hasGsap && motionOn) { ScrollTrigger.refresh(); } };
   var compactQuery = window.matchMedia('(max-width: 768px)');
+  var setBodyShown = function (content, shown) {
+    if (!content) { return; }
+    content.inert = !shown;
+    if (shown) { content.removeAttribute('aria-hidden'); } else { content.setAttribute('aria-hidden', 'true'); }
+  };
   $$('[data-accordion]').forEach(function (acc, ai) {
     var panels = $$('.accordion__panel', acc);
     var hoverable = window.matchMedia('(hover: hover)').matches;
@@ -418,8 +473,7 @@
         p.classList.toggle('is-settling', on);
         var btn = $('.accordion__trigger', p);
         if (btn) { btn.setAttribute('aria-expanded', on ? 'true' : 'false'); }
-        var content = $('.accordion__body', p);
-        if (content) { content.inert = !on; content.setAttribute('aria-hidden', on ? 'false' : 'true'); }
+        setBodyShown($('.accordion__body', p), on);
       });
       settling = target;
       settleTimer = setTimeout(settle, reduced || userPaused ? 0 : 720);
@@ -427,11 +481,12 @@
     acc.addEventListener('transitionend', function (e) {
       if (settling && e.target === settling && /flex/.test(e.propertyName)) { settle(); }
     });
+    /* height changes (a panel settling, a Read more opening): one refresh, 150 ms after the last change, on the next frame */
     if ('ResizeObserver' in window) {
       var resizeTimer = null;
       new ResizeObserver(function () {
         clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(refreshTriggers, 150);
+        resizeTimer = setTimeout(function () { requestAnimationFrame(refreshTriggers); }, 150);
       }).observe(acc);
     }
     panels.forEach(function (p, i) {
@@ -446,7 +501,10 @@
           if (!isWide()) { return; }
           var openBody = $('.accordion__panel.is-open .accordion__body', acc);
           if (openBody && openBody.contains(document.activeElement)) { return; }
-          if (acc.contains(document.activeElement) && document.activeElement.matches(':focus-visible')) { return; }
+          /* old Safari throws on the :focus-visible pseudo-class: a throw counts as "not keyboard focus" */
+          var keyboardFocus = false;
+          try { keyboardFocus = acc.contains(document.activeElement) && document.activeElement.matches(':focus-visible'); } catch (err) { keyboardFocus = false; }
+          if (keyboardFocus) { return; }
           open(p);
         });
       }
@@ -462,7 +520,7 @@
         var content = $('.accordion__body', p);
         var visible = mobile || p.classList.contains('is-open');
         if (!mobile && content && content.contains(document.activeElement)) { open(p); visible = true; }
-        if (content) { content.inert = !visible; content.setAttribute('aria-hidden', visible ? 'false' : 'true'); }
+        setBodyShown(content, visible);
         if (!btn) { return; }
         btn.hidden = mobile;
         if (mobile) { btn.setAttribute('aria-expanded', 'true'); }
@@ -470,20 +528,20 @@
       });
       refreshTriggers();
     };
-    /* the native "Read more": open everywhere above 768px; on phones the first panel starts open, the rest closed */
+    /* the native "Read more": open everywhere above 768px (the summary is hidden there, CSS); on phones every one starts closed */
     var syncRead = function () {
       var compact = compactQuery.matches;
-      panels.forEach(function (p, i) {
+      panels.forEach(function (p) {
         var d = $('.accordion__read', p);
-        if (d) { d.open = !compact || i === 0; }
+        if (d) { d.open = !compact; }
       });
     };
-    /* the tallest expanded body at the open panel's width (flex 4.5 of 4.5+(n-1), minus the 8px gaps) -> --acc-min */
+    /* the tallest expanded body at the open panel's width (flex 5 of 5+(n-1), minus the 8px gaps) -> --acc-min */
     var reserveHeight = function () {
       if (!isWide()) { acc.style.removeProperty('--acc-min'); return; }
       var n = panels.length;
       var gap = parseFloat(getComputedStyle(acc).columnGap) || 8;
-      var openW = Math.max(0, (acc.clientWidth - gap * (n - 1)) * 4.5 / (n + 3.5));
+      var openW = Math.max(0, (acc.clientWidth - gap * (n - 1)) * 5 / (n + 4));
       var tallest = 0;
       panels.forEach(function (p) {
         var b = $('.accordion__body', p);
@@ -541,7 +599,7 @@
       if (links) { status.appendChild(contactLinks()); }
     };
     var restoreSubmit = function () { if (submitBtn) { submitBtn.disabled = false; } };
-    /* a field inside the closed "Share more wedding details" that fails validation opens it first, so the browser can show the message */
+    /* a field inside the closed "Share your dates, guest count & traditions" that fails validation opens it first, so the browser can show the message */
     form.addEventListener('invalid', function (e) {
       var more = e.target && e.target.closest ? e.target.closest('details') : null;
       if (more && !more.open) { more.open = true; }
@@ -589,13 +647,19 @@
   }
 
   /* =========================================================
-     MOTION. initMotion() builds every tween and returns true;
-     killMotion() removes them all and shows everything. The
-     "Pause motion / Play motion" button and the reduced-motion
-     media query call these.
+     MOTION. initMotion() builds every tween inside ONE
+     gsap.context() (motionCtx) and returns true; killMotion()
+     reverts that context (every tween and ScrollTrigger this
+     file made, and the inline styles they wrote) and shows
+     everything, touching nothing another component may add to
+     GSAP later. The "Pause motion / Play motion" button and the
+     reduced-motion media query call these.
      ========================================================= */
   var motionOn = false;
+  var motionCtx = null;
   var leafTweens = [];
+  /* the once-only reveal tweens with their trigger elements (block 9), for settleReveals() */
+  var revealTweens = [];
   var trunkImgs = $$('.descend__trunks img');
 
   /* Drawn lines (.kashida-draw, .track-line) use vector-effect:non-scaling-stroke, so dash values are
@@ -638,7 +702,10 @@
       html.classList.add('anim-ready');
       html.classList.add('motion');
       html.classList.remove('reduced');
-      buildTweens();
+      /* the context exists before buildTweens() runs, so a throw midway still leaves killMotion() something to revert
+         (gsap.context() needs a function: without one it returns the current context, i.e. none) */
+      motionCtx = gsap.context(function () {});
+      motionCtx.add(buildTweens);
       motionOn = true;
       ScrollTrigger.refresh();
     } catch (err) {
@@ -656,23 +723,11 @@
 
   function killMotion() {
     try {
-      if (hasGsap) {
-      ScrollTrigger.getAll().forEach(function (st) { st.kill(); });
-      leafTweens.forEach(function (t) { t.kill(); });
+      /* revert() kills every tween / ScrollTrigger recorded in the context and restores the inline styles each
+         target had before (authored inline styles stay); other GSAP users on the page are untouched */
+      if (motionCtx) { motionCtx.revert(); motionCtx = null; }
       leafTweens = [];
-      gsap.globalTimeline.clear();
-      /* only the props each target was animated on are cleared (never clearProps:'all': authored inline styles stay) */
-      var cleared = [
-        ['.reveal, .stagger > *, .hero__mark', 'opacity,transform'],
-        ['.reveal-img, .hero__canopy, .descend__trunks img, .teaser__strips i, .leaf, .ground__roots', 'transform'],
-        ['.hero__deepen, .hero__scroll, .hero__tag', 'opacity'],
-        ['.track-dot', 'backgroundColor,transform'],
-        ['.kashida-draw path, .track-line path', 'strokeDasharray,strokeDashoffset']
-      ];
-      cleared.forEach(function (pair) {
-        $$(pair[0]).forEach(function (el) { gsap.set(el, { clearProps: pair[1] }); });
-      });
-      }
+      revealTweens = [];
     } catch (e) { /* ignore */ }
     html.classList.remove('anim-ready');
     html.classList.remove('motion');
@@ -695,7 +750,7 @@
         .to('.hero__mark', { y: function () { return vh() * 0.45; }, opacity: 0.35, ease: 'none', duration: 1 }, 0)
         .to('.hero__canopy', { y: function () { return vh() * 0.4; }, ease: 'none', duration: 1 }, 0)
         .to('.hero__deepen', { opacity: 1, ease: 'none', duration: 1 }, 0)
-        .to(['.hero__scroll', '.hero__tag'], { opacity: 0, ease: 'none', duration: 0.35 }, 0);
+        .to('.hero__tag', { opacity: 0, ease: 'none', duration: 0.35 }, 0);
     }
 
     /* -------------------------------------------------------
@@ -815,17 +870,22 @@
        ------------------------------------------------------- */
     var limit = vh() * 0.88;
     var seen = function (el) { return el.getBoundingClientRect().top < limit; };
+    revealTweens = [];
+    var reveal = function (el, targets, vars) {
+      vars.scrollTrigger = { trigger: el, start: 'top 88%', once: true };
+      revealTweens.push({ el: el, tween: gsap.to(targets, vars) });
+    };
     $$('.reveal').forEach(function (el) {
       if (seen(el)) { gsap.set(el, { opacity: 1, y: 0 }); return; }
-      gsap.to(el, { opacity: 1, y: 0, duration: 0.9, ease: 'power2.out', scrollTrigger: { trigger: el, start: 'top 88%', once: true } });
+      reveal(el, el, { opacity: 1, y: 0, duration: 0.9, ease: 'power2.out' });
     });
     $$('.reveal-img').forEach(function (el) {
       if (seen(el)) { gsap.set(el, { scale: 1 }); return; }
-      gsap.to(el, { scale: 1, duration: 1.2, ease: 'power2.out', scrollTrigger: { trigger: el, start: 'top 88%', once: true } });
+      reveal(el, el, { scale: 1, duration: 1.2, ease: 'power2.out' });
     });
     $$('.stagger').forEach(function (group) {
       if (seen(group)) { gsap.set(group.children, { opacity: 1, y: 0 }); return; }
-      gsap.to(group.children, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out', stagger: 0.08, scrollTrigger: { trigger: group, start: 'top 88%', once: true } });
+      reveal(group, group.children, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out', stagger: 0.08 });
     });
   }
 
@@ -835,12 +895,12 @@
         instead. Never both: the same `y` is driven once, and
         relative (+=) so a CSS translate on the leaf is kept.
         Crossing the 769px breakpoint kills the old tweens
-        (and their triggers) and builds the other kind.
+        (and their triggers) and builds the other kind, inside
+        motionCtx so a later killMotion() reverts them too.
      ------------------------------------------------------- */
   function killLeaves() {
-    leafTweens.forEach(function (t) { if (t.scrollTrigger) { t.scrollTrigger.kill(); } t.kill(); });
+    leafTweens.forEach(function (t) { t.revert(); });
     leafTweens = [];
-    gsap.set($$('.leaf'), { clearProps: 'transform' });
   }
   function buildLeaves() {
     killLeaves();
@@ -852,7 +912,7 @@
       }
     });
   }
-  onMQ(desktopQuery, function () { if (motionOn) { buildLeaves(); } });
+  onMQ(desktopQuery, function () { if (motionOn && motionCtx) { motionCtx.add(buildLeaves); } });
 
   /* ---------------------------------------------------------
      Pause motion / Play motion (bottom-left ghost button) and
@@ -890,7 +950,7 @@
     startSmoothScroll();
     if (body.classList.contains('panel-open') && lenis) { lenis.stop(); }
     initMotion();
-    if (heroVideo) { if (!videoLoaded) { loadHeroVideo(); } else if (heroVideo.getBoundingClientRect().bottom > 0) { heroVideo.play().catch(function () {}); } }
+    if (heroVideo) { if (!videoLoaded) { loadHeroVideo(); } else if (heroVideo.getBoundingClientRect().bottom > 0) { playVideo(); } }
     setToggle(false);
   }
   if (toggle) {

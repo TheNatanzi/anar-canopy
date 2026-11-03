@@ -1,5 +1,5 @@
 /* =========================================================
-   Anar Events — site.css (v2.7, night palette, round-7 fixes, 3 Nov 2026)
+   Anar Events — site.css (v2.8, night palette, round-8 fixes, 3 Nov 2026)
    One file. Mobile first. No grid hairlines anywhere.
    Latin: TT Ramillas Bold only (TRIAL font: buy before launch).
    Persian: Noto Naskh Arabic (self-hosted, Arabic subset), never italic/tracked/caps.
@@ -101,6 +101,10 @@ main{position:relative;z-index:2;display:block}
 .band{background:var(--deep)}
 .on-light{background:var(--parch);color:var(--night)}
 .on-light.on-light--day{background:var(--cream);color:var(--brown)}
+/* the light interludes are framed by the brand's 2px gold rule top and bottom (the pageband and the footer carry their own: no doubled rule at those seams) */
+.on-light{border-block:2px solid var(--gold)}
+.pageband + .on-light{border-top:0}
+main > .on-light:last-child{border-bottom:0}
 
 /* ---------- Devices ---------- */
 /* the kashida line: 2px gold, drawn on by scroll (.kashida-draw) */
@@ -110,9 +114,9 @@ main{position:relative;z-index:2;display:block}
 .on-light .kashida path{stroke:var(--ruby)}
 .rule{height:2px;background:var(--gold);width:100%;border:0;margin:0}
 .on-light .rule{background:var(--ruby)}
-/* the glow band: plain deep cypress with one soft radial gold glow at 6% (the lattice tile read as a grid and is gone) */
+/* the glow band: plain deep cypress with one soft radial gold glow at 10%, biased upward behind the heading (the lattice tile read as a grid and is gone) */
 .band--glow{position:relative;isolation:isolate}
-.band--glow::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at center,rgba(201,158,92,.06),rgba(201,158,92,0) 70%)}
+.band--glow::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 50% 30%,rgba(201,158,92,.10),rgba(201,158,92,0) 70%)}
 
 /* ---------- Buttons: ONE gold button, ruby on hover ---------- */
 .btn{display:inline-block;padding:14px 30px;border:2px solid var(--gold);background:var(--gold);color:var(--night);font-weight:700;line-height:1;letter-spacing:.02em;border-radius:999px;transition:transform .3s var(--ease),background .3s,color .3s,border-color .3s;white-space:nowrap}
@@ -155,6 +159,12 @@ main{position:relative;z-index:2;display:block}
 .site-nav a{display:inline-block;padding-block:4px;border-bottom:2px solid transparent;transition:border-color .3s,color .3s;letter-spacing:.02em}
 .site-nav a:hover,.site-nav a[aria-current="page"]{border-bottom-color:var(--gold)}
 .nav-right{margin-left:auto;display:flex;align-items:center;gap:clamp(12px,2vw,28px)}
+/* the phone number as a plain tel: link before the Inquire button, wide desktops only (phones carry it in the drawer) */
+.nav-phone{display:none}
+@media (min-width:1100px){
+  .nav-phone{display:inline-block;font-size:16px;line-height:24px;letter-spacing:.02em;padding-block:4px;border-bottom:2px solid transparent;transition:border-color .3s;white-space:nowrap}
+  .nav-phone:hover{border-bottom-color:var(--gold)}
+}
 /* فارسی · به‌زودی: an inert stone label (no title / aria-label) on desktop only; phones carry the note at the end of the drawer */
 .nav-fa{font-size:20px;line-height:1;color:var(--stone);cursor:default;text-align:center;white-space:nowrap}
 .nav-fa__soon{font-size:14px}
@@ -166,13 +176,16 @@ main{position:relative;z-index:2;display:block}
 .nav-toggle[aria-expanded="true"] .nav-toggle__bar{background:transparent}
 .nav-toggle[aria-expanded="true"] .nav-toggle__bar::before{transform:translateY(8px) rotate(45deg)}
 .nav-toggle[aria-expanded="true"] .nav-toggle__bar::after{transform:translateY(-8px) rotate(-45deg)}
-/* mobile drawer */
-.site-header.nav-open{background:var(--deep)}
-html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;top:var(--header-h);left:0;right:0;background:var(--deep);border-top:2px solid var(--gold);padding:var(--s3) var(--gutter) var(--s4)}
+/* mobile drawer: solid deep cypress under a 2px gold top rule, capped at the viewport (minus the bar) and scrollable
+   inside (data-lenis-prevent on the nav keeps Lenis off its wheel/touch), so every link is reachable in a short
+   landscape viewport or with enlarged text; site.js closes it on a click outside, on focus leaving the header and on Escape */
+html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;top:var(--header-h);left:0;right:0;max-height:calc(100vh - var(--header-h));max-height:calc(100dvh - var(--header-h));overflow-y:auto;overscroll-behavior:contain;background:var(--deep);border-top:2px solid var(--gold);padding:var(--s3) var(--gutter) var(--s4)}
 .site-header.nav-open .site-nav ul{flex-direction:column;gap:var(--s2)}
 .site-header.nav-open .site-nav a{font-size:26px}
 /* solid once scrolled, and on inner pages */
 .site-header--solid,.site-header.is-scrolled{background:rgba(27,34,30,.96)}
+/* the open drawer's bar is the same solid deep cypress as the drawer (after the scrolled rule, so it wins while scrolled) */
+.site-header.nav-open{background:var(--deep)}
 /* the blur only on pointer desktops: a fixed element with a backdrop filter is re-composited on every scrolled frame */
 @media (min-width:769px) and (hover:hover){
   @supports (backdrop-filter:blur(8px)){.site-header--solid,.site-header.is-scrolled{backdrop-filter:blur(8px)}}
@@ -190,10 +203,10 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .hero__tint{position:absolute;inset:0;background:linear-gradient(rgba(27,34,30,.42),rgba(27,34,30,.66));pointer-events:none}
 .hero__tint::after{content:"";position:absolute;inset:0;background:rgba(201,158,92,.06)}
 .hero__deepen{position:absolute;inset:0;background:var(--night);opacity:0;pointer-events:none}
-/* the ONE tree piece: anchored by the BOTTOM (bottom:-4%), width 100vw capped at 165vh, at most 68vh tall
-   (object-fit:cover from the top), so the canopy rises ~35-40% at the sides, the middle stays open on tall
-   desktops and the logo line is never reached; trunks half off the page; bottom runs off-screen */
-.hero__canopy{position:absolute;left:50%;top:auto;bottom:-4%;width:min(100%,165vh);max-width:none;height:auto;max-height:68vh;object-fit:cover;object-position:center top;transform:translateX(-50%);pointer-events:none;will-change:transform}
+/* the ONE tree piece: anchored by the BOTTOM (bottom:-4%), width 100vw capped at 165vh, at most 62vh tall
+   (object-fit:cover from the top), so the canopy rises ~35% at the sides, the middle stays open and the top
+   fruit clusters never brush the logotype; trunks half off the page; bottom runs off-screen */
+.hero__canopy{position:absolute;left:50%;top:auto;bottom:-4%;width:min(100%,165vh);max-width:none;height:auto;max-height:62vh;object-fit:cover;object-position:center top;transform:translateX(-50%);pointer-events:none;will-change:transform}
 /* logo with the soft cypress halo behind it (a static radial gradient: no filter:blur) */
 .hero__mark{position:absolute;left:50%;top:28%;width:min(51vw,980px);transform:translateX(-50%);will-change:transform,opacity}
 .hero__halo{position:absolute;left:50%;top:50%;width:150%;height:220%;transform:translate(-50%,-50%);background:radial-gradient(closest-side,rgba(27,34,30,.6),transparent 70%);pointer-events:none}
@@ -201,17 +214,15 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .hero__logo img{width:100%;height:auto}
 .hero__line{position:relative;margin:clamp(12px,1.6vh,20px) auto 0;text-align:center;color:var(--parch);font-size:clamp(14px,1.15vw,16px);line-height:1.5;letter-spacing:.04em;opacity:.92;text-wrap:balance}
 .hero__place{display:block}
-/* bottom-left sits 64px up so the "Pause motion" button never covers it */
-.hero__scroll{position:absolute;left:clamp(16px,3vw,40px);bottom:calc(clamp(16px,3vh,32px) + 64px);font-size:14px;line-height:20px;letter-spacing:.12em;text-transform:uppercase;color:var(--parch);opacity:.9}
+/* no SCROLL cue anywhere: on desktop it printed over the painted foliage, on phones it read as the Pause button's label; the canopy draws the eye down */
 .hero__tag{position:absolute;right:clamp(16px,3vw,40px);bottom:clamp(14px,2.6vh,28px);font-size:22px;line-height:1.4;color:var(--parch);text-align:right}
 @media (max-width:768px){
   .hero__canopy{width:175vw;top:auto;bottom:-8%;max-height:none}
   .hero__mark{width:78vw;top:30%}
   .hero__halo{width:170%;height:250%}
   .hero__line{font-size:14px;padding-inline:4px;text-shadow:0 1px 12px rgba(27,34,30,.9)}
-  /* no SCROLL cue on phones: beside the round Pause button it read as its label, and the canopy already draws the eye down */
-  .hero__scroll{display:none}
-  .hero__tag{font-size:18px;bottom:calc(16px + env(safe-area-inset-bottom) + 2px)}
+  /* the Persian tagline sits on painted leaves: the same shadow as .hero__line, 24px up clear of the densest foliage */
+  .hero__tag{font-size:18px;bottom:calc(24px + env(safe-area-inset-bottom));text-shadow:0 1px 12px rgba(27,34,30,.9)}
   /* the "How we work +" tab is now a mid-height edge tab on phones too: the tagline stays at the bottom */
 }
 
@@ -252,7 +263,7 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .pillars{display:grid;gap:var(--s2);margin-top:clamp(56px,10vh,120px)}
 @media (min-width:768px){.pillars{grid-template-columns:repeat(3,1fr);gap:24px}}
 /* cards: a 2px gold top rule only (no perimeter border) */
-.card{position:relative;background:rgba(18,23,20,.82);border:0;border-top:2px solid var(--gold);padding:var(--s3) var(--s3) var(--s3);display:grid;gap:var(--s2);align-content:start;transition:transform .35s var(--ease);will-change:transform}
+.card{position:relative;background:rgba(18,23,20,.82);border:0;border-top:2px solid var(--gold);padding:var(--s3) var(--s3) var(--s3);display:grid;gap:var(--s2);align-content:start;transition:transform .35s var(--ease)}
 .card:hover{transform:translateY(-4px)}
 .card__n{display:block;font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
 .card__n .fa{display:inline;font-size:18px;color:var(--parch);letter-spacing:0}
@@ -261,6 +272,15 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 /* the three pillars are lighter than the teaser cards: no box fill, no top rule (the gold number eyebrow carries the structure), 12-16px sides; the h3 carries the full owner promise at 20-22px balanced so pillar 02 wraps to <=4 lines at 1440 */
 .pillars .card{background:transparent;border-top:0;padding:var(--s2) clamp(12px,1.1vw,16px)}
 .pillars .card h3{font-size:clamp(20px,1.55vw,22px);text-wrap:balance}
+/* desktop: three shared rows (number / promise / supporting copy), so every supporting paragraph starts on one line below the
+   tallest promise: a subgrid where supported, otherwise the h3 reserves four lines (pillar 02 wraps to four at 1440) */
+@media (min-width:768px){
+  .pillars .card h3{min-height:4.8em}
+  @supports (grid-template-rows:subgrid){
+    .pillars .card{grid-row:span 3;grid-template-rows:subgrid}
+    .pillars .card h3{min-height:0}
+  }
+}
 
 /* ---------- The celebrations: accordion ---------- */
 .accordion{display:grid;gap:var(--s2)}
@@ -276,21 +296,28 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
   .accordion__trigger:focus-visible{outline:none}
   .accordion__panel:has(.accordion__trigger:focus-visible){outline:2px solid var(--gold);outline-offset:-2px}
 }
-.accordion__label{position:absolute;left:var(--s2);top:var(--s2);letter-spacing:.1em;text-transform:uppercase;font-size:14px;z-index:1;display:none;color:var(--gold)}
+.accordion__label{position:absolute;left:var(--s2);top:var(--s2);letter-spacing:.06em;text-transform:uppercase;font-size:16px;z-index:1;display:none;color:var(--gold);text-shadow:0 1px 10px rgba(18,23,20,.95)}
 .accordion__body{position:relative;z-index:3;padding:var(--s4) var(--s2) var(--s3);display:grid;gap:var(--s1);min-height:100%;align-content:end;pointer-events:none}
 /* phones: a 44px right clearance for the mid-height "How we work +" tab; a compact preview (image + title + Persian) at 280px */
 @media (max-width:768px){.accordion__body{padding-right:44px;padding-bottom:64px}.accordion__panel{min-height:280px}}
 /* stacked (under 1100px) the trigger button is gone, so the body takes the pointer (the native Read more must toggle) */
 @media (max-width:1099px){.accordion__body{pointer-events:auto}}
 .accordion__body h3{font-size:clamp(26px,3vw,38px)}
-.accordion__body .fa{color:var(--gold)}
-/* one intro sentence always visible; the operational text sits behind the native <details> "Read more" at every width
-   (site.js opens every one above 768px; on phones the first panel starts open, the rest closed) */
+/* the gold Persian accent can land on a bright part of the photo: a soft night shadow keeps it legible */
+.accordion__body .fa{color:var(--gold);text-shadow:0 1px 10px rgba(18,23,20,.95)}
+/* one intro sentence always visible (parchment, 18px); the operational text sits behind the native <details> "Read more"
+   at every width in stone 16px, so the hierarchy reads headline / bright intro / receding detail
+   (site.js opens every one above 768px, where the summary is hidden; on phones every one starts closed) */
 .accordion__intro,.accordion__read p{max-width:34em;color:var(--parch);margin-top:var(--s1)}
+.accordion__read p{color:var(--stone);font-size:16px;line-height:24px}
 .accordion__read summary{cursor:pointer;list-style:none;display:inline-flex;gap:8px;align-items:baseline;color:var(--gold);font-size:14px;line-height:20px;letter-spacing:.1em;text-transform:uppercase;padding:4px 0}
 .accordion__read summary::-webkit-details-marker{display:none}
 .accordion__read summary::after{content:"+"}
 .accordion__read[open] summary::after{content:"\2013"}
+/* above 768px every details is forced open by site.js: the toggle would be dead UI, so it goes (no-JS keeps it) */
+@media (min-width:769px){html.site-ready .accordion__read[open] summary{display:none}}
+/* the closing line under the celebrations: the Weddings link and the first in-page CTA side by side */
+.accordion__foot{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:var(--s2) var(--s3);margin-top:var(--s3)}
 .accordion__more{pointer-events:auto;margin-top:var(--s1);justify-self:start}
 /* the wide layout (one open panel + narrow strips) only from 1100px; below that every panel is stacked and readable.
    No fixed height: the row is at least min(70vh,640px) and grows to fit the open body. The open body is in flow once
@@ -300,10 +327,10 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
   /* --acc-min: the tallest expanded body at the current width (site.js measures every body after fonts load and on resize), so the row never jumps between hovers */
   .accordion{display:flex;gap:var(--s1);min-height:max(min(70vh,640px),var(--acc-min,0px))}
   .accordion__panel{flex:1 1 0;min-height:0;transition:flex .7s var(--ease)}
-  .accordion__panel.is-open{flex:4.5 1 0}
-  /* collapsed strips keep their image texture (blur 3px, brightness .95) and a lighter overlay than the open panel: five photographs waiting to open, not dark bars */
+  .accordion__panel.is-open{flex:5 1 0}
+  /* collapsed strips keep their image texture (blur 3px, brightness .95) under a deeper overlay (.85 -> .45) so the gold labels hold on bright image areas: five photographs waiting to open, not dark bars */
   .accordion__panel:not(.is-open) .accordion__media img{filter:blur(3px) brightness(.95);transform:scale(1.08)}
-  .accordion__panel:not(.is-open) .accordion__media::after{background:linear-gradient(to top,rgba(18,23,20,.8),rgba(18,23,20,.35))}
+  .accordion__panel:not(.is-open) .accordion__media::after{background:linear-gradient(to top,rgba(18,23,20,.85),rgba(18,23,20,.45))}
   .accordion__panel:not(.is-open) .accordion__body,.accordion__panel.is-settling .accordion__body{position:absolute;inset:0}
   /* collapsed bodies leave the accessibility tree (visibility:hidden after the fade) */
   .accordion__panel:not(.is-open) .accordion__body{opacity:0;visibility:hidden;transition:opacity .25s,visibility 0s .25s}
@@ -339,7 +366,9 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 /* the two service options (index teaser and How we work "What you get"): no top rules (the section kashida is the one gold line); spacing carries the structure */
 .options{display:grid;gap:var(--s3)}
 @media (min-width:768px){.options{grid-template-columns:1fr 1fr;gap:var(--s4)}}
-.teaser .options{margin-top:var(--s4)}
+/* one explicit spacing sequence under the teaser heading: head 24px -> kashida strip -> 32px -> options (56px in all) */
+.teaser .section__head{margin-bottom:24px}
+.teaser .options{margin-top:0}
 .options > li{display:grid;gap:var(--s1);align-content:start}
 .options h3{font-size:clamp(20px,2.2vw,24px)}
 .options .option__when{color:var(--gold);font-size:14px;line-height:20px;letter-spacing:.06em;text-transform:uppercase}
@@ -347,7 +376,7 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .options ul{display:grid;gap:4px}
 .options ul li{padding-left:18px;position:relative}
 .options ul li::before{content:"";position:absolute;left:0;top:11px;width:8px;height:2px;background:var(--gold)}
-.teaser__strips{position:relative;height:2px;margin-block:var(--s3) var(--s4)}
+.teaser__strips{position:relative;height:2px;margin:0 0 var(--s3)}
 /* ONE 2px gold kashida line sliding in through GSAP only (block 6: xPercent 102 -> 0 with x:0); no CSS translate to compound */
 .teaser__strips i{position:absolute;left:0;right:0;top:0;height:2px;background:var(--gold);transform-origin:right center}
 .teaser__grid{display:grid;gap:var(--s3)}
@@ -423,8 +452,8 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 @media (min-width:768px){.form__row--3{grid-template-columns:1fr 1fr 1fr}}
 .field{display:grid;gap:var(--s1);min-width:0}
 .field label,.fieldset legend{font-size:16px;line-height:22px;color:var(--parch)}
-/* inputs in the underline style (editorial, like the kashida): no perimeter box, a 2px gold rule at .45 under a soft night fill; focus = the full gold underline (no 1px hairlines anywhere) */
-.field input,.field textarea,.field select{font:inherit;font-weight:700;color:var(--parch);background:rgba(27,34,30,.55);border:0;border-bottom:2px solid rgba(201,158,92,.45);border-radius:2px 2px 0 0;padding:12px 14px;width:100%;min-height:48px;transition:border-color .3s,background-color .3s}
+/* inputs in the underline style (editorial, like the kashida): no perimeter box, a 2px gold rule at .7 (opaque enough to read against the night fill) under a soft night fill; focus = the full gold underline (no 1px hairlines anywhere) */
+.field input,.field textarea,.field select{font:inherit;font-weight:700;color:var(--parch);background:rgba(27,34,30,.55);border:0;border-bottom:2px solid rgba(201,158,92,.7);border-radius:2px 2px 0 0;padding:12px 14px;width:100%;min-height:48px;transition:border-color .3s,background-color .3s}
 /* placeholders in stone (#B9B3A6 on the deep input ground: ~8:1) */
 .field input::placeholder,.field textarea::placeholder{color:var(--stone);opacity:1}
 .field input:focus-visible,.field textarea:focus-visible,.field select:focus-visible{outline:none;border-bottom-color:var(--gold);background:rgba(27,34,30,.8)}
@@ -433,8 +462,7 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .field select option{background:var(--deep);color:var(--parch)}
 /* success / error region (aria-live) */
 .form__status{font-size:16px;line-height:24px;padding:var(--s2);border-top:2px solid var(--gold);color:var(--parch)}
-.form__status[hidden]{display:none}
-.form__status:empty{padding:0;border:0;height:0;margin-top:calc(-1 * var(--s3))}
+.form__status[hidden],.form__status:empty{display:none}
 .form__status.is-error{border-top-color:var(--ruby)}
 .form__status.is-wait{color:var(--stone)}
 .form__status:focus{outline:none}
@@ -448,8 +476,9 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .check input:checked{background-color:var(--gold);border-color:var(--gold);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6.3 4.8 9 10 3.2' fill='none' stroke='%231B221E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
 .check input:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .form__note{font-size:14px;line-height:20px;color:var(--stone)}
-/* "Share more wedding details": the optional questions in a native <details>, closed by default (every field still submits) */
-.form__more{border-top:2px solid rgba(201,158,92,.45);padding-top:var(--s2)}
+/* "Share your dates, guest count & traditions (optional)": the optional questions in a native <details>, closed by default
+   (every field still submits); no rule above it (the translucent hairline read as a stray line; the form's one gold rule is its top) */
+.form__more{padding-top:var(--s1)}
 .form__more summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:var(--s2);align-items:baseline;color:var(--parch);font-size:18px;line-height:28px;padding:4px 0}
 .form__more summary::-webkit-details-marker{display:none}
 .form__more summary::after{content:"+";color:var(--gold);flex:0 0 auto}
@@ -527,9 +556,10 @@ html:not(.panel-ready) .hww-tab{display:none}
 .hww-steps h3{font-size:20px;line-height:26px;margin-bottom:4px}
 .hww-steps p{font-size:16px;line-height:24px;color:var(--stone)}
 .hww-panel__foot{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s3);align-items:center}
-/* the phone line: a plain link on its own line under the two actions (parents call before they type) */
-.hww-panel__phone{flex:0 0 100%;color:var(--stone);font-size:16px;line-height:24px;transition:color .3s}
-.hww-panel__phone:hover{color:var(--parch)}
+/* the phone line: the tel: link and the WhatsApp link, plain, on their own line under the two actions (parents call before they type) */
+.hww-panel__phone{flex:0 0 100%;color:var(--stone);font-size:16px;line-height:24px}
+.hww-panel__phone a{transition:color .3s}
+.hww-panel__phone a:hover{color:var(--parch)}
 body.panel-open{overflow:hidden}
 
 /* ---------- Inner page band ---------- */

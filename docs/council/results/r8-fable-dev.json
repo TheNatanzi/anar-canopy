@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "dev",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "assets/css/site.css: .form__status:empty",
+   "what": "Replace the height:0 / negative-margin trick with `.form__status:empty{display:none}` (grid gaps still apply to a zero-height row).",
+   "why": "The empty status row doubles the gap between the submit button and the closing note (visible in index-desktop-4 and index-phone-4)."
+  },
+  {
+   "where": "assets/css/site.css: .accordion__read summary (≥769px)",
+   "what": "Add `@media (min-width:769px){.accordion__read summary{display:none}}`, matching the site.js comment that says the summary is hidden where every details is forced open.",
+   "why": "A 'READ MORE –' control sits above text that is already open on desktop: dead UI that collapses the copy when clicked."
+  },
+  {
+   "where": "assets/js/site.js: accordion mouseenter handler, `document.activeElement.matches(':focus-visible')`",
+   "what": "Wrap the matches() call in try/catch (treat a throw as false).",
+   "why": "Safari <15.4 throws on the unknown pseudo-class, so every hover logs an error and the panel never opens there."
+  },
+  {
+   "where": "assets/js/site.js: nav drawer (navToggle block)",
+   "what": "Close the drawer on click outside the header and on focusout leaving the header, and add `aria-expanded` sync on resize; optionally set the rest of `main` inert while open.",
+   "why": "On phones the drawer only closes via the toggle, Escape or a link; tapping the page behind leaves it hanging over the content."
+  },
+  {
+   "where": "assets/css/site.css: .card{will-change:transform}",
+   "what": "Remove will-change from .card (keep it only on the scrubbed hero/trunk/roots layers).",
+   "why": "Three permanently promoted compositor layers for a hover-only 4px translate; wasted GPU memory on phones."
+  },
+  {
+   "where": "assets/tree/*.png, assets/tree/raw",
+   "what": "Move the unreferenced PNG sources (canopy-u3.png 5 MB, trunks-tall.png 4.3 MB, trunk-left/right.png, roots-floor.png, leaves-float.png) out of the publish root into a source folder.",
+   "why": "~14 MB of unused originals ship with the site; a wrong path or a crawler pulls them and bloats the deploy."
+  }
+ ]
+}

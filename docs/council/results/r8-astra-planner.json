@@ -1,0 +1,42 @@
+{
+ "model": "astra",
+ "role": "planner",
+ "score": 7.5,
+ "blocking": [
+  "Cultural descriptions sometimes prescribe a family's sequence despite promising to follow its customs.",
+  "Language support sounds guaranteed across six languages; the qualification is buried on the services page.",
+  "Several 'Call or WhatsApp' links open only WhatsApp, frustrating parents who expect a telephone call."
+ ],
+ "fixes": [
+  {
+   "where": "index.html #celebrations; weddings.html tradition sections",
+   "what": "Replace categorical phrases such as 'the sangeet is its own night', 'elders’ blessing first' and 'Seven circuits under the mandap' with family-confirmed descriptions. Remove the rigid distinction 'the reception is the couple’s'. Apply the family-choice qualification within each relevant description.",
+   "why": "Specificity builds trust only when it leaves room for the family's actual practice."
+  },
+  {
+   "where": "Shared footer; index.html #journey; how-we-work.html language FAQ",
+   "what": "Use 'Tell us your family’s preferred language; written translations and spoken support are confirmed in your proposal' consistently beside language promises.",
+   "why": "Parents need to distinguish translated documents from a planner who can speak with them directly."
+  },
+  {
+   "where": "Shared mobile navigation and .hww-panel__foot",
+   "what": "Split 'Call or WhatsApp' into 'Call (925) 263-9949' linked to tel:+19252639949 and a separate WhatsApp link.",
+   "why": "The promised calling route should work without requiring WhatsApp."
+  },
+  {
+   "where": "how-we-work.html #steps, Proposal and Planning",
+   "what": "Put the actual booking requirements and date-reservation point directly after Proposal; clarify whether an inquiry or consultation holds availability.",
+   "why": "Families coordinating several dates need to know exactly when their planner is secured."
+  },
+  {
+   "where": "how-we-work.html #you-get",
+   "what": "Add a concise operational explanation of how simultaneous events, venue changes, delays and planner absence are handled, with staffing and backup arrangements confirmed in the proposal.",
+   "why": "Multi-day competence needs evidence beyond repeated promises of one timeline and one contact."
+  },
+  {
+   "where": "index.html #celebrations desktop accordion",
+   "what": "Keep celebration names horizontal and immediately scannable, using a compact selector above the expanded panel instead of rotated labels.",
+   "why": "Parents should recognize their ceremony without rotating their head or exploring each narrow strip."
+  }
+ ]
+}

@@ -1,0 +1,36 @@
+{
+ "model": "astra",
+ "role": "brand",
+ "score": 7.5,
+ "blocking": [
+  "The celebrations module gives operational copy more prominence than imagery; it reads as a service brochure rather than a premium wedding editorial.",
+  "The middle-page hierarchy is too uniform: promises, service explanations and planning stages compete at similar visual weight."
+ ],
+ "fixes": [
+  {
+   "where": "index.html #celebrations; assets/js/site.js syncRead",
+   "what": "Start every Read more disclosure closed at every width. Keep the ceremony title and introductory sentence visible; expand operational detail only on request.",
+   "why": "The expanded Sofreh paragraph dominates the image and weakens the photographic composition."
+  },
+  {
+   "where": "assets/css/site.css .accordion__panel.is-open and .accordion__label",
+   "what": "Increase the desktop open-panel flex ratio from 4.5 to 6 and update reserveHeight accordingly; increase collapsed labels from 14px to 16px and reduce tracking to .06em.",
+   "why": "The principal image needs more breathing room, while the narrow vertical labels need easier recognition."
+  },
+  {
+   "where": "assets/css/site.css .pillars .card h3",
+   "what": "Use a three-row desktop layout for number, promise and supporting copy, aligning supporting paragraphs below the tallest promise; preserve all owner wording.",
+   "why": "The current two-line versus four-line promises leave uneven paragraph starts and an unfinished editorial rhythm."
+  },
+  {
+   "where": "assets/css/site.css .teaser__strips and .teaser .options",
+   "what": "Reduce the combined spacing between the section heading, kashida and service options to 48–64px; replace the overlapping margin declarations with one explicit spacing sequence.",
+   "why": "The supplied desktop view leaves a large empty interval beneath How we work, separating the heading from its useful content."
+  },
+  {
+   "where": "index.html .journey__extras",
+   "what": "Place the full celebration-name list behind a native disclosure labeled Celebrations your family may choose, leaving the five-step timeline as the section's primary content.",
+   "why": "The dense multilingual list competes with the timeline and repeats the celebrations section instead of providing a calm transition toward inquiry."
+  }
+ ]
+}

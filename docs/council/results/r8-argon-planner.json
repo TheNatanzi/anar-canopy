@@ -1,0 +1,13 @@
+{
+ "model": "argon",
+ "role": "planner",
+ "score": 9,
+ "blocking": [],
+ "fixes": [
+  {"where": "assets/js/site.js underFor array; assets/css/site.css .options > li, .journey (phones)", "what": "Add '.teaser' and '.journey' to the underFor array (Pause button hides under them), or padding-bottom:56px on .teaser and .journey at ≤768px.", "why": "Phone shots 1 and 3: the fixed Pause button overlaps the Wedding-day coordination bullets and the Proposal note."},
+  {"where": "assets/css/site.css .accordion__body .fa / .accordion__media::after", "what": "text-shadow:0 1px 10px rgba(18,23,20,.95) on .accordion__body .fa, or raise the media overlay's top stop from .25 to .55.", "why": "Phone shot 2: the gold Persian label sits on a bright part of the image and is near-illegible."},
+  {"where": "index.html Mehndi & Sangeet and Haldi & Pheras / Anand Karaj panels; weddings.html", "what": "Add a brief nod to the dholki or jaggo beside the sangeet, and mention the milni on the home accordion (as weddings.html does).", "why": "Punjabi and wider South Asian families read milni / dholki as real operational familiarity."},
+  {"where": "index.html .form__more summary", "what": "Rename the summary to 'Share your dates, guest count & traditions (optional)'.", "why": "Skimmers do not realise the collapsed block holds the cultural checkboxes and the 'writing as a parent' selector."}
+ ],
+ "note": "Captured from the Gemini web app (4 Argon) on the pass-7 build."
+}

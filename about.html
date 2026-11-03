@@ -31,18 +31,19 @@
   <div class="site-header__inner">
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span class="nav-toggle__bar"></span><span class="visually-hidden">Menu</span></button>
     <a class="nav-home" href="index.html" aria-label="Anar Events, home"><img src="assets/logo/logo-gold.svg" width="1600" height="552" alt=""></a>
-    <nav class="site-nav" id="site-nav" aria-label="Main">
+    <nav class="site-nav" id="site-nav" aria-label="Main" data-lenis-prevent>
       <ul>
         <li><a href="weddings.html">Weddings</a></li>
         <li><a href="how-we-work.html">How we work</a></li>
         <li><a href="about.html" aria-current="page">About</a></li>
-        <!-- phones only (CSS): the phone line as the last drawer item, then the inert "فارسی · coming soon" note -->
-        <li class="site-nav__phone"><a href="https://wa.me/19252639949" rel="noopener">Call or WhatsApp (925) 263-9949</a></li>
+        <!-- phones only (CSS): the phone line (tel: and WhatsApp as two links) as the last drawer item, then the inert "فارسی · coming soon" note -->
+        <li class="site-nav__phone"><a href="tel:+19252639949">Call (925) 263-9949</a> · <a href="https://wa.me/19252639949" rel="noopener">WhatsApp</a></li>
         <li class="site-nav__fa"><span class="fa" lang="fa" dir="rtl">فارسی</span> · coming soon</li>
       </ul>
     </nav>
     <div class="nav-right">
       <span class="nav-fa" lang="fa" dir="rtl">فارسی <span class="nav-fa__soon" aria-hidden="true">· به‌زودی</span><span class="visually-hidden" lang="en" dir="ltr"> (Persian site, coming soon)</span></span>
+      <a class="nav-phone" href="tel:+19252639949">(925) 263-9949</a>
       <a class="btn btn--sm" href="index.html#inquire">Inquire</a>
     </div>
   </div>
@@ -151,7 +152,7 @@
       </address>
       <p class="site-footer__fa fa" lang="fa" dir="rtl">انار · برنامه‌ریزی عروسی و جشن</p>
     </div>
-    <p class="site-footer__lang">English for everyone. A page for the parents, in Persian, Dari, Pashto, Urdu, Hindi or Punjabi.</p>
+    <p class="site-footer__lang">English for everyone. A page for the parents, in Persian, Dari, Pashto, Urdu, Hindi, Punjabi or the language your parents read, agreed in your proposal.</p>
     <p class="site-footer__legal"><span>© 2026 Anar LLC · Persian, Afghan and South Asian weddings</span><span>Timeless traditions, curated for the modern era.</span></p>
   </div>
 </footer>
@@ -171,7 +172,7 @@
     <li><div><h3>Planning</h3><p>Ritual by ritual, as your family keeps it. A short written summary after every meeting.</p></div></li>
     <li><div><h3>The wedding days</h3><p>The ceremonies your family chooses, in the order agreed with your family. One timeline, one person to call.</p></div></li>
   </ol>
-  <p class="hww-panel__foot"><a class="btn" href="index.html#inquire">Begin the conversation</a> <a class="link" href="how-we-work.html">Read more</a> <a class="hww-panel__phone" href="https://wa.me/19252639949" rel="noopener">Call or WhatsApp (925) 263-9949</a></p>
+  <p class="hww-panel__foot"><a class="btn" href="index.html#inquire">Begin the conversation</a> <a class="link" href="how-we-work.html">Read more</a> <span class="hww-panel__phone"><a href="tel:+19252639949">Call (925) 263-9949</a> · <a href="https://wa.me/19252639949" rel="noopener">WhatsApp</a></span></p>
 </aside>
 </body>
 </html>

@@ -1,0 +1,13 @@
+{
+ "model": "argon",
+ "role": "brand",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {"where": "assets/css/site.css .hero__canopy", "what": "Adjust the canopy's bounds so the top fruit clusters never brush the bottom of the gold logotype.", "why": "Desktop shot 0: the pomegranates sit uncomfortably close to the logo; the middle must stay open."},
+  {"where": "index.html #celebrations collapsed panels", "what": "Deepen the gradient overlay on collapsed panels or add a soft text-shadow to the vertical gold titles and Persian accents.", "why": "Desktop shot 2 / phone shot 2: gold labels on lighter image areas lack contrast."},
+  {"where": "index.html #inquire form", "what": "Remove or darken the thin horizontal rule above the name/email inputs.", "why": "It reads as a stray hairline against the clean luxury aesthetic."},
+  {"where": "index.html mobile nav drawer", "what": "Drawer uses a solid deep-cypress background with a crisp 2px gold top rule (no translucent grey wash).", "why": "Keeps the night palette and premium feel on phones."}
+ ],
+ "note": "Captured from the Gemini web app (4 Argon) on the pass-7 build."
+}

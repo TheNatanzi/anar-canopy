@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "brand",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "assets/css/site.css .accordion__read summary (desktop) + site.js syncRead comment",
+   "what": "Above 768px, where every <details> is forced open, hide the summary: add `@media (min-width:769px){html.site-ready .accordion__read[open] summary{display:none}}`. The JS comment already claims 'the summary is hidden there' but no CSS does it; desktop-2 shows 'READ MORE –' sitting above text that is already fully open.",
+   "why": "A dead toggle label inside the hero-grade open panel reads as a UI leftover, not an editorial device."
+  },
+  {
+   "where": "assets/css/site.css .accordion__read p",
+   "what": "Set the operational paragraph to `color:var(--stone);font-size:16px;line-height:24px` (keep .accordion__intro in parchment at 18px).",
+   "why": "Seven lines of 18px bold parchment over the photo (desktop-2) flatten the hierarchy; one headline, one bright intro, the detail recedes, like .statement__sub already does."
+  },
+  {
+   "where": "assets/css/site.css .hero__tag inside @media (max-width:768px)",
+   "what": "Add `text-shadow:0 1px 12px rgba(27,34,30,.9)` (the same shadow .hero__line already carries) and nudge `bottom` to clear the densest foliage, e.g. `bottom:calc(24px + env(safe-area-inset-bottom))`.",
+   "why": "On the phone hero the Persian tagline sits directly on painted leaves and fruit; the only Persian line on the first screen should read cleanly."
+  },
+  {
+   "where": "assets/css/site.css .quote (the parchment interlude) and .on-light--day",
+   "what": "Give the light interludes a 2px gold rule top and bottom (`border-block:2px solid var(--gold)`), matching the pageband and footer rules.",
+   "why": "Desktop-3 shows the parchment ending as a bare flat slab against night with nothing framing the seam; the rule is the brand's existing device and makes the interlude look placed, not pasted."
+  },
+  {
+   "where": "assets/css/site.css .band--glow::before",
+   "what": "Either raise the radial gold glow to ~.10 and bias it upward (`ellipse at 50% 30%`) or delete it and the --glow modifier.",
+   "why": "At 6% the glow is invisible in the teaser screenshot (desktop-1 bottom), so the band reads as a plain deep block and the device is dead weight."
+  },
+  {
+   "where": "index.html .hero__scroll / assets/css/site.css .hero__scroll",
+   "what": "Move the SCROLL cue above the canopy line on desktop (e.g. `bottom:calc(40vh + 24px)` capped) or drop it on desktop as already done on phones.",
+   "why": "Desktop-0 shows the gold-less cue printed on top of the painted foliage at bottom-left, the one place the art should sit untouched."
+  }
+ ]
+}

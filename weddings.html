@@ -31,18 +31,19 @@
   <div class="site-header__inner">
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span class="nav-toggle__bar"></span><span class="visually-hidden">Menu</span></button>
     <a class="nav-home" href="index.html" aria-label="Anar Events, home"><img src="assets/logo/logo-gold.svg" width="1600" height="552" alt=""></a>
-    <nav class="site-nav" id="site-nav" aria-label="Main">
+    <nav class="site-nav" id="site-nav" aria-label="Main" data-lenis-prevent>
       <ul>
         <li><a href="weddings.html" aria-current="page">Weddings</a></li>
         <li><a href="how-we-work.html">How we work</a></li>
         <li><a href="about.html">About</a></li>
-        <!-- phones only (CSS): the phone line as the last drawer item, then the inert "فارسی · coming soon" note -->
-        <li class="site-nav__phone"><a href="https://wa.me/19252639949" rel="noopener">Call or WhatsApp (925) 263-9949</a></li>
+        <!-- phones only (CSS): the phone line (tel: and WhatsApp as two links) as the last drawer item, then the inert "فارسی · coming soon" note -->
+        <li class="site-nav__phone"><a href="tel:+19252639949">Call (925) 263-9949</a> · <a href="https://wa.me/19252639949" rel="noopener">WhatsApp</a></li>
         <li class="site-nav__fa"><span class="fa" lang="fa" dir="rtl">فارسی</span> · coming soon</li>
       </ul>
     </nav>
     <div class="nav-right">
       <span class="nav-fa" lang="fa" dir="rtl">فارسی <span class="nav-fa__soon" aria-hidden="true">· به‌زودی</span><span class="visually-hidden" lang="en" dir="ltr"> (Persian site, coming soon)</span></span>
+      <a class="nav-phone" href="tel:+19252639949">(925) 263-9949</a>
       <a class="btn btn--sm" href="index.html#inquire">Inquire</a>
     </div>
   </div>
@@ -126,8 +127,8 @@
             <p class="fa fa--big" lang="fa" dir="rtl">حنابندان · مهندی</p>
           </div>
           <div class="stagger">
-            <p>The henna gathering: hana-bandan for Persian families, khina for Afghan families, mehndi for South Asian families. Henna on the bride's hands, with the elders' blessing first.</p>
-            <p>The sangeet is its own night, when both families sing. Music, dancing and the baraat (the groom's party arriving on the wedding day), if your family chooses.</p>
+            <p>The henna gathering: hana-bandan for Persian families, khina for Afghan families, mehndi for South Asian families. Henna on the bride's hands, with the elders' blessing as your family keeps it.</p>
+            <p>The sangeet, when both families sing, as your family keeps it; the dholki or the jaggo in the nights before, if your family holds them. Music, dancing and the baraat (the groom's party arriving on the wedding day), if your family chooses.</p>
             <p>Timing agreed around your family's customs.</p>
           </div>
         </div>
@@ -157,7 +158,7 @@
         <figure class="tradition__media reveal">
           <!-- PHOTO SLOT · Haldi & Pheras: the pheras under the mandap (real family, with consent), portrait 4:5 -->
           <div class="slot"><img class="reveal-img" src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night.jpg 1125w" sizes="(max-width:899px) 100vw, 480px" width="1125" height="2000" alt="A pomegranate tree at night" loading="lazy" decoding="async"></div>
-          <figcaption class="caption">Seven circuits under the mandap.</figcaption>
+          <figcaption class="caption">The pheras under the mandap, as your family keeps them.</figcaption>
         </figure>
       </div>
     </div>
@@ -196,7 +197,7 @@
             <p class="fa fa--big" lang="fa" dir="rtl">جشن عروسی · ولیمه</p>
           </div>
           <div class="stagger">
-            <p>The walima is the groom's family's feast after the nikah, often its own night; the reception is the couple's. We run each as your family keeps it.</p>
+            <p>The walima, the groom's family's feast after the nikah, and the reception, on one night or two as your family keeps it. We run each your family's way.</p>
             <p>Welcome sign, seating chart and table numbers in the languages listed in your proposal, coordinated with your printer and the venue.</p>
             <p>The timeline called with the venue and every vendor. Blessings, entrances and dancing as your family wishes, in the order agreed with your family.</p>
             <p>The send-off cued for the elders, and a thank-you card that follows.</p>
@@ -244,7 +245,7 @@
       </address>
       <p class="site-footer__fa fa" lang="fa" dir="rtl">انار · برنامه‌ریزی عروسی و جشن</p>
     </div>
-    <p class="site-footer__lang">English for everyone. A page for the parents, in Persian, Dari, Pashto, Urdu, Hindi or Punjabi.</p>
+    <p class="site-footer__lang">English for everyone. A page for the parents, in Persian, Dari, Pashto, Urdu, Hindi, Punjabi or the language your parents read, agreed in your proposal.</p>
     <p class="site-footer__legal"><span>© 2026 Anar LLC · Persian, Afghan and South Asian weddings</span><span>Timeless traditions, curated for the modern era.</span></p>
   </div>
 </footer>
@@ -264,7 +265,7 @@
     <li><div><h3>Planning</h3><p>Ritual by ritual, as your family keeps it. A short written summary after every meeting.</p></div></li>
     <li><div><h3>The wedding days</h3><p>The ceremonies your family chooses, in the order agreed with your family. One timeline, one person to call.</p></div></li>
   </ol>
-  <p class="hww-panel__foot"><a class="btn" href="index.html#inquire">Begin the conversation</a> <a class="link" href="how-we-work.html">Read more</a> <a class="hww-panel__phone" href="https://wa.me/19252639949" rel="noopener">Call or WhatsApp (925) 263-9949</a></p>
+  <p class="hww-panel__foot"><a class="btn" href="index.html#inquire">Begin the conversation</a> <a class="link" href="how-we-work.html">Read more</a> <span class="hww-panel__phone"><a href="tel:+19252639949">Call (925) 263-9949</a> · <a href="https://wa.me/19252639949" rel="noopener">WhatsApp</a></span></p>
 </aside>
 </body>
 </html>

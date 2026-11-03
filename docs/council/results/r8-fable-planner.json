@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "planner",
+ "score": 7,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "index.html #journey (the five-stop track) vs #how-teaser and the persistent hww-panel",
+   "what": "The home page explains the process three times (teaser options, the five-step journey, the slide-out tab) and the celebrations once. Remove the five-stop track from index.html (keep the 'Celebrations your family may choose' list and the Nowruz line as the tail of #celebrations), so the home runs hero → promise → celebrations → how we work → founder → inquire; the five steps live in the tab and how-we-work.html.",
+   "why": "A family decides on 'do you know my wedding' first; repeating the process pushes the inquiry two screens further down."
+  },
+  {
+   "where": "site-footer__lang (all pages), how-we-work.html #you-get 'A page for the parents' and FAQ 'Which languages', index.html journey 'Proposal' note, index.html #f-lang options",
+   "what": "Change every 'in Persian, Dari, Pashto, Urdu, Hindi or Punjabi' to '…Urdu, Hindi, Punjabi or the language your parents read, agreed in your proposal', and add Gujarati, Bengali and Tamil to the preferred-language select.",
+   "why": "'South Asian' is promised everywhere, but a Gujarati, Bengali or Tamil family reads the closed list as 'not for us'."
+  },
+  {
+   "where": "how-we-work.html #faq, first answer",
+   "what": "Replace 'and mixed couples are many of our families' with 'and mixed-heritage couples are welcome'.",
+   "why": "A volume claim on a site with no proof line yet reads as puffery and undercuts the honest proof slot."
+  },
+  {
+   "where": "index.html #celebrations, the closing <p class=\"center\"> link",
+   "what": "Pair the 'Every tradition, in its own words' link with an inline <a class=\"btn\" href=\"#inquire\">Begin the conversation</a> so the first in-page CTA arrives right after the celebrations, not five screens down at the journey.",
+   "why": "A parent who stops reading at the celebrations currently has no next step except the header button."
+  },
+  {
+   "where": "index.html #celebration-1 .accordion__intro",
+   "what": "Change 'the mirror, the candlesticks, the sugar above' to 'the mirror, the candlesticks, the sugar cones rubbed over the couple'.",
+   "why": "'The sugar above' is opaque to the other family at a mixed wedding; the site's promise is fluency in exactly these details."
+  },
+  {
+   "where": "all pages .nav-right (desktop ≥1100px)",
+   "what": "Add a plain text link '(925) 263-9949' (tel:) before the Inquire button at desktop widths; on phones it already sits in the drawer.",
+   "why": "The site says parents call before they type, but on desktop the number only appears in the footer and the slide-out panel."
+  }
+ ]
+}

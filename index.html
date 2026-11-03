@@ -35,18 +35,19 @@
   <div class="site-header__inner">
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span class="nav-toggle__bar"></span><span class="visually-hidden">Menu</span></button>
     <a class="nav-home" href="index.html" aria-label="Anar Events, home"><img src="assets/logo/logo-gold.svg" width="1600" height="552" alt=""></a>
-    <nav class="site-nav" id="site-nav" aria-label="Main">
+    <nav class="site-nav" id="site-nav" aria-label="Main" data-lenis-prevent>
       <ul>
         <li><a href="weddings.html">Weddings</a></li>
         <li><a href="how-we-work.html">How we work</a></li>
         <li><a href="about.html">About</a></li>
-        <!-- phones only (CSS): the phone line as the last drawer item, then the inert "فارسی · coming soon" note -->
-        <li class="site-nav__phone"><a href="https://wa.me/19252639949" rel="noopener">Call or WhatsApp (925) 263-9949</a></li>
+        <!-- phones only (CSS): the phone line (tel: and WhatsApp as two links) as the last drawer item, then the inert "فارسی · coming soon" note -->
+        <li class="site-nav__phone"><a href="tel:+19252639949">Call (925) 263-9949</a> · <a href="https://wa.me/19252639949" rel="noopener">WhatsApp</a></li>
         <li class="site-nav__fa"><span class="fa" lang="fa" dir="rtl">فارسی</span> · coming soon</li>
       </ul>
     </nav>
     <div class="nav-right">
       <span class="nav-fa" lang="fa" dir="rtl">فارسی <span class="nav-fa__soon" aria-hidden="true">· به‌زودی</span><span class="visually-hidden" lang="en" dir="ltr"> (Persian site, coming soon)</span></span>
+      <a class="nav-phone" href="tel:+19252639949">(925) 263-9949</a>
       <a class="btn btn--sm" href="index.html#inquire">Inquire</a>
     </div>
   </div>
@@ -68,7 +69,6 @@
       <h1 class="hero__logo"><img src="assets/logo/logo-gold.svg" width="1600" height="552" alt="Anar Events" fetchpriority="high"></h1>
       <p class="hero__line">Wedding planning and coordination for Persian, Afghan and South Asian families<span class="hero__place">San Francisco Bay Area</span></p>
     </div>
-    <p class="hero__scroll" aria-hidden="true">Scroll <span aria-hidden="true">&darr;</span></p>
     <p class="hero__tag fa" lang="fa" dir="rtl">میراث، از نو</p>
   </section>
 
@@ -169,9 +169,9 @@
           <div class="accordion__body" id="celebration-1">
             <p class="fa" lang="fa" dir="rtl">سفرهٔ عقد</p>
             <h3>Sofreh Aghd</h3>
-            <!-- one intro sentence on the image; the operational text behind the native "Read more" at every width (open by default above 768px; on phones the first panel starts open) -->
-            <p class="accordion__intro">The Persian ceremony at the spread: the mirror, the candlesticks, the sugar above.</p>
-            <details class="accordion__read" open><summary>Read more</summary><p>We brief your sofreh designer and check the spread against the sofreh key (a one-page guide naming each item on the spread, in the languages listed in your proposal) before the elders are seated.</p></details>
+            <!-- one intro sentence on the image; the operational text behind the native "Read more" at every width (site.js opens every one above 768px, where the summary is hidden; on phones every one starts closed) -->
+            <p class="accordion__intro">The Persian ceremony at the spread: the mirror, the candlesticks, the sugar cones rubbed over the couple.</p>
+            <details class="accordion__read"><summary>Read more</summary><p>We brief your sofreh designer and check the spread against the sofreh key (a one-page guide naming each item on the spread, in the languages listed in your proposal) before the elders are seated.</p></details>
           </div>
         </article>
         <article class="accordion__panel">
@@ -195,7 +195,7 @@
             <p class="fa" lang="fa" dir="rtl">حنابندان · مهندی</p>
             <h3>Mehndi &amp; Sangeet</h3>
             <p class="accordion__intro">The henna gathering and the sangeet, each as your family keeps it.</p>
-            <details class="accordion__read"><summary>Read more</summary><p>The henna gathering: hana-bandan for Persian families, khina for Afghan families, mehndi for South Asian families, with the henna on the bride's hands and the elders' blessing first. The sangeet is its own night, when both families sing. Music, dancing and the baraat on the wedding day, if your family chooses. Timing agreed around your family's customs.</p></details>
+            <details class="accordion__read"><summary>Read more</summary><p>The henna gathering: hana-bandan for Persian families, khina for Afghan families, mehndi for South Asian families, with the henna on the bride's hands and the elders' blessing as your family keeps it. The sangeet, when both families sing, and the dholki or jaggo nights before it, if your family holds them. Music, dancing and the baraat on the wedding day, if your family chooses. Timing agreed around your family's customs.</p></details>
           </div>
         </article>
         <article class="accordion__panel">
@@ -206,7 +206,7 @@
           <div class="accordion__body" id="celebration-5">
             <h3>Haldi &amp; Pheras</h3>
             <p class="accordion__intro">The pheras under the mandap, with the pandit: your ceremony, in the sequence agreed with your officiant.</p>
-            <details class="accordion__read"><summary>Read more</summary><p>If your family observes the haldi, the turmeric before the wedding. We coordinate timing with the pandit and the venue, hold the elders' seats, and a one-line programme explains each ritual so every guest can follow.</p></details>
+            <details class="accordion__read"><summary>Read more</summary><p>If your family observes the haldi, the turmeric before the wedding. If your family observes the baraat and the milni, we call them in the order of the agreed programme. We coordinate timing with the pandit and the venue, hold the elders' seats, and a one-line programme explains each ritual so every guest can follow.</p></details>
           </div>
         </article>
         <article class="accordion__panel">
@@ -217,7 +217,7 @@
           <div class="accordion__body" id="celebration-6">
             <h3>Anand Karaj</h3>
             <p class="accordion__intro">The Sikh ceremony before the Guru Granth Sahib: the four laavan as the hymns are sung.</p>
-            <details class="accordion__read"><summary>Read more</summary><p>In the sequence agreed with your family and the granthi. We coordinate timing with the gurdwara, hold the elders' seats, and a one-line programme explains each ritual and what the gurdwara asks of guests.</p></details>
+            <details class="accordion__read"><summary>Read more</summary><p>In the sequence agreed with your family and the granthi. If your family observes the baraat and the milni, we call them in the order of the agreed programme. We coordinate timing with the gurdwara, hold the elders' seats, and a one-line programme explains each ritual and what the gurdwara asks of guests.</p></details>
           </div>
         </article>
         <article class="accordion__panel">
@@ -228,12 +228,13 @@
           <div class="accordion__body" id="celebration-4">
             <p class="fa" lang="fa" dir="rtl">جشن عروسی</p>
             <h3>Reception &amp; Walima</h3>
-            <p class="accordion__intro">The walima is the groom's family's feast after the nikah, often its own night; the reception is the couple's. We run each as your family keeps it.</p>
+            <p class="accordion__intro">The walima, the groom's family's feast after the nikah, and the reception, on one night or two as your family keeps it. We run each your family's way.</p>
             <details class="accordion__read"><summary>Read more</summary><p>The elders' blessing, the entrances, the dancing if your family wishes: one timeline, called with the venue and every vendor, in the order agreed with your family.</p></details>
           </div>
         </article>
       </div>
-      <p class="center reveal" style="margin-top:32px"><a class="link" href="weddings.html">Every tradition, in its own words</a></p>
+      <!-- the Weddings link and the first in-page CTA, right after the celebrations (a parent who stops reading here has a next step) -->
+      <p class="accordion__foot reveal"><a class="link" href="weddings.html">Every tradition, in its own words</a> <a class="btn" href="#inquire">Begin the conversation</a></p>
     </div>
   </section>
 
@@ -346,7 +347,7 @@
         <div class="field"><label for="f-message">Message</label><textarea id="f-message" name="message" placeholder="Your families, your dates, the rituals that matter most."></textarea></div>
         <!-- the optional planning questions, closed by default (every field still submits); site.js opens it if a field inside is invalid -->
         <details class="form__more">
-          <summary>Share more wedding details</summary>
+          <summary>Share your dates, guest count &amp; traditions (optional)</summary>
           <div class="form__more-body">
             <div class="form__row">
               <div class="field"><label for="f-date">First wedding date (or season)</label><input id="f-date" name="wedding_date" type="text" autocomplete="off" placeholder="14 June 2027, or spring 2027"></div>
@@ -385,6 +386,9 @@
                   <option value="Urdu">Urdu</option>
                   <option value="Hindi">Hindi</option>
                   <option value="Punjabi">Punjabi</option>
+                  <option value="Gujarati">Gujarati</option>
+                  <option value="Bengali">Bengali</option>
+                  <option value="Tamil">Tamil</option>
                   <option value="Other">Other (say which in the message)</option>
                 </select>
               </div>
@@ -449,7 +453,7 @@
       </address>
       <p class="site-footer__fa fa" lang="fa" dir="rtl">انار · برنامه‌ریزی عروسی و جشن</p>
     </div>
-    <p class="site-footer__lang">English for everyone. A page for the parents, in Persian, Dari, Pashto, Urdu, Hindi or Punjabi.</p>
+    <p class="site-footer__lang">English for everyone. A page for the parents, in Persian, Dari, Pashto, Urdu, Hindi, Punjabi or the language your parents read, agreed in your proposal.</p>
     <p class="site-footer__legal"><span>© 2026 Anar LLC · Persian, Afghan and South Asian weddings</span><span>Timeless traditions, curated for the modern era.</span></p>
   </div>
 </footer>
@@ -470,7 +474,7 @@
     <li><div><h3>Planning</h3><p>Ritual by ritual, as your family keeps it. A short written summary after every meeting.</p></div></li>
     <li><div><h3>The wedding days</h3><p>The ceremonies your family chooses, in the order agreed with your family. One timeline, one person to call.</p></div></li>
   </ol>
-  <p class="hww-panel__foot"><a class="btn" href="index.html#inquire">Begin the conversation</a> <a class="link" href="how-we-work.html">Read more</a> <a class="hww-panel__phone" href="https://wa.me/19252639949" rel="noopener">Call or WhatsApp (925) 263-9949</a></p>
+  <p class="hww-panel__foot"><a class="btn" href="index.html#inquire">Begin the conversation</a> <a class="link" href="how-we-work.html">Read more</a> <span class="hww-panel__phone"><a href="tel:+19252639949">Call (925) 263-9949</a> · <a href="https://wa.me/19252639949" rel="noopener">WhatsApp</a></span></p>
 </aside>
 </body>
 </html>

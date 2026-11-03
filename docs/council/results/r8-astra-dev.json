@@ -1,0 +1,36 @@
+{
+ "model": "astra",
+ "role": "dev",
+ "score": 7.5,
+ "blocking": [
+  "Mobile navigation has no height limit or internal scrolling; lower links can become unreachable in short landscape viewports or with enlarged text.",
+  "ScrollTrigger limitCallbacks can leave reveal content invisible after scrolling past an entire trigger range; the recovery currently runs only for scripted anchor navigation."
+ ],
+ "fixes": [
+  {
+   "where": "assets/css/site.css — mobile .site-header.nav-open .site-nav",
+   "what": "Cap the drawer at calc(100dvh - var(--header-h)), enable overflow-y:auto, and add data-lenis-prevent to the navigation.",
+   "why": "Every navigation item must remain reachable on short screens and with enlarged text."
+  },
+  {
+   "where": "assets/js/site.js — initMotion(), buildTweens() reveal block",
+   "what": "Remove limitCallbacks:true for reveal behavior, or explicitly complete unrevealed targets whose trigger range has been passed during ordinary scrolling.",
+   "why": "Fast scrolling and scrollbar jumps must not strand content at opacity:0."
+  },
+  {
+   "where": "assets/js/site.js — setShown(), syncTab()",
+   "what": "Synchronize hidden controls' keyboard availability immediately with their visual state; preserve visibility for a focused control and restore availability immediately when showing it.",
+   "why": "The 700ms delay currently permits invisible tab stops and temporarily visible controls excluded from keyboard navigation."
+  },
+  {
+   "where": "assets/css/site.css — .field input, .field textarea, .field select",
+   "what": "Use an opaque gold or another verified high-contrast underline for unfocused fields instead of rgba(201,158,92,.45).",
+   "why": "The translucent underline and nearly identical input background make field boundaries difficult to distinguish."
+  },
+  {
+   "where": "assets/js/site.js — killMotion()",
+   "what": "Track this site's animations in a GSAP context and revert that context instead of clearing gsap.globalTimeline and killing every ScrollTrigger.",
+   "why": "Global teardown would also destroy animations belonging to any subsequently added component."
+  }
+ ]
+}

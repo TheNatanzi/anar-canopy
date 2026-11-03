@@ -1,0 +1,12 @@
+{
+ "model": "argon",
+ "role": "dev",
+ "score": 9,
+ "blocking": [],
+ "fixes": [
+  {"where": "assets/js/site.js block 0 loadHeroVideo()", "what": "Add explicit error handling (.catch on play(), 'error' listener on the appended <source>/<video>) and a loading-state check; fall back to the poster silently.", "why": "Dynamic source appending can fail silently under restrictive mobile data policies."},
+  {"where": "assets/css/site.css / site.js accordion collapsed bodies", "what": "Toggle aria-hidden and inert on collapsed accordion bodies consistently at every breakpoint.", "why": "Keeps screen readers out of collapsed panels in the desktop accordion."},
+  {"where": "assets/js/site.js accordion ResizeObserver", "what": "Debounce the ResizeObserver refresh harder or tie it to requestAnimationFrame.", "why": "Panel expansions can trigger repeated ScrollTrigger refreshes."}
+ ],
+ "note": "Captured from the Gemini web app (4 Argon) on the pass-7 build; later fixes truncated in capture."
+}

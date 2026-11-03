@@ -31,18 +31,19 @@
   <div class="site-header__inner">
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span class="nav-toggle__bar"></span><span class="visually-hidden">Menu</span></button>
     <a class="nav-home" href="index.html" aria-label="Anar Events, home"><img src="assets/logo/logo-gold.svg" width="1600" height="552" alt=""></a>
-    <nav class="site-nav" id="site-nav" aria-label="Main">
+    <nav class="site-nav" id="site-nav" aria-label="Main" data-lenis-prevent>
       <ul>
         <li><a href="weddings.html">Weddings</a></li>
         <li><a href="how-we-work.html" aria-current="page">How we work</a></li>
         <li><a href="about.html">About</a></li>
-        <!-- phones only (CSS): the phone line as the last drawer item, then the inert "فارسی · coming soon" note -->
-        <li class="site-nav__phone"><a href="https://wa.me/19252639949" rel="noopener">Call or WhatsApp (925) 263-9949</a></li>
+        <!-- phones only (CSS): the phone line (tel: and WhatsApp as two links) as the last drawer item, then the inert "فارسی · coming soon" note -->
+        <li class="site-nav__phone"><a href="tel:+19252639949">Call (925) 263-9949</a> · <a href="https://wa.me/19252639949" rel="noopener">WhatsApp</a></li>
         <li class="site-nav__fa"><span class="fa" lang="fa" dir="rtl">فارسی</span> · coming soon</li>
       </ul>
     </nav>
     <div class="nav-right">
       <span class="nav-fa" lang="fa" dir="rtl">فارسی <span class="nav-fa__soon" aria-hidden="true">· به‌زودی</span><span class="visually-hidden" lang="en" dir="ltr"> (Persian site, coming soon)</span></span>
+      <a class="nav-phone" href="tel:+19252639949">(925) 263-9949</a>
       <a class="btn btn--sm" href="index.html#inquire">Inquire</a>
     </div>
   </div>
@@ -88,14 +89,15 @@
           <span class="step__n">03 · Proposal</span>
           <h3>Here is the plan, the price, and what is included.</h3>
           <p class="fa" lang="fa" dir="rtl">پیشنهاد</p>
-          <p>A short proposal with the rituals in order, the days, the price and exactly what is included: the agreed scope names the events covered, the staffing, the hours and the fees, before anything is booked. Together, we agree who approves decisions, who approves spending, and which updates each family receives. A page for the parents, in Persian, Dari, Pashto, Urdu, Hindi or Punjabi.</p>
+          <p>A short proposal with the rituals in order, the days, the price and exactly what is included: the agreed scope names the events covered, the staffing, the hours and the fees, before anything is booked. Together, we agree who approves decisions, who approves spending, and which updates each family receives. A page for the parents, in Persian, Dari, Pashto, Urdu, Hindi, Punjabi or the language your parents read, agreed in your proposal.</p>
+          <p>A signed proposal and the deposit hold your dates; an inquiry or consultation does not.</p>
         </li>
         <li class="step reveal">
           <span class="step__dot track-dot" aria-hidden="true"></span>
           <span class="step__n">04 · Planning</span>
           <h3>Ritual by ritual, as your family keeps it.</h3>
           <p class="fa" lang="fa" dir="rtl">برنامه‌ریزی</p>
-          <p>We plan each ceremony as your family keeps it: the ceremonies your family chooses, in the order agreed with your family. Your deposit holds the date. A short written summary follows every meeting, in English, with the page for the parents in their language. Parents and elders included at the level you choose.</p>
+          <p>We plan each ceremony as your family keeps it: the ceremonies your family chooses, in the order agreed with your family. A short written summary follows every meeting, in English, with the page for the parents in their language. Parents and elders included at the level you choose.</p>
         </li>
         <li class="step reveal">
           <span class="step__dot track-dot" aria-hidden="true"></span>
@@ -123,7 +125,7 @@
             <li>Your budget tracked, line by line, from the first conversation.</li>
             <li>Venue and vendor shortlist, booking support, and contract review covering planning requirements and vendor logistics.</li>
             <li>Planning decisions scheduled ritual by ritual, with a short written summary after each meeting.</li>
-            <li>One written plan: the rituals in order, the days, the price and what is included, with a page for the parents in Persian, Dari, Pashto, Urdu, Hindi or Punjabi.</li>
+            <li>One written plan: the rituals in order, the days, the price and what is included, with a page for the parents in Persian, Dari, Pashto, Urdu, Hindi, Punjabi or the language your parents read, agreed in your proposal.</li>
             <li>Every wedding day run: one timeline, called with the venue and every vendor; elders' seats held.</li>
           </ul>
         </li>
@@ -142,13 +144,15 @@
       <ul class="you-get stagger">
         <li><strong>One written plan</strong><span>Rituals in order, days, price, what is included. In English, with a page for the parents in the languages listed in your proposal.</span></li>
         <li><strong>One person to call</strong><span>Your planner, from the first message to the thank-you card, for the events listed in your proposal.</span></li>
-        <li><strong>A page for the parents</strong><span>A summary they can read alone, in Persian, Dari, Pashto, Urdu, Hindi or Punjabi. Written translations and spoken language support are confirmed in your proposal.</span></li>
+        <li><strong>A page for the parents</strong><span>A summary they can read alone, in Persian, Dari, Pashto, Urdu, Hindi, Punjabi or the language your parents read, agreed in your proposal. Written translations and spoken language support are confirmed there too.</span></li>
         <li><strong>A summary after every meeting</strong><span>Short, written, the same day. Nothing to chase.</span></li>
         <li><strong>The timeline, called</strong><span>With the venue and every vendor, to the minute, across the events and hours listed in your proposal.</span></li>
         <li><strong>Signage in your languages</strong><span>Welcome, sofreh key, wayfinding, seating and table numbers in the languages listed in your proposal, coordinated with your printer and the venue for the events listed there.</span></li>
         <li><strong>Staff on the day</strong><span>Easy to find, for the events and hours listed in your proposal. Elders greeted first.</span></li>
         <li><strong>A reply within one business day</strong><span>Every time, from the first inquiry on.</span></li>
       </ul>
+      <!-- how the hard days are handled: two events at once, a venue change, a delay, a planner who cannot be there -->
+      <p class="reveal muted" style="margin-top:32px;font-size:16px;line-height:24px;max-width:38em">Two events running at once, a venue that changes, a day that runs late, a planner who cannot be there: each is covered under the same plan. Staffing and backup are named in your proposal, and the timeline is re-called with the venue and every vendor.</p>
     </div>
   </section>
 
@@ -160,7 +164,7 @@
       <div class="faq reveal">
         <details>
           <summary>Our two families come from different cultures. Can you plan both?</summary>
-          <p class="faq__a">Yes. Persian, Afghan and South Asian weddings are what we do, and mixed couples are many of our families. We blend cultures across a multi-day celebration without diluting either: each ritual stays as that family keeps it.</p>
+          <p class="faq__a">Yes. Persian, Afghan and South Asian weddings are what we do, and mixed-heritage couples are welcome. We blend cultures across a multi-day celebration without diluting either: each ritual stays as that family keeps it.</p>
         </details>
         <details>
           <summary>Do you plan the whole wedding, or only run the day?</summary>
@@ -172,11 +176,11 @@
         </details>
         <details>
           <summary>Will you work with our parents directly?</summary>
-          <p class="faq__a">Yes. Parents and elders included at the level you choose. Elders are greeted first and asked, not told. The couple sets the level of parent involvement, and the proposal has a page for the parents in Persian, Dari, Pashto, Urdu, Hindi or Punjabi.</p>
+          <p class="faq__a">Yes. Parents and elders included at the level you choose. Elders are greeted first and asked, not told. The couple sets the level of parent involvement, and the proposal has a page for the parents in Persian, Dari, Pashto, Urdu, Hindi, Punjabi or the language your parents read, agreed in your proposal.</p>
         </details>
         <details>
           <summary>Which languages do you plan in?</summary>
-          <p class="faq__a">English for everyone. A page for the parents, in Persian, Dari, Pashto, Urdu, Hindi or Punjabi. The plan and the programme are written in English, with the languages agreed in your proposal alongside. Say your preferred language in the form.</p>
+          <p class="faq__a">English for everyone. A page for the parents, in Persian, Dari, Pashto, Urdu, Hindi, Punjabi or the language your parents read, agreed in your proposal. The plan and the programme are written in English, with the languages agreed in your proposal alongside. Say your preferred language in the form.</p>
         </details>
         <details>
           <summary>Where do you work?</summary>
@@ -204,7 +208,7 @@
       </address>
       <p class="site-footer__fa fa" lang="fa" dir="rtl">انار · برنامه‌ریزی عروسی و جشن</p>
     </div>
-    <p class="site-footer__lang">English for everyone. A page for the parents, in Persian, Dari, Pashto, Urdu, Hindi or Punjabi.</p>
+    <p class="site-footer__lang">English for everyone. A page for the parents, in Persian, Dari, Pashto, Urdu, Hindi, Punjabi or the language your parents read, agreed in your proposal.</p>
     <p class="site-footer__legal"><span>© 2026 Anar LLC · Persian, Afghan and South Asian weddings</span><span>Timeless traditions, curated for the modern era.</span></p>
   </div>
 </footer>
@@ -224,7 +228,7 @@
     <li><div><h3>Planning</h3><p>Ritual by ritual, as your family keeps it. A short written summary after every meeting.</p></div></li>
     <li><div><h3>The wedding days</h3><p>The ceremonies your family chooses, in the order agreed with your family. One timeline, one person to call.</p></div></li>
   </ol>
-  <p class="hww-panel__foot"><a class="btn" href="index.html#inquire">Begin the conversation</a> <a class="link" href="how-we-work.html">Read more</a> <a class="hww-panel__phone" href="https://wa.me/19252639949" rel="noopener">Call or WhatsApp (925) 263-9949</a></p>
+  <p class="hww-panel__foot"><a class="btn" href="index.html#inquire">Begin the conversation</a> <a class="link" href="how-we-work.html">Read more</a> <span class="hww-panel__phone"><a href="tel:+19252639949">Call (925) 263-9949</a> · <a href="https://wa.me/19252639949" rel="noopener">WhatsApp</a></span></p>
 </aside>
 </body>
 </html>

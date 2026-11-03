@@ -156,7 +156,8 @@
     if (!el.hasAttribute('tabindex')) { el.setAttribute('tabindex', '-1'); }
     el.focus({ preventScroll: true });
     /* wrapped: Lenis passes its instance to onComplete, which settleReveals(noRefresh) would read as "skip the refresh" */
-    if (lenis) { lenis.scrollTo(el, { offset: headerOffset(), duration: 1.4, onComplete: function () { settleReveals(); } }); }
+    /* immediate (round 7) whenever the motion is off: a reduced-motion or Pause flip mid-action never runs a glide */
+    if (lenis) { lenis.scrollTo(el, { offset: headerOffset(), duration: 1.4, immediate: reduced || userPaused, onComplete: function () { settleReveals(); } }); }
     else {
       el.scrollIntoView({ behavior: reduced || userPaused ? 'auto' : 'smooth', block: 'start' });
       setTimeout(settleReveals, reduced || userPaused ? 50 : 900);
@@ -442,10 +443,15 @@
   var hideForPhone = [$('main.canopy .cel')].filter(Boolean);
   var submitFor = [$('#inquire .form button[type="submit"]'), $('.site-footer')].filter(Boolean).concat($$('main .btn[href$="#inquire"]'));
   var ghostFor = hideFor.concat(hideForPhone, submitFor).filter(function (el, i, all) { return all.indexOf(el) === i; });
+  /* measureDestinations (set below when the observer exists): re-reads every destination's visibility from its rect
+     and settles the tab at once; also called by the hash landing once its scroll is done */
+  var measureDestinations = null;
   if ((headerInquire || syncTab) && ghostFor.length && 'IntersectionObserver' in window) {
     var ghostInView = new Map();
-    var ghostObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) { ghostInView.set(en.target, en.isIntersecting); });
+    /* ONE destination computation (round 7), shared by the observer's updates and the direct measurements (start-up,
+       window load, ScrollTrigger refresh, the 769px breakpoint change: hideForPhone counts on phones only, so a
+       breakpoint change alone must re-derive hideAtDestination) */
+    var syncDestinations = function (settleNow) {
       hideAtDestination = false; filledInquire = false;
       ghostInView.forEach(function (v, el) {
         if (!v) { return; }
@@ -453,10 +459,28 @@
         if (hideFor.indexOf(el) !== -1 || (!isDesktop() && hideForPhone.indexOf(el) !== -1)) { hideAtDestination = true; }
       });
       if (headerInquire && headerInquire.classList.contains('ghost') !== filledInquire) { headerInquire.classList.toggle('ghost', filledInquire); }
-      /* the tab follows at once (visual); its keyboard state settles 700 ms later, like the scroll handler's */
-      if (syncTab) { syncTab(false); setTimeout(function () { syncTab(true); }, 700); }
+      if (!syncTab) { return; }
+      /* a direct measurement settles the tab immediately (a load straight onto #inquire never leaves it in the tab
+         order); an observer update moves it at once visually and settles its keyboard state 700 ms later, like the
+         scroll handler's */
+      if (settleNow) { syncTab(true); } else { syncTab(false); setTimeout(function () { syncTab(true); }, 700); }
+    };
+    measureDestinations = function () {
+      ghostFor.forEach(function (el) {
+        var r = el.getBoundingClientRect();
+        ghostInView.set(el, r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < vh());
+      });
+      syncDestinations(true);
+    };
+    var ghostObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { ghostInView.set(en.target, en.isIntersecting); });
+      syncDestinations(false);
     }, { threshold: 0.05 });
     ghostFor.forEach(function (el) { ghostObserver.observe(el); });
+    measureDestinations();
+    window.addEventListener('load', measureDestinations);
+    onMQ(desktopQuery, measureDestinations);
+    if (hasGsap) { try { ScrollTrigger.addEventListener('refresh', measureDestinations); } catch (e) { /* the load and breakpoint measurements remain */ } }
   }
 
   /* Same-page anchors (including "index.html#inquire" while on index) and the skip link:
@@ -495,8 +519,10 @@
         settleReveals();
         var top = landing.getBoundingClientRect().top;
         var headerH = -headerOffset();
-        if (top >= headerH - 2 && top <= headerH + 18) { return; }
-        var settled = function () { settleReveals(true); };
+        /* the tab's destination state follows the landing at once (round 7: #inquire in view, the tab leaves the tab
+           order now, not after the observer's 700 ms settle) */
+        if (top >= headerH - 2 && top <= headerH + 18) { if (measureDestinations) { measureDestinations(); } return; }
+        var settled = function () { settleReveals(true); if (measureDestinations) { measureDestinations(); } };
         if (lenis) { lenis.scrollTo(landing, { offset: headerOffset(), immediate: true, onComplete: settled }); }
         else { landing.scrollIntoView({ behavior: 'auto', block: 'start' }); setTimeout(settled, 50); }
       }, 80);
@@ -671,6 +697,10 @@
       var done = function () { clearTimeout(timer); restoreSubmit(); };
       if (request.finally) { request.finally(done); } else { request.then(done, done); }
     });
+    /* with the handlers installed, the browser's own interactive validation is switched off (round 7): it cancelled the
+       submit event on an invalid form, so the checkValidity() / reportValidity() / explicit focus path above never ran.
+       Without this script (no fetch, a failed request) the native validation stays */
+    form.noValidate = true;
   }
 
   /* =========================================================

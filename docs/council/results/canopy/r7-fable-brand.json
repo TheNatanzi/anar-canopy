@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "brand",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "assets/css/canopy.css · .cel figure{margin:0;display:grid;gap:var(--s1)}",
+   "what": "Add align-content:start (or grid-template-rows:auto 1fr). The Nikah figure is tallest (its description runs 3 lines at 330px); the other two figures are stretched to match and the grid splits the extra 24px between the slot row and the caption row, so the Sofreh and Mehndi captions start 12px lower than Nikah's (desktop shot 3: Persian labels at y≈855 vs 843, titles at 887 vs 875).",
+   "why": "The one photo row on the home page has its three captions on three different lines; an editorial grid must start level."
+  },
+  {
+   "where": "assets/css/canopy.css · @media (max-width:768px) .promises,.cel figure,.screen--inquire .form{padding-right:max(0px,44px - var(--gutter))}",
+   "what": "Drop .cel figure from this rule (keep .promises and .form). site.js hideForPhone already hides the tab while .cel is in view on phones, so the 17px right pad only pushes the slot and its caption off-centre (phone shot 2: 27px left margin, 44px right).",
+   "why": "A full-width portrait slot visibly 17px off-centre reads as a layout bug, and the clearance it buys is already provided by the tab hiding."
+  },
+  {
+   "where": "index.html · .cel figure 2 figcaption p (Nikah) + canopy.css .cel p{min-height:48px}",
+   "what": "Either shorten to two lines at 330px ('The contract before both families; aina mosaf for Afghan families.' still wraps to 3) e.g. 'The contract before both families, with the aina mosaf.' or raise min-height to 72px so the three captions end level as the CSS comment intends.",
+   "why": "The 'captions end level' rule in the stylesheet is broken by the only three-line caption, which is what triggers the stretch in fix 1."
+  },
+  {
+   "where": "assets/css/site.css · .site-header--solid,.site-header.is-scrolled{background:rgba(27,34,30,.96)}",
+   "what": "Raise the scrolled bar to rgba(27,34,30,.985) (keep the blur on pointer desktops). In desktop shots 2 and 3 the parchment statement and the celebrations captions scroll under the bar and show as a pale smear beside and under the header logo.",
+   "why": "Ghost text behind the one small gold logo in the bar cheapens the logo's cleanest appearance; the 2px gold edge rule should be the only thing cutting across the painting."
+  },
+  {
+   "where": "assets/css/canopy.css · .cel .fa{font-size:16px;color:var(--gold);…} and index.html figcaptions",
+   "what": "After fix 1, make the three Persian labels share one 24px box explicitly (line-height:24px;display:block;height:24px) so a space or middle dot falling to Tahoma in 'سفرهٔ عقد' and 'حنابندان · مهندی' can never re-open a 1–3px baseline drift between the labels.",
+   "why": "The gold Persian accents are the brand's second voice on this screen; they should sit on one rule across the row at every font-swap state."
+  },
+  {
+   "where": "assets/css/canopy.css · .tree img.fruit-drop and canopy.js block 4a",
+   "what": "Consider dropping the fade-out in the last 10% and instead ending the fall behind the left trunk shrub (clip by the sprig), or shorten the drop to ~1 screen so it lands out of view rather than dissolving mid-air beside the statement column.",
+   "why": "A pomegranate that evaporates mid-fall is the one motion that reads as a web trick rather than part of the painting; everything else (sway, bounce, morph, ground rise) stays in character."
+  }
+ ]
+}

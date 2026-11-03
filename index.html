@@ -81,6 +81,9 @@
     <p class="motion-toggle__note visually-hidden" hidden>Motion is off because your device asks for reduced motion.</p>
   </div>
 </header>
+<!-- the persistent "How we work +" tab, right after the header in the DOM (round 7: a keyboard user meets it before the
+     main content, not after every footer link); its slide-out panel and backdrop stay at the end of body -->
+<button class="hww-tab ghost" type="button" aria-controls="hww-panel" aria-expanded="false">How we work <span aria-hidden="true">+</span></button>
 
 <!-- the morphing logo (canopy.js block 6): the same gold SVG as the hero and the header slot, fixed, transformed from the
      hero logo's rect up into the centre of the bar over the first 70% of the hero's height; visible only mid-morph -->
@@ -183,21 +186,22 @@
       <div class="cel stagger">
         <figure>
           <!-- the 4:5 crop of the landscape stand-in (Pillow, round 6: 898×1123 at the seed star's centre, plus a 640w
-               file), so the slot no longer pulls a 1400–2000w landscape file it crops anyway; sizes = the rendered slot
-               (330px desktop, the 420px-capped figure on phones) -->
-          <a class="cel__slot" href="weddings.html#sofreh-aghd" tabindex="-1" aria-hidden="true"><img src="assets/img/pom-open-closeup-4x5.jpg" srcset="assets/img/pom-open-closeup-4x5-640.jpg 640w, assets/img/pom-open-closeup-4x5.jpg 898w" sizes="(max-width:768px) min(100vw,420px), 330px" width="898" height="1123" alt="An opened pomegranate, seeds packed tight" loading="lazy" decoding="async"></a>
+               file), so the slot no longer pulls a 1400–2000w landscape file it crops anyway; sizes ≥ the rendered slot
+               (round 7: ~247px at 1440 and ~280px on tablets, so 260px to 1181px wide, then 22vw; the 420px-capped
+               figure on phones), so a DPR 2 laptop takes the 640w file, not the 898w -->
+          <a class="cel__slot" href="weddings.html#sofreh-aghd" tabindex="-1" aria-hidden="true"><img src="assets/img/pom-open-closeup-4x5.jpg" srcset="assets/img/pom-open-closeup-4x5-640.jpg 640w, assets/img/pom-open-closeup-4x5.jpg 898w" sizes="(max-width:768px) min(100vw,420px), (max-width:1181px) 260px, 22vw" width="898" height="1123" alt="An opened pomegranate, seeds packed tight" loading="lazy" decoding="async"></a>
           <figcaption><span class="fa" lang="fa" dir="rtl">سفرهٔ عقد</span><h3><a href="weddings.html#sofreh-aghd">Sofreh Aghd</a></h3><p>The Persian ceremony, at the sofreh.</p></figcaption>
         </figure>
         <figure>
-          <a class="cel__slot" href="weddings.html#nikah" tabindex="-1" aria-hidden="true"><img src="assets/img/pom-in-hand.jpg" srcset="assets/img/pom-in-hand-800.jpg 800w, assets/img/pom-in-hand-1400.jpg 1400w, assets/img/pom-in-hand.jpg 1500w" sizes="(max-width:768px) min(100vw,420px), 330px" width="1500" height="2000" alt="A pomegranate held in an open hand" loading="lazy" decoding="async"></a>
-          <figcaption><span class="fa" lang="fa" dir="rtl">نکاح</span><h3><a href="weddings.html#nikah">Nikah</a></h3><p>The contract before both families; the aina mosaf for Afghan families.</p></figcaption>
+          <a class="cel__slot" href="weddings.html#nikah" tabindex="-1" aria-hidden="true"><img src="assets/img/pom-in-hand.jpg" srcset="assets/img/pom-in-hand-800.jpg 800w, assets/img/pom-in-hand-1400.jpg 1400w, assets/img/pom-in-hand.jpg 1500w" sizes="(max-width:768px) min(100vw,420px), (max-width:1181px) 260px, 22vw" width="1500" height="2000" alt="A pomegranate held in an open hand" loading="lazy" decoding="async"></a>
+          <figcaption><span class="fa" lang="fa" dir="rtl">نکاح</span><h3><a href="weddings.html#nikah">Nikah</a></h3><p>The marriage contract; aina mosaf where your family observes it.</p></figcaption>
         </figure>
         <figure>
-          <a class="cel__slot" href="weddings.html#mehndi-sangeet" tabindex="-1" aria-hidden="true"><img src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night.jpg 1125w" sizes="(max-width:768px) min(100vw,420px), 330px" width="1125" height="2000" alt="A pomegranate tree at night" loading="lazy" decoding="async"></a>
+          <a class="cel__slot" href="weddings.html#mehndi-sangeet" tabindex="-1" aria-hidden="true"><img src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night.jpg 1125w" sizes="(max-width:768px) min(100vw,420px), (max-width:1181px) 260px, 22vw" width="1125" height="2000" alt="A pomegranate tree at night" loading="lazy" decoding="async"></a>
           <figcaption><span class="fa" lang="fa" dir="rtl">حنابندان · مهندی</span><h3><a href="weddings.html#mehndi-sangeet">Mehndi &amp; Sangeet</a></h3><p>Henna, blessings, music and dancing.</p></figcaption>
         </figure>
       </div>
-      <p class="cel__foot reveal">Hindu and Sikh families: haldi and pheras, Anand Karaj. Pakistani, Afghan and Bengali families: nikah, walima, rukhsati. <a class="link" href="weddings.html">Every ceremony on the Weddings page.</a></p>
+      <p class="cel__foot reveal">Explore haldi, pheras, Anand Karaj, nikah, walima and more on the <a class="link" href="weddings.html">Weddings page</a>.</p>
     </div>
   </section>
 
@@ -221,7 +225,7 @@
         <div class="field"><label for="f-message">Message <span class="muted">(optional)</span></label><p class="field__help" id="f-message-help">Your families, approximate dates and guest count, the rituals that matter most, and the language your parents prefer.</p><textarea id="f-message" name="message" aria-describedby="f-message-help" placeholder="e.g. Fall 2026, ~250 guests, Sofreh Aghd &amp; Walima, Persian/Dari for parents"></textarea></div>
         <div class="form__submit"><button class="btn" type="submit">Begin the conversation</button></div>
         <p class="form__status" id="form-status" role="status" aria-live="polite" tabindex="-1"></p>
-        <p class="form__note">We reply within one business day.</p>
+        <p class="form__note">We reply within one business day, by email, or by phone if you prefer.</p>
       </form>
     </div>
   </section>
@@ -257,8 +261,7 @@
   </div>
 </footer>
 
-<!-- Persistent "How we work +" tab and slide-out panel (site.js panel block, restored 3 Nov 2026); the Pause-motion button stays in the header bar -->
-<button class="hww-tab ghost" type="button" aria-controls="hww-panel" aria-expanded="false">How we work <span aria-hidden="true">+</span></button>
+<!-- the "How we work +" slide-out panel (site.js panel block, restored 3 Nov 2026); the Pause-motion button stays in the header bar -->
 <div class="hww-backdrop" hidden></div>
 <aside class="hww-panel" id="hww-panel" role="dialog" aria-modal="true" aria-labelledby="hww-title" tabindex="-1" data-lenis-prevent hidden>
   <button class="hww-panel__close" type="button" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -266,7 +269,7 @@
   <h2 id="hww-title">Five steps, one line</h2>
   <ol class="hww-steps" role="list">
     <li><div><h3>Inquiry</h3><p>Write to us, or call. Tell us about your family and your dates.</p></div></li>
-    <li><div><h3>Consultation</h3><p>We meet your family, greet the elders first, and listen. Parents and elders included at the level you choose.</p></div></li>
+    <li><div><h3>Consultation</h3><p>We meet your family, greet the elders first, and listen. Parents and elders included at the level your family agrees together.</p></div></li>
     <li><div><h3>Proposal</h3><p>The plan, the price, and what is included: the events covered, the staffing, the hours and the fees.</p></div></li>
     <li><div><h3>Planning</h3><p>Ritual by ritual, as your family keeps it. A short written summary after every meeting.</p></div></li>
     <li><div><h3>The wedding days</h3><p>The ceremonies your family chooses, in the order agreed with your family, called with the venue and every vendor.</p></div></li>

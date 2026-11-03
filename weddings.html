@@ -67,6 +67,9 @@
     <p class="motion-toggle__note visually-hidden" hidden>Motion is off because your device asks for reduced motion.</p>
   </div>
 </header>
+<!-- the persistent "How we work +" tab, right after the header in the DOM (round 7: a keyboard user meets it before the
+     main content, not after every footer link); its slide-out panel and backdrop stay at the end of body -->
+<button class="hww-tab ghost" type="button" aria-controls="hww-panel" aria-expanded="false">How we work <span aria-hidden="true">+</span></button>
 
 <main id="main" tabindex="-1" class="page-top">
 
@@ -79,7 +82,7 @@
         <h1 id="page-title" class="h-display">Weddings</h1>
         <p class="fa fa--title" lang="fa" dir="rtl">عروسی</p>
       </div>
-      <p class="lede measure">Our celebrations are built on centuries of poetry, hospitality and sacred tradition, and they deserve more than a cookie-cutter approach. We honor the deep soul of your heritage while stripping away the stress, never the meaning. Elders' seats held at the front, at every ceremony.</p>
+      <p class="lede measure">Our celebrations are built on centuries of poetry, hospitality and sacred tradition, and they deserve more than a cookie-cutter approach. We honor the deep soul of your heritage while stripping away the stress, never the meaning. Elders seated first, at every ceremony, as your family wishes.</p>
       <p class="measure muted note mt-16">These are examples; we confirm your family's customs and sequence with you and your officiant. Two heritages, different levels of observance, or celebrations not listed here? Tell us what your family keeps.</p>
     </div>
   </section>
@@ -140,7 +143,7 @@
             <p class="fa fa--big" lang="fa" dir="rtl">نکاح</p>
           </div>
           <div class="stagger">
-            <p>The Islamic marriage contract, read before witnesses and both families. For the rituals you choose, we confirm the order and participants with you and your officiant: the mehndi the night before and the rukhsati after the nikah or the reception, if your family keeps them.</p>
+            <p>The Islamic marriage contract, read before witnesses and both families. For Pakistani families: the nikah, the rukhsati and the walima, each in its own time. For the rituals you choose, we confirm the order and participants with you and your officiant: the mehndi the night before and the rukhsati after the nikah or the reception, if your family keeps them.</p>
             <p>We cue the officiant and the family, and keep the room quiet and steady. A one-line programme, coordinated with your printer, explains the ritual so every guest can follow.</p>
           </div>
           <!-- Afghan weddings (#afghan, in the "Find your ceremony" row): how the family names its ceremonies, languages and
@@ -208,8 +211,8 @@
             <p>A one-line programme, coordinated with your printer, explains each ritual so every guest can follow, and the mandap stays quiet and on time.</p>
             <details class="option__more tradition__more">
               <summary>Details we confirm with your family</summary>
-              <p>If your family observes the haldi, the family paints the couple with turmeric before the wedding; we schedule it with the family and the photographer, and keep the outfits for the wedding day clear of it.</p>
-              <p>The day as many families call it, confirmed with you and written into the programme: the baraat (the groom's party arriving) and the milni, the kanya aagman (the bride's entrance, cued with her family), the kanyadaan (the giving away, by the participants the couple names; often the parents), then the pheras under the mandap with the pandit: the number of rounds, who leads which, the mangalsutra and the sindoor, the saptapadi's seven steps, as your family keeps them.</p>
+              <p>If your family observes the haldi, or the vidhi and pithi for Gujarati families, the family paints the couple with turmeric before the wedding; we schedule it with the family and the photographer, and keep the outfits for the wedding day clear of it.</p>
+              <p>The day as many families call it, confirmed with you and written into the programme: the baraat (the groom's party arriving) and the milni, the kanya aagman (the bride's entrance, cued with her family), the jai mala or varmala (the garlands exchanged, with the family close), the kanyadaan (the giving away, by the participants the couple names; often the parents), then the pheras under the mandap with the pandit: the number of rounds, who leads which, the mangalsutra and the sindoor, the saptapadi's seven steps, as your family keeps them.</p>
               <p>Gujarati, Punjabi or South Indian: the sequence your family keeps, confirmed with your pandit.</p>
             </details>
           </div>
@@ -238,7 +241,7 @@
             <details class="option__more tradition__more">
               <summary>Details we confirm with your family</summary>
               <p>The Sikh ceremony before the Guru Granth Sahib: the baraat (the groom's party arriving) and the milni, the families seated, the palla placed in the bride's hand by the participant the couple names (often her father), the four laavan as the couple circle the Guru Granth Sahib, the parents and the elders seated close.</p>
-              <p>Your ceremony, in the sequence agreed with your family and the granthi; the langar after it, with the gurdwara.</p>
+              <p>Your ceremony, in the sequence agreed with your family and the granthi: the Ardas and the Karah Parshad at its close, then the langar, with the gurdwara.</p>
             </details>
           </div>
         </div>
@@ -265,8 +268,7 @@
             <p>Welcome sign, seating chart and table numbers in the languages listed in your proposal, coordinated with your printer and the venue; the rukhsati, vidaai or doli, as your family calls the send-off, cued for the elders, and a thank-you card follows.</p>
             <details class="option__more tradition__more">
               <summary>Details we confirm with your family</summary>
-              <p>The walima, the groom's family's feast after the nikah, and the reception: which family hosts which night, who speaks and in which order, the first dance or none, the knife, the cake or the sweets, and the hour the elders leave. We run each your way.</p>
-              <p>Hospitality and dietary logistics, confirmed with your family and coordinated with the venue before the day: halal, vegetarian-only, a dry bar or none of these, the elders served first, and who hosts each table, so neither family is left guessing.</p>
+              <p>The walima, the groom's family's celebration after the nikah, and the reception: which family hosts which night, who speaks and in which order, the first dance or none, and the hour the elders leave. We run each your way.</p>
             </details>
           </div>
         </div>
@@ -325,8 +327,7 @@
   </div>
 </footer>
 
-<!-- Persistent "How we work +" tab and slide-out panel (site.js panel block, restored 3 Nov 2026); the Pause-motion button stays in the header bar -->
-<button class="hww-tab ghost" type="button" aria-controls="hww-panel" aria-expanded="false">How we work <span aria-hidden="true">+</span></button>
+<!-- the "How we work +" slide-out panel (site.js panel block, restored 3 Nov 2026); the Pause-motion button stays in the header bar -->
 <div class="hww-backdrop" hidden></div>
 <aside class="hww-panel" id="hww-panel" role="dialog" aria-modal="true" aria-labelledby="hww-title" tabindex="-1" data-lenis-prevent hidden>
   <button class="hww-panel__close" type="button" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -334,7 +335,7 @@
   <h2 id="hww-title">Five steps, one line</h2>
   <ol class="hww-steps" role="list">
     <li><div><h3>Inquiry</h3><p>Write to us, or call. Tell us about your family and your dates.</p></div></li>
-    <li><div><h3>Consultation</h3><p>We meet your family, greet the elders first, and listen. Parents and elders included at the level you choose.</p></div></li>
+    <li><div><h3>Consultation</h3><p>We meet your family, greet the elders first, and listen. Parents and elders included at the level your family agrees together.</p></div></li>
     <li><div><h3>Proposal</h3><p>The plan, the price, and what is included: the events covered, the staffing, the hours and the fees.</p></div></li>
     <li><div><h3>Planning</h3><p>Ritual by ritual, as your family keeps it. A short written summary after every meeting.</p></div></li>
     <li><div><h3>The wedding days</h3><p>The ceremonies your family chooses, in the order agreed with your family, called with the venue and every vendor.</p></div></li>

@@ -1,0 +1,35 @@
+{
+ "model": "astra",
+ "role": "brand",
+ "score": 6,
+ "blocking": [
+  "weddings.html explicitly promotes dietary and food-service coordination ('halal, vegetarian-only, a dry bar', 'elders served first'), breaking the hard rule against catering content."
+ ],
+ "fixes": [
+  {
+   "where": "weddings.html · #reception-walima details",
+   "what": "Remove the paragraph beginning 'Hospitality and dietary logistics'; retain ceremony timing, family hosting and send-off coordination.",
+   "why": "Food-service promises breach the stated scope and blur the planning brand."
+  },
+  {
+   "where": "assets/css/canopy.css · .cel figure and figcaption",
+   "what": "Set figure grid rows to auto 1fr with align-content:start; give the Persian caption row a consistent height and align all three English titles.",
+   "why": "The desktop captions start at visibly different heights, making an otherwise orderly photo row look unfinished."
+  },
+  {
+   "where": "assets/css/canopy.css · mobile .cel figure and .screen--inquire .form",
+   "what": "Replace right-only clearance padding with equal left and right clearance where the tab is already hidden.",
+   "why": "The current rules shift photographs and form contents left of the centered headings without a collision-prevention benefit."
+  },
+  {
+   "where": "assets/js/canopy.js · buildAll block 2c",
+   "what": "Animate each bounce from its current position to the negative offset, then settle; remove the instantaneous negative-position reset on restart.",
+   "why": "Repeated scroll-triggered jumps risk making the painted canopy feel twitchy rather than gently alive."
+  },
+  {
+   "where": "assets/css/canopy.css · .tree__band",
+   "what": "Replace the short repeating bark tile with a longer continuous trunk treatment that preserves the existing canopy and root junctions.",
+   "why": "The desktop form is flanked by conspicuously stretched, repetitive bark; a continuous painted surface would better sustain the premium illustration."
+  }
+ ]
+}

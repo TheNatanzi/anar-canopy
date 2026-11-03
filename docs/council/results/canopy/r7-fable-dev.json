@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "dev",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "assets/css/canopy.css · screen 3, `.cel{display:grid;grid-template-columns:repeat(3,1fr)…}`",
+   "what": "Add `align-items:start` to `.cel` (or `align-content:start` to `.cel figure`). Measured at 1440×900: all three figures are stretched to 450px because Nikah's description runs to 3 lines; the two 2-line figures get the 24px surplus split across their grid rows, so their figcaptions sit 12px lower than Nikah's (capTop 329 vs 317). Then either shorten the Nikah line to two lines or raise `.cel p{min-height}` to 72px so the three captions end level.",
+   "why": "Visible in index-desktop-2: the three caption blocks are not on one baseline, and two slots are no longer true 4:5."
+  },
+  {
+   "where": "assets/css/canopy.css · `.cel h3 a{border-bottom:2px solid …;padding-bottom:2px}` and `.cel p`",
+   "what": "Make the title link `display:inline-block` (so its 2px padding + 2px border occupy height) or add `margin-top:6px` to `.cel p`. Measured: the link's border-bottom sits at y 395.7 while the description's first line starts at 390.5 on desktop (468.5 vs 462.5 on the phone): the gold rule overlaps the ascenders of 'The contract…' / 'Henna…' by 5–6px.",
+   "why": "Visible in index-desktop-3 and index-phone-2/3: the title underline strikes through the first line of every caption."
+  },
+  {
+   "where": "assets/tree/layers/canopy-L1.webp / canopy-L2.webp (and the index.html preloads of L0/L1)",
+   "what": "Re-encode L1 (415KB) and L2 (319KB) at a lower WebP quality (they sit behind L3 and the sway hides compression); target ≤180KB each. The desktop first screen currently fetches ~1.0MB of canopy layers + 448KB tree-full + 2.5MB mp4 + 168KB fonts before the morph has anything to dock into.",
+   "why": "LCP on a 1440 cold load is gated on ~1.4MB of image before the video even starts; the two dark layers are the cheapest weight to cut without touching the art."
+  },
+  {
+   "where": "index.html · the three `.cel__slot img` `sizes=\"(max-width:768px) min(100vw,420px), 330px\"`",
+   "what": "Change the desktop term to `calc(22vw)` or 260px: the slot renders at 247px wide at 1440 (the 68vw column minus gutters and two 32px gaps), not 330px, so a DPR-2 desktop picks the 898w file where 640w suffices.",
+   "why": "Over-fetch on Retina laptops; the comment in the HTML documents a width the layout no longer produces."
+  },
+  {
+   "where": "assets/css/site.css · `.site-header--solid,.site-header.is-scrolled{background:rgba(27,34,30,.96)}` + the desktop `backdrop-filter:blur(8px)` block",
+   "what": "Raise the scrolled alpha to .985 on pointer desktops (keep .96 only where the blur is off), or drop the blur. The 4% bleed plus blur shows the statement and caption text as faint ghosts behind the centred logo (index-desktop-2 and -3, y 30–80).",
+   "why": "Text ghosting under the logo reads as a rendering fault, not an editorial edge, and the blur costs a re-composite on every scrolled frame for it."
+  },
+  {
+   "where": "index.html (and the three inner pages) · `<button class=\"hww-tab\">` placed after the footer",
+   "what": "Move the `.hww-tab` button (not the panel/backdrop) into the DOM right after `</header>` so keyboard users meet the persistent tab before the main content; the panel and backdrop can stay at the end of body. Keep the existing focus-move logic.",
+   "why": "Measured tab order: the tab is reachable only after every footer link, so a keyboard user scrolling screen 2–3 sees a visible control they cannot reach until the end of the page."
+  }
+ ]
+}

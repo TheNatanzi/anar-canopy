@@ -1,0 +1,28 @@
+{
+ "model": "astra",
+ "role": "dev",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "assets/js/site.js — inquiry form validation",
+   "what": "After installing custom validation handlers, set form.noValidate = true so every submission reaches checkValidity(), reportValidity() and explicit invalid-field focus.",
+   "why": "Native interactive validation currently prevents the submit event on invalid forms, making the intended focus fallback unreachable."
+  },
+  {
+   "where": "assets/js/site.js — ghostObserver and desktopQuery change handler",
+   "what": "Extract destination visibility calculation into a shared function and run it on both observer updates and breakpoint changes.",
+   "why": "hideAtDestination retains the previous breakpoint's photo-row state until another intersection notification arrives."
+  },
+  {
+   "where": "assets/css/site.css — .container .container--text and mobile tab clearance",
+   "what": "Preserve the additional right clearance on nested text containers, including About's 'What anar means' block; verify text bounds against the tab at 390px.",
+   "why": "The more-specific nested-container padding reset overrides the mobile clearance rule, allowing text into the tab's reserved area."
+  },
+  {
+   "where": "assets/css/site.css — mobile navigation enhancement; assets/js/canopy.js — fitHero()",
+   "what": "Measure cold-load layout shifts with delayed scripts and fonts; reserve consistent header space before nav-ready and calibrate the initial hero-content estimate to minimize corrective resizing.",
+   "why": "The fallback navigation initially occupies normal flow, then disappears into a fixed header; later hero measurements can move subsequent content again."
+  }
+ ]
+}

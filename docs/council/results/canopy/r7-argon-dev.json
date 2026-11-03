@@ -1,0 +1,23 @@
+{
+ "model": "argon",
+ "role": "dev",
+ "score": 9.6,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "index.html:19-20",
+   "what": "Wrap or scope the canopy layer image preloads with a `not (prefers-reduced-motion: reduce)` condition, or preload `canopy-L2.webp` / `canopy-L3.webp` only on desktop if needed, and ensure `canopy-L0`/`canopy-L1` preloads also run under reduced motion since the canopy still renders on screen 1.",
+   "why": "Under `prefers-reduced-motion: reduce`, the canopy layers still render on the first screen, so skipping their preload delays the bottom foliage paint."
+  },
+  {
+   "where": "assets/js/site.js:354-366",
+   "what": "In ` ghostObserver`, check initial intersection state synchronously or trigger `syncTab(true)` immediately on first observation rather than waiting 700ms for `settleSoon` when `#inquire` is already in view (e.g., on direct `#inquire` hash load).",
+   "why": "Landing directly on `index.html#inquire` leaves the `hww-tab` in the tab order for up to 700ms before the settle timer fires."
+  },
+  {
+   "where": "assets/js/site.js:116-126",
+   "what": "In `scrollToEl()`, pass `immediate: true` to `lenis.scrollTo` when `reduced || userPaused` is true (currently `lenis` is destroyed when paused, but if ever called during a transition, guarding duration with `reduced || userPaused ? 0 : 1.4` is safer).",
+   "why": "Defensive guard so smooth scroll duration never runs if reduced-motion state flips mid-action."
+  }
+ ]
+}

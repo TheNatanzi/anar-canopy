@@ -67,6 +67,9 @@
     <p class="motion-toggle__note visually-hidden" hidden>Motion is off because your device asks for reduced motion.</p>
   </div>
 </header>
+<!-- the persistent "How we work +" tab, right after the header in the DOM (round 7: a keyboard user meets it before the
+     main content, not after every footer link); its slide-out panel and backdrop stay at the end of body -->
+<button class="hww-tab ghost" type="button" aria-controls="hww-panel" aria-expanded="false">How we work <span aria-hidden="true">+</span></button>
 
 <main id="main" tabindex="-1" class="page-top">
 
@@ -120,11 +123,11 @@
             </ul>
           </details>
         </li>
-        <!-- the third way, its own card (round 5): partial or multi-event planning (a venue's own coordinator who runs the
-             main day, a family that needs the rituals and the other days bridged), quoted like the two above; when it
-             begins and what it includes defined like the other two (round 6) -->
+        <!-- the third way, its own card (round 5): selected-event planning (renamed from partial planning, round 7: one
+             or two events of a multi-day celebration, e.g. when a venue's own coordinator runs the main day), quoted like
+             the two above; when it begins and what it includes defined like the other two (round 6) -->
         <li class="option--wide">
-          <h3>Partial planning</h3>
+          <h3>Selected-event planning</h3>
           <p class="option__when">Begins once your proposal is signed · one or two events of a multi-day celebration, quoted the same way</p>
           <p class="option__scope">The sofreh, the nikah, the mehndi and the other days still need calling when a venue's own coordinator runs the main day. Already have a venue coordinator? We agree who runs what, in writing. Quoted to the events, days and staffing it covers.</p>
           <details class="option__more">
@@ -161,10 +164,10 @@
           <span class="step__n">02 · Consultation</span>
           <h3>First, we hear your priorities.</h3>
           <p class="fa" lang="fa" dir="rtl">مشاوره</p>
-          <p>We meet your family, greet the elders first, and listen. We ask how your family observes each tradition.</p>
+          <p>We meet your family, greet the elders first, and listen. We ask how your family observes each tradition. Parents and elders included at the level your family agrees together.</p>
           <ul class="step__points" role="list">
             <li><strong>Guest needs:</strong> seating, mobility and quiet-space needs for the elders and guests, planned from this meeting on.</li>
-            <li><strong>Parent involvement:</strong> the couple tells us who joins each meeting and how much the parents decide, and we keep to it.</li>
+            <li><strong>Parent involvement:</strong> your family tells us who joins each meeting and how much the parents decide, and we keep to it.</li>
           </ul>
         </li>
         <li class="step reveal">
@@ -184,7 +187,7 @@
           <span class="step__n">04 · Planning</span>
           <h3>Ritual by ritual, as your family keeps it.</h3>
           <p class="fa" lang="fa" dir="rtl">برنامه‌ریزی</p>
-          <p>We plan each ceremony as your family keeps it: the ceremonies your family chooses, in the order agreed with your family. A short written summary follows every meeting, in English, with the parents' page in the language agreed in your proposal. Parents and elders included at the level you choose.</p>
+          <p>We plan each ceremony as your family keeps it: the ceremonies your family chooses, in the order agreed with your family. A short written summary follows every meeting, in English, with the parents' page in the language agreed in your proposal.</p>
         </li>
         <li class="step reveal">
           <span class="step__dot track-dot" aria-hidden="true"></span>
@@ -233,7 +236,7 @@
   <section class="section on-light on-light--day" id="faq" aria-labelledby="faq-title">
     <div class="container container--text">
       <p class="eyebrow reveal">Questions families ask</p>
-      <h2 id="faq-title" class="reveal h2--tight">Seven answers</h2>
+      <h2 id="faq-title" class="reveal h2--tight">Eight answers</h2>
       <div class="faq reveal">
         <details>
           <summary>Our two families come from different cultures. Can you plan both?</summary>
@@ -241,7 +244,7 @@
         </details>
         <details>
           <summary>Do you plan the whole wedding, or only run the day?</summary>
-          <p class="faq__a">Both, and the ground between. Full planning begins once your proposal is signed and runs to the thank-you, with the wedding events agreed in your proposal run by your planner; the first conversation is free. Wedding-day coordination begins 6–8 weeks before the first event: you have planned already, we run the days you have planned. Partial planning begins once your proposal is signed and covers one or two events of a multi-day celebration, with the split of responsibilities agreed in writing when a venue's own coordinator runs the main day. We say which fits on the first call, with the price and what is included.</p>
+          <p class="faq__a">Both, and the ground between. Full planning begins once your proposal is signed and runs to the thank-you, with the wedding events agreed in your proposal run by your planner; the first conversation is free. Wedding-day coordination begins 6–8 weeks before the first event: you have planned already, we run the days you have planned. Selected-event planning begins once your proposal is signed and covers one or two events of a multi-day celebration, with the split of responsibilities agreed in writing when a venue's own coordinator runs the main day. We say which fits on the first call, with the price and what is included.</p>
         </details>
         <details>
           <summary>How early should we write?</summary>
@@ -249,11 +252,15 @@
         </details>
         <details>
           <summary>Will you work with our parents directly?</summary>
-          <p class="faq__a">Yes. Parents and elders included at the level you choose. Elders are greeted first and asked, not told. The couple sets the level of parent involvement. Parents' pages in the language agreed in your proposal; translation and spoken support confirmed before booking.</p>
+          <p class="faq__a">Yes. Parents and elders included at the level your family agrees together. Elders are greeted first and asked, not told. Parents' pages in the language agreed in your proposal; translation and spoken support confirmed before booking.</p>
         </details>
         <details>
           <summary>Which languages do you plan in?</summary>
           <p class="faq__a">Planning runs in English. Parents' pages in the language agreed in your proposal (Persian, Dari, Pashto, Urdu, Hindi, Punjabi or another you name); translation and spoken support confirmed before booking. For calls and meetings in another language, tell us which one.</p>
+        </details>
+        <details>
+          <summary>Our ceremony is at a gurdwara, mandir or masjid. Who coordinates it?</summary>
+          <p class="faq__a">We do, with the venue's own staff. Before the day we confirm with the gurdwara, mandir or masjid and your officiant the arrival times, what the house asks of guests, where the photographer may stand and when the hall must be clear, and on the day we keep to its order. When the reception is at a second venue, the move between the two and the evening run on the same timeline, under the same plan, with the staffing for each named in your proposal.</p>
         </details>
         <details>
           <summary>Where do you work?</summary>
@@ -262,7 +269,7 @@
         <details>
           <summary>What does it cost?</summary>
           <!-- OWNER INPUT: the starting figures. Replace $X / $Y and remove the hidden attribute; the line stays hidden until then -->
-          <p class="faq__a">Every proposal is priced to the events, days and staffing it covers. <span class="faq__from" data-owner-input hidden>Full planning from $X · Wedding-day coordination from $Y. </span>Full planning, partial planning and wedding-day coordination are quoted after the first conversation.</p>
+          <p class="faq__a">Every proposal is priced to the events, days and staffing it covers. <span class="faq__from" data-owner-input hidden>Full planning from $X · Wedding-day coordination from $Y. </span>Full planning, selected-event planning and wedding-day coordination are quoted after the first conversation.</p>
         </details>
       </div>
       <p class="reveal mt-48"><a class="btn" href="index.html#inquire">Begin the conversation</a></p>
@@ -299,8 +306,7 @@
   </div>
 </footer>
 
-<!-- Persistent "How we work +" tab and slide-out panel (site.js panel block, restored 3 Nov 2026); the Pause-motion button stays in the header bar -->
-<button class="hww-tab ghost" type="button" aria-controls="hww-panel" aria-expanded="false">How we work <span aria-hidden="true">+</span></button>
+<!-- the "How we work +" slide-out panel (site.js panel block, restored 3 Nov 2026); the Pause-motion button stays in the header bar -->
 <div class="hww-backdrop" hidden></div>
 <aside class="hww-panel" id="hww-panel" role="dialog" aria-modal="true" aria-labelledby="hww-title" tabindex="-1" data-lenis-prevent hidden>
   <button class="hww-panel__close" type="button" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -308,7 +314,7 @@
   <h2 id="hww-title">Five steps, one line</h2>
   <ol class="hww-steps" role="list">
     <li><div><h3>Inquiry</h3><p>Write to us, or call. Tell us about your family and your dates.</p></div></li>
-    <li><div><h3>Consultation</h3><p>We meet your family, greet the elders first, and listen. Parents and elders included at the level you choose.</p></div></li>
+    <li><div><h3>Consultation</h3><p>We meet your family, greet the elders first, and listen. Parents and elders included at the level your family agrees together.</p></div></li>
     <li><div><h3>Proposal</h3><p>The plan, the price, and what is included: the events covered, the staffing, the hours and the fees.</p></div></li>
     <li><div><h3>Planning</h3><p>Ritual by ritual, as your family keeps it. A short written summary after every meeting.</p></div></li>
     <li><div><h3>The wedding days</h3><p>The ceremonies your family chooses, in the order agreed with your family, called with the venue and every vendor.</p></div></li>

@@ -271,8 +271,11 @@ html.canopy-motion.logo-docked .page-index .site-header .nav-home{opacity:1;visi
    64–96px under the statement (the condensed journey keeps no empty interval between the promises and the photos) */
 .screen--celebrations{padding-top:clamp(64px,10vh,96px)}
 .screen--celebrations .screen__col{max-width:min(1000px + 2 * var(--gutter),68vw)}
-.cel{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2.4vw,32px);margin-top:clamp(32px,5vh,48px);text-align:left}
-.cel figure{margin:0;display:grid;gap:var(--s1)}
+/* round 7: align-items:start on the row and align-content:start + rows auto 1fr on each figure, so a taller caption
+   never stretches its neighbours (the stretched figures split the surplus between their slot and caption rows: two
+   captions started 12px below the third); every slot stays a true 4:5 and the three captions start on one line */
+.cel{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2.4vw,32px);margin-top:clamp(32px,5vh,48px);text-align:left;align-items:start}
+.cel figure{margin:0;display:grid;gap:var(--s1);align-content:start;grid-template-rows:auto 1fr}
 /* tablets 769–1024px (iPad portrait): the bare-trunk gap is 600px at 800 wide, so the photos go two + one in an 84vw
    column (the third centred under the pair, same width) and the statement column widens to 60vw (its text stays
    inside the shrub gap, x 172–630 at 800, with the 48px gutter). AFTER the base .cel rules: same specificity, so the
@@ -292,14 +295,21 @@ html.canopy-motion.logo-docked .page-index .site-header .nav-home{opacity:1;visi
    the title lifts the photo the same way */
 @supports selector(:has(a)){.cel figure:has(h3 a:focus-visible) .cel__slot img{transform:scale(1.03)}}
 /* each caption: the Persian accent, the linked title (its gold underline is the one line; no rule above it, round 5),
-   the description held to two lines (min-height 48px) so the three captions end level */
+   the description reserving two lines on phones and three side by side (below), so the three captions end level */
 .cel h3{position:relative;font-size:clamp(20px,1.7vw,24px);margin-top:var(--s1)}
 /* each title links to its section on weddings.html: a persistent quiet gold underline (.45: the affordance on touch
    screens, where there is no hover), full gold on hover / focus, no boxes */
-.cel h3 a{border-bottom:2px solid rgba(201,158,92,.45);padding-bottom:2px;transition:border-color .3s,color .3s}
+/* inline-block (round 7): the link's 2px padding + 2px rule take up line height, so the underline sits above the
+   description's first line instead of striking through its ascenders */
+.cel h3 a{display:inline-block;border-bottom:2px solid rgba(201,158,92,.45);padding-bottom:2px;transition:border-color .3s,color .3s}
 .cel h3 a:hover,.cel h3 a:focus-visible{border-bottom-color:var(--gold)}
-.cel .fa{font-size:16px;color:var(--gold);text-align:left;display:block;line-height:1.5}
+/* the three Persian labels share ONE 24px box (round 7): a space or middle dot falling back to Tahoma during a font
+   swap can never re-open a baseline drift between them */
+.cel .fa{font-size:16px;color:var(--gold);text-align:left;display:block;line-height:24px;height:24px;white-space:nowrap}
 .cel p{color:var(--stone);font-size:16px;line-height:24px;min-height:48px;text-wrap:balance}
+/* side by side (769px and up) the slot is ~247px at 1440, where the Nikah line (the planners' conditional wording,
+   round 7) takes three lines: the three descriptions reserve three, so the captions end level as well as start level */
+@media (min-width:769px){.cel p{min-height:72px}}
 .cel__foot{margin-top:calc(clamp(32px,5vh,48px) + var(--s2));font-size:16px;line-height:24px;color:var(--stone);text-wrap:balance}
 /* screen 4: the short form (names, email + phone, message, button) ends above the ground's central fruit; the ground + footer close the page */
 /* 64–110px under the photo row (round 5: 96–170 split the form over two scroll stops at 1440×900, the button
@@ -340,7 +350,8 @@ html.canopy-motion.logo-docked .page-index .site-header .nav-home{opacity:1;visi
   .promises{font-size:18px}
   /* the "How we work +" tab (36px wide, mid-height, right edge; hidden while the hero or the photo row is in view and
      while scrolling, site.js) must never sit over text or a slot: the blocks that can meet it keep 44px of right
-     clearance, i.e. the 40px gutter topped up by 4px (the centred promises shift 2px, invisible); .cel figure takes
-     the padding so the photo slot (a link) ends 44px from the edge too */
-  .promises,.cel figure,.screen--inquire .form{padding-right:max(0px,44px - var(--gutter))}
+     clearance, i.e. the 40px gutter topped up by 4px (the centred promises shift 2px, invisible). Not .cel figure
+     (round 7): site.js hides the tab while the photo row is in view on phones, so the extra right pad only pushed the
+     slots off-centre (27px left, 44px right at 390) */
+  .promises,.screen--inquire .form{padding-right:max(0px,44px - var(--gutter))}
 }

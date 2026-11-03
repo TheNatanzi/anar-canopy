@@ -1,0 +1,36 @@
+{
+ "model": "astra",
+ "role": "planner",
+ "score": 6,
+ "blocking": [
+  "The Reception & Walima section includes food-and-beverage service logistics ('halal, vegetarian-only, a dry bar', 'elders served first'), crossing the rubric's prohibition on catering content.",
+  "The homepage assigns ceremonies by religion and nationality too categorically; the inner page's family-specific qualifications do not carry through to this first impression."
+ ],
+ "fixes": [
+  {
+   "where": "weddings.html — #reception-walima details",
+   "what": "Remove the paragraph beginning 'Hospitality and dietary logistics'. Keep this section focused on event timing, speakers, family participation and send-offs.",
+   "why": "Restores the required service boundary and avoids implying responsibility for food or beverage service."
+  },
+  {
+   "where": "index.html — .cel__foot",
+   "what": "Replace the demographic lists with 'Explore haldi, pheras, Anand Karaj, nikah, walima and more on the Weddings page. Your family chooses what belongs.'",
+   "why": "Lets families recognize their ceremonies without treating nationality as a proxy for religious practice."
+  },
+  {
+   "where": "index.html — Nikah card caption",
+   "what": "Use 'The marriage contract; aina mosaf where your family observes it.'",
+   "why": "Carries the inner page's conditional language onto the homepage instead of presenting one custom as universal for Afghan families."
+  },
+  {
+   "where": "how-we-work.html — Partial planning option and matching FAQ answer",
+   "what": "Rename this offering 'Selected-event planning' if its scope remains one or two events; describe taking responsibility for those events without assuming a venue coordinator runs the main wedding.",
+   "why": "The current title suggests help with unfinished planning across a wedding, while the described service covers selected events."
+  },
+  {
+   "where": "weddings.html — ceremony opening paragraphs",
+   "what": "Keep each opening to two short sentences about the coordination delivered; move detailed sequences and participant lists into the existing 'Details we confirm with your family' disclosures.",
+   "why": "Parents and couples should quickly see what they are hiring Anar to do; long ritual inventories obscure that value."
+  }
+ ]
+}

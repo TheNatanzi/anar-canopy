@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "planner",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "weddings.html · Reception & Walima · details paragraph 2 (\"Hospitality and dietary logistics…\")",
+   "what": "Cut \"halal, vegetarian-only, a dry bar or none of these\" and reduce the paragraph to: \"The venue's hospitality requirements, the elders served first and who hosts each table: confirmed with your family and the venue before the day.\"",
+   "why": "It is the one place the site reads as catering talk (hard rule) and it is the caterer's brief, not the planner's."
+  },
+  {
+   "where": "index.html · screen 3 · .cel__foot",
+   "what": "Lead with the families the three slots miss and link them to their own section: \"Hindu and Sikh families: <a href=\"weddings.html#haldi-pheras\">haldi and pheras</a>, <a href=\"weddings.html#anand-karaj\">Anand Karaj</a>. Pakistani, Afghan and Bengali families: nikah, walima, rukhsati.\" and change the Mehndi & Sangeet caption to \"Henna, blessings, music and dancing, for every South Asian family.\"",
+   "why": "The hero promises South Asian but all three slots read Persian/Muslim; a Gujarati or Punjabi mother must see herself before she scrolls, in a 16px stone footnote she will not."
+  },
+  {
+   "where": "weddings.html · pageband lede, last sentence",
+   "what": "Change \"Elders' seats held at the front, at every ceremony.\" to \"Elders seated first, at every ceremony, as the venue and the faith allow.\"",
+   "why": "In a gurdwara the sangat sits on the floor; an absolute \"seats at the front\" tells Sikh families the planner has not been in one."
+  },
+  {
+   "where": "how-we-work.html · step 02 and the panel's Consultation line (\"Parents and elders included at the level you choose\")",
+   "what": "Change to \"Parents and elders included at the level your family agrees together.\" in both places (and the FAQ answer \"Will you work with our parents directly?\").",
+   "why": "Parents are often the ones paying and reading; \"you choose\" addressed to the couple reads as the parents being managed, not welcomed."
+  },
+  {
+   "where": "index.html · #inquire · .form__note",
+   "what": "Change \"We reply within one business day.\" to \"We reply within one business day, by email, or by phone if you leave a number.\"",
+   "why": "A parent who types a number into an optional field wants to know it will be used; it also justifies the field for the couple."
+  },
+  {
+   "where": "weddings.html · Nikah · first paragraph",
+   "what": "Name the Pakistani entry point the way the Afghan block does: add \"For Pakistani families: the nikah, the baraat and the walima, with the rukhsati cued for the elders.\" after the first sentence.",
+   "why": "Afghan families get a labelled block; Pakistani families, the largest Muslim South Asian group in the Bay Area, are only a word in the home footnote."
+  }
+ ]
+}

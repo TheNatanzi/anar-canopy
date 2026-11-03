@@ -230,9 +230,13 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 @media (max-width:768px){.site-header.is-scrolled{background:var(--night)}}
 /* the open drawer's bar is the same solid deep cypress as the drawer (after the scrolled rules, so it wins while scrolled) */
 .site-header.nav-open{background:var(--deep)}
-/* the blur only on pointer desktops: a fixed element with a backdrop filter is re-composited on every scrolled frame */
+/* the blur only on pointer desktops: a fixed element with a backdrop filter is re-composited on every scrolled frame.
+   There the bar is .985 opaque (round 7: at .96 the parchment statement and the captions scrolling under it showed as
+   a pale smear beside the small gold logo); .96 stays only where the blur is off */
 @media (min-width:769px) and (hover:hover){
-  @supports (backdrop-filter:blur(8px)){.site-header--solid,.site-header.is-scrolled{backdrop-filter:blur(8px)}}
+  @supports (backdrop-filter:blur(8px)){.site-header--solid,.site-header.is-scrolled{background:rgba(27,34,30,.985);backdrop-filter:blur(8px)}
+    /* the open drawer's deep bar still wins (769–1024 with a pointer) */
+    .site-header.nav-open{background:var(--deep)}}
 }
 /* the full desktop header (links left, the 150px centred logo, icons + Inquire + Pause right) from 1025px; 769–1024
    keeps the toggle, the drawer and the 120px logo (verified 820×1180, 1024×768, 1025: nothing meets the logo) */
@@ -334,8 +338,8 @@ html.logo-morphing .logo-morph{visibility:visible;will-change:transform}
 .field label{font-size:16px;line-height:22px;color:var(--parch)}
 /* persistent helper text under a label ("Couple or parent names"), linked with aria-describedby */
 .field__help{font-size:14px;line-height:20px;color:var(--stone);margin-top:-4px}
-/* inputs in the underline style (editorial, like the kashida): no perimeter box, a 2px gold rule at .7 (opaque enough to read against the night fill) under a soft night fill; focus = the full gold underline (no 1px hairlines anywhere) */
-.field input,.field textarea,.field select{font:inherit;font-weight:700;color:var(--parch);background:rgba(27,34,30,.55);border:0;border-bottom:2px solid rgba(201,158,92,.7);border-radius:2px 2px 0 0;padding:12px 14px;width:100%;min-width:0;min-height:48px;transition:border-color .3s,background-color .3s}
+/* inputs in the underline style (editorial, like the kashida): no perimeter box, a 2px gold rule at .7 (opaque enough to read against the night fill) under a light deep-night fill (.35, round 7: the .55 fills read as heavy dark blocks over the roots); focus = the full gold underline and a deeper fill (no 1px hairlines anywhere) */
+.field input,.field textarea,.field select{font:inherit;font-weight:700;color:var(--parch);background:rgba(18,23,20,.35);border:0;border-bottom:2px solid rgba(201,158,92,.7);border-radius:2px 2px 0 0;padding:12px 14px;width:100%;min-width:0;min-height:48px;transition:border-color .3s,background-color .3s}
 /* a field that failed validation (site.js: the `invalid` event, captured): aria-invalid on the control, the gold
    underline turns ruby, and a persistent .field__error line (linked by aria-describedby) names the problem until the
    value changes; the native bubble still shows, this stays */

@@ -17,8 +17,8 @@
         the hero (×0.985 / .993 / 1 / 1.008 of the scroll, the spread between
         the first and the last capped at 8px), swayed about their top (L1
         ±0.2° / 11 s, L2 ±0.3° / 8 s, L3 ±0.45° / 6 s) and nudged on a fast
-        scroll move (−4 / −6 / −8px, power2.out then a soft settle, one
-        timeline restarted per kick, |velocity| > 900, ≤ 1 per 400 ms); two
+        scroll move (from the current y to −4 / −6 / −8px, then a soft settle,
+        a fresh timeline per kick, |velocity| > 900, ≤ 1 per 400 ms); two
         shrub sprigs ±0.3° about their base (9 s / 11 s); all paused off
         screen and reverted on Pause
      3. the hero, owned here (site.js block 1 skips a hero inside main.canopy):
@@ -90,10 +90,13 @@
   var on = false;
   var failed = false;
   var risen = false;
-  /* the scroll bounce of the canopy layers: ONE reusable timeline (built in buildAll, inside the context), the time
+  /* the scroll bounce of the canopy layers: the live kick timeline, the kick function and the bounced imgs (set in
+     buildAll; the timeline is built per kick, outside the context, so kill() kills it and clears the imgs), the time
      of the last kick and the canopy's in-view flag (written by an IntersectionObserver, never measured per frame)
      live here so kill() can reset them */
   var bounceTl = null;
+  var kickBounce = null;
+  var bounceImgs = [];
   var lastBounce = 0;
   var canopyInView = false;
 
@@ -205,9 +208,8 @@
              sine; L0 still), paused off screen;
           c. bounce: on a scroll update with |velocity| > 900 px/s while the canopy is on screen (the in-view flag comes
              from an IntersectionObserver, not a per-frame layout read) the imgs lift (−4 / −6 / −8px for L1 / L2 / L3,
-             2 / 3 / 4 on phones) and come back: power2.out to a 1px undershoot, then a soft sine settle to 0 (no
-             elastic overshoot), 40 ms stagger: ONE timeline, built here in the context and restarted per kick, at
-             most once per 400 ms (overwrite: auto on the tweens) */
+             2 / 3 / 4 on phones) from wherever they are and come back: a 1px undershoot, then a soft sine settle to
+             0 (no elastic overshoot), 40 ms stagger, at most once per 400 ms */
     var layers = $$('.tree__layer', main);
     if (canopy && layers.length === 4) {
       var mult = [0.985, 0.993, 1, 1.008];
@@ -232,14 +234,23 @@
         if (!sway[i]) { return; }
         loopInView(l, gsap.fromTo(l, { rotation: -sway[i][0] }, { rotation: sway[i][0], duration: sway[i][1], ease: 'sine.inOut', yoyo: true, repeat: -1 }));
       });
-      /* c. bounce */
-      bounceTl = gsap.timeline({ paused: true });
-      layerImgs.forEach(function (img, i) {
-        if (!amp[i] || !img) { return; }
-        var at = (i - 1) * 0.04;
-        bounceTl.fromTo(img, { y: -amp[i] }, { y: 1, duration: 0.4, ease: 'power2.out', overwrite: 'auto' }, at)
-          .to(img, { y: 0, duration: 0.5, ease: 'sine.inOut' }, at + 0.4);
-      });
+      /* c. bounce (round 7): each kick glides from the img's CURRENT y up to the offset (.2 s, power2.out), back to a 1px
+         undershoot (.4 s) and settles to 0 (.5 s); no instantaneous jump to −amp, also when a kick lands mid-bounce.
+         A fresh timeline of .to() tweens per kick (each tween reads its start when the playhead reaches it), the
+         previous one killed first; built from a ScrollTrigger callback, i.e. outside the context, so kill() kills
+         the live one and clears the imgs' transform itself */
+      bounceImgs = layerImgs.filter(function (img, i) { return !!img && !!amp[i]; });
+      kickBounce = function () {
+        if (bounceTl) { bounceTl.kill(); }
+        bounceTl = gsap.timeline();
+        layerImgs.forEach(function (img, i) {
+          if (!amp[i] || !img) { return; }
+          var at = (i - 1) * 0.04;
+          bounceTl.to(img, { y: -amp[i], duration: 0.2, ease: 'power2.out' }, at)
+            .to(img, { y: 1, duration: 0.4, ease: 'sine.inOut' }, at + 0.2)
+            .to(img, { y: 0, duration: 0.5, ease: 'sine.inOut' }, at + 0.6);
+        });
+      };
       canopyInView = false;
       if ('IntersectionObserver' in window) {
         var cio = new IntersectionObserver(function (entries) {
@@ -251,11 +262,11 @@
       ScrollTrigger.create({
         start: 0, end: 'max',
         onUpdate: function (self) {
-          if (!bounceTl || !canopyInView) { return; }
+          if (!kickBounce || !canopyInView) { return; }
           var now = Date.now();
           if (Math.abs(self.getVelocity()) < 900 || now - lastBounce < 400) { return; }
           lastBounce = now;
-          bounceTl.restart();
+          kickBounce();
         }
       });
     }
@@ -457,11 +468,15 @@
        context to revert): cleared with clearProps, which empties GSAP's transform cache too (an emptied inline style
        alone left the cached y, re-rendered by the first rotation write after Play); the copy's img width likewise */
     $$('.tree__layer', main).forEach(function (l) { gsap.set(l, { clearProps: 'transform' }); });
+    /* the live bounce timeline sits outside the context (built per kick): killed here, the imgs' y cleared */
+    if (bounceTl) { bounceTl.kill(); }
+    bounceImgs.forEach(function (img) { gsap.set(img, { clearProps: 'transform' }); });
+    bounceImgs = [];
     if (morph) { gsap.set(morph, { clearProps: 'transform' }); }
     if (morphImg) { morphImg.style.width = ''; }
     observers.forEach(function (o) { o.disconnect(); });
     observers = [];
-    bounceTl = null; lastBounce = 0; canopyInView = false;
+    bounceTl = null; kickBounce = null; lastBounce = 0; canopyInView = false;
     html.classList.remove('canopy-motion');
     html.classList.remove('canopy-ready');
     html.classList.remove('logo-morphing');

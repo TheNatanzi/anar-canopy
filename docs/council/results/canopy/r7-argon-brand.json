@@ -1,0 +1,23 @@
+{
+ "model": "argon",
+ "role": "brand",
+ "score": 9,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "assets/css/canopy.css (.screen--statement .screen__col)",
+   "what": "Increase the top padding of `.screen--statement .screen__col` on desktop from `clamp(40px, 6vh, 72px)` to `clamp(160px, 22vh, 260px)` and adjust `min-height` accordingly.",
+   "why": "In `index-desktop-1.jpg`, the painted canopy fills the top 75% of the viewport, pushing 'Reimagined Heritage' to the bottom edge while the rest of its statement block is clipped off-screen; pushing the block down lets the canopy artwork breathe on scroll 2 and keeps the statement + promises together as one cohesive typographic lockup."
+  },
+  {
+   "where": "assets/css/canopy.css (.screen--celebrations .leaf--3)",
+   "what": "Remove `.screen--celebrations .leaf--3` from `index.html` or set `display: none` in `canopy.css`.",
+   "why": "Positioned at `left: -48px` over the tiled trunk band, this floating leaf sprite's cut edge and slight movement against the static bark breaks the illusion of one continuous painted tree."
+  },
+  {
+   "where": "assets/css/site.css (.field input, .field textarea)",
+   "what": "Change `background: rgba(27,34,30,.55)` to `background: rgba(18,23,20,.35)` and `border-radius: 2px 2px 0 0` to `0` inside `.screen--inquire .form`.",
+   "why": "On the open cypress night background between the painted trunks, the semi-opaque rectangular input fills read as heavy dark blocks above the gold kashida underlines; a lighter fill with crisp `0` radius keeps the editorial underline look clean."
+  }
+ ]
+}

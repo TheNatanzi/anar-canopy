@@ -67,6 +67,9 @@
     <p class="motion-toggle__note visually-hidden" hidden>Motion is off because your device asks for reduced motion.</p>
   </div>
 </header>
+<!-- the persistent "How we work +" tab, right after the header in the DOM (round 7: a keyboard user meets it before the
+     main content, not after every footer link); its slide-out panel and backdrop stay at the end of body -->
+<button class="hww-tab ghost" type="button" aria-controls="hww-panel" aria-expanded="false">How we work <span aria-hidden="true">+</span></button>
 
 <main id="main" tabindex="-1" class="page-top">
 
@@ -149,7 +152,7 @@
       <ul class="behaviour stagger" role="list" aria-label="Service behaviour">
         <li><strong>Replies</strong>Within one business day.</li>
         <li><strong>Meetings</strong>A short written summary after each one.</li>
-        <li><strong>Parents and elders</strong>Included at the level you choose.</li>
+        <li><strong>Parents and elders</strong>Included at the level your family agrees together.</li>
         <li><strong>On the day</strong>Our staff are easy to find.</li>
       </ul>
       <p class="reveal mt-48"><a class="btn" href="index.html#inquire">Begin the conversation</a></p>
@@ -186,8 +189,7 @@
   </div>
 </footer>
 
-<!-- Persistent "How we work +" tab and slide-out panel (site.js panel block, restored 3 Nov 2026); the Pause-motion button stays in the header bar -->
-<button class="hww-tab ghost" type="button" aria-controls="hww-panel" aria-expanded="false">How we work <span aria-hidden="true">+</span></button>
+<!-- the "How we work +" slide-out panel (site.js panel block, restored 3 Nov 2026); the Pause-motion button stays in the header bar -->
 <div class="hww-backdrop" hidden></div>
 <aside class="hww-panel" id="hww-panel" role="dialog" aria-modal="true" aria-labelledby="hww-title" tabindex="-1" data-lenis-prevent hidden>
   <button class="hww-panel__close" type="button" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -195,7 +197,7 @@
   <h2 id="hww-title">Five steps, one line</h2>
   <ol class="hww-steps" role="list">
     <li><div><h3>Inquiry</h3><p>Write to us, or call. Tell us about your family and your dates.</p></div></li>
-    <li><div><h3>Consultation</h3><p>We meet your family, greet the elders first, and listen. Parents and elders included at the level you choose.</p></div></li>
+    <li><div><h3>Consultation</h3><p>We meet your family, greet the elders first, and listen. Parents and elders included at the level your family agrees together.</p></div></li>
     <li><div><h3>Proposal</h3><p>The plan, the price, and what is included: the events covered, the staffing, the hours and the fees.</p></div></li>
     <li><div><h3>Planning</h3><p>Ritual by ritual, as your family keeps it. A short written summary after every meeting.</p></div></li>
     <li><div><h3>The wedding days</h3><p>The ceremonies your family chooses, in the order agreed with your family, called with the venue and every vendor.</p></div></li>

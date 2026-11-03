@@ -1,0 +1,23 @@
+{
+ "model": "argon",
+ "role": "planner",
+ "score": 9.5,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "weddings.html:198 (#haldi-pheras)",
+   "what": "Mention 'vidhi / pithi' alongside haldi and 'antarpat' or 'jai mala / varmala' in the Hindu details block",
+   "why": "Gujarati and North Indian families look for varmala/jai mala and vidhi/pithi as key timeline moments before the pheras."
+  },
+  {
+   "where": "weddings.html:231 (#anand-karaj)",
+   "what": "Include 'Ardas' and 'Karah Parshad' in the Anand Karaj details summary",
+   "why": "Sikh families and elders expect the planner to explicitly account for the concluding Ardas and Karah Parshad distribution before moving to langar."
+  },
+  {
+   "where": "how-we-work.html:214 (#faq)",
+   "what": "Clarify in the 'Where do you work?' or 'Do you plan the whole wedding?' FAQ how gurdwara/mandir/masjid morning ceremonies followed by an evening reception at a second venue are staffed",
+   "why": "Two-venue wedding days (morning religious site, evening hotel/winery) are standard for Bay Area South Asian and Afghan families and parents always ask if the same team covers both."
+  }
+ ]
+}

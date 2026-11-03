@@ -1,0 +1,41 @@
+{
+ "model": "astra",
+ "role": "planner",
+ "score": 8,
+ "blocking": [
+  "The universal wedding-day promise centers the sofreh, making Afghan and South Asian families feel secondary despite the broader positioning.",
+  "Language support is conditional in some sections but promised outright elsewhere; parents cannot confidently tell what they will receive."
+ ],
+ "fixes": [
+  {
+   "where": "how-we-work.html — step 05",
+   "what": "Replace the sofreh-specific heading with “Your ceremonies are ready. Your family is welcomed.” Present sofreh checks as an example applicable only when chosen.",
+   "why": "The shared service journey should speak equally to every family the studio serves."
+  },
+  {
+   "where": "how-we-work.html — Planning, service options and parent FAQ; shared footers and panels",
+   "what": "Use one consistent promise: “Written translations and spoken language support are confirmed in your proposal.” Qualify each parent-page promise with the agreed language.",
+   "why": "A translated document and a planner who can speak with parents are different services."
+  },
+  {
+   "where": "index.html and weddings.html — Mehndi & Sangeet",
+   "what": "Describe henna gatherings and sangeet separately; qualify music, dancing and baraat with “if your family chooses.” Replace “Each night run to the minute” with “Timing agreed around your family's customs.”",
+   "why": "The current descriptions prescribe a celebration style despite the site's promise to follow each family's practice."
+  },
+  {
+   "where": "index.html — three promises; shared How we work panels — Consultation",
+   "what": "Place “Parents and elders are involved at the level the couple chooses” beside the elder-focused promise and repeat it in the panel consultation summary.",
+   "why": "Couples should see their decision-making authority as readily as parents see respect for elders."
+  },
+  {
+   "where": "index.html — celebrations accordion",
+   "what": "Show desktop celebration names horizontally in a compact selector above the panels, retaining the expanding image treatment.",
+   "why": "Small rotated labels make parents work unnecessarily to find their ceremony."
+  },
+  {
+   "where": "assets/js/site.js — inquiry error messages",
+   "what": "Provide clickable email and WhatsApp links directly in every failure message while retaining entered values.",
+   "why": "A parent encountering an error should be able to continue the inquiry immediately."
+  }
+ ]
+}

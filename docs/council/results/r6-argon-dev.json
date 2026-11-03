@@ -1,0 +1,14 @@
+{
+ "model": "argon",
+ "role": "dev",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {"where": "assets/css/site.css .descend__trunk--r clip-path + mask", "what": "Inside .descend__trunk, 100% resolves to the strip's own 20vw box, not the viewport, so the right strip's inset/mask math is wrong: use inset(0 0 0 0) (the strip is already 20vw) and a mask that fades toward the column edge: linear-gradient(to left, #000 calc(100% - 72px), transparent 100%) mirrored from the left strip; verify at 1024/1280/1440.", "why": "The right trunk shows a hard edge at some widths."},
+  {"where": "assets/js/site.js initMotion / buildTweens", "what": "Add ScrollTrigger.config({limitCallbacks:true}); make .reveal/.stagger triggers that are already above the viewport after an anchor jump or programmatic scroll resolve immediately (set once:true triggers to their end state when start < scroll position).", "why": "Anchor links (#inquire) can leave reveals invisible when the trigger was skipped."},
+  {"where": "assets/css/site.css ≤768px .accordion__body", "what": "Add padding-bottom:64px on phones.", "why": "The fixed z-index:60 motion toggle covers the last lines of the open panel at 390px."},
+  {"where": "assets/js/site.js scroll handler for .hww-tab / .motion-toggle", "what": "Do not mutate aria-hidden/tabIndex synchronously inside the scroll handler; guard with !el.contains(document.activeElement) and set them in the settle timeout only.", "why": "Changing aria-hidden under focus during scroll drops focus and churns the a11y tree."},
+  {"where": "index.html canopy preload + <img class=hero__canopy>", "what": "Give the canopy img fetchpriority=high, and make the preload's imagesrcset/imagesizes match the img's srcset/sizes byte-for-byte.", "why": "A mismatched preload is fetched twice or ignored."}
+ ],
+ "note": "Captured from the Gemini web app (4 Argon) on the pass-5 build; 6th fix truncated in capture."
+}

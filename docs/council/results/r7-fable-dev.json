@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "dev",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "index.html / weddings.html / about.html: every pom-tree-night srcset",
+   "what": "Drop the 'pom-tree-night-1400.jpg 1400w' candidate (or regenerate the master at ≥1400w). The master is 1125w, so the 1400 file is an upscale and at 225 KB it is heavier than the 192 KB master; 2x phones and the 60vw accordion slot pick it.",
+   "why": "srcset descriptors must be true pixel widths or the browser downloads a blurrier, heavier file"
+  },
+  {
+   "where": "site.js accordion: settle() → refreshTriggers()",
+   "what": "Remove the ScrollTrigger.refresh() call from settle(); the ResizeObserver on the accordion already refreshes (debounced 150 ms) whenever the row height changes.",
+   "why": "a fast mouse sweep across six strips fires open()/settle() six times and each one does a full ScrollTrigger.refresh (layout of every trigger on the page) on top of the observer's refresh"
+  },
+  {
+   "where": "site.js: the two window 'scroll' listeners (onScrollState and the tab block)",
+   "what": "Merge them into one listener gated by a requestAnimationFrame flag, and only write classList/aria/tabIndex when the computed value changed.",
+   "why": "with Lenis every frame is a scroll event; syncTab currently writes four attributes on two fixed elements per event, which forces style recalcs under the backdrop-filtered header"
+  },
+  {
+   "where": "site.css .site-header--solid / .is-scrolled @supports backdrop-filter",
+   "what": "Drop backdrop-filter:blur(8px) on the fixed header or limit it to (min-width:769px) and (hover:hover); keep the .96 cypress fill.",
+   "why": "a fixed element with a backdrop filter is re-composited on every scrolled frame; on mid-range phones it is the single biggest frame-time cost on a page that also scrubs the hero and trunks"
+  },
+  {
+   "where": "site.css @media (max-width:480px) .nav-fa__soon{font-size:10px}",
+   "what": "Make it 12px minimum (or hide it under 480px and rely on the visually-hidden '(Persian site, coming soon)').",
+   "why": "10 px text is below any legible floor and it is the only cue that the word is not a live switch"
+  },
+  {
+   "where": "site.css @media (max-width:768px) .inquire__contact{padding-left:52px}",
+   "what": "Remove the permanent 52px indent; the fixed Pause button only overlaps that line at the bottom of the viewport. If clearance is needed, add 56px of bottom padding to .inquire__contact's parent instead (as the form already does).",
+   "why": "the contact line is the only block on the page that does not start at the card edge, and the reason is invisible to the reader"
+  }
+ ]
+}

@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "planner",
+ "score": 7,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "index.html journey Proposal note, hww-panel Proposal step, teaser option bullets, site-footer__lang (all four pages)",
+   "what": "Say 'agreed before booking and listed in your proposal' once, on how-we-work.html #you-get, and strip it from the home page, the slide-out panel and the footer; the home-page Proposal note becomes 'The plan, the price and what is included, before anything is booked.'",
+   "why": "The same scope disclaimer appears eight times on the home page alone; it reads like a contract and cools the warmth parents are looking for."
+  },
+  {
+   "where": "index.html #celebration-4 and weddings.html #reception-walima body",
+   "what": "Say what the walima is: 'The walima is the groom's family's feast after the nikah, often its own night; the reception is the couple's. We run each as your family keeps it.'",
+   "why": "Afghan and Pakistani parents know the walima is the groom's side's obligation, not a synonym for the reception; treating them as one marks the site as Persian-first."
+  },
+  {
+   "where": "index.html .journey__extras pills and the form Traditions checkboxes",
+   "what": "Remove 'Nowruz / Yalda' from the celebrations pills and the traditions checklist; keep it as one line under the pills: 'A date near Nowruz or Yalda? We plan the table in.'",
+   "why": "They are calendar holidays, not wedding celebrations; listing them beside Nikah and Pheras looks like padding to every family."
+  },
+  {
+   "where": "index.html .hww-panel__foot and the mobile nav drawer (.site-nav ul)",
+   "what": "Add the phone line 'Call or WhatsApp (925) 263-9949' as a plain link in the slide-out panel foot and as the last drawer item on phones.",
+   "why": "Parents call before they type; the number first appears below the journey, three screens down."
+  },
+  {
+   "where": "index.html pillar 01 .muted line",
+   "what": "Change 'Names, dates and rituals, right, as your family keeps them.' to 'Names, dates and rituals, exactly as your family keeps them.'",
+   "why": "The stray 'right,' reads as a typo in the first proof of fluency."
+  },
+  {
+   "where": "index.html #celebration-2 and weddings.html #nikah aina mosaf sentence",
+   "what": "Change 'it follows as its own moment' to 'it has its own moment, at the nikah or at the reception under the shawl, as your family keeps it'.",
+   "why": "Many Afghan families hold the aina mosaf at the reception, not straight after the contract; fixing the timing is the detail an Afghan mother checks."
+  }
+ ]
+}

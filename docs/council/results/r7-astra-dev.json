@@ -1,0 +1,36 @@
+{
+ "model": "astra",
+ "role": "dev",
+ "score": 7.5,
+ "blocking": [
+  "If site.js fails to load, mobile navigation stays hidden despite the advertised fallback.",
+  "Pausing motion removes authored inline styles from reveal elements, changing page layout."
+ ],
+ "fixes": [
+  {
+   "where": "assets/css/site.css — mobile navigation fallback",
+   "what": "Keep navigation links visible until .nav-ready is applied; remove the html.js:not(.nav-ready) rule that hides them. Hide the menu toggle until its handler is installed.",
+   "why": "The inline .js marker survives a failed site.js request and currently leaves mobile visitors without navigation."
+  },
+  {
+   "where": "assets/js/site.js — killMotion()",
+   "what": "Replace clearProps:'all' with property-specific cleanup for each animation target, preserving authored margins, padding and other inline styles.",
+   "why": "Pause motion and reduced-motion changes currently erase layout styles from headings, paragraphs and lists."
+  },
+  {
+   "where": "assets/css/site.css — header desktop breakpoint",
+   "what": "Keep the compact navigation until the full logo, links and right-hand controls fit; validate at 769px, 820px and 900px and move the desktop breakpoint accordingly in CSS and JavaScript.",
+   "why": "Desktop navigation starts at 769px with insufficient room for its fixed logo, link group, controls and spacing."
+  },
+  {
+   "where": "assets/css/site.css — .journey__dot and .step__dot",
+   "what": "Move the vertical-layout dots 5px right, or move the vertical SVG lines 5px left; preserve the desktop horizontal overrides.",
+   "why": "The dots center at 7px while the vertical lines center at 12px, so the planning timeline is visibly disconnected."
+  },
+  {
+   "where": "assets/js/site.js — accordion hover handlers",
+   "what": "Prevent hover from switching panels whenever focus is inside the currently expanded body, including its details summary; do not rely solely on the focused element matching :focus-visible.",
+   "why": "A pointer movement can otherwise collapse and inert content that still contains keyboard focus."
+  }
+ ]
+}

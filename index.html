@@ -15,7 +15,8 @@
 <link rel="preload" href="assets/fonts/TTRamillas-Bold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/NotoNaskhArabic-arabic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/video/hero-poster-small.jpg" as="image">
-<link rel="preload" href="assets/tree/canopy-u3.webp" as="image" imagesrcset="assets/tree/canopy-u3-1376.webp 1376w, assets/tree/canopy-u3-2048.webp 2048w, assets/tree/canopy-u3.webp 2752w" imagesizes="(max-width:768px) 175vw, max(100vw,140vh)">
+<!-- the canopy preload: imagesrcset / imagesizes match the <img class="hero__canopy"> srcset / sizes byte for byte -->
+<link rel="preload" href="assets/tree/canopy-u3.webp" as="image" imagesrcset="assets/tree/canopy-u3-1376.webp 1376w, assets/tree/canopy-u3-2048.webp 2048w, assets/tree/canopy-u3.webp 2752w" imagesizes="(max-width:768px) 175vw, min(100vw,165vh)" fetchpriority="high">
 <link rel="stylesheet" href="assets/css/site.css">
 <link rel="canonical" href="https://anarevents.com/">
 <link rel="icon" href="assets/logo/logo-gold.svg" type="image/svg+xml">
@@ -39,6 +40,9 @@
         <li><a href="weddings.html">Weddings</a></li>
         <li><a href="how-we-work.html">How we work</a></li>
         <li><a href="about.html">About</a></li>
+        <!-- phones only (CSS): the phone line as the last drawer item, then the inert "فارسی · coming soon" note -->
+        <li class="site-nav__phone"><a href="https://wa.me/19252639949" rel="noopener">Call or WhatsApp (925) 263-9949</a></li>
+        <li class="site-nav__fa"><span class="fa" lang="fa" dir="rtl">فارسی</span> · coming soon</li>
       </ul>
     </nav>
     <div class="nav-right">
@@ -58,7 +62,7 @@
     <video class="hero__video" muted loop playsinline disablepictureinpicture disableremoteplayback preload="none" poster="assets/video/hero-poster-small.jpg" width="1920" height="1080" aria-hidden="true" tabindex="-1" data-src-desktop="assets/video/hero-1080-loop.mp4" data-src-mobile="assets/video/hero-720-loop.mp4"></video>
     <div class="hero__tint" aria-hidden="true"></div>
     <div class="hero__deepen" aria-hidden="true"></div>
-    <img class="hero__canopy" src="assets/tree/canopy-u3.webp" srcset="assets/tree/canopy-u3-1376.webp 1376w, assets/tree/canopy-u3-2048.webp 2048w, assets/tree/canopy-u3.webp 2752w" sizes="(max-width:768px) 175vw, max(100vw,140vh)" width="2752" height="1536" alt="" aria-hidden="true" decoding="async">
+    <img class="hero__canopy" src="assets/tree/canopy-u3.webp" srcset="assets/tree/canopy-u3-1376.webp 1376w, assets/tree/canopy-u3-2048.webp 2048w, assets/tree/canopy-u3.webp 2752w" sizes="(max-width:768px) 175vw, min(100vw,165vh)" width="2752" height="1536" alt="" aria-hidden="true" decoding="async" fetchpriority="high">
     <div class="hero__mark">
       <div class="hero__halo" aria-hidden="true"></div>
       <h1 class="hero__logo"><img src="assets/logo/logo-gold.svg" width="1600" height="552" alt="Anar Events" fetchpriority="high"></h1>
@@ -97,12 +101,12 @@
           <li class="card">
             <span class="card__n">01</span>
             <h3>We are always fluent in the unspoken details</h3>
-            <p class="muted">Names, dates and rituals, right, as your family keeps them.</p>
+            <p class="muted">Names, dates and rituals, exactly as your family keeps them.</p>
           </li>
           <li class="card">
             <span class="card__n">02</span>
             <h3>We always honor the elders' legacy while bringing your modern vision to life</h3>
-            <p class="muted">Elders greeted first, and asked, not told.</p>
+            <p class="muted">Elders greeted first, and asked, not told. Parents and elders are involved at the level the couple chooses.</p>
           </li>
           <li class="card">
             <span class="card__n">03</span>
@@ -165,8 +169,9 @@
           <div class="accordion__body" id="celebration-1">
             <p class="fa" lang="fa" dir="rtl">سفرهٔ عقد</p>
             <h3>Sofreh Aghd</h3>
-            <!-- phones: the description sits behind a native "Read more" (site.js opens every one on wider screens; the first panel starts open) -->
-            <details class="accordion__read" open><summary>Read more</summary><p>The Persian ceremony at the spread: the mirror, the candlesticks, the sugar above. We brief your sofreh designer and check the spread against the sofreh key (a one-page guide naming each item on the spread, in the languages listed in your proposal) before the elders are seated.</p></details>
+            <!-- one intro sentence on the image; the operational text behind the native "Read more" at every width (open by default above 768px; on phones the first panel starts open) -->
+            <p class="accordion__intro">The Persian ceremony at the spread: the mirror, the candlesticks, the sugar above.</p>
+            <details class="accordion__read" open><summary>Read more</summary><p>We brief your sofreh designer and check the spread against the sofreh key (a one-page guide naming each item on the spread, in the languages listed in your proposal) before the elders are seated.</p></details>
           </div>
         </article>
         <article class="accordion__panel">
@@ -177,8 +182,8 @@
           <div class="accordion__body" id="celebration-2">
             <p class="fa" lang="fa" dir="rtl">نکاح</p>
             <h3>Nikah</h3>
-            <!-- phones: the description sits behind a native "Read more" (site.js opens every one on wider screens; the first panel starts open) -->
-            <details class="accordion__read"><summary>Read more</summary><p>The Islamic marriage contract, read before witnesses and both families. Quiet, exact, unhurried. If your family observes the aina mosaf (<span class="fa" lang="fa" dir="rtl">آینه‌مصحف</span>), as many Afghan families do, it follows as its own moment: the couple's first look in the mirror, the Quran open between them, the elders close.</p></details>
+            <p class="accordion__intro">The Islamic marriage contract, read before witnesses and both families. Quiet, exact, unhurried.</p>
+            <details class="accordion__read"><summary>Read more</summary><p>If your family observes the aina mosaf (<span class="fa" lang="fa" dir="rtl">آینه‌مصحف</span>), as many Afghan families do, it has its own moment, at the nikah or at the reception under the shawl, as your family keeps it: the couple's first look in the mirror, the Quran open between them, the elders close.</p></details>
           </div>
         </article>
         <article class="accordion__panel">
@@ -187,10 +192,10 @@
           <button class="accordion__trigger" type="button" aria-controls="celebration-3" aria-expanded="false"><span class="visually-hidden">Show Mehndi and Sangeet</span></button>
           <span class="accordion__label" aria-hidden="true">Mehndi &amp; Sangeet</span>
           <div class="accordion__body" id="celebration-3">
-            <p class="fa" lang="fa" dir="rtl">حنابندان</p>
+            <p class="fa" lang="fa" dir="rtl">حنابندان · مهندی</p>
             <h3>Mehndi &amp; Sangeet</h3>
-            <!-- phones: the description sits behind a native "Read more" (site.js opens every one on wider screens; the first panel starts open) -->
-            <details class="accordion__read"><summary>Read more</summary><p>The henna night: hana-bandan for Persian families, khina for Afghan families, mehndi for South Asian families. The sangeet, when both families sing. On the wedding day, the baraat arrives with music. Each night run to the minute.</p></details>
+            <p class="accordion__intro">The henna gathering and the sangeet, each as your family keeps it.</p>
+            <details class="accordion__read"><summary>Read more</summary><p>The henna gathering: hana-bandan for Persian families, khina for Afghan families, mehndi for South Asian families, with the henna on the bride's hands and the elders' blessing first. The sangeet is its own night, when both families sing. Music, dancing and the baraat on the wedding day, if your family chooses. Timing agreed around your family's customs.</p></details>
           </div>
         </article>
         <article class="accordion__panel">
@@ -200,30 +205,30 @@
           <span class="accordion__label" aria-hidden="true">Haldi &amp; Pheras</span>
           <div class="accordion__body" id="celebration-5">
             <h3>Haldi &amp; Pheras</h3>
-            <!-- phones: the description sits behind a native "Read more" (site.js opens every one on wider screens; the first panel starts open) -->
-            <details class="accordion__read"><summary>Read more</summary><p>If your family observes the haldi, the turmeric before the wedding. The pheras under the mandap, with the pandit: your ceremony, in the sequence agreed with your officiant. We coordinate timing with the pandit and the venue, hold the elders' seats, and a one-line programme explains each ritual so every guest can follow.</p></details>
+            <p class="accordion__intro">The pheras under the mandap, with the pandit: your ceremony, in the sequence agreed with your officiant.</p>
+            <details class="accordion__read"><summary>Read more</summary><p>If your family observes the haldi, the turmeric before the wedding. We coordinate timing with the pandit and the venue, hold the elders' seats, and a one-line programme explains each ritual so every guest can follow.</p></details>
           </div>
         </article>
         <article class="accordion__panel">
           <!-- PHOTO SLOT · Anand Karaj: replace with the real gurdwara photo (real family, with consent), portrait ~1500×2000 -->
-          <div class="accordion__media"><img src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night-1400.jpg 1400w, assets/img/pom-tree-night.jpg 1125w" sizes="(max-width:1099px) 100vw, 60vw" width="1125" height="2000" alt="A pomegranate tree at night" loading="lazy" decoding="async"></div>
+          <div class="accordion__media"><img src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night.jpg 1125w" sizes="(max-width:1099px) 100vw, 60vw" width="1125" height="2000" alt="A pomegranate tree at night" loading="lazy" decoding="async"></div>
           <button class="accordion__trigger" type="button" aria-controls="celebration-6" aria-expanded="false"><span class="visually-hidden">Show Anand Karaj</span></button>
           <span class="accordion__label" aria-hidden="true">Anand Karaj</span>
           <div class="accordion__body" id="celebration-6">
             <h3>Anand Karaj</h3>
-            <!-- phones: the description sits behind a native "Read more" (site.js opens every one on wider screens; the first panel starts open) -->
-            <details class="accordion__read"><summary>Read more</summary><p>The Sikh ceremony before the Guru Granth Sahib: the four laavan as the hymns are sung, in the sequence agreed with your family and the granthi. We coordinate timing with the gurdwara, hold the elders' seats, and a one-line programme explains each ritual and what the gurdwara asks of guests.</p></details>
+            <p class="accordion__intro">The Sikh ceremony before the Guru Granth Sahib: the four laavan as the hymns are sung.</p>
+            <details class="accordion__read"><summary>Read more</summary><p>In the sequence agreed with your family and the granthi. We coordinate timing with the gurdwara, hold the elders' seats, and a one-line programme explains each ritual and what the gurdwara asks of guests.</p></details>
           </div>
         </article>
         <article class="accordion__panel">
           <!-- PHOTO SLOT · Reception & Walima: replace with the real reception photo (real family, with consent), portrait ~1500×2000 -->
-          <div class="accordion__media"><img src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night-1400.jpg 1400w, assets/img/pom-tree-night.jpg 1125w" sizes="(max-width:1099px) 100vw, 60vw" width="1125" height="2000" alt="A pomegranate tree at night" loading="lazy" decoding="async"></div>
+          <div class="accordion__media"><img src="assets/img/pom-tree-night.jpg" srcset="assets/img/pom-tree-night-800.jpg 800w, assets/img/pom-tree-night.jpg 1125w" sizes="(max-width:1099px) 100vw, 60vw" width="1125" height="2000" alt="A pomegranate tree at night" loading="lazy" decoding="async"></div>
           <button class="accordion__trigger" type="button" aria-controls="celebration-4" aria-expanded="false"><span class="visually-hidden">Show Reception and Walima</span></button>
           <span class="accordion__label" aria-hidden="true">Reception &amp; Walima</span>
           <div class="accordion__body" id="celebration-4">
             <p class="fa" lang="fa" dir="rtl">جشن عروسی</p>
             <h3>Reception &amp; Walima</h3>
-            <!-- phones: the description sits behind a native "Read more" (site.js opens every one on wider screens; the first panel starts open) -->
+            <p class="accordion__intro">The walima is the groom's family's feast after the nikah, often its own night; the reception is the couple's. We run each as your family keeps it.</p>
             <details class="accordion__read"><summary>Read more</summary><p>The elders' blessing, the entrances, the dancing if your family wishes: one timeline, called with the venue and every vendor, in the order agreed with your family.</p></details>
           </div>
         </article>
@@ -271,7 +276,7 @@
 
   <!-- 7. THE JOURNEY: the five planning stages on one line. The sage base line and all five dots are there at once;
        the gold .track-line overlay draws across with scroll and turns each dot gold (site.js block 5).
-       Beneath it, a loose group of the celebrations a family may choose (gold-outlined pills, no line, no numbering). -->
+       Beneath it, the celebrations a family may choose as one unboxed typographic list (gold middle dots, no line, no numbering). -->
   <section class="section journey" id="journey" aria-labelledby="journey-title">
     <div class="leaf leaf--3" aria-hidden="true"></div>
     <div class="container">
@@ -288,7 +293,7 @@
         <ol class="journey__stops">
           <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Inquiry</span><span class="journey__fa fa" lang="fa" dir="rtl">درخواست</span><span class="journey__note">Write to us, or call, and tell us about your family and your dates.</span></li>
           <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Consultation</span><span class="journey__fa fa" lang="fa" dir="rtl">مشاوره</span><span class="journey__note">We hear your priorities first, with parents and elders included at the level you choose.</span></li>
-          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Proposal</span><span class="journey__fa fa" lang="fa" dir="rtl">پیشنهاد</span><span class="journey__note">The plan, the price and what is included: the events covered, staffing, hours, fees and the language support agreed before booking.</span></li>
+          <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Proposal</span><span class="journey__fa fa" lang="fa" dir="rtl">پیشنهاد</span><span class="journey__note">The plan, the price, and what is included. A page for the parents, in their language.</span></li>
           <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">Planning</span><span class="journey__fa fa" lang="fa" dir="rtl">برنامه‌ریزی</span><span class="journey__note">Ritual by ritual, as your family keeps it, with a short written summary after every meeting.</span></li>
           <li class="journey__stop"><span class="journey__dot track-dot" aria-hidden="true"></span><span class="journey__en">The wedding days</span><span class="journey__fa fa" lang="fa" dir="rtl">روزهای عروسی</span><span class="journey__note">One timeline, called with the venue and every vendor; you only have to be there.</span></li>
         </ol>
@@ -299,6 +304,7 @@
           <li class="pill">Bale-boroon <span class="fa" lang="fa" dir="rtl">بله‌برون</span></li>
           <li class="pill">Shirni-khori <span class="fa" lang="fa" dir="rtl">شیرینی‌خوری</span></li>
           <li class="pill">Mehndi / Henna <span class="fa" lang="fa" dir="rtl">حنابندان</span></li>
+          <li class="pill">Khina <span class="fa" lang="fa" dir="rtl">خینه</span></li>
           <li class="pill">Sangeet</li>
           <li class="pill">Haldi</li>
           <li class="pill">Aghd <span class="fa" lang="fa" dir="rtl">عقد</span></li>
@@ -308,8 +314,8 @@
           <li class="pill">Reception / Walima <span class="fa" lang="fa" dir="rtl">جشن عروسی</span></li>
           <li class="pill">Rukhsati / Vidaai</li>
           <li class="pill">Patakhti <span class="fa" lang="fa" dir="rtl">پاتختی</span></li>
-          <li class="pill">Nowruz / Yalda</li>
         </ul>
+        <p class="journey__season">A date near Nowruz or Yalda? We plan the table in.</p>
       </div>
       <p class="center reveal" style="margin-top:40px"><a class="btn" href="#inquire">Begin the conversation</a></p>
     </div>
@@ -387,9 +393,11 @@
               <legend>Traditions</legend>
               <div class="checks">
                 <label class="check"><input type="checkbox" name="traditions" value="Engagement"> Engagement</label>
+                <label class="check"><input type="checkbox" name="traditions" value="Bale-boroon"> Bale-boroon</label>
                 <label class="check"><input type="checkbox" name="traditions" value="Shirni-khori"> Shirni-khori</label>
                 <label class="check"><input type="checkbox" name="traditions" value="Sofreh Aghd"> Sofreh Aghd</label>
                 <label class="check"><input type="checkbox" name="traditions" value="Nikah"> Nikah</label>
+                <label class="check"><input type="checkbox" name="traditions" value="Aina Mosaf"> Aina Mosaf</label>
                 <label class="check"><input type="checkbox" name="traditions" value="Mehndi / Henna"> Mehndi / Henna</label>
                 <label class="check"><input type="checkbox" name="traditions" value="Sangeet"> Sangeet</label>
                 <label class="check"><input type="checkbox" name="traditions" value="Haldi"> Haldi</label>
@@ -399,7 +407,6 @@
                 <label class="check"><input type="checkbox" name="traditions" value="Walima"> Walima</label>
                 <label class="check"><input type="checkbox" name="traditions" value="Rukhsati / Vidaai"> Rukhsati / Vidaai</label>
                 <label class="check"><input type="checkbox" name="traditions" value="Patakhti"> Patakhti <span class="fa" lang="fa" dir="rtl">پاتختی</span></label>
-                <label class="check"><input type="checkbox" name="traditions" value="Nowruz / Yalda"> Nowruz / Yalda</label>
                 <label class="check"><input type="checkbox" name="traditions" value="Other"> Other</label>
                 <label class="check"><input type="checkbox" name="traditions" value="Not sure yet"> Not sure yet</label>
               </div>
@@ -442,7 +449,7 @@
       </address>
       <p class="site-footer__fa fa" lang="fa" dir="rtl">انار · برنامه‌ریزی عروسی و جشن</p>
     </div>
-    <p class="site-footer__lang">English for everyone. A page for the parents, in Persian, Dari, Pashto, Urdu, Hindi or Punjabi. Translated summaries and spoken language support are agreed before booking and listed in your proposal.</p>
+    <p class="site-footer__lang">English for everyone. A page for the parents, in Persian, Dari, Pashto, Urdu, Hindi or Punjabi.</p>
     <p class="site-footer__legal"><span>© 2026 Anar LLC · Persian, Afghan and South Asian weddings</span><span>Timeless traditions, curated for the modern era.</span></p>
   </div>
 </footer>
@@ -458,12 +465,12 @@
   <h2 id="hww-title">Five steps, one line</h2>
   <ol class="hww-steps">
     <li><div><h3>Inquiry</h3><p>Write to us, or call. Tell us about your family and your dates.</p></div></li>
-    <li><div><h3>Consultation</h3><p>We meet your family, greet the elders first, and listen.</p></div></li>
-    <li><div><h3>Proposal</h3><p>The plan, the price, and what is included: the agreed scope names the events covered, the staffing, the hours and the fees. A page for the parents, in Persian, Dari, Pashto, Urdu, Hindi or Punjabi. Translated summaries and spoken language support are agreed before booking and listed in your proposal.</p></div></li>
+    <li><div><h3>Consultation</h3><p>We meet your family, greet the elders first, and listen. Parents and elders are involved at the level the couple chooses.</p></div></li>
+    <li><div><h3>Proposal</h3><p>The plan, the price, and what is included: the events covered, the staffing, the hours and the fees. A page for the parents, in their language.</p></div></li>
     <li><div><h3>Planning</h3><p>Ritual by ritual, as your family keeps it. A short written summary after every meeting.</p></div></li>
     <li><div><h3>The wedding days</h3><p>The ceremonies your family chooses, in the order agreed with your family. One timeline, one person to call.</p></div></li>
   </ol>
-  <p class="hww-panel__foot"><a class="btn" href="index.html#inquire">Begin the conversation</a> <a class="link" href="how-we-work.html">Read more</a></p>
+  <p class="hww-panel__foot"><a class="btn" href="index.html#inquire">Begin the conversation</a> <a class="link" href="how-we-work.html">Read more</a> <a class="hww-panel__phone" href="https://wa.me/19252639949" rel="noopener">Call or WhatsApp (925) 263-9949</a></p>
 </aside>
 </body>
 </html>

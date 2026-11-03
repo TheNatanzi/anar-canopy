@@ -1,0 +1,14 @@
+{
+ "model": "argon",
+ "role": "brand",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {"where": "assets/css/site.css .descend__trunk--r mask", "what": "The right trunk's mask runs the wrong way relative to its clip edge: invert it so the fade ends at the clip edge (mirror of the left strip), e.g. linear-gradient(to left, transparent calc(100% - var(--edge-space)), #000 calc(100% - var(--edge-space) + 72px)) — verify at 1440 where --edge-space (~280px) nears the 20vw strip width.", "why": "At 1440 the right strip shows a hard edge instead of a fade."},
+  {"where": "assets/css/site.css .hero__canopy", "what": "Anchor the canopy by the bottom instead of top:35% (bottom:-4%; top:auto; width:min(100%,165vh); max-height:68vh; object-fit:cover; object-position:center top) so the fruit band sits lower and the middle stays open on tall desktops.", "why": "In index-desktop-0 the canopy climbs into the descriptor line."},
+  {"where": "assets/css/site.css phone .accordion__panel / .motion-toggle", "what": "Phone accordion panels: min-height 340px, padding-bottom 56px and padding-left 56px, or hide the motion toggle while an open panel is under it.", "why": "In index-phone-1 the gold-bordered Pause button stamps over the open panel text."},
+  {"where": "assets/css/site.css .field input/textarea/select", "what": "Replace the full perimeter border with a bottom-only rule: border:0; border-bottom:2px solid rgba(201,158,92,.45); background:rgba(27,34,30,.55).", "why": "Boxed inputs read as generic; an underline reads editorial and matches the kashida."},
+  {"where": "assets/css/site.css ≥1100px .accordion__label", "what": "Constrain the vertical gold labels: max-height calc(100% - 64px), overflow hidden, ellipsis, nowrap, bottom 24px.", "why": "In index-desktop-2 the long vertical labels (Mehndi & Sangeet, Haldi & Pheras) run into the strip edge."}
+ ],
+ "note": "Captured from the Gemini web app (4 Argon) on the pass-5 build; 6th fix truncated in capture."
+}

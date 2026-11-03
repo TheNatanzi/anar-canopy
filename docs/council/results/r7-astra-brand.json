@@ -1,0 +1,35 @@
+{
+ "model": "astra",
+ "role": "brand",
+ "score": 7.5,
+ "blocking": [
+  "The brand foundation is coherent, but the oversized manifesto and dense celebration captions need stronger editorial hierarchy before launch sign-off."
+ ],
+ "fixes": [
+  {
+   "where": "assets/css/site.css — .statement__text, .statement__line",
+   "what": "Keep the approved wording, remove uppercase transformation and forced desktop line breaks, and use balanced sentence-case text at 34–40px with a maximum width of 26em.",
+   "why": "Six large uppercase lines overwhelm the supporting promises and make the opening narrative feel declamatory rather than intimate."
+  },
+  {
+   "where": "assets/css/site.css — desktop .accordion__body; index.html — celebration descriptions",
+   "what": "Reduce desktop panel padding from 64px to 32px; retain one short introductory sentence on the image and move the operational explanation behind an explicit details control.",
+   "why": "The open panel currently reads as a dense text block; the future wedding photography needs room to carry emotion."
+  },
+  {
+   "where": "assets/css/site.css — .hero__tint, .hero__halo",
+   "what": "Reduce the broad video tint slightly while retaining the localized cypress halo behind the unchanged gold logo; check readability across the entire loop.",
+   "why": "The supplied hero looks muddy through the middle, suppressing the footage's light and depth."
+  },
+  {
+   "where": "assets/css/site.css — .options > li, .teaser__strips, .promise li",
+   "what": "Reserve the gold horizontal line for the main section gesture; remove repeated top borders from service columns and promise rows, using spacing and gold numbers for structure.",
+   "why": "Repeated rules make the supporting pages feel more like formatted documents than a distinctive editorial brand."
+  },
+  {
+   "where": "assets/css/site.css — .pill, .pills; index.html — .journey__extras",
+   "what": "Present the celebration names as an unboxed, wrapping typographic list with generous spacing, retaining Persian accents and removing the rounded outlines.",
+   "why": "These informational labels resemble clickable filters and compete with the rounded inquiry buttons."
+  }
+ ]
+}

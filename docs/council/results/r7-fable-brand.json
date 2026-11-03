@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "brand",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "site.js panel block, syncTab(): `(!isDesktop() && (hideWhileScrolling || heroInView))`",
+   "what": "Hide the \"How we work +\" tab while the hero is in view on desktop too: change to `(heroInView || (!isDesktop() && hideWhileScrolling))`.",
+   "why": "The first screen is the one approved composition (video, logo, canopy); a boxed ghost tab at the right edge mid-hero (desktop shot 0) is the only element that breaks it, and phones already hide it there."
+  },
+  {
+   "where": "index.html header .nav-right .btn--sm + site.js tabObserver (hideFor #inquire / footer)",
+   "what": "While #inquire or the footer is in view, swap the header Inquire to the ghost style (toggle a class in the same observer callback) so only \"Begin the conversation\" is gold-filled.",
+   "why": "The system promises one gold button per screen; desktop shot 4 and phone shot 4 show two."
+  },
+  {
+   "where": "site.css .journey .leaf--3 (`top:-4vh`) and the .quote → .journey seam",
+   "what": "Move the sprig inside the night section (`top:clamp(24px,4vh,48px)`, keep left:-20px) so it never crosses the parchment edge; keep the seam clean.",
+   "why": "In desktop shot 3 the leaf straddles the parchment/night boundary and reads as a stray sticker on the light band rather than part of the tree."
+  },
+  {
+   "where": "site.css @media (min-width:1100px) .accordion__panel:not(.is-open) .accordion__media img and .accordion__panel.is-open{flex:6}",
+   "what": "Give the five strips more presence: `.is-open{flex:4.5 1 0}`, strips `filter:blur(3px) brightness(.95)`, and a 2px gold bottom rule under each vertical label.",
+   "why": "At 1440 the strips are ~85px of near-black blur with a gold word, so the row reads as a barcode of dark bars rather than five photographs waiting to open."
+  },
+  {
+   "where": "index.html header .nav-fa and site.css .nav-fa__soon @media (max-width:480px){font-size:10px}",
+   "what": "On phones remove the inert فارسی label from the bar and put one line in the drawer (\"فارسی · coming soon\"); keep the desktop label but drop the 10px size.",
+   "why": "A dead language switch with a 10-12px Persian \"soon\" crammed under it (phone shots 0-4) is the least premium pixel in the header, on every screen."
+  },
+  {
+   "where": "site.css @media (max-width:768px) .hero__scroll{left:64px}",
+   "what": "On phones drop the SCROLL cue (display:none) or centre it (`left:50%;transform:translateX(-50%)`).",
+   "why": "In phone shot 0 \"SCROLL ↓\" sits flush beside the round pause button and reads as its label; the canopy already draws the eye down."
+  }
+ ]
+}

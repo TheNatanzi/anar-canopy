@@ -1,5 +1,5 @@
 /* =========================================================
-   Anar Events — site.css (v2, night palette, 3 Nov 2026)
+   Anar Events — site.css (v2.7, night palette, round-7 fixes, 3 Nov 2026)
    One file. Mobile first. No grid hairlines anywhere.
    Latin: TT Ramillas Bold only (TRIAL font: buy before launch).
    Persian: Noto Naskh Arabic (self-hosted, Arabic subset), never italic/tracked/caps.
@@ -133,27 +133,32 @@ main{position:relative;z-index:2;display:block}
 .nav-home{display:block;width:120px;margin-right:var(--s2);flex:0 0 auto;opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s}
 .nav-home img{width:100%;height:auto}
 .site-header--solid .nav-home,.site-header.is-scrolled .nav-home{opacity:1;visibility:visible}
-/* the links are visible by default; on phones they collapse into the drawer once site.js has bound the toggle
-   (html.nav-ready). Without JS at all (html:not(.js), the class is set inline in <head>) they sit in a deep-night
-   strip under the bar and the toggle is hidden; with JS they stay hidden until the toggle is wired (no flash).
-   Phone/desktop threshold: 769px here and in site.js desktopQuery. */
+/* the links are visible by default; on phones they collapse into the drawer only once site.js has bound the toggle
+   (html.nav-ready). Until then (no JS at all, or site.js never arrives) they sit in a deep-night strip under the bar
+   and only the toggle is hidden, so the navigation is always reachable. Phone/desktop threshold: 769px here and in
+   site.js desktopQuery. */
 .site-nav{display:block}
 .site-nav ul{display:flex;flex-wrap:wrap;gap:clamp(16px,2.4vw,36px)}
 @media (max-width:768px){
-  html:not(.js) .site-nav{position:absolute;top:var(--header-h);left:0;right:0;background:var(--deep);border-top:2px solid var(--gold);padding:var(--s2) var(--gutter)}
-  html:not(.js) .nav-toggle{visibility:hidden}
-  html.js:not(.nav-ready) .site-nav{display:none}
+  html:not(.nav-ready) .site-nav{position:absolute;top:var(--header-h);left:0;right:0;background:var(--deep);border-top:2px solid var(--gold);padding:var(--s2) var(--gutter)}
+  html:not(.nav-ready) .nav-toggle{visibility:hidden}
   html.nav-ready .site-nav{display:none}
+}
+/* phone-only drawer lines: the phone link and the inert "فارسی · coming soon" note (the bar carries no فارسی label on phones) */
+.site-nav__phone,.site-nav__fa{display:none}
+@media (max-width:768px){
+  .site-nav__phone,.site-nav__fa{display:block}
+  .site-header.nav-open .site-nav .site-nav__phone a{font-size:18px;margin-top:var(--s1)}
+  .site-nav__fa{color:var(--stone);font-size:16px;line-height:24px;margin-top:var(--s2)}
+  .site-nav__fa .fa{font-size:18px}
 }
 .site-nav a{display:inline-block;padding-block:4px;border-bottom:2px solid transparent;transition:border-color .3s,color .3s;letter-spacing:.02em}
 .site-nav a:hover,.site-nav a[aria-current="page"]{border-bottom-color:var(--gold)}
 .nav-right{margin-left:auto;display:flex;align-items:center;gap:clamp(12px,2vw,28px)}
-/* فارسی · به‌زودی: an inert stone label (no title / aria-label); the "soon" drops under the word on phones
-   and stays visible (a tiny 10px line) on the smallest phones, so the word never reads as a live switch */
+/* فارسی · به‌زودی: an inert stone label (no title / aria-label) on desktop only; phones carry the note at the end of the drawer */
 .nav-fa{font-size:20px;line-height:1;color:var(--stone);cursor:default;text-align:center;white-space:nowrap}
 .nav-fa__soon{font-size:14px}
-@media (max-width:768px){.nav-fa{font-size:18px}.nav-fa__soon{display:block;font-size:12px;line-height:1.3;margin-top:2px}}
-@media (max-width:480px){.nav-fa__soon{font-size:10px;line-height:1.2}}
+@media (max-width:768px){.nav-fa{display:none}}
 .nav-toggle{width:44px;height:44px;display:grid;place-items:center;margin-left:-8px}
 .nav-toggle__bar{display:block;width:24px;height:2px;background:currentColor;position:relative;transition:background .2s}
 .nav-toggle__bar::before,.nav-toggle__bar::after{content:"";position:absolute;left:0;width:24px;height:2px;background:currentColor;transition:transform .3s}
@@ -168,7 +173,10 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .site-header.nav-open .site-nav a{font-size:26px}
 /* solid once scrolled, and on inner pages */
 .site-header--solid,.site-header.is-scrolled{background:rgba(27,34,30,.96)}
-@supports (backdrop-filter:blur(8px)){.site-header--solid,.site-header.is-scrolled{backdrop-filter:blur(8px)}}
+/* the blur only on pointer desktops: a fixed element with a backdrop filter is re-composited on every scrolled frame */
+@media (min-width:769px) and (hover:hover){
+  @supports (backdrop-filter:blur(8px)){.site-header--solid,.site-header.is-scrolled{backdrop-filter:blur(8px)}}
+}
 @media (min-width:769px){
   .nav-toggle{display:none}
   .nav-home{width:150px}
@@ -179,12 +187,13 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .hero{position:relative;height:100vh;height:100svh;min-height:600px;overflow:hidden;background:var(--night);color:var(--parch)}
 .hero__video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:var(--night)}
 /* the tint grades the loop toward the palette: cypress deepening downwards, plus a 6% warm gold wash (the logo stays readable; the mp4 is untouched) */
-.hero__tint{position:absolute;inset:0;background:linear-gradient(rgba(27,34,30,.5),rgba(27,34,30,.72));pointer-events:none}
+.hero__tint{position:absolute;inset:0;background:linear-gradient(rgba(27,34,30,.42),rgba(27,34,30,.66));pointer-events:none}
 .hero__tint::after{content:"";position:absolute;inset:0;background:rgba(201,158,92,.06)}
 .hero__deepen{position:absolute;inset:0;background:var(--night);opacity:0;pointer-events:none}
-/* the ONE tree piece: anchored low, width 100vw (or 140vh on tall screens), top at ~35% so the canopy
-   rises ~37% at the sides and ~15% in the centre; trunks half off the page; bottom runs off-screen */
-.hero__canopy{position:absolute;left:50%;top:35%;width:max(100%,140vh);max-width:none;height:auto;transform:translateX(-50%);pointer-events:none;will-change:transform}
+/* the ONE tree piece: anchored by the BOTTOM (bottom:-4%), width 100vw capped at 165vh, at most 68vh tall
+   (object-fit:cover from the top), so the canopy rises ~35-40% at the sides, the middle stays open on tall
+   desktops and the logo line is never reached; trunks half off the page; bottom runs off-screen */
+.hero__canopy{position:absolute;left:50%;top:auto;bottom:-4%;width:min(100%,165vh);max-width:none;height:auto;max-height:68vh;object-fit:cover;object-position:center top;transform:translateX(-50%);pointer-events:none;will-change:transform}
 /* logo with the soft cypress halo behind it (a static radial gradient: no filter:blur) */
 .hero__mark{position:absolute;left:50%;top:28%;width:min(51vw,980px);transform:translateX(-50%);will-change:transform,opacity}
 .hero__halo{position:absolute;left:50%;top:50%;width:150%;height:220%;transform:translate(-50%,-50%);background:radial-gradient(closest-side,rgba(27,34,30,.6),transparent 70%);pointer-events:none}
@@ -196,11 +205,12 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .hero__scroll{position:absolute;left:clamp(16px,3vw,40px);bottom:calc(clamp(16px,3vh,32px) + 64px);font-size:14px;line-height:20px;letter-spacing:.12em;text-transform:uppercase;color:var(--parch);opacity:.9}
 .hero__tag{position:absolute;right:clamp(16px,3vw,40px);bottom:clamp(14px,2.6vh,28px);font-size:22px;line-height:1.4;color:var(--parch);text-align:right}
 @media (max-width:768px){
-  .hero__canopy{width:175vw;top:auto;bottom:-8%}
+  .hero__canopy{width:175vw;top:auto;bottom:-8%;max-height:none}
   .hero__mark{width:78vw;top:30%}
   .hero__halo{width:170%;height:250%}
   .hero__line{font-size:14px;padding-inline:4px;text-shadow:0 1px 12px rgba(27,34,30,.9)}
-  .hero__scroll{bottom:calc(16px + env(safe-area-inset-bottom) + 4px);left:64px;font-size:12px}
+  /* no SCROLL cue on phones: beside the round Pause button it read as its label, and the canopy already draws the eye down */
+  .hero__scroll{display:none}
   .hero__tag{font-size:18px;bottom:calc(16px + env(safe-area-inset-bottom) + 2px)}
   /* the "How we work +" tab is now a mid-height edge tab on phones too: the tagline stays at the bottom */
 }
@@ -214,21 +224,17 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 /* ---------- DESCEND THE TREE ---------- */
 .descend{position:relative;background:var(--night);overflow:clip;--descend-col:880px}
 .descend__trunks{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;pointer-events:none;z-index:0;-webkit-mask-image:linear-gradient(to bottom,#000 78%,transparent);mask-image:linear-gradient(to bottom,#000 78%,transparent)}
-/* two edge strips (trunk-left / trunk-right, transparent webp), never behind the centre column:
-   20vw each from 1024px, 26vw at 769-1023px, phones keep only the left strip at 34vw.
-   The paint is clipped at the column edge, max((100vw - 880px)/2, gutter),
-   and at the gutter on phones: no painted art under the text at any width. */
-.descend__trunk{position:absolute;top:0;width:20vw;max-width:20vw;height:auto;min-height:100%;object-fit:cover;will-change:transform}
-/* Clip independently of mask support; paint cannot enter the reading column. */
+/* two edge strips (trunk-left / trunk-right, transparent webp), never behind the centre column: each strip is
+   exactly as wide as the space outside the column, --edge-space = max((100vw - 880px)/2, gutter), at least 120px,
+   so its own 100% IS the column edge (inside the strip, percentages resolve to the strip's box, not the viewport).
+   The mask fades toward that edge: solid until 72px before it, transparent at it (no ruler-straight cut at any width). */
 .descend{--edge-space:var(--gutter)}
 @media (min-width:769px){.descend{--edge-space:max(calc((100vw - var(--descend-col))/2),var(--gutter))}}
-/* the fade is tied to the clip edge: solid until 72px before the column edge, transparent at it (no ruler-straight cut) */
+.descend__trunk{position:absolute;top:0;width:max(120px,var(--edge-space));max-width:none;height:auto;min-height:100%;object-fit:cover;will-change:transform;clip-path:inset(0)}
+/* the stops are written in --edge-space (= the strip's 100% from 1024px up; below that, where the 120px floor applies, the fade still ends at the column edge) */
 .descend__trunk--l{left:0;object-position:left top;-webkit-mask-image:linear-gradient(to right,#000 calc(var(--edge-space) - 72px),transparent var(--edge-space));mask-image:linear-gradient(to right,#000 calc(var(--edge-space) - 72px),transparent var(--edge-space))}
 .descend__trunk--r{right:0;object-position:right top;-webkit-mask-image:linear-gradient(to left,#000 calc(var(--edge-space) - 72px),transparent var(--edge-space));mask-image:linear-gradient(to left,#000 calc(var(--edge-space) - 72px),transparent var(--edge-space))}
-.descend__trunk--l{clip-path:inset(0 max(0px,calc(100% - var(--edge-space))) 0 0)}
-.descend__trunk--r{clip-path:inset(0 0 0 max(0px,calc(100% - var(--edge-space))))}
-@media (min-width:769px) and (max-width:1023px){.descend__trunk{width:26vw;max-width:26vw}}
-@media (max-width:768px){.descend__trunk{width:34vw;max-width:34vw}.descend__trunk--r{display:none}}
+@media (max-width:768px){.descend__trunk--r{display:none}}
 .descend::after{content:"";position:absolute;left:0;right:0;bottom:0;height:140px;background:linear-gradient(to bottom,rgba(18,23,20,0),var(--night) 85%);pointer-events:none;z-index:0}
 .descend__content{position:relative;z-index:1;margin-top:-100vh;margin-top:-100svh;padding-block:clamp(72px,14vh,170px) clamp(40px,6vh,80px)}
 /* phones: no trunk strips at all (a clean phone; the sliver at the top of #celebrations is gone), so the content no longer pulls up over the sticky frame */
@@ -237,10 +243,9 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .descend .leaf--1{right:4vw;top:12vh;z-index:1}
 .statement{text-align:center}
 .statement .kashida--short{margin:var(--s2) auto var(--s3)}
-.statement__text{font-size:clamp(24px,3.6vw,48px);line-height:1.2;letter-spacing:.05em;text-transform:uppercase;color:var(--parch);max-width:20em;margin-inline:auto}
-.statement__line{display:block}
-/* phones: no forced line breaks (the six desktop lines flow as one balanced block), tighter tracking */
-@media (max-width:768px){.statement__line{display:inline}.statement__text{letter-spacing:.02em;text-wrap:balance}}
+/* the owner's pitch in sentence case, 34-40px on desktop, one balanced block at every width (no forced line breaks, no caps) */
+.statement__text{font-size:clamp(26px,3.2vw,40px);line-height:1.2;letter-spacing:.01em;color:var(--parch);max-width:26em;margin-inline:auto;text-wrap:balance}
+.statement__line{display:inline}
 .statement__sub{margin-top:var(--s3);color:var(--stone);font-size:18px;line-height:28px;max-width:34em;margin-inline:auto}
 
 /* three pillars as cards */
@@ -274,18 +279,18 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .accordion__label{position:absolute;left:var(--s2);top:var(--s2);letter-spacing:.1em;text-transform:uppercase;font-size:14px;z-index:1;display:none;color:var(--gold)}
 .accordion__body{position:relative;z-index:3;padding:var(--s4) var(--s2) var(--s3);display:grid;gap:var(--s1);min-height:100%;align-content:end;pointer-events:none}
 /* phones: a 44px right clearance for the mid-height "How we work +" tab; a compact preview (image + title + Persian) at 280px */
-@media (max-width:768px){.accordion__body{padding-right:44px}.accordion__panel{min-height:280px}}
+@media (max-width:768px){.accordion__body{padding-right:44px;padding-bottom:64px}.accordion__panel{min-height:280px}}
 /* stacked (under 1100px) the trigger button is gone, so the body takes the pointer (the native Read more must toggle) */
 @media (max-width:1099px){.accordion__body{pointer-events:auto}}
 .accordion__body h3{font-size:clamp(26px,3vw,38px)}
 .accordion__body .fa{color:var(--gold)}
-.accordion__read p{max-width:34em;color:var(--parch);margin-top:var(--s1)}
-/* the description's native <details>: "Read more" shows on phones only; site.js opens every one on wider screens and the summary is hidden there */
+/* one intro sentence always visible; the operational text sits behind the native <details> "Read more" at every width
+   (site.js opens every one above 768px; on phones the first panel starts open, the rest closed) */
+.accordion__intro,.accordion__read p{max-width:34em;color:var(--parch);margin-top:var(--s1)}
 .accordion__read summary{cursor:pointer;list-style:none;display:inline-flex;gap:8px;align-items:baseline;color:var(--gold);font-size:14px;line-height:20px;letter-spacing:.1em;text-transform:uppercase;padding:4px 0}
 .accordion__read summary::-webkit-details-marker{display:none}
 .accordion__read summary::after{content:"+"}
 .accordion__read[open] summary::after{content:"\2013"}
-@media (min-width:769px){html.site-ready .accordion__read summary{display:none}}
 .accordion__more{pointer-events:auto;margin-top:var(--s1);justify-self:start}
 /* the wide layout (one open panel + narrow strips) only from 1100px; below that every panel is stacked and readable.
    No fixed height: the row is at least min(70vh,640px) and grows to fit the open body. The open body is in flow once
@@ -295,9 +300,9 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
   /* --acc-min: the tallest expanded body at the current width (site.js measures every body after fonts load and on resize), so the row never jumps between hovers */
   .accordion{display:flex;gap:var(--s1);min-height:max(min(70vh,640px),var(--acc-min,0px))}
   .accordion__panel{flex:1 1 0;min-height:0;transition:flex .7s var(--ease)}
-  .accordion__panel.is-open{flex:6 1 0}
-  /* collapsed strips keep their image texture: a light blur, brightness .9 and a lighter overlay than the open panel */
-  .accordion__panel:not(.is-open) .accordion__media img{filter:blur(6px) brightness(.9);transform:scale(1.08)}
+  .accordion__panel.is-open{flex:4.5 1 0}
+  /* collapsed strips keep their image texture (blur 3px, brightness .95) and a lighter overlay than the open panel: five photographs waiting to open, not dark bars */
+  .accordion__panel:not(.is-open) .accordion__media img{filter:blur(3px) brightness(.95);transform:scale(1.08)}
   .accordion__panel:not(.is-open) .accordion__media::after{background:linear-gradient(to top,rgba(18,23,20,.8),rgba(18,23,20,.35))}
   .accordion__panel:not(.is-open) .accordion__body,.accordion__panel.is-settling .accordion__body{position:absolute;inset:0}
   /* collapsed bodies leave the accessibility tree (visibility:hidden after the fade) */
@@ -305,8 +310,10 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
   /* the opening body stays invisible while the row is still settling (.is-settling, .7s) and fades in only once the panel can hold it; the open body takes the pointer so its text can be selected */
   .accordion__panel.is-open .accordion__body{opacity:1;visibility:visible;transition:opacity .6s,visibility 0s;pointer-events:auto}
   .accordion__panel.is-open.is-settling .accordion__body{opacity:0;transition:none}
-  .accordion__panel:not(.is-open) .accordion__label{display:block;writing-mode:vertical-rl;left:auto;right:50%;top:auto;bottom:var(--s3);transform:translateX(50%) rotate(180deg)}
-  .accordion__body{padding:var(--s4) var(--s4) var(--s4)}
+  /* the vertical gold label never runs into the strip edge (nowrap, ellipsis within the panel height minus 64px); a 2px gold rule sits under it
+     (border-top in the element's own frame: the 180deg turn puts it at the visual bottom, below the start of the text) */
+  .accordion__panel:not(.is-open) .accordion__label{display:block;writing-mode:vertical-rl;left:auto;right:50%;top:auto;bottom:24px;transform:translateX(50%) rotate(180deg);max-height:calc(100% - 64px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border-top:2px solid var(--gold);padding-top:10px}
+  .accordion__body{padding:var(--s3)}
 }
 
 /* ---------- Proof slot (owner input, hidden until the real testimonial arrives): styled like the real thing ---------- */
@@ -329,11 +336,11 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 
 /* ---------- How we work teaser (glow band, gold strips, two cards, two service options) ---------- */
 .teaser{overflow:hidden}
-/* the two service options (index teaser and How we work "What you get"): 2px gold top rule, when support begins, three responsibilities */
+/* the two service options (index teaser and How we work "What you get"): no top rules (the section kashida is the one gold line); spacing carries the structure */
 .options{display:grid;gap:var(--s3)}
 @media (min-width:768px){.options{grid-template-columns:1fr 1fr;gap:var(--s4)}}
 .teaser .options{margin-top:var(--s4)}
-.options > li{border-top:2px solid var(--gold);padding-top:var(--s2);display:grid;gap:var(--s1);align-content:start}
+.options > li{display:grid;gap:var(--s1);align-content:start}
 .options h3{font-size:clamp(20px,2.2vw,24px)}
 .options .option__when{color:var(--gold);font-size:14px;line-height:20px;letter-spacing:.06em;text-transform:uppercase}
 .options p,.options ul{color:var(--stone);font-size:16px;line-height:24px}
@@ -350,11 +357,10 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 
 /* ---------- The journey: the five planning stages on one gold line, then the celebrations as loose pills ---------- */
 .journey{position:relative;padding-top:clamp(40px,7vh,88px)}
-/* the leaf: a small sprig (scale .55) tight to the left edge above the section head; it never crosses the gold line or the Inquiry column,
-   and on phones it sits off the edge at .35 so it is never behind the eyebrow */
-.journey .leaf--3{left:-20px;top:-4vh;opacity:.7;z-index:0;transform:scale(.55);transform-origin:top left}
-@media (min-width:900px){.journey .leaf--3{transform:translateY(-20%) scale(.55)}}
-@media (max-width:768px){.journey .leaf--3{left:-40px;top:-24px;opacity:.35;transform:scale(.6)}}
+/* the leaf: a small sprig (scale .55) tight to the left edge, INSIDE the night section (never across the parchment seam above);
+   it never crosses the gold line or the Inquiry column, and on phones it sits off the edge at .35 so it is never behind the eyebrow */
+.journey .leaf--3{left:-20px;top:clamp(24px,4vh,48px);opacity:.7;z-index:0;transform:scale(.55);transform-origin:top left}
+@media (max-width:768px){.journey .leaf--3{left:-40px;top:16px;opacity:.35;transform:scale(.6)}}
 .journey__order{text-align:center;color:var(--stone);font-size:16px;line-height:24px;max-width:38em;margin:0 auto clamp(24px,4vh,40px);text-wrap:balance}
 .journey__track{position:relative;z-index:1}
 .journey__line{position:absolute;pointer-events:none}
@@ -367,8 +373,9 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 /* every stop has the same three rows (title / Persian / note) packed at the top, so the Persian label sits directly under each title at every width */
 .journey__stop{position:relative;display:grid;grid-template-rows:auto auto auto;align-content:start;gap:2px}
 @media (max-width:768px){.journey__stop{padding-right:44px}}
-/* all five dots show at once (sage); site.js block 5 turns each gold as the line reaches it */
-.journey__dot{position:absolute;left:-40px;top:10px;width:14px;height:14px;border-radius:50%;background:var(--sage);transform-origin:center}
+/* all five dots show at once (sage); site.js block 5 turns each gold as the line reaches it.
+   Vertical layout: the line is 2px at left:11px (centre 12px), so the 14px dot sits at -35px inside the 40px padding (centre 12px) */
+.journey__dot{position:absolute;left:-35px;top:10px;width:14px;height:14px;border-radius:50%;background:var(--sage);transform-origin:center}
 .journey__en{color:var(--parch);font-size:18px;line-height:24px;text-wrap:balance}
 .journey__fa{font-size:16px;line-height:1.6;text-align:left;direction:rtl;color:var(--stone)}
 .journey__note{font-size:15px;line-height:22px;color:var(--stone);max-width:30em}
@@ -383,13 +390,16 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
   .journey__fa{text-align:center}
   .journey__note{font-size:16px;line-height:24px}
 }
-/* the celebrations a family may choose: a loose group under the line, no connecting line, no numbering */
+/* the celebrations a family may choose: an unboxed typographic list under the line, the names separated by a gold middle dot,
+   wrapping like a sentence (no outlines: labels, not controls), the Persian accents small and gold */
 .journey__extras{margin-top:clamp(40px,6vh,64px);text-align:center}
 .journey__extras .eyebrow{margin-bottom:var(--s2)}
-.pills{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--s1) 12px}
-/* labels, not controls: a soft outline at .45, the Persian in full gold (AA at 14px), no hover treatment */
-.pill{display:inline-flex;align-items:baseline;gap:10px;border:2px solid rgba(201,158,92,.45);border-radius:999px;padding:6px 16px;font-size:15px;line-height:20px;color:var(--parch);white-space:nowrap}
-.pill .fa{font-size:14px;line-height:1.4;color:var(--gold)}
+.pills{display:block;text-align:center;max-width:36em;margin-inline:auto;font-size:19px;line-height:32px;color:var(--parch)}
+.pill{display:inline;white-space:nowrap}
+.pill:not(:last-child)::after{content:"\00A0\00B7";color:var(--gold);margin-right:6px}
+.pill .fa{font-size:15px;line-height:1.4;color:var(--gold);margin-left:4px}
+/* the one seasonal line under the list (Nowruz / Yalda are calendar days, not wedding celebrations) */
+.journey__season{margin-top:var(--s2);color:var(--stone);font-size:16px;line-height:24px}
 
 /* ---------- The roots and the floor; Inquire sits on the ground ---------- */
 .ground{position:relative;overflow:hidden;background:var(--night)}
@@ -413,11 +423,11 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 @media (min-width:768px){.form__row--3{grid-template-columns:1fr 1fr 1fr}}
 .field{display:grid;gap:var(--s1);min-width:0}
 .field label,.fieldset legend{font-size:16px;line-height:22px;color:var(--parch)}
-/* inputs carry the system weight: 2px stone rule at .6, 2px gold on focus (no 1px hairlines anywhere) */
-.field input,.field textarea,.field select{font:inherit;font-weight:700;color:var(--parch);background:transparent;border:2px solid rgba(185,179,166,.6);border-radius:2px;padding:12px 14px;width:100%;min-height:48px}
+/* inputs in the underline style (editorial, like the kashida): no perimeter box, a 2px gold rule at .45 under a soft night fill; focus = the full gold underline (no 1px hairlines anywhere) */
+.field input,.field textarea,.field select{font:inherit;font-weight:700;color:var(--parch);background:rgba(27,34,30,.55);border:0;border-bottom:2px solid rgba(201,158,92,.45);border-radius:2px 2px 0 0;padding:12px 14px;width:100%;min-height:48px;transition:border-color .3s,background-color .3s}
 /* placeholders in stone (#B9B3A6 on the deep input ground: ~8:1) */
 .field input::placeholder,.field textarea::placeholder{color:var(--stone);opacity:1}
-.field input:focus-visible,.field textarea:focus-visible,.field select:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-color:var(--gold)}
+.field input:focus-visible,.field textarea:focus-visible,.field select:focus-visible{outline:none;border-bottom-color:var(--gold);background:rgba(27,34,30,.8)}
 .field input[type="date"],.field select{color-scheme:dark}
 .field select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%);background-position:calc(100% - 22px) 50%,calc(100% - 16px) 50%;background-size:6px 6px,6px 6px;background-repeat:no-repeat;padding-right:44px;cursor:pointer}
 .field select option{background:var(--deep);color:var(--parch)}
@@ -433,8 +443,8 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .checks{display:grid;gap:var(--s1) var(--s2);grid-template-columns:1fr 1fr}
 @media (min-width:600px){.checks{grid-template-columns:repeat(3,1fr)}}
 .check{display:flex;gap:10px;align-items:center;font-size:16px;line-height:22px;min-height:32px}
-/* custom 18px box: 2px stone outline, transparent; checked = gold with a cypress tick (inline SVG) */
-.check input{appearance:none;-webkit-appearance:none;width:18px;height:18px;margin:0;flex:0 0 auto;border:2px solid var(--stone);border-radius:2px;background:transparent center/12px no-repeat;cursor:pointer;transition:background-color .2s,border-color .2s}
+/* custom 18px box in the same family as the input underlines: 2px gold outline at .6 on the soft night fill; checked = gold with a cypress tick (inline SVG) */
+.check input{appearance:none;-webkit-appearance:none;width:18px;height:18px;margin:0;flex:0 0 auto;border:2px solid rgba(201,158,92,.6);border-radius:2px;background:rgba(27,34,30,.55) center/12px no-repeat;cursor:pointer;transition:background-color .2s,border-color .2s}
 .check input:checked{background-color:var(--gold);border-color:var(--gold);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6.3 4.8 9 10 3.2' fill='none' stroke='%231B221E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
 .check input:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .form__note{font-size:14px;line-height:20px;color:var(--stone)}
@@ -446,9 +456,10 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .form__more[open] summary::after{content:"\2013"}
 .form__more summary:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 .form__more-body{display:grid;gap:var(--s3);margin-top:var(--s3)}
-/* phones: the fixed Pause button (bottom-left) never covers the contact line; the form keeps 56px of bottom padding
-   under the closing note (no indent on the note: every line in the card starts at the same edge) */
-@media (max-width:768px){.inquire__contact{padding-left:52px}.form{padding-bottom:56px}}
+/* phones: the form keeps 56px of bottom padding under the closing note for the fixed Pause button (which also hides while
+   the form is under it, site.js); every line in the card and the contact line start at the same edge (no indent) */
+@media (max-width:768px){.form{padding-bottom:56px}}
+.form__status a{color:var(--parch)}
 
 /* ---------- Footer (deep night band) ---------- */
 .site-footer{background:var(--deep);color:var(--parch);border-top:2px solid var(--gold);padding-block:var(--s4) var(--s3);position:relative;z-index:2}
@@ -516,6 +527,9 @@ html:not(.panel-ready) .hww-tab{display:none}
 .hww-steps h3{font-size:20px;line-height:26px;margin-bottom:4px}
 .hww-steps p{font-size:16px;line-height:24px;color:var(--stone)}
 .hww-panel__foot{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s3);align-items:center}
+/* the phone line: a plain link on its own line under the two actions (parents call before they type) */
+.hww-panel__phone{flex:0 0 100%;color:var(--stone);font-size:16px;line-height:24px;transition:color .3s}
+.hww-panel__phone:hover{color:var(--parch)}
 body.panel-open{overflow:hidden}
 
 /* ---------- Inner page band ---------- */
@@ -549,7 +563,8 @@ body.panel-open{overflow:hidden}
 .steps__line path{fill:none;stroke:var(--sage);stroke-opacity:.35;stroke-width:2;vector-effect:non-scaling-stroke}
 .steps__line.track-line path{stroke:var(--gold);stroke-opacity:1}
 .step{position:relative;display:grid;gap:var(--s1)}
-.step__dot{position:absolute;left:-44px;top:10px;width:14px;height:14px;border-radius:50%;background:var(--sage);transform-origin:center}
+/* the line is 2px at left:11px (centre 12px) inside the 44px padding, so the 14px dot sits at -39px (centre 12px) */
+.step__dot{position:absolute;left:-39px;top:10px;width:14px;height:14px;border-radius:50%;background:var(--sage);transform-origin:center}
 .step__n{font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
 .step h3{font-size:clamp(24px,3vw,34px)}
 .step .fa{text-align:left;color:var(--gold)}
@@ -579,8 +594,9 @@ body.panel-open{overflow:hidden}
 .story__photos .slot{overflow:hidden;background:var(--deep);aspect-ratio:3/4}
 .story__photos img{width:100%;height:100%;object-fit:cover}
 .story__photos figcaption{margin-top:var(--s1)}
-.promise{display:grid;gap:var(--s2)}
-.promise li{display:grid;grid-template-columns:48px 1fr;gap:var(--s2);border-top:2px solid var(--gold);padding-top:var(--s2);font-size:clamp(20px,2.2vw,26px);line-height:1.4}
+/* the three promises: no top rules (the gold numbers and the spacing carry the structure) */
+.promise{display:grid;gap:var(--s3)}
+.promise li{display:grid;grid-template-columns:48px 1fr;gap:var(--s2);font-size:clamp(20px,2.2vw,26px);line-height:1.4}
 .promise li b{color:var(--gold)}
 .behaviour{display:grid;gap:var(--s2);grid-template-columns:1fr 1fr;margin-top:var(--s4)}
 @media (min-width:768px){.behaviour{grid-template-columns:repeat(4,1fr)}}

@@ -1,0 +1,23 @@
+{
+ "model": "argon",
+ "role": "brand",
+ "score": 9.5,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "assets/css/canopy.css:93",
+   "what": "Increase the top mask fade of `.tree__band` on mobile (`@media (max-width:768px)`) from `40px` to `calc(80 * var(--s))`",
+   "why": "In index-phone-1.jpg, the transition from the detailed canopy underside to the vertical bark strip is slightly abrupt at the top of the statement screen."
+  },
+  {
+   "where": "assets/css/canopy.css:154",
+   "what": "Change `.inquire__call a` border-bottom from `rgba(201,158,92,.5)` to `var(--gold)`",
+   "why": "Keeps the 2px gold underline consistent with `.link` across the brand book rather than introducing a half-opacity rule above the roots."
+  },
+  {
+   "where": "assets/css/site.css:183",
+   "what": "Add `border-bottom: 2px solid var(--gold)` to `.site-header.is-scrolled` and `.site-header--solid` (or a subtle 0.35-opacity gold rule)",
+   "why": "When scrolling over the painted canopy in index-desktop-1.jpg, the solid cypress header bar cuts across the bright ruby pomegranates without a crisp editorial edge."
+  }
+ ]
+}

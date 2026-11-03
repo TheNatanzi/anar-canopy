@@ -1,0 +1,23 @@
+{
+ "model": "argon",
+ "role": "planner",
+ "score": 9.6,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "weddings.html:194",
+   "what": "Change 'In the nights before if your family holds them' or add a brief nod to South Asian pre-wedding welcoming rituals like the Maiyan (Punjabi) or Gaye Holud (Bengali) alongside dholki/jaggo/haldi.",
+   "why": "Broadens the immediate recognition for South Asian families from diverse regional backgrounds in the Bay Area."
+  },
+  {
+   "where": "weddings.html:126",
+   "what": "In the Sofreh Aghd section, briefly mention coordinating the 'kaleh ghand' (sugar cones rubbed above the couple's head on the tor-e ghand) and 'asal' (honey feeding) cues.",
+   "why": "These are the two most photographed, participatory moments of the Aghd that couples and mothers always ask if the planner will cue."
+  },
+  {
+   "where": "how-we-work.html:214",
+   "what": "In the 'Where do you work?' FAQ answer, explicitly name South Bay / Silicon Valley and Wine Country (Napa/Sonoma) alongside 'the city to the East Bay and the Peninsula'.",
+   "why": "Many high-budget Persian and South Asian families in the Bay Area live in the South Bay or book Wine Country estates, and look for those exact words."
+  }
+ ]
+}

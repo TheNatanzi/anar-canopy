@@ -1,5 +1,5 @@
 /* =========================================================
-   Anar Events — site.js (v2.11, night palette, canopy round-2 fixes, 3 Nov 2026)
+   Anar Events — site.js (v2.12, night palette, canopy round-2 fixes + the "How we work +" panel restored, 3 Nov 2026)
    Loaded (defer, self-hosted in assets/js/vendor/) before this file:
      GSAP 3.12.5 + ScrollTrigger, Lenis 1.1.18
    Content is visible by default. Reveal targets are hidden only
@@ -159,7 +159,7 @@
     }
   }
 
-  /* Skip link: the same anchor path as every in-page link (the drawer closes first, so <main>
+  /* Skip link: the same anchor path as every in-page link (the drawer and the panel close first, so <main>
      is no longer inert when it takes focus; main carries tabindex="-1") */
   var skip = $('.skip-link'), mainEl = $('#main');
   if (skip && mainEl) {
@@ -175,22 +175,29 @@
      --------------------------------------------------------- */
   var header = $('.site-header');
   var navToggle = $('.nav-toggle');
-  /* the background-inert state for the open drawer. Every element outside it is a candidate; its original
-     inert / aria-hidden is saved the first time the drawer opens and restored once it closes, so a resize (syncNav)
-     can never clear inert under an open drawer. The header stays live (the drawer lives there) and the skip link
-     reachable (activating it closes the drawer). aria-hidden goes with inert, for browsers without `inert`. */
+  /* the "How we work +" tab, panel and backdrop (their block is below); panelOpen is read here by syncInert(), and
+     syncTab (set by that block) re-checks the tab's visibility whenever an overlay state changes */
+  var tab = $('.hww-tab'), panel = $('#hww-panel'), backdrop = $('.hww-backdrop');
+  var panelOpen = false;
+  var syncTab = null;
+  /* ONE background-inert state for BOTH overlays (the drawer and the panel). Every element outside the panel is
+     a candidate; its original inert / aria-hidden is saved the first time either overlay opens and restored only
+     once both are closed, so a resize (syncNav) can never clear inert under the open panel. The drawer leaves the
+     header live (it lives there) and the skip link reachable (activating it closes the drawer); the panel makes
+     everything outside itself inert. aria-hidden goes with inert, for browsers without `inert`. */
   var inertState = null;
   var outside = function () {
-    return $$('body > *').filter(function (el) { return el.tagName !== 'SCRIPT'; });
+    return $$('body > *').filter(function (el) { return el !== panel && el !== backdrop && el.tagName !== 'SCRIPT'; });
   };
   function syncInert() {
-    var on = !!(header && header.classList.contains('nav-open'));
+    var navOpen = !!(header && header.classList.contains('nav-open'));
+    var on = navOpen || panelOpen;
     if (on) {
       if (!inertState) {
         inertState = outside().map(function (el) { return { el: el, inert: el.inert, hidden: el.getAttribute('aria-hidden') }; });
       }
       inertState.forEach(function (s) {
-        var inert = (s.el !== header && s.el !== skip);
+        var inert = panelOpen || (s.el !== header && s.el !== skip);
         s.el.inert = inert;
         if (inert) { s.el.setAttribute('aria-hidden', 'true'); }
         else if (s.hidden === null) { s.el.removeAttribute('aria-hidden'); } else { s.el.setAttribute('aria-hidden', s.hidden); }
@@ -205,6 +212,8 @@
     /* the scroll lock and Lenis follow the same combined state */
     body.classList.toggle('panel-open', on);
     if (lenis) { if (on) { lenis.stop(); } else { lenis.start(); } }
+    /* the tab hides under the open drawer (it would sit over the drawer's links on phones) */
+    if (syncTab) { syncTab(true); }
   }
   /* ONE window scroll listener for the whole file, gated by requestAnimationFrame (with Lenis every frame is a
      scroll event): each block pushes its handler into scrollFns; every handler writes the DOM only on a change */
@@ -230,7 +239,7 @@
   scrollFns.push(onScrollState);
   onScrollState();
   /* the toggle's aria-expanded, the inert page, the scroll lock and Lenis always follow the drawer's class (also
-     re-synced on resize): syncInert() computes them from the drawer */
+     re-synced on resize): syncInert() computes them from the drawer AND the panel together */
   function syncNav() {
     if (!header || !navToggle) { return; }
     var open = header.classList.contains('nav-open');
@@ -251,8 +260,8 @@
       if (e.key === 'Escape' && header.classList.contains('nav-open')) { closeNav(); navToggle.focus(); }
     });
     /* the drawer closes when a link is activated, on a click outside the header (capture: before the target's own
-       handler runs on a page that is no longer inert), when focus leaves the header (Tab past the last link) and
-       when the viewport grows past the phone breakpoint */
+       handler, so the "How we work +" tab's open runs on a page that is no longer inert), when focus leaves the
+       header (Tab past the last link) and when the viewport grows past the phone breakpoint */
     $$('.site-nav a', header).forEach(function (a) { a.addEventListener('click', closeNav); });
     document.addEventListener('click', function (e) {
       if (header.classList.contains('nav-open') && !header.contains(e.target)) { closeNav(); }
@@ -267,29 +276,152 @@
   }
 
   /* ---------------------------------------------------------
+     "How we work +" slide-out panel (works without GSAP too):
+     ghost tab, night panel, close ×, Esc closes, backdrop closes,
+     focus trap, main content inert (aria-hidden fallback), close
+     timer cancelled on reopen, focus returns to the tab. The tab
+     hides while #inquire or the footer is in view, while the index
+     hero is in view (the inner-page band hides it on phones only),
+     under the open phone drawer, and on phones also while scrolling
+     down: it slides in once the first screen has scrolled past. The
+     Pause button sits in the header bar (CSS) and is never hidden.
+     --------------------------------------------------------- */
+  var closePanel = function () {};
+  /* the inquiry-destination state shared with the header "Inquire" observer below: #inquire / the footer in view hide
+     the tab (hideAtDestination); any filled inquiry button in view turns the header Inquire ghost (filledInquire) */
+  var hideAtDestination = false, filledInquire = false;
+  if (tab && panel && backdrop) {
+    var closeBtn = $('.hww-panel__close', panel);
+    var lastFocus = null;
+    var closeTimer = null;
+    var openFrame = null;
+    var focusables = function () {
+      return $$('a[href], button, input, select, textarea, [tabindex]', panel)
+        .filter(function (el) { return !el.disabled && el.tabIndex >= 0 && el.offsetParent !== null && !el.closest('[inert]'); });
+    };
+    var openPanel = function () {
+      if (panelOpen) { return; }
+      panelOpen = true;
+      if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
+      lastFocus = document.activeElement;
+      panel.hidden = false; backdrop.hidden = false;
+      panel.inert = false;
+      panel.removeAttribute('aria-hidden');
+      openFrame = requestAnimationFrame(function () { panel.classList.add('is-open'); backdrop.classList.add('is-on'); openFrame = null; });
+      tab.setAttribute('aria-expanded', 'true');
+      (closeBtn || panel).focus({ preventScroll: true });
+      syncInert();
+    };
+    closePanel = function () {
+      if (!panelOpen) { return; }
+      panelOpen = false;
+      if (openFrame !== null) { cancelAnimationFrame(openFrame); openFrame = null; }
+      panel.classList.remove('is-open'); backdrop.classList.remove('is-on');
+      tab.setAttribute('aria-expanded', 'false');
+      syncInert();
+      if (closeTimer) { clearTimeout(closeTimer); }
+      closeTimer = setTimeout(function () { panel.hidden = true; backdrop.hidden = true; closeTimer = null; }, reduced || userPaused ? 0 : 560);
+      if (lastFocus && lastFocus.focus) { lastFocus.focus({ preventScroll: true }); }
+      panel.inert = true;
+      panel.setAttribute('aria-hidden', 'true');
+    };
+    tab.addEventListener('click', openPanel);
+    html.classList.add('panel-ready');
+    if (closeBtn) { closeBtn.addEventListener('click', closePanel); }
+    backdrop.addEventListener('click', closePanel);
+    document.addEventListener('keydown', function (e) {
+      if (!panelOpen) { return; }
+      if (e.key === 'Escape') { closePanel(); return; }
+      if (e.key === 'Tab') {
+        var f = focusables(); if (!f.length) { e.preventDefault(); panel.focus(); return; }
+        var first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && (document.activeElement === first || document.activeElement === panel)) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+    document.addEventListener('focusin', function (e) {
+      if (panelOpen && !panel.contains(e.target)) { (closeBtn || panel).focus(); }
+    });
+    /* Keep the focused tab visible; synchronize visual and keyboard availability.
+       Showing: the class, aria-hidden and tabIndex change together, at once. Hiding: while the page scrolls only
+       the class changes (visual); aria-hidden / tabIndex follow in the settle timeout (700 ms after the last
+       scroll or observer change). A tab that holds focus is never hidden, visually or from the keyboard. */
+    var hideWhileScrolling = false, heroInView = true, idleTimer;
+    var lastScroll = window.scrollY;
+    var heroEl = $('.hero') || $('.pageband');
+    /* the index hero hides the tab on every screen size; the inner-page band only on phones */
+    var heroHides = function () { return heroInView && (!isDesktop() || (heroEl && heroEl.classList.contains('hero'))); };
+    var setShown = function (el, hidden, settled) {
+      if (hidden && el.contains(document.activeElement)) { hidden = false; }
+      if (el.classList.contains('is-hidden') !== hidden) { el.classList.toggle('is-hidden', hidden); }
+      if (hidden && !settled) { return; }
+      var aria = hidden ? 'true' : 'false';
+      if (el.getAttribute('aria-hidden') !== aria) { el.setAttribute('aria-hidden', aria); }
+      var ti = hidden ? -1 : 0;
+      if (el.tabIndex !== ti) { el.tabIndex = ti; }
+    };
+    syncTab = function (settled) {
+      var navOpen = !!(header && header.classList.contains('nav-open'));
+      var hidden = !panelOpen && document.activeElement !== tab &&
+        (navOpen || hideAtDestination || heroHides() || (!isDesktop() && hideWhileScrolling));
+      setShown(tab, hidden, settled);
+    };
+    var settleSoon = function () {
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(function () { hideWhileScrolling = false; syncTab(true); }, 700);
+    };
+    tab.addEventListener('blur', function () { setTimeout(function () { syncTab(true); }, 0); });
+    onMQ(desktopQuery, function () { syncTab(true); });
+    scrollFns.push(function () {
+      var next = window.scrollY;
+      if (Math.abs(next - lastScroll) > 2) { hideWhileScrolling = next > lastScroll; }
+      lastScroll = next;
+      syncTab(false);
+      settleSoon();
+    });
+    /* the hero observer (index: .hero; inner pages: .pageband): the tab stays out of the first screen */
+    if (heroEl && 'IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) { heroInView = en.isIntersecting; });
+        syncTab(false);
+        settleSoon();
+      }, { threshold: 0 }).observe(heroEl);
+    } else { heroInView = false; syncTab(true); }
+  }
+
+  /* ---------------------------------------------------------
      The header "Inquire" turns ghost while another filled inquiry
      button is on screen (#inquire with the form's own button, the
      footer, and every main .btn whose href ends in #inquire): one
-     gold button per screen. Runs on every page; the Pause button
-     sits in the header bar (CSS) and is never hidden.
+     gold button per screen. Runs on every page. The same observer
+     hides the "How we work +" tab while #inquire or the footer is
+     in view (the other filled buttons only ghost the header Inquire).
      --------------------------------------------------------- */
   var headerInquire = header ? $('.nav-right .btn', header) : null;
-  var ghostFor = [$('#inquire'), $('.site-footer')].concat($$('main .btn[href$="#inquire"]')).filter(Boolean);
-  if (headerInquire && ghostFor.length && 'IntersectionObserver' in window) {
+  var hideFor = [$('#inquire'), $('.site-footer')].filter(Boolean);
+  var ghostFor = hideFor.concat($$('main .btn[href$="#inquire"]'));
+  if ((headerInquire || syncTab) && ghostFor.length && 'IntersectionObserver' in window) {
     var ghostInView = new Map();
     var ghostObserver = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) { ghostInView.set(en.target, en.isIntersecting); });
-      var filled = false;
-      ghostInView.forEach(function (v) { if (v) { filled = true; } });
-      if (headerInquire.classList.contains('ghost') !== filled) { headerInquire.classList.toggle('ghost', filled); }
+      hideAtDestination = false; filledInquire = false;
+      ghostInView.forEach(function (v, el) {
+        if (!v) { return; }
+        filledInquire = true;
+        if (hideFor.indexOf(el) !== -1) { hideAtDestination = true; }
+      });
+      if (headerInquire && headerInquire.classList.contains('ghost') !== filledInquire) { headerInquire.classList.toggle('ghost', filledInquire); }
+      /* the tab follows at once (visual); its keyboard state settles 700 ms later, like the scroll handler's */
+      if (syncTab) { syncTab(false); setTimeout(function () { syncTab(true); }, 700); }
     }, { threshold: 0.05 });
     ghostFor.forEach(function (el) { ghostObserver.observe(el); });
   }
 
   /* Same-page anchors (including "index.html#inquire" while on index) and the skip link:
-     the drawer closes first, then the scroll. */
+     the panel and the drawer close first, then the scroll. */
   function goToAnchor(target) {
     closeNav();
+    closePanel();
     scrollToEl(target);
   }
   $$('a[href*="#"]').forEach(function (a) {

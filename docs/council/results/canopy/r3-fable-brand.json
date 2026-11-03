@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "brand",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "canopy.css .tree__canopy mask (rows 1200–1260) + canopy.js block 2 canopy sway ±0.5°",
+   "what": "Move the canopy's fade-out above the shrub leaves (mask #000 at 1140·--s → transparent at 1200·--s) and halve the sway to ±0.25°; give the sprig masks a hard 20-row edge instead of the 60-row fade.",
+   "why": "At row 1200 a 0.5° swing about the top is ~10px lateral: the shrub foliage in the seam reads as ghosted/double-edged (desktop-1 y 760–900, desktop-2 y 90–330), a rendering glitch rather than motion."
+  },
+  {
+   "where": "site.css .hero__tint, phones (max-width:768px)",
+   "what": "Add a bottom cypress ramp: linear-gradient(rgba(27,34,30,.42) 0%, rgba(27,34,30,.72) 60%, var(--night) 100%).",
+   "why": "On phones the video's table and chairs show through the canopy's open middle at the bottom of screen 1 as a bright patch; the foliage should sit on night, not on footage."
+  },
+  {
+   "where": "weddings.html / how-we-work.html / about.html .pageband",
+   "what": "Add one static leaf crop (.leaf.leaf--3, right edge, aria-hidden, display:none on phones) to each inner page band.",
+   "why": "The painted tree is the brand's signature frame and it vanishes after the first click; the inner pages read as a generic dark template."
+  },
+  {
+   "where": "canopy.css phone block, .tree__band",
+   "what": "Overlay the band with a 25% cypress tint on phones (background: linear-gradient(rgba(27,34,30,.25),rgba(27,34,30,.25)), url(trunk-band.webp)).",
+   "why": "At 390px the 35px bark strips are bright, high-contrast and repetitive: they read as a wallpaper border, not trunks, and compete with the parchment copy."
+  },
+  {
+   "where": "canopy.css .screen--inquire .leaf--3",
+   "what": "Drop it (or opacity .45): the pasted leaf over the bare trunk at the top of screen 4.",
+   "why": "It sits on the bark in a lighter, more translucent paint style and reads as a sticker, not part of the tree."
+  },
+  {
+   "where": "canopy.css .screen--inquire .form .btn",
+   "what": "Centre the submit row (text-align:center on its wrapper) to match the centred heading, kashida and call line.",
+   "why": "Every other element on the roots screen is centred; the left-aligned gold button breaks the axis of the composition."
+  }
+ ]
+}

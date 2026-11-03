@@ -209,4 +209,8 @@ html.canopy-ready.anim-ready .canopy .hero__rise{opacity:0}
   /* no drifting leaves on phones: the copy runs edge to edge, so a leaf would sit over it (site.js skips hidden leaves) */
   .canopy .leaf{display:none}
   .promises{font-size:18px}
+  /* the "How we work +" tab (~34px wide, mid-height, right edge; hidden while the hero is in view and while scrolling,
+     site.js) must never sit over text: the blocks that can meet it keep 44px of right clearance, i.e. the 40px
+     gutter topped up by 4px (the centred promises shift 2px, invisible) */
+  .promises,.cel figcaption,.screen--inquire .form{padding-right:max(0px,44px - var(--gutter))}
 }

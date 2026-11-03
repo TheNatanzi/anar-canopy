@@ -297,10 +297,24 @@ html.nav-ready .site-header.nav-open .site-nav{display:block;position:absolute;t
 .site-footer__soon .fa{font-size:16px}
 .site-footer__legal{margin-top:var(--s3);font-size:14px;line-height:20px;color:var(--stone);display:flex;flex-wrap:wrap;gap:var(--s2);justify-content:space-between}
 
-/* ---------- Ghost buttons: the header "Inquire" while another filled button is on screen, and "Pause motion" ---------- */
+/* ---------- Ghost buttons: the "How we work +" tab, the header "Inquire" while another filled button is on screen, and "Pause motion" ---------- */
 .ghost{background:transparent;border:2px solid var(--gold);color:var(--parch);transition:background .3s,color .3s,border-color .3s,transform .3s var(--ease),opacity .3s}
 .ghost:hover,.ghost:focus-visible{background:var(--ruby);border-color:var(--ruby);color:var(--parch)}
 .ghost:focus-visible{outline:2px solid var(--parch);outline-offset:3px}
+/* the tab: one slim vertical tab at the right edge, mid-height, on every screen size; a solid night
+   fill (so it reads as a night object over the parchment sections too) with the 2px gold border;
+   hidden (slides out + fades, site.js) while the hero / page band, #inquire or the footer is in view,
+   while the phone drawer is open, and on phones while the page scrolls down */
+.hww-tab{position:fixed;z-index:60;right:0;top:50%;writing-mode:vertical-rl;transform:translateY(-50%) rotate(180deg);letter-spacing:.06em;padding:20px 12px;border-radius:0 2px 2px 0;border-left:0;background-color:var(--night)}
+html:not(.panel-ready) .hww-tab{display:none}
+.hww-tab.is-hidden{transform:translate(110%,-50%) rotate(180deg);opacity:0;pointer-events:none}
+@media (max-width:768px){.hww-tab{padding:14px 8px;font-size:13px;line-height:16px}}
+/* phones (inner pages, 20px gutter): the tab is ~34px wide at mid-height, so every left-aligned text block it can sit
+   over carries 24px of right clearance on top of the gutter (~44px); centred blocks keep symmetric padding.
+   The canopy home's 40px gutter is topped up in canopy.css */
+@media (max-width:768px){
+  .options > li,.tradition__text,.faq,.step,.you-get li,.letter,.promise li,.behaviour li,.measure,.caption{padding-right:24px}
+}
 /* Pause motion / Play motion: a 36px round control docked IN the header bar on every screen size (the last item of
    .site-header__inner: at the right beside Inquire on desktop, beside the menu toggle on phones via flex order), so it
    never covers text, inputs or the footer and needs no scroll-hide. The accessible name is the fixed aria-label
@@ -314,7 +328,31 @@ html:not(.motion-ready) .motion-toggle{visibility:hidden}
 .motion-toggle::before{content:"";width:14px;height:14px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Crect x='2' y='1' width='3.6' height='12' fill='%23C99E5C'/%3E%3Crect x='8.4' y='1' width='3.6' height='12' fill='%23C99E5C'/%3E%3C/svg%3E") center/contain no-repeat}
 .motion-toggle[aria-pressed="true"]::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M3 1.2 12.6 7 3 12.8z' fill='%23C99E5C'/%3E%3C/svg%3E");margin-left:2px}
 .motion-toggle__text{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
-/* the open phone drawer locks the page scroll (site.js syncInert) */
+.hww-backdrop{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.55);opacity:0;transition:opacity .4s}
+.hww-backdrop[hidden]{display:none}
+.hww-backdrop.is-on{opacity:1}
+/* the panel is the scrollable element: data-lenis-prevent (HTML) keeps Lenis off its wheel/touch events, overscroll-behavior:contain keeps the page still */
+.hww-panel{position:fixed;z-index:80;left:0;right:0;bottom:0;max-height:88vh;overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;background:var(--night);color:var(--parch);padding:var(--s3) var(--s3) var(--s4);border-top:2px solid var(--gold);border-radius:12px 12px 0 0;transform:translateY(100%);transition:transform .55s var(--ease)}
+.hww-panel[hidden]{display:none}
+.hww-panel.is-open{transform:translateY(0)}
+@media (min-width:768px){
+  .hww-panel{left:auto;top:0;bottom:0;width:min(540px,92vw);max-height:none;border-top:0;border-left:2px solid var(--gold);border-radius:0;padding:var(--s4);transform:translateX(100%)}
+  .hww-panel.is-open{transform:translateX(0)}
+}
+.hww-panel__close{position:absolute;top:var(--s2);right:var(--s2);width:44px;height:44px;display:grid;place-items:center;font-size:28px;line-height:1;border-radius:50%;color:var(--gold)}
+.hww-panel__close:hover{background:rgba(201,158,92,.14)}
+.hww-panel h2{margin:var(--s1) 0 var(--s3)}
+.hww-steps{display:grid;gap:var(--s2);counter-reset:step;margin-bottom:var(--s3)}
+.hww-steps li{display:grid;grid-template-columns:44px 1fr;gap:var(--s2);padding-top:var(--s1)}
+.hww-steps li::before{counter-increment:step;content:"0" counter(step);color:var(--gold)}
+.hww-steps h3{font-size:20px;line-height:26px;margin-bottom:4px}
+.hww-steps p{font-size:16px;line-height:24px;color:var(--stone)}
+.hww-panel__foot{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s3);align-items:center}
+/* the phone line: the tel: link and the WhatsApp link, plain, on their own line under the two actions (parents call before they type) */
+.hww-panel__phone{flex:0 0 100%;color:var(--stone);font-size:16px;line-height:24px}
+.hww-panel__phone a{transition:color .3s}
+.hww-panel__phone a:hover{color:var(--parch)}
+/* the open phone drawer or the open panel locks the page scroll (site.js syncInert) */
 body.panel-open{overflow:hidden}
 
 /* ---------- Inner page band ---------- */

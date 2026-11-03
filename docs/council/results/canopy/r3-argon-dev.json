@@ -1,0 +1,23 @@
+{
+ "model": "argon",
+ "role": "dev",
+ "score": 9.6,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "index.html:19",
+   "what": "Add `media=\"(prefers-reduced-motion: no-preference)\"` to the `tree-full.webp` `<link rel=\"preload\">` tag.",
+   "why": "Under `prefers-reduced-motion: reduce`, both `hero-poster-small.jpg` and the large `tree-full.webp` are preloaded simultaneously, competing for initial bandwidth with critical fonts."
+  },
+  {
+   "where": "assets/js/site.js:241",
+   "what": "When `location.hash` is present on page load, pass `immediate: true` or skip the smooth scroll animation in `scrollToEl` during the initial hash-landing timeout.",
+   "why": "Ensure hash landings always jump immediately to the offset without any delay or visual slide if the native browser jump was slightly off due to sticky headers."
+  },
+  {
+   "where": "assets/css/canopy.css:93",
+   "what": "Add `will-change: transform;` only inside `html.canopy-motion .tree__shake` instead of unconditionally on `.tree__shake`.",
+   "why": "Avoids holding an unnecessary composited GPU layer when motion is paused or disabled via reduced-motion preferences."
+  }
+ ]
+}

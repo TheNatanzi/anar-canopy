@@ -1,0 +1,30 @@
+{
+ "model": "astra",
+ "role": "planner",
+ "score": 8,
+ "blocking": [
+  "Language support is described as both conditional on confirmation and universally included. Families need one consistent promise before relying on it."
+ ],
+ "fixes": [
+  {
+   "where": "how-we-work.html — Always included, Proposal and language FAQ",
+   "what": "Use the same qualification everywhere: 'Parents’ pages in the language agreed in your proposal; translation and spoken support confirmed before booking.' Remove the open-ended guarantee of any language parents read.",
+   "why": "Parents must distinguish confirmed support from a language preference the studio will investigate."
+  },
+  {
+   "where": "weddings.html — Nikah opening paragraph and Afghan weddings note",
+   "what": "Make shirni-khori and aina mosaf explicitly optional in both passages: 'For Afghan families who observe shirni-khori or aina mosaf, we agree their place in the programme with your family.' Keep the subsequent family-led explanation.",
+   "why": "The opening currently prescribes a sequence that the later paragraph correctly treats as family-specific."
+  },
+  {
+   "where": "how-we-work.html — With either option / Always included",
+   "what": "Qualify signage, thank-you cards and translated materials as deliverables named in the proposal; distinguish coordination of printing from supplying finished items.",
+   "why": "Paying families need to understand what the planning fee actually buys, especially for coordination-only bookings."
+  },
+  {
+   "where": "how-we-work.html — Consultation and Proposal",
+   "what": "Break the existing paragraphs into short labeled points for guest needs, parent involvement, decision approvals and date reservation, without adding copy.",
+   "why": "These are strong trust builders for couples and parents, but they are buried in dense operational paragraphs."
+  }
+ ]
+}

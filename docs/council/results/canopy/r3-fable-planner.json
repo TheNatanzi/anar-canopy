@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "planner",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "weddings.html #sofreh-aghd, third paragraph",
+   "what": "Delete the stray fragment 'The Persian ceremony.' and move that paragraph ('We agree the ceremony wording, the responses and the family cues with the aghed...') to be the FIRST paragraph of the section, before the spread and the bale-boroon lines.",
+   "why": "The section currently opens with a list of sofreh items and a conditional, and the sentence that says what Anar actually does on the day arrives third with a leftover fragment in front of it; a parent skimming reads 'decor' before 'coordination'."
+  },
+  {
+   "where": "weddings.html #nikah, first paragraph and the Afghan box",
+   "what": "Trim paragraph 1 to 'The Islamic marriage contract, read before witnesses and both families; for Pakistani and Indian Muslim families with the mehndi before it and the rukhsati after, for Afghan families with the aina mosaf beside it.' Keep the aina mosaf paragraph; drop 'shirni-khori sealed before it' from paragraph 1 (the Afghan box already names it).",
+   "why": "Shirni-khori and aina mosaf are each explained three times in one section, while Pakistani and Indian Muslim families, the largest nikah audience in the Bay Area, are never named anywhere on the site."
+  },
+  {
+   "where": "index.html screen 2 (.screen--statement eyebrow + h2)",
+   "what": "Keep 'Reimagined Heritage' as the hero tag pair; change the screen-2 eyebrow to 'جشن‌هایی که از آنِ شماست' or simply the word 'Anar' in Persian ('انار'), and let the h2 carry a different owner line, e.g. 'Keep the soul. Redefine the style.' (owner copy, currently used only in the About letter).",
+   "why": "The identical English + Persian pair sits at the bottom of screen 1 and again as the heading of screen 2 roughly 500px later; the second appearance reads as a repeat, not a reveal, and one of the owner's stronger lines is buried on an inner page."
+  },
+  {
+   "where": "index.html form, #f-names placeholder",
+   "what": "Change placeholder 'Sara & Omid' to 'Sara & Omid, or Mr & Mrs Rahimi'.",
+   "why": "The help text says 'Couple or parent names' but the example is a Persian couple only; a parent filling the form (common for Afghan and South Asian families) should see themselves in the example, and the three-heritage audience should see a non-Persian name."
+  },
+  {
+   "where": "index.html .cel__foot line (phone 390px)",
+   "what": "Shorten to 'Haldi & pheras, Anand Karaj, walima, rukhsati: every ceremony on the Weddings page' and make the link class wrap on one or two lines, or underline only the words 'Weddings page'.",
+   "why": "On the phone the only mention of the Hindu and Sikh ceremonies is a three-line underlined run that looks like a broken link block; for South Asian families it is their one signpost on the home page, so it must read cleanly."
+  },
+  {
+   "where": "how-we-work.html #you-get, Wedding-day coordination option__when",
+   "what": "Change 'Begins 6–8 weeks out · we run the days you have planned' to 'Begins 6–8 weeks before the first event · we run the days you have planned'.",
+   "why": "Multi-day families count from the mehndi or the aghd, not from 'the wedding'; naming the first event removes the question every parent asks on the first call."
+  }
+ ]
+}

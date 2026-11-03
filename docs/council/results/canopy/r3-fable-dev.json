@@ -1,0 +1,38 @@
+{
+ "model": "fable",
+ "role": "dev",
+ "score": 8,
+ "blocking": [],
+ "fixes": [
+  {
+   "where": "assets/css/canopy.css:76 + index.html inline head script",
+   "what": "On a cold load the deferred bundles (~129 KB of GSAP/ScrollTrigger/Lenis/site/canopy) land after first paint, so the logo paints visible, snaps to opacity 0 when canopy.js adds html.canopy-ready, then rises again. Have the inline head script add html.canopy-pre, hide .hero__rise under it with a CSS keyframe fallback (`animation:canopy-show 0s 2.5s forwards` to opacity 1), and let canopy.js remove canopy-pre when it takes over; keep the no-JS/failed path visible.",
+   "why": "First-visit visitors on 3G/4G see the brand mark flash twice; warm cache hides this in the harness."
+  },
+  {
+   "where": "assets/css/site.css:58 and index.html:118, how-we-work.html:74/165/172, about.html:126/131, every .site-nav ul",
+   "what": "`ul,ol{list-style:none}` strips list semantics in WebKit/VoiceOver; add role=\"list\" to the promises <ol>, the nav <ul>, options, you-get, promise and behaviour lists.",
+   "why": "Safari screen-reader users lose 'list, 3 items' on the three promises and the five steps."
+  },
+  {
+   "where": "index.html:138/142/146 (.cel__slot)",
+   "what": "Each figure has two links to the same weddings.html anchor (image + h3), six tab stops for three destinations. Keep the image clickable but take it out of the tab order and accessibility tree: tabindex=\"-1\" aria-hidden=\"true\" on .cel__slot, drop its aria-label, keep the h3 link as the accessible one.",
+   "why": "Redundant focus stops on every ceremony card, and a double announcement per card."
+  },
+  {
+   "where": "assets/tree/ (tree-full.png 6.4 MB, canopy-u3*.webp, trunks-tall/left/right.webp, roots-floor.webp, leaves-float.webp ≈ 8 MB)",
+   "what": "Move the unreferenced art to src-assets/ (or delete) so the deploy folder ships only what index.html loads: tree-full{,-768,-1024}.webp, trunk-band.webp, fruit-drop.webp, leaf-1/3.webp.",
+   "why": "8 MB of dead files in the publish tree invites accidental hotlinking and bloats every deploy/CDN sync."
+  },
+  {
+   "where": "assets/css/canopy.css:165-166 and :207",
+   "what": "Tablet 769–1000px is unverified: .cel stays three columns inside a 68vw column (≈160 px slots at 800 px) and the statement column is 44vw (≈350 px). Add @media (min-width:769px) and (max-width:1024px){.screen--celebrations .screen__col{max-width:80vw}.screen--statement .screen__col{max-width:60vw}} and run an 820×1180 screenshot pass.",
+   "why": "iPad portrait is a common parent device and currently sits in the gap between the phone and desktop rules."
+  },
+  {
+   "where": "assets/css/canopy.css:165 (phones) and site.css header order rules",
+   "what": "At 390px the promises end ~165 px above 'The celebrations' (statement padding-bottom + celebrations padding-top stack); on phones set .screen--celebrations{padding-top:clamp(40px,6vh,56px)}. Also the Pause button is DOM-last but visually second on phones (order:-1): move the <button> before .nav-home in the markup so focus order matches visual order.",
+   "why": "A void on the one-tree phone scroll, and a WCAG 2.4.3 focus-order mismatch in the bar."
+  }
+ ]
+}

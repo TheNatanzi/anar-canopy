@@ -160,6 +160,21 @@
   </div>
 </footer>
 
-<!-- Owner decision (2026-11-03): no "How we work +" tab or slide-out panel anywhere; the Pause-motion button lives in the header bar. -->
+<!-- Persistent "How we work +" tab and slide-out panel (site.js panel block, restored 3 Nov 2026); the Pause-motion button stays in the header bar -->
+<button class="hww-tab ghost" type="button" aria-controls="hww-panel" aria-expanded="false">How we work <span aria-hidden="true">+</span></button>
+<div class="hww-backdrop" hidden></div>
+<aside class="hww-panel" id="hww-panel" role="dialog" aria-modal="true" aria-labelledby="hww-title" tabindex="-1" data-lenis-prevent hidden>
+  <button class="hww-panel__close" type="button" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  <p class="eyebrow">How we work · <span class="fa" lang="fa" dir="rtl">روش کار ما</span></p>
+  <h2 id="hww-title">Five steps, one line</h2>
+  <ol class="hww-steps">
+    <li><div><h3>Inquiry</h3><p>Write to us, or call. Tell us about your family and your dates.</p></div></li>
+    <li><div><h3>Consultation</h3><p>We meet your family, greet the elders first, and listen. Parents and elders included at the level you choose.</p></div></li>
+    <li><div><h3>Proposal</h3><p>The plan, the price, and what is included: the events covered, the staffing, the hours and the fees.</p></div></li>
+    <li><div><h3>Planning</h3><p>Ritual by ritual, as your family keeps it. A short written summary after every meeting.</p></div></li>
+    <li><div><h3>The wedding days</h3><p>The ceremonies your family chooses, in the order agreed with your family, called with the venue and every vendor.</p></div></li>
+  </ol>
+  <p class="hww-panel__foot"><a class="btn" href="index.html#inquire">Begin the conversation</a> <a class="link" href="how-we-work.html">Read more</a> <span class="hww-panel__phone"><a href="tel:+19252639949">Call (925) 263-9949</a> · <a href="https://wa.me/19252639949" rel="noopener">WhatsApp</a></span></p>
+</aside>
 </body>
 </html>

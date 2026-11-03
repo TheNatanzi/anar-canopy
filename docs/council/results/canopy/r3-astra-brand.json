@@ -1,0 +1,35 @@
+{
+ "model": "astra",
+ "role": "brand",
+ "score": 7.5,
+ "blocking": [
+  "The painted tree has visible layer discontinuities: desktop screenshot 1 shows an abrupt horizontal step on the left trunk near the statement opening. The central brand device must read as one uninterrupted painting before launch."
+ ],
+ "fixes": [
+  {
+   "where": "assets/css/canopy.css — .tree__canopy, .tree__trunk, .tree__sprig",
+   "what": "Align the overlapping bark contours and mask transitions within opaque bark. Keep trunk junctions stationary while animating only foliage; remove duplicated shrub pixels beneath moving copies.",
+   "why": "Visible cuts and doubled branches make the signature illustration feel assembled rather than painted."
+  },
+  {
+   "where": "assets/js/canopy.js — velocity shake and fruit animations",
+   "what": "Remove the elastic scroll-velocity shake and the falling and rolling fruit rotations. Retain restrained foliage sway, gentle parallax and the drawn kashida.",
+   "why": "The coded spring-back and tumbling fruit introduce a playful register that weakens the premium wedding identity."
+  },
+  {
+   "where": "assets/css/site.css — .hero__tint; assets/css/canopy.css — .hero__halo",
+   "what": "Reduce the full-frame warm wash and concentrate contrast protection behind the logo and descriptor, retaining the cypress gradient toward the canopy.",
+   "why": "The supplied desktop and phone hero frames look muddy; more photographic tonal separation would give the gold mark greater presence."
+  },
+  {
+   "where": "assets/js/site.js — ghostFor",
+   "what": "Observe the inquiry submit button itself instead of the entire #inquire section when switching the header Inquire button to its outline treatment.",
+   "why": "Desktop screenshot 3 loses the filled primary action before the replacement button is visible."
+  },
+  {
+   "where": "weddings.html — .tradition__text; how-we-work.html — .step",
+   "what": "Keep each section's opening summary visible and move extended operational detail into consistently styled native disclosures. Preserve TT Ramillas Bold and the existing section structure.",
+   "why": "Long blocks of equally bold text flatten the inner-page hierarchy and dilute the homepage's editorial restraint."
+  }
+ ]
+}

@@ -1,0 +1,40 @@
+{
+ "model": "astra",
+ "role": "dev",
+ "score": 7.5,
+ "blocking": [
+  "Mobile navigation becomes inaccessible if site.js fails: the inline script adds .js, CSS hides the links, and the menu button has no working handler."
+ ],
+ "fixes": [
+  {
+   "where": "assets/css/site.css — mobile navigation visibility",
+   "what": "Collapse navigation only under .nav-ready; keep a usable navigation fallback until handlers are successfully attached.",
+   "why": "A failed script request currently removes access to all three inner pages on mobile."
+  },
+  {
+   "where": "assets/css/canopy.css — mobile .hero__mark",
+   "what": "Replace unconditional top:30% with positioning that accounts for the rendered logo, descriptor and tag height; verify clearance at 390px in short viewports and with enlarged text.",
+   "why": "The desktop clearance constraint is discarded on phones; heroDrift() cannot repair an existing text/art intersection."
+  },
+  {
+   "where": "assets/css/site.css — .nav-home cascade",
+   "what": "Move the mobile flex and margin overrides after the base .nav-home rule so flex:0 1 120px and margin-right:0 actually apply.",
+   "why": "The later base rule overrides both intended mobile safeguards, leaving the logo unable to shrink in a crowded header."
+  },
+  {
+   "where": "assets/js/site.js — expandable details and ScrollTrigger measurements",
+   "what": "Observe relevant content-size changes or listen for details toggle events, then schedule a ScrollTrigger refresh and Lenis resize.",
+   "why": "Expanding service inclusions changes the positions of the entire five-step timeline without updating its scroll measurements."
+  },
+  {
+   "where": "assets/js/canopy.js — velocity shake timeline",
+   "what": "Create one reusable shake timeline inside the context and restart it for each qualifying flick.",
+   "why": "Each flick currently adds another timeline to the long-lived context; clearing shakeTl does not remove the context's retained reference."
+  },
+  {
+   "where": "assets/css/site.css — .field textarea",
+   "what": "Allow vertical resizing with resize:vertical while retaining the minimum height.",
+   "why": "The fixed message box makes longer inquiries unnecessarily difficult to review and edit."
+  }
+ ]
+}

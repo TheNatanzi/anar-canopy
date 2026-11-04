@@ -126,6 +126,9 @@ html.canopy-ready.anim-ready .canopy .hero__rise{opacity:0}
    (html.logo-docked, progress 1), then the header logo shows in the same place with no transition (no jump). Without
    the motion (Pause, reduced motion, no JS) these classes never exist and the header logo follows .is-scrolled */
 html.logo-morphing .canopy .hero__logo img{visibility:hidden}
+/* owner 2026-11-03: "make the logo brighter slightly". The same lift on the hero logo, the morphing copy and the docked
+   header logo, so nothing changes tone mid-morph (brightness 1.18: #C99E5C reads as #EDBA6C over the tinted video) */
+.canopy .hero__logo img,.page-index .logo-morph img,.page-index .site-header .nav-home img{filter:brightness(1.18)}
 html.canopy-motion .page-index .site-header .nav-home{opacity:0;visibility:hidden;transition:none}
 html.canopy-motion.logo-docked .page-index .site-header .nav-home{opacity:1;visibility:visible}
 /* the open phone drawer covers the hero: the morphing copy (z 51, a sibling after the header) stays under it */
@@ -157,6 +160,7 @@ html.canopy-motion.logo-docked .page-index .site-header .nav-home{opacity:1;visi
 .tree__trunk--low{z-index:1}
 .tree__band{z-index:2}
 .tree__sprig{z-index:3}
+.tree__shoot,.tree__leaf{z-index:3}
 .tree__canopy{z-index:4}
 .tree__bark{z-index:5}
 .fruit-drop{z-index:6}
@@ -263,7 +267,10 @@ html.rig-on .tree__rig{opacity:1;transition:opacity .6s ease}
    exactly); its top 100 rows fade in over the band; rises 40px into place on screen 4 (canopy.js) */
 .ground-art{position:absolute;left:50%;bottom:0;width:var(--tree-w);height:var(--ground-h);margin-left:calc(var(--tree-w) / -2);overflow:hidden;z-index:1;pointer-events:none;
   -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 calc(100 * var(--s)));mask-image:linear-gradient(to bottom,transparent 0,#000 calc(100 * var(--s)))}
-.ground-art img{margin-top:calc(-3080 * var(--s))}
+.ground-art img{margin-top:0}
+/* the whole ground fruit, lifted out of the plate (docs/council/pom_cut.py: the plate under it is repainted, the sprite
+   carries the fruit's own dark rim, so a rocked fruit leaves no mark). It rocks on its contact point (canopy.js 7a) */
+.ground-art img.pom-rock{position:absolute;left:calc(539 * var(--s));top:calc(158 * var(--s));width:calc(258 * var(--s));height:auto;margin:0;transform-origin:50% 97%}
 /* the fallen fruit on the moss left of the big pair (x 300 / row 3440), rolls in as the ground arrives (canopy.js);
    its own sprite (assets/tree/fruit-roll.webp): the same canopy fruit, graded in Pillow to the ground pair's measured
    hue / saturation / value with its cast shadow baked in, so no CSS filter (round 5: the filtered copy read magenta) */
@@ -408,3 +415,20 @@ html.rig-on .tree__rig{opacity:1;transition:opacity .6s ease}
      equal gutters (27px / 27px at 390) */
   .promises{padding-right:max(0px,44px - var(--gutter))}
 }
+
+/* ---------- the trunks' own life (owner 2026-11-03; canopy.js block 7) ----------
+   Each shoot: the box placed so its base point (--px / --py inside it) sits on the trunk's inner edge at (--x, --y),
+   turned to its rest angle (--r) about that point; canopy.js writes only its sway (transform, same origin). The first
+   22 art px fade in from the bark, so the shoot grows out of the trunk with no cut end. A touch darker than the
+   canopy (the trunks are in shade). --flip mirrors the painting inside the box (the base stays on the box edge) */
+.tree__shoot{position:absolute;left:calc((var(--x) - var(--px)) * var(--s));top:calc((var(--y) - var(--py)) * var(--s));
+  width:calc(var(--w) * var(--s));height:calc(var(--h) * var(--s));transform-origin:calc(var(--px) * var(--s)) calc(var(--py) * var(--s));rotate:var(--r);pointer-events:none}
+.tree .tree__shoot img{width:100%;height:100%;filter:brightness(.8)}
+.tree__shoot--flip img{transform:scaleX(-1)}
+.tree__shoot--l{-webkit-mask-image:linear-gradient(to right,transparent 0,#000 calc(22 * var(--s)));mask-image:linear-gradient(to right,transparent 0,#000 calc(22 * var(--s)))}
+.tree__shoot--r{-webkit-mask-image:linear-gradient(to left,transparent 0,#000 calc(22 * var(--s)));mask-image:linear-gradient(to left,transparent 0,#000 calc(22 * var(--s)))}
+/* the falling leaves: in the side gaps between the trunk and the content columns, invisible until canopy.js lets
+   each one drift down (opacity 0 at rest: nothing is ever stuck mid-air on Pause / reduced motion / without JS) */
+.tree img.tree__leaf{display:none;position:absolute;left:calc(var(--x) * var(--s));top:calc(var(--y) * var(--s));width:calc(var(--w) * var(--s));height:auto;opacity:0;pointer-events:none}
+@media (min-width:769px){html.canopy-motion .tree img.tree__leaf{display:block}}
+@media (max-width:768px){.tree__shoot{display:none}}

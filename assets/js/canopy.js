@@ -600,6 +600,45 @@
       }
     }
 
+    /* 7. the rest of the tree (owner 2026-11-03: "rock the pomegranate a little", "get the rest of the tree animated").
+          All plain tweens in this context, each running only while its element is on screen (loopInView), so a
+          revert (Pause, reduced motion) puts every piece back exactly as painted.
+       7a. the whole ground fruit rocks on its contact point (canopy.css: origin at its bottom): uneven swings that die
+           down and pick up again (2.4°, 1.5°, 2°, 0.8° each way), never a metronome; rotating about the contact
+           point is the fruit rolling a hair and back, so its painted shadow and the moss under it stay put */
+    var pom = $('.ground-art .pom-rock', main);
+    if (pom) {
+      var rock = gsap.timeline({ repeat: -1, repeatDelay: 0.6 });
+      [[2.4, 1.5], [-2.0, 1.4], [1.5, 1.2], [-1.2, 1.1], [0.8, 1.0], [-0.5, 0.9], [0, 0.9]].forEach(function (k) {
+        rock.to(pom, { rotation: k[0], duration: k[1], ease: 'sine.inOut' });
+      });
+      loopInView(pom, rock);
+    }
+    /* 7b. the trunk shoots: each sways about the point where it leaves the bark (its CSS origin), on its own period and
+           phase, the longer ones a little more (±1.4–2.2°) */
+    $$('.tree__shoot', main).forEach(function (el, i) {
+      if (!shown(el)) { return; }
+      var amp = [1.8, 1.4, 2.2, 1.6][i % 4], period = [5.6, 6.8, 5.0, 7.4][i % 4];
+      var tw = gsap.fromTo(el, { rotation: -amp }, { rotation: amp, duration: period / 2, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+      tw.totalTime(period * (0.13 + 0.29 * i));
+      loopInView(el, tw);
+    });
+    /* 7c. the falling leaves (desktop): each drifts 420 art px down its side gap over 9–12 s, swinging side to side
+           (±26 art px, toward the open middle first) and see-sawing ±38° as it goes, the way a leaf falls; it fades
+           in over the first 12 % and out over the last 20 %, then waits a few seconds and falls again. Staggered so
+           one or two are in the air at a time */
+    $$('.tree__leaf', main).forEach(function (leaf, i) {
+      if (!shown(leaf)) { return; }
+      var s = artPx(), dir = leaf.getAttribute('data-side') === 'r' ? -1 : 1;
+      var dur = 9 + (i * 1.3) % 3, swings = 3, half = dur / (swings * 2);
+      var tl = gsap.timeline({ repeat: -1, repeatDelay: 2.5 + (i % 3) * 1.4, delay: i * 1.7 });
+      tl.fromTo(leaf, { y: 0 }, { y: 420 * s, duration: dur, ease: 'none' }, 0)
+        .fromTo(leaf, { x: 0, rotation: -38 * dir }, { x: 26 * s * dir, rotation: 38 * dir, duration: half, ease: 'sine.inOut', yoyo: true, repeat: swings * 2 - 1 }, 0)
+        .fromTo(leaf, { opacity: 0 }, { opacity: 1, duration: dur * 0.12, ease: 'none' }, 0)
+        .to(leaf, { opacity: 0, duration: dur * 0.2, ease: 'none' }, dur * 0.8);
+      loopInView(leaf, tl);
+    });
+
     /* (6. the logo morph is built above block 3, which depends on its measurement) */
 
     /* 5. the logo + line rise on load, once per page. The CSS holds .hero__rise at opacity 0 only under

@@ -108,6 +108,19 @@
   <div class="tree" aria-hidden="true">
     <div class="tree__trunk tree__trunk--low"><img src="assets/tree/tree-full.webp" loading="lazy" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>
     <div class="tree__band"></div>
+    <!-- the trunks' own life (owner 2026-11-03, "get the rest of the tree animated"): four small leafy shoots growing out
+         of the inner edge of each trunk on screens 3-4 (the rig's own branch paintings, small; --x/--y = where the shoot
+         leaves the bark, art px; the base fades into the bark), each swaying about that point, and five single leaves
+         that drift down beside the trunks (desktop, motion on only). canopy.js block 7 -->
+    <div class="tree__shoot tree__shoot--l" style="--x:184;--y:2150;--w:179;--h:107;--px:0;--py:75;--r:-6deg"><img src="assets/tree/rig/b4.webp" width="814" height="485" alt="" loading="lazy" decoding="async"></div>
+    <div class="tree__shoot tree__shoot--r" style="--x:1352;--y:2560;--w:181;--h:92;--px:181;--py:61;--r:4deg"><img src="assets/tree/rig/b8.webp" width="565" height="289" alt="" loading="lazy" decoding="async"></div>
+    <div class="tree__shoot tree__shoot--l tree__shoot--flip" style="--x:184;--y:2960;--w:181;--h:92;--px:0;--py:61;--r:-3deg"><img src="assets/tree/rig/b8.webp" width="565" height="289" alt="" loading="lazy" decoding="async"></div>
+    <div class="tree__shoot tree__shoot--r tree__shoot--flip" style="--x:1352;--y:3240;--w:179;--h:107;--px:179;--py:75;--r:6deg"><img src="assets/tree/rig/b4.webp" width="814" height="485" alt="" loading="lazy" decoding="async"></div>
+    <img class="tree__leaf" data-side="l" style="--x:236;--y:1240;--w:40" src="assets/tree/rig/leaf-a.webp" width="188" height="200" alt="" loading="lazy" decoding="async">
+    <img class="tree__leaf" data-side="r" style="--x:1262;--y:1480;--w:44" src="assets/tree/rig/leaf-b.webp" width="200" height="106" alt="" loading="lazy" decoding="async">
+    <img class="tree__leaf" data-side="l" style="--x:250;--y:2080;--w:38" src="assets/tree/rig/leaf-c.webp" width="182" height="200" alt="" loading="lazy" decoding="async">
+    <img class="tree__leaf" data-side="r" style="--x:1250;--y:2620;--w:40" src="assets/tree/rig/leaf-a.webp" width="188" height="200" alt="" loading="lazy" decoding="async">
+    <img class="tree__leaf" data-side="l" style="--x:240;--y:3000;--w:44" src="assets/tree/rig/leaf-b.webp" width="200" height="106" alt="" loading="lazy" decoding="async">
     <div class="tree__sprig tree__sprig--l"><img src="assets/tree/tree-full.webp" loading="lazy" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>
     <div class="tree__sprig tree__sprig--r"><img src="assets/tree/tree-full.webp" loading="lazy" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>
     <!-- the canopy: rows 0–1200 of the one connected painting (tree-full), STILL: it is the canopy without JS, under
@@ -138,7 +151,10 @@
     <img class="fruit-drop" src="assets/tree/fruit-drop.webp" width="82" height="91" alt="" loading="lazy" decoding="async">
   </div>
   <div class="ground-art" aria-hidden="true">
-    <img src="assets/tree/tree-full.webp" loading="lazy" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" decoding="async">
+    <!-- the ground plate (tree-full rows 3080-3714) with the whole fruit lifted out (docs/council/pom_cut.py) and that fruit as
+         its own sprite, rocking on its contact point (canopy.js 7a); without JS it simply sits there, as painted -->
+    <img src="assets/tree/ground.webp" loading="lazy" srcset="assets/tree/ground-768.webp 768w, assets/tree/ground-1024.webp 1024w, assets/tree/ground.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="634" alt="" decoding="async">
+    <img class="pom-rock" src="assets/tree/pom-rock.webp" width="258" height="266" alt="" loading="lazy" decoding="async">
     <img class="fruit-roll" src="assets/tree/fruit-roll.webp" width="82" height="91" alt="" loading="lazy" decoding="async">
   </div>
 

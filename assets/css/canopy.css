@@ -90,7 +90,7 @@ html.canopy-motion .hero__bg{position:fixed;inset:0;height:auto}
    the radius, not 80%), so the loop's midtones read above the logo and below the tag pair; the stops are re-solved so
    the alpha behind the text is unchanged (measured at 1440: tag bottom .57 → .57, the descriptor's ends .10 → .10;
    the same proportions at 390). The dark field now ends ~270px from the centre vertically (was ~355px) */
-.canopy .hero__halo{width:145%;height:180%;background:radial-gradient(closest-side,rgba(27,34,30,.85),rgba(27,34,30,.55) 60%,transparent 78%)}
+.canopy .hero__halo{display:none} /* owner 2026-11-03: no dark "spray" behind the logo; readability comes from the even video tint */
 /* the top scrim: 180px of cypress (.55 → 0) over the tint, so the bar's links, the number and the envelope sit on
    night at scroll 0, not on the loop's white drapery; the phone tint (site.css) keeps its bottom ramp under it */
 .canopy .hero__tint{background:linear-gradient(rgba(27,34,30,.55) 0,rgba(27,34,30,0) 180px),linear-gradient(rgba(27,34,30,.34),rgba(27,34,30,.66))}

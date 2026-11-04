@@ -347,7 +347,7 @@ html.logo-morphing .logo-morph{visibility:visible;will-change:transform}
 .field__error{font-size:14px;line-height:20px;color:#E8A2AB;margin-top:-2px}
 .field__error:empty{display:none}
 /* placeholders in stone (#B9B3A6 on the deep input ground: ~8:1); the one-line inputs carry theirs at 16px, like the other secondary text */
-.field input::placeholder,.field textarea::placeholder{color:var(--stone);opacity:1}
+.field input::placeholder,.field textarea::placeholder{color:rgba(240,230,213,.34);opacity:1} /* owner 2026-11-04: the examples read as typed text; faded well back so they read as hints */
 .field input::placeholder{font-size:16px}
 /* keyboard focus: a visible 2px gold ring 3px out (the global ring, kept), plus the full gold underline and the deeper fill */
 .field input:focus-visible,.field textarea:focus-visible,.field select:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-bottom-color:var(--gold);background:rgba(27,34,30,.8)}

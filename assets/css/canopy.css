@@ -441,14 +441,16 @@ html.rig-on .tree__rig{opacity:1;transition:opacity .6s ease}
 
 /* phones (owner 2026-11-04, "can we fit this better"): the form sits inside the bark strips like the cards (the trunks'
    inner edges are 9.03vw from each side), with a dark panel so the fields read as one block, and a tighter rhythm:
-   rows 16px apart, 44px fields (still a full touch target), the label and its hint closer, a shorter message box */
+   rows 12px apart, 42px fields (owner: "a tiny bit smaller"), the label and its hint closer, a shorter message box */
 @media (max-width:768px){
-  .screen--inquire .form{margin-inline:max(0px,calc(9.03vw + 4px - var(--gutter)));gap:16px;padding:20px 16px 24px;background:rgba(18,23,20,.72);border-radius:4px}
-  .screen--inquire .form__row{gap:16px}
-  .screen--inquire .field{gap:6px}
-  .screen--inquire .field label{font-size:15px;line-height:20px}
-  .screen--inquire .field__help{font-size:13px;line-height:18px;margin-top:-2px}
-  .screen--inquire .field input,.screen--inquire .field textarea{min-height:44px;padding:10px 12px}
-  .screen--inquire .field textarea{min-height:110px}
+  .screen--inquire .form{margin-inline:max(0px,calc(9.03vw + 4px - var(--gutter)));gap:12px;padding:16px 14px 20px;background:rgba(18,23,20,.72);border-radius:4px}
+  .screen--inquire .form__row{gap:12px}
+  .screen--inquire .field{gap:4px}
+  .screen--inquire .field label{font-size:14px;line-height:19px}
+  .screen--inquire .field__help{font-size:12.5px;line-height:17px;margin-top:-2px}
+  .screen--inquire .field input,.screen--inquire .field textarea{min-height:42px;padding:8px 12px}   /* text stays 16px: iOS zooms smaller inputs */
+  .screen--inquire .field textarea{min-height:92px}
   .screen--inquire .inquire__call{margin-top:16px}
 }
+/* the examples are hints, smaller than what a visitor types (the typed text stays 16px for iOS) */
+@media (max-width:768px){.screen--inquire .field input::placeholder,.screen--inquire .field textarea::placeholder{font-size:14.5px;line-height:1.45}}

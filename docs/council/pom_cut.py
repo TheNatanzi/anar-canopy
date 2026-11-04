@@ -22,8 +22,28 @@ def fruit_mask(x0, y0, x1, y1, cream):
     core = cv2.dilate(np.where(lab == k, 255, 0).astype(np.uint8), np.ones((15, 15), np.uint8)) & m   # crown tips back
     cs, _ = cv2.findContours(core, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
     hull = np.zeros_like(core); cv2.fillPoly(hull, [cv2.convexHull(max(cs, key=cv2.contourArea))], 255)
-    full = np.zeros((H, W), np.uint8); full[y0:y1, x0:x1] = hull
-    return cv2.dilate(full, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (11, 11)))   # + the painted dark rim (~5px)
+    # owner 2026-11-03 ("it is taking the ground and part of the tree"): the hull + a blind 5px dilation carried root,
+    # moss and sky with the fruit. The exact outline instead: GrabCut seeded with the fruit's own colours as sure
+    # foreground, sky / moss / root as sure background, and only the band around the hull left for it to decide
+    crop = np.ascontiguousarray(im[y0:y1, x0:x1])
+    C = crop.astype(int); Rr, Gg, Bb = C[..., 0], C[..., 1], C[..., 2]
+    gc = np.full(hull.shape, cv2.GC_BGD, np.uint8)
+    band = cv2.dilate(hull, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (17, 17)))
+    gc[band > 0] = cv2.GC_PR_BGD
+    gc[hull > 0] = cv2.GC_PR_FGD
+    gc[cv2.erode(core, np.ones((7, 7), np.uint8)) > 0] = cv2.GC_FGD
+    sky = (np.maximum(np.maximum(Rr, Gg), Bb) < 38)
+    moss_root = (Gg >= Rr - 8) | ((Rr > Gg) & (Rr - Gg < 45) & (Rr < 150) & (Bb < Gg + 10) & (Rr - Bb > 25) & (Rr - Gg < 40))
+    gc[(sky | moss_root) & (gc != cv2.GC_FGD)] = cv2.GC_BGD
+    bgm, fgm = np.zeros((1, 65), np.float64), np.zeros((1, 65), np.float64)
+    cv2.grabCut(cv2.cvtColor(crop, cv2.COLOR_RGB2BGR), gc, None, bgm, fgm, 6, cv2.GC_INIT_WITH_MASK)
+    fg = np.where((gc == cv2.GC_FGD) | (gc == cv2.GC_PR_FGD), 255, 0).astype(np.uint8)
+    n, lab, st, _ = cv2.connectedComponentsWithStats(fg); k = 1 + int(np.argmax(st[1:, cv2.CC_STAT_AREA]))
+    fg = np.where(lab == k, 255, 0).astype(np.uint8)
+    ff = fg.copy(); hh, ww = fg.shape; cv2.floodFill(ff, np.zeros((hh + 2, ww + 2), np.uint8), (0, 0), 255); fg |= cv2.bitwise_not(ff)
+    fg = cv2.morphologyEx(fg, cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))
+    full = np.zeros((H, W), np.uint8); full[y0:y1, x0:x1] = fg
+    return full
 
 
 FRUIT = {'pom-rock': fruit_mask(535, 140, 805, 430, False),              # the whole fruit
@@ -43,7 +63,7 @@ SPR = {}
 for name, m in FRUIT.items():
     ys, xs = np.nonzero(m)
     sx0, sy0, sx1, sy1 = int(xs.min()), int(ys.min()), int(xs.max()) + 1, int(ys.max()) + 1
-    a = cv2.GaussianBlur(m, (5, 5), 0)                                   # a 2px feathered edge
+    a = cv2.GaussianBlur(m, (3, 3), 0)                                   # a 1px soft edge
     S = Image.fromarray(np.ascontiguousarray(np.dstack([im, a])[sy0:sy1, sx0:sx1]), 'RGBA')
     S.save(OUT + rf'\{name}.webp', 'WEBP', quality=90, method=6); SPR[name] = (S, sx0, sy0)
     print(name, 'size', S.size, 'left/top (plate px)', sx0, sy0)

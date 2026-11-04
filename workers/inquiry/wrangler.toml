@@ -1,0 +1,11 @@
+# The website inquiry inbox (src/index.js). Deploy: cd workers/inquiry && npx wrangler@3 deploy
+name = "anar-inquiry"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+account_id = "ccd3d0072aa0b22999c2fe85a42f942b"
+workers_dev = true
+
+# Cloudflare Email Routing: may only send to this verified destination address
+[[send_email]]
+name = "MAIL"
+destination_address = "anareventsllc@gmail.com"

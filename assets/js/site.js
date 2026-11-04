@@ -561,7 +561,7 @@
   html.classList.add('site-ready');
 
   /* ---------------------------------------------------------
-     Inquiry form: posts to Formspree with fetch when available;
+     Inquiry form: posts to FormSubmit (/ajax/) with fetch when available;
      12 s AbortController timeout; entered values stay on every
      error (timeout included); on success the form is reset only
      if its values still match the submitted snapshot (edits made
@@ -675,7 +675,7 @@
         if (firstInvalid && firstInvalid.focus) { firstInvalid.focus(); }
         return;
       }
-      if (/FORMSPREE_ID/.test(form.action)) {
+      if (/FORMSPREE_ID/.test(form.action) || !/^https:/.test(form.action)) {
         say('error', 'Online inquiries are not connected yet. Your entries are still here. Please', true);
         focusStatusIfOnSubmit(fromSubmit);
         return;
@@ -696,8 +696,15 @@
       var sent = snapshot();
       var options = { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } };
       if (controller) { options.signal = controller.signal; }
-      var request = Promise.race([timeout, Promise.resolve().then(function () { return fetch(form.action, options); })])
-        .then(function (r) { if (!r.ok) { throw new Error('bad status'); } })
+      /* FormSubmit answers JSON on its /ajax/ path ({success: "true"}); a 200 with success "false" (e.g. the inbox not yet
+         activated) is a failure too, so the visitor is never told a message went out when it did not */
+      var endpoint = form.action.replace('://formsubmit.co/', '://formsubmit.co/ajax/');
+      var request = Promise.race([timeout, Promise.resolve().then(function () { return fetch(endpoint, options); })])
+        .then(function (r) {
+          if (!r.ok) { throw new Error('bad status'); }
+          return r.json().catch(function () { return {}; });
+        })
+        .then(function (j) { if (j && (j.success === false || j.success === 'false')) { throw new Error('not accepted'); } })
         .then(function () {
           say('ok', 'Thank you. Your message is on its way; we reply within one business day.');
           /* reset only what was sent: an edit made while the request was pending stays in place */

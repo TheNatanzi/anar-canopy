@@ -275,10 +275,14 @@
       <svg class="kashida kashida--short kashida-draw" viewBox="0 0 320 2" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M160 1 H0"/><path d="M160 1 H320"/></svg>
       <!-- parents who prefer to speak see the call line before the form (planners, round 5): under the kashida, above the fields -->
       <p class="inquire__call reveal"><a href="tel:+19252639949">Call (925) 263-9949</a> · <a href="https://wa.me/19252639949" rel="noopener">WhatsApp</a></p>
-      <!-- Formspree: replace FORMSPREE_ID with the real form id (also noted in docs/BUILD-NOTES.md); the form carries no reveal class -->
-      <form class="form" action="https://formspree.io/f/FORMSPREE_ID" method="POST" data-ajax>
+      <!-- the inbox: FormSubmit (formsubmit.co, free, no account) emails every inquiry to hello@anarevents.com, which Cloudflare
+           Email Routing forwards to the brand Gmail. site.js posts to its /ajax/ endpoint; without JS the form posts here and
+           FormSubmit shows its own thank-you page. _honey = the spam trap; the form carries no reveal class -->
+      <form class="form" action="https://formsubmit.co/hello@anarevents.com" method="POST" data-ajax>
         <input type="hidden" name="_subject" value="New inquiry from anarevents.com">
-        <input type="text" name="_gotcha" class="visually-hidden" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="text" name="_honey" class="visually-hidden" tabindex="-1" autocomplete="off" aria-hidden="true">
         <div class="field"><label for="f-names">Your name(s)</label><p class="field__help" id="f-names-help">Couple or parent names</p><input id="f-names" name="names" type="text" autocomplete="name" required placeholder="Sara &amp; Omid, or Mr &amp; Mrs Rahimi" aria-describedby="f-names-help"></div>
         <div class="form__row">
           <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>

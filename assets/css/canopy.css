@@ -198,6 +198,11 @@ html.rig-on .tree__rig{opacity:1;transition:opacity .6s ease}
 .rig__f{position:absolute;left:calc((var(--x) - var(--px)) * var(--s));top:calc(var(--y) * var(--s));width:calc(var(--w) * var(--s));
   transform-origin:calc(var(--px) * var(--s)) 0;rotate:var(--r);will-change:transform}
 .tree .tree__rig .rig__f > img{position:static}
+/* the six swaying pieces of the old static limbs layer (owner 2026-11-03): placed like a branch (its pivot --px / --py on
+   the trunk at --x / --y), no rest angle; canopy.js 7d writes their sway */
+.rig__p{position:absolute;left:calc((var(--x) - var(--px)) * var(--s));top:calc((var(--y) - var(--py)) * var(--s));
+  width:calc(var(--w) * var(--s));height:calc(var(--h) * var(--s));transform-origin:calc(var(--px) * var(--s)) calc(var(--py) * var(--s));will-change:transform}
+.tree .tree__rig .rig__p > img{position:static;height:100%}
 /* desktop: the container is its own layer too (the tree's parallax moves it from screen 3 on) */
 @media (min-width:769px){html.rig-wait .tree__rig{will-change:transform}}
 /* the static junction bark (rows 1000–1300, above the canopy): the bark columns only (x ≤ 215 / ≥ 1326 — the trunks
@@ -270,7 +275,8 @@ html.rig-on .tree__rig{opacity:1;transition:opacity .6s ease}
 .ground-art img{margin-top:0}
 /* the whole ground fruit, lifted out of the plate (docs/council/pom_cut.py: the plate under it is repainted, the sprite
    carries the fruit's own dark rim, so a rocked fruit leaves no mark). It rocks on its contact point (canopy.js 7a) */
-.ground-art img.pom-rock{position:absolute;left:calc(539 * var(--s));top:calc(158 * var(--s));width:calc(258 * var(--s));height:auto;margin:0;transform-origin:50% 97%}
+.ground-art img.pom-rock{position:absolute;left:calc(539 * var(--s));top:calc(158 * var(--s));width:calc(259 * var(--s));height:auto;margin:0;transform-origin:50% 97%}
+.ground-art img.pom-rock--half{left:calc(801 * var(--s));top:calc(194 * var(--s));width:calc(237 * var(--s))}
 /* the fallen fruit on the moss left of the big pair (x 300 / row 3440), rolls in as the ground arrives (canopy.js);
    its own sprite (assets/tree/fruit-roll.webp): the same canopy fruit, graded in Pillow to the ground pair's measured
    hue / saturation / value with its cast shadow baked in, so no CSS filter (round 5: the filtered copy read magenta) */

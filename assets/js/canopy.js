@@ -606,14 +606,28 @@
        7a. the whole ground fruit rocks on its contact point (canopy.css: origin at its bottom): uneven swings that die
            down and pick up again (2.4°, 1.5°, 2°, 0.8° each way), never a metronome; rotating about the contact
            point is the fruit rolling a hair and back, so its painted shadow and the moss under it stay put */
-    var pom = $('.ground-art .pom-rock', main);
-    if (pom) {
-      var rock = gsap.timeline({ repeat: -1, repeatDelay: 0.6 });
-      [[2.4, 1.5], [-2.0, 1.4], [1.5, 1.2], [-1.2, 1.1], [0.8, 1.0], [-0.5, 0.9], [0, 0.9]].forEach(function (k) {
-        rock.to(pom, { rotation: k[0], duration: k[1], ease: 'sine.inOut' });
-      });
+    /* both ground fruits (the whole one, then the cut half: smaller swings, its own rhythm, started 1.3 s later so
+       the two never rock in step) */
+    var ROCKS = [
+      { swings: [[2.4, 1.5], [-2.0, 1.4], [1.5, 1.2], [-1.2, 1.1], [0.8, 1.0], [-0.5, 0.9], [0, 0.9]], rest: 0.6, delay: 0 },
+      { swings: [[-1.6, 1.3], [1.3, 1.2], [-1.0, 1.1], [0.6, 1.0], [-0.3, 0.9], [0, 0.8]], rest: 1.4, delay: 1.3 }
+    ];
+    $$('.ground-art .pom-rock', main).forEach(function (pom, i) {
+      var r = ROCKS[i % 2];
+      var rock = gsap.timeline({ repeat: -1, repeatDelay: r.rest, delay: r.delay });
+      r.swings.forEach(function (k) { rock.to(pom, { rotation: k[0], duration: k[1], ease: 'sine.inOut' }); });
       loopInView(pom, rock);
-    }
+    });
+    /* 7d. the rest of the crown: the two leafy tops of the trunks and the four bare limbs (.rig__p), each turning about
+           where it leaves the trunk, slower and smaller than the leafy branches over them (a thick limb barely moves;
+           the leafy tops a little more): ±0.5–1.1°, 6–9 s, each on its own phase */
+    var PIECE = { 'crown-l': [1.1, 6.2], 'crown-r': [1.0, 6.9], 'limb-l1': [0.6, 7.6], 'limb-l2': [0.5, 8.4], 'limb-r1': [0.6, 8.0], 'limb-r2': [0.5, 9.0] };
+    $$('.tree__rig .rig__p', main).forEach(function (el, i) {
+      var k = PIECE[el.getAttribute('data-p')] || [0.6, 8];
+      var tw = gsap.fromTo(el, { rotation: -k[0] }, { rotation: k[0], duration: k[1] / 2, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+      tw.totalTime(k[1] * (0.21 + 0.37 * i));
+      loopInView(el, tw);
+    });
     /* 7b. the trunk shoots: each sways about the point where it leaves the bark (its CSS origin), on its own period and
            phase, the longer ones a little more (±1.4–2.2°) */
     $$('.tree__shoot', main).forEach(function (el, i) {

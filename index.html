@@ -139,7 +139,15 @@
       <div class="rig__b rig__b--back" data-rig="b2" style="--x:175;--y:860;--w:585.5;--h:320.5;--px:0;--py:109.5;--r:0deg"><img src="assets/tree/rig/b2.webp" width="732" height="401" alt="" loading="lazy" decoding="async"></div>
       <div class="rig__b rig__b--back" data-rig="b5" style="--x:1370;--y:900;--w:660.6;--h:358.1;--px:660;--py:262.9;--r:-2deg"><img src="assets/tree/rig/b5.webp" width="826" height="448" alt="" loading="lazy" decoding="async"></div>
       <div class="rig__b rig__b--back" data-rig="b8" style="--x:1370;--y:500;--w:451.8;--h:231.3;--px:451.4;--py:153;--r:2deg"><img src="assets/tree/rig/b8.webp" width="565" height="289" alt="" loading="lazy" decoding="async"></div>
-      <img class="rig__limbs" src="assets/tree/rig/limbs.webp" width="1536" height="1032" alt="" loading="lazy" decoding="async">
+      <!-- the static trunks (limbs-static), then the six pieces that sway on their own (docs/council/limbs_split.py): the two leafy
+           crowns at the trunk tops and the four bare limbs, each turning about the point where it leaves the trunk -->
+      <img class="rig__limbs" src="assets/tree/rig/limbs-static.webp" width="1536" height="1032" alt="" loading="lazy" decoding="async">
+      <div class="rig__p" data-p="crown-l" style="--x:88;--y:450;--w:329;--h:286;--px:88;--py:282"><img src="assets/tree/rig/crown-l.webp" width="329" height="286" alt="" loading="lazy" decoding="async"></div>
+      <div class="rig__p" data-p="crown-r" style="--x:1445;--y:458;--w:328;--h:294;--px:237;--py:290"><img src="assets/tree/rig/crown-r.webp" width="328" height="294" alt="" loading="lazy" decoding="async"></div>
+      <div class="rig__p" data-p="limb-l1" style="--x:150;--y:713;--w:374;--h:268;--px:3;--py:197"><img src="assets/tree/rig/limb-l1.webp" width="374" height="268" alt="" loading="lazy" decoding="async"></div>
+      <div class="rig__p" data-p="limb-l2" style="--x:200;--y:958;--w:399;--h:223;--px:3;--py:179"><img src="assets/tree/rig/limb-l2.webp" width="399" height="223" alt="" loading="lazy" decoding="async"></div>
+      <div class="rig__p" data-p="limb-r1" style="--x:1410;--y:728;--w:381;--h:262;--px:377;--py:186"><img src="assets/tree/rig/limb-r1.webp" width="381" height="262" alt="" loading="lazy" decoding="async"></div>
+      <div class="rig__p" data-p="limb-r2" style="--x:1385;--y:973;--w:454;--h:302;--px:450;--py:168"><img src="assets/tree/rig/limb-r2.webp" width="454" height="302" alt="" loading="lazy" decoding="async"></div>
       <div class="rig__b rig__b--front" data-rig="b4" style="--x:150;--y:620;--w:651;--h:388;--px:0;--py:274;--r:-2deg"><img src="assets/tree/rig/b4.webp" width="814" height="485" alt="" loading="lazy" decoding="async"><span class="rig__f" style="--x:500;--y:165;--w:80;--px:40.1;--r:2deg"><img src="assets/tree/rig/fruit3.webp" width="160" height="224" alt="" loading="lazy" decoding="async"></span></div>
       <div class="rig__b rig__b--front" data-rig="b7" style="--x:1380;--y:500;--w:654.2;--h:398.3;--px:653.6;--py:144.6;--r:4deg"><img src="assets/tree/rig/b7.webp" width="818" height="498" alt="" loading="lazy" decoding="async"><span class="rig__f" style="--x:197.6;--y:218.4;--w:58;--px:30.1;--r:-4deg"><img src="assets/tree/rig/fruit1.webp" width="116" height="188" alt="" loading="lazy" decoding="async"></span></div>
       <div class="rig__b rig__b--front" data-rig="b1m" style="--x:175;--y:700;--w:720.5;--h:390;--px:0;--py:246;--r:-4deg"><img src="assets/tree/rig/b1m.webp" width="901" height="488" alt="" loading="lazy" decoding="async"><span class="rig__f" style="--x:575;--y:205;--w:58;--px:30.1;--r:4deg"><img src="assets/tree/rig/fruit1.webp" width="116" height="188" alt="" loading="lazy" decoding="async"></span><span class="rig__f" style="--x:350;--y:125;--w:80;--px:41.9;--r:4deg"><img src="assets/tree/rig/fruit2.webp" width="160" height="242" alt="" loading="lazy" decoding="async"></span></div>
@@ -154,7 +162,8 @@
     <!-- the ground plate (tree-full rows 3080-3714) with the whole fruit lifted out (docs/council/pom_cut.py) and that fruit as
          its own sprite, rocking on its contact point (canopy.js 7a); without JS it simply sits there, as painted -->
     <img src="assets/tree/ground.webp" loading="lazy" srcset="assets/tree/ground-768.webp 768w, assets/tree/ground-1024.webp 1024w, assets/tree/ground.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="634" alt="" decoding="async">
-    <img class="pom-rock" src="assets/tree/pom-rock.webp" width="258" height="266" alt="" loading="lazy" decoding="async">
+    <img class="pom-rock" src="assets/tree/pom-rock.webp" width="259" height="269" alt="" loading="lazy" decoding="async">
+    <img class="pom-rock pom-rock--half" src="assets/tree/pom-half.webp" width="237" height="271" alt="" loading="lazy" decoding="async">
     <img class="fruit-roll" src="assets/tree/fruit-roll.webp" width="82" height="91" alt="" loading="lazy" decoding="async">
   </div>
 

@@ -1,6 +1,6 @@
 """The basics a public site needs (owner 2026-11-03 "finish the site"): 404.html (built from about.html's shell, every
 path made root-absolute so it works at any depth), robots.txt, sitemap.xml, apple-touch-icon.png, favicon-32.png and a
-1200x630 share image (og-image.jpg: the painted canopy + gold logo, our own art, replacing the borrowed video frame)."""
+1200x630 share image (icons: the logo, never the pomegranate alone: owner rule) (og-image.jpg: the painted canopy + gold logo, our own art, replacing the borrowed video frame)."""
 import re, os, datetime
 from PIL import Image, ImageDraw
 SITE = r'C:\dev\anar-site'; os.chdir(SITE)

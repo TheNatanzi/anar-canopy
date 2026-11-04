@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /docs/
+Disallow: /src-assets/
+Disallow: /workers/
+
+Sitemap: https://anarevents.com/sitemap.xml

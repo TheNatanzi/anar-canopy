@@ -163,14 +163,39 @@ html.canopy-motion.logo-docked .page-index .site-header .nav-home{opacity:1;visi
 
 /* the canopy: rows 0–1200 of the ONE connected painting (tree-full; the four tonal-slice layers in assets/tree/layers
    are retired: moved apart they left a dark mark where each fruit had been). Opaque to row 1150 (the last hanging
-   fruit ends at 1149) and gone at 1200, over the static bark; 16px of margin each side for the clip box. canopy.js
-   block 2 sways the whole box ±0.25° about its bottom centre (art row 1200, the trunk tops: the mask's fade and the
-   junction move < 1px, the crown tips ≤ 4px at 1440) */
-.tree__canopy{position:absolute;top:0;left:-16px;width:calc(100% + 32px);height:calc(1200 * var(--s));overflow:hidden;transform-origin:50% calc(1200 * var(--s));
+   fruit ends at 1149) and gone at 1200, over the static bark. It never moves: it is the canopy without JS, under
+   reduced motion and on Pause, and until the branch rig (below) has loaded; then it fades out under the rig */
+.tree__canopy{position:absolute;top:0;left:0;width:100%;height:calc(1200 * var(--s));overflow:hidden;
   -webkit-mask-image:linear-gradient(to bottom,#000 calc(1150 * var(--s)),transparent calc(1200 * var(--s)));mask-image:linear-gradient(to bottom,#000 calc(1150 * var(--s)),transparent calc(1200 * var(--s)))}
-.tree__canopy img{width:var(--tree-w);margin-left:16px}
-/* desktop only: one 1200-row texture while the (endless) sway runs; on phones GSAP promotes it per tween */
-@media (min-width:769px){html.canopy-motion .tree__canopy{will-change:transform}}
+html.rig-on .tree__canopy{opacity:0;visibility:hidden;transition:opacity .6s ease,visibility 0s .6s}
+
+/* ---------- the branch rig (canopy.js block 2; built and placed by docs/council/rig_compose.py, pivots in
+   assets/tree/rig/rig.json). The same crown as the painting, in pieces, in art px (--s): back to front the static
+   backdrop (the fruit-free foliage U, masked to the approved silhouette: it fills every gap), four back branches
+   (brightness .85, blur .5px: depth), the static trunks + big limbs + the crown's two top corners (tree-full as painted, rows 168–1200), four front
+   branches carrying six fruit. Each .rig__b is placed so its cut end (--px / --py inside the sprite) sits on the
+   trunk at (--x, --y), turned to its rest angle by the CSS `rotate` property (--r) about that point; canopy.js
+   writes only `transform` (its wind / gust rotation and the depth parallax), which composes with it about the same
+   origin. Each .rig__f hangs by its stem top (--x / --y in its branch's box; --r undoes the branch's rest angle,
+   so it hangs plumb) and swings about it. Hidden (display:none: the lazy images are not fetched) until canopy.js
+   builds the motion; shown under html.rig-wait at opacity 0 while its images load, faded in under html.rig-on.
+   Nothing in it reaches above art row 335 inside the logo's column (x 376–1160) at rest, nor below row 1076
+   inside the statement's (x 460–1076): the motion stays within the clearances (measured, rig_compose.py --clear) */
+.tree__rig{display:none;position:absolute;top:0;left:0;width:100%;height:calc(1200 * var(--s));z-index:4;opacity:0}
+html.rig-wait .tree__rig{display:block}
+html.rig-on .tree__rig{opacity:1;transition:opacity .6s ease}
+.tree .tree__rig img{position:absolute;display:block;width:100%;height:auto;max-width:none}
+.tree .tree__rig .rig__bd{left:0;top:calc(192 * var(--s))}
+.tree .tree__rig .rig__limbs{left:0;top:calc(168 * var(--s))}
+.rig__b{position:absolute;left:calc((var(--x) - var(--px)) * var(--s));top:calc((var(--y) - var(--py)) * var(--s));
+  width:calc(var(--w) * var(--s));height:calc(var(--h) * var(--s));transform-origin:calc(var(--px) * var(--s)) calc(var(--py) * var(--s));rotate:var(--r);will-change:transform}
+.tree .tree__rig .rig__b > img{position:static;height:100%}
+.rig__b--back > img{filter:brightness(.85) blur(.5px)}
+.rig__f{position:absolute;left:calc((var(--x) - var(--px)) * var(--s));top:calc(var(--y) * var(--s));width:calc(var(--w) * var(--s));
+  transform-origin:calc(var(--px) * var(--s)) 0;rotate:var(--r);will-change:transform}
+.tree .tree__rig .rig__f > img{position:static}
+/* desktop: the container is its own layer too (the tree's parallax moves it from screen 3 on) */
+@media (min-width:769px){html.rig-wait .tree__rig{will-change:transform}}
 /* the static junction bark (rows 1000–1300, above the canopy): the bark columns only (x ≤ 215 / ≥ 1326 — the trunks
    end at x ≤ 201 / ≥ 1341 from row 1090 down, and the shrubs stay outside those columns above row 1300), fading in
    over its first 100 rows so it takes the bark over from the moving layers gradually, and overlapping the lower

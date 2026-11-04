@@ -110,10 +110,28 @@
     <div class="tree__band"></div>
     <div class="tree__sprig tree__sprig--l"><img src="assets/tree/tree-full.webp" loading="lazy" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>
     <div class="tree__sprig tree__sprig--r"><img src="assets/tree/tree-full.webp" loading="lazy" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>
-    <!-- the canopy: rows 0–1200 of the one connected painting (tree-full), swayed gently as a whole about the trunk
-         tops by canopy.js block 2 (the four tonal-slice layers in assets/tree/layers are retired: moved apart, they
-         left a dark mark where each fruit had been) -->
+    <!-- the canopy: rows 0–1200 of the one connected painting (tree-full), STILL: it is the canopy without JS, under
+         reduced motion and on Pause, and until the branch rig below has loaded (the four tonal-slice layers in
+         assets/tree/layers are retired: moved apart, they left a dark mark where each fruit had been) -->
     <div class="tree__canopy"><img src="assets/tree/tree-full.webp" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" fetchpriority="high" decoding="async"></div>
+    <!-- the branch rig (canopy.js block 2, only while the motion runs): the same crown built from separately painted
+         pieces (assets/tree/rig/, placed by docs/council/rig_compose.py; rig.json holds the pivots), back to front: the
+         static fruit-free backdrop, four back branches (darker, softer), the static trunks and big limbs, four front
+         branches with six hanging fruit. Each branch rotates about its own cut end at the trunk (--x / --y, art px;
+         --r its rest angle), each fruit about the top of its stem. display:none until canopy.js shows it, so the
+         lazy images are never fetched without the motion -->
+    <div class="tree__rig">
+      <img class="rig__bd" src="assets/tree/rig/backdrop.webp" width="1536" height="1008" alt="" loading="lazy" decoding="async">
+      <div class="rig__b rig__b--back" data-rig="b3" style="--x:170;--y:930;--w:713.9;--h:254.1;--px:0;--py:146.3;--r:4deg"><img src="assets/tree/rig/b3.webp" width="892" height="318" alt="" loading="lazy" decoding="async"></div>
+      <div class="rig__b rig__b--back" data-rig="b2" style="--x:175;--y:860;--w:585.5;--h:320.5;--px:0;--py:109.5;--r:0deg"><img src="assets/tree/rig/b2.webp" width="732" height="401" alt="" loading="lazy" decoding="async"></div>
+      <div class="rig__b rig__b--back" data-rig="b5" style="--x:1370;--y:900;--w:660.6;--h:358.1;--px:660;--py:262.9;--r:-2deg"><img src="assets/tree/rig/b5.webp" width="826" height="448" alt="" loading="lazy" decoding="async"></div>
+      <div class="rig__b rig__b--back" data-rig="b8" style="--x:1370;--y:500;--w:451.8;--h:231.3;--px:451.4;--py:153;--r:2deg"><img src="assets/tree/rig/b8.webp" width="565" height="289" alt="" loading="lazy" decoding="async"></div>
+      <img class="rig__limbs" src="assets/tree/rig/limbs.webp" width="1536" height="1032" alt="" loading="lazy" decoding="async">
+      <div class="rig__b rig__b--front" data-rig="b4" style="--x:150;--y:620;--w:651;--h:388;--px:0;--py:274;--r:-2deg"><img src="assets/tree/rig/b4.webp" width="814" height="485" alt="" loading="lazy" decoding="async"><span class="rig__f" style="--x:500;--y:165;--w:80;--px:40.1;--r:2deg"><img src="assets/tree/rig/fruit3.webp" width="160" height="224" alt="" loading="lazy" decoding="async"></span></div>
+      <div class="rig__b rig__b--front" data-rig="b7" style="--x:1380;--y:500;--w:654.2;--h:398.3;--px:653.6;--py:144.6;--r:4deg"><img src="assets/tree/rig/b7.webp" width="818" height="498" alt="" loading="lazy" decoding="async"><span class="rig__f" style="--x:197.6;--y:218.4;--w:58;--px:30.1;--r:-4deg"><img src="assets/tree/rig/fruit1.webp" width="116" height="188" alt="" loading="lazy" decoding="async"></span></div>
+      <div class="rig__b rig__b--front" data-rig="b1m" style="--x:175;--y:700;--w:720.5;--h:390;--px:0;--py:246;--r:-4deg"><img src="assets/tree/rig/b1m.webp" width="901" height="488" alt="" loading="lazy" decoding="async"><span class="rig__f" style="--x:575;--y:205;--w:58;--px:30.1;--r:4deg"><img src="assets/tree/rig/fruit1.webp" width="116" height="188" alt="" loading="lazy" decoding="async"></span><span class="rig__f" style="--x:350;--y:125;--w:80;--px:41.9;--r:4deg"><img src="assets/tree/rig/fruit2.webp" width="160" height="242" alt="" loading="lazy" decoding="async"></span></div>
+      <div class="rig__b rig__b--front" data-rig="b6" style="--x:1365;--y:690;--w:727.5;--h:405;--px:727;--py:221;--r:0deg"><img src="assets/tree/rig/b6.webp" width="909" height="506" alt="" loading="lazy" decoding="async"><span class="rig__f" style="--x:150;--y:225;--w:58;--px:30.1;--r:0deg"><img src="assets/tree/rig/fruit1.webp" width="116" height="188" alt="" loading="lazy" decoding="async"></span><span class="rig__f" style="--x:325;--y:135;--w:80;--px:40.1;--r:0deg"><img src="assets/tree/rig/fruit3.webp" width="160" height="224" alt="" loading="lazy" decoding="async"></span></div>
+    </div>
     <!-- the static bark at the canopy junction (rows 1000–1272, bark columns only), ABOVE the moving layers: the trunks
          never move while the branches and leaves do -->
     <div class="tree__bark"><img src="assets/tree/tree-full.webp" loading="lazy" srcset="assets/tree/tree-full-768.webp 768w, assets/tree/tree-full-1024.webp 1024w, assets/tree/tree-full.webp 1536w" sizes="(max-width:768px) 110vw, 100vw" width="1536" height="3714" alt="" decoding="async"></div>

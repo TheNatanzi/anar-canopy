@@ -13,8 +13,12 @@
      1. parallax (desktop only): the tree layer moves at 0.9× scroll from the end
         of screen 2 on (screens 1–2 stay registered with the statement; the band
         under the ground absorbs the drift)
-     2. the canopy, one connected painting: a very gentle whole-canopy sway
-        (±0.25° / 9 s about the trunk tops, from rest); two shrub sprigs
+     2. the canopy as a branch rig (.tree__rig): eight painted branches, each
+        rotating about its own cut end at the trunk on its own wind rhythm,
+        six fruit swinging on their stems behind them, a gust rippling across
+        the crown on scroll, a small depth parallax (back / front); the still
+        painting (.tree__canopy) is the canopy until the rig has loaded and on
+        Pause / reduced motion / without JS. Two shrub sprigs
         ±1.2° / 6 s and ±1.6° / 7 s about their base, out of phase; all paused
         off screen and reverted on Pause
      3. the hero, owned here (site.js block 1 skips a hero inside main.canopy):
@@ -61,7 +65,6 @@
   var shown = function (el) { return !!el && getComputedStyle(el).display !== 'none'; };
 
   var tree = $('.tree', main);
-  var canopy = $('.tree__canopy', main);
   var sprigL = $('.tree__sprig--l', main);
   var sprigR = $('.tree__sprig--r', main);
   var hero = $('.hero', main);
@@ -256,6 +259,171 @@
     return top + main.offsetTop;
   }
 
+  /* ---- 2. the branch rig (.tree__rig, canopy.css; the pieces placed by docs/council/rig_compose.py) ----
+     Each branch rotates about its own cut end at the trunk (its CSS transform-origin), each fruit about its stem top.
+     The rotation is the sum of three proxies, written once per frame by one quickSetter per element (one ticker
+     callback, transforms only, no layout read):
+       wind:  a sine loop (yoyo sine.inOut) of its own amplitude and period, from a random phase, plus a small
+              secondary loop at a different period, so no two branches and no two cycles move alike; the back
+              branches move less and slower than the front (depth)
+       gust:  scrolling (|velocity| > 250 px/s, at most one gust per 300 ms) sends a gust across the crown: the
+              branches nearer the scroll direction first (scrolling down, the lowest first; up, the highest), 75 ms
+              apart; each eases out to its kick and settles back through one soft overshoot (no elastic wobble, no
+              jump: a new gust starts from wherever the last one is). Scrolling down the crown rises on screen and
+              its tips trail (droop); scrolling up they lift, at 40 % (the logo's column stays clear above them)
+       fruit: a pendulum about the stem top, ±3.5–5°, on its branch's own period 0.25 s behind it, and the gust
+              0.25 s after its branch, ×2 (capped at 3°)
+     Depth parallax: the back branches move at 0.97 of the canopy's scroll, the front at 1.02 (y, scrubbed, from
+     the top of the page until the rig has left the viewport); the static backdrop and limbs fill every gap.
+     The loops run only while the rig is on screen. The rig shows (html.rig-on) once all its images have loaded;
+     until then, and on Pause / reduced motion / without JS, the still painting (.tree__canopy) is the canopy */
+  var rig = $('.tree__rig', main);
+  var rigCleanups = [];
+  var rigBuildId = 0;
+  /* per branch (data-rig): a / p = the main sway (deg, s per full cycle), a2 / p2 = the secondary, g = the gust kick
+     (deg). Front: b4, b7 (upper), b1m, b6 (long, the most motion); back: b3, b2, b5, b8 */
+  var RIG = {
+    b4: { a: 1.3, p: 5.2, a2: 0.30, p2: 2.6, g: 1.6 },
+    b7: { a: 1.2, p: 5.8, a2: 0.28, p2: 3.1, g: 1.5 },
+    b1m: { a: 1.6, p: 4.8, a2: 0.35, p2: 2.3, g: 1.9 },
+    b6: { a: 1.8, p: 6.4, a2: 0.35, p2: 2.8, g: 2.0 },
+    b3: { a: 0.9, p: 7.4, a2: 0.20, p2: 3.4, g: 1.0 },
+    b2: { a: 0.7, p: 6.9, a2: 0.18, p2: 3.7, g: 0.9 },
+    b5: { a: 0.8, p: 8.0, a2: 0.20, p2: 3.2, g: 1.0 },
+    b8: { a: 0.6, p: 7.1, a2: 0.15, p2: 2.9, g: 0.8 }
+  };
+  var FRUIT_LAG = 0.25, GUST_STAGGER = 0.075, GUST_GAP = 300, GUST_MIN_V = 250, UP_GUST = 0.4;
+  /* a yoyo sine loop on a proxy, from -amp to amp over half a period, started at the given point of its cycle */
+  function swayLoop(proxy, amp, period, at) {
+    var tw = gsap.fromTo(proxy, { a: -amp }, { a: amp, duration: period / 2, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+    tw.totalTime(((at % period) + period) % period);
+    return tw;
+  }
+  /* resolves true once the image has loaded and decoded, false on an error */
+  function imgReady(img) {
+    return new Promise(function (resolve) {
+      var done = function () {
+        if (!img.naturalWidth) { resolve(false); return; }
+        if (img.decode) { img.decode().then(function () { resolve(true); }, function () { resolve(true); }); } else { resolve(true); }
+      };
+      if (img.complete) { done(); return; }
+      img.addEventListener('load', done, { once: true });
+      img.addEventListener('error', function () { resolve(false); }, { once: true });
+    });
+  }
+  function buildRig() {
+    if (!rig) { return; }
+    var buildId = ++rigBuildId;
+    var cssNum = function (el, name) { return parseFloat(el.style.getPropertyValue(name)) || 0; };
+    var branches = $$('.rig__b', rig).map(function (el) {
+      var cfg = RIG[el.getAttribute('data-rig')] || { a: 1, p: 6, a2: 0.2, p2: 3, g: 1 };
+      var left = cssNum(el, '--px') < 1;   /* the cut end on the sprite's left edge: a left-trunk branch */
+      var phase = Math.random() * cfg.p;
+      var b = {
+        el: el, cfg: cfg, y: cssNum(el, '--y'), x: cssNum(el, '--x'),
+        droop: left ? 1 : -1,               /* clockwise droops a left branch's tip, lifts a right one's */
+        set: gsap.quickSetter(el, 'rotation', 'deg'),
+        w: { a: 0 }, w2: { a: 0 }, g: { a: 0 }, gTl: null, loops: []
+      };
+      b.loops.push(swayLoop(b.w, cfg.a, cfg.p, phase), swayLoop(b.w2, cfg.a2, cfg.p2, Math.random() * cfg.p2));
+      b.fruits = $$('.rig__f', el).map(function (fel) {
+        var f = { set: gsap.quickSetter(fel, 'rotation', 'deg'), w: { a: 0 }, g: { a: 0 }, gTl: null };
+        b.loops.push(swayLoop(f.w, 3.5 + Math.random() * 1.5, cfg.p, phase - FRUIT_LAG));
+        return f;
+      });
+      return b;
+    });
+    var loops = [];
+    branches.forEach(function (b) { loops = loops.concat(b.loops); });
+    var apply = function () {
+      for (var i = 0; i < branches.length; i++) {
+        var b = branches[i];
+        b.set(b.w.a + b.w2.a + b.g.a);
+        for (var j = 0; j < b.fruits.length; j++) { b.fruits[j].set(b.fruits[j].w.a + b.fruits[j].g.a); }
+      }
+    };
+    /* the loops and the per-frame write run only while the rig is on (or within 10 % of) the screen */
+    var running = false;
+    var run = function (yes) {
+      if (yes === running) { return; }
+      running = yes;
+      loops.forEach(function (t) { if (yes) { t.play(); } else { t.pause(); } });
+      if (yes) { gsap.ticker.add(apply); } else { gsap.ticker.remove(apply); }
+    };
+    loops.forEach(function (t) { t.pause(); });
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) { run(en.isIntersecting); });
+      }, { rootMargin: '10% 0px' });
+      io.observe(rig);
+      observers.push(io);
+    } else { run(true); }
+
+    /* the gust: a travelling ripple, one per GUST_GAP ms at most */
+    var gust = function (dir, strength) {
+      var order = branches.slice().sort(function (p, q) { return dir > 0 ? (q.y - p.y) || (p.x - q.x) : (p.y - q.y) || (p.x - q.x); });
+      order.forEach(function (b, i) {
+        var kick = b.droop * b.cfg.g * (dir > 0 ? 1 : -UP_GUST) * (0.45 + 0.55 * strength);
+        var delay = i * GUST_STAGGER;
+        if (b.gTl) { b.gTl.kill(); }
+        b.gTl = gsap.timeline({ delay: delay })
+          .to(b.g, { a: kick, duration: 0.5, ease: 'power2.out' })
+          .to(b.g, { a: -0.22 * kick, duration: 0.8, ease: 'sine.inOut' })
+          .to(b.g, { a: 0, duration: 1.1, ease: 'sine.inOut' });
+        var fk = Math.max(-3, Math.min(3, kick * 2));
+        b.fruits.forEach(function (f) {
+          if (f.gTl) { f.gTl.kill(); }
+          f.gTl = gsap.timeline({ delay: delay + FRUIT_LAG })
+            .to(f.g, { a: fk, duration: 0.6, ease: 'power2.out' })
+            .to(f.g, { a: -0.3 * fk, duration: 0.9, ease: 'sine.inOut' })
+            .to(f.g, { a: 0, duration: 1.2, ease: 'sine.inOut' });
+        });
+      });
+    };
+    var lastGust = 0;
+    ScrollTrigger.create({
+      trigger: rig, start: 'top bottom', end: 'bottom top',
+      onUpdate: function (self) {
+        if (!running) { return; }
+        var v = self.getVelocity(), now = Date.now();
+        if (Math.abs(v) < GUST_MIN_V || now - lastGust < GUST_GAP) { return; }
+        lastGust = now;
+        gust(v > 0 ? 1 : -1, Math.min(1, Math.abs(v) / 2400));
+      }
+    });
+
+    /* depth: back ×0.97, front ×1.02 of the canopy's scroll, from the top of the page until the rig's bottom has
+       left the viewport's top (screens 1–2 are never parallaxed, so the rig's offsets are its page position) */
+    var rigEnd = function () { return Math.max(1, Math.round(pageTop(rig) + rig.offsetHeight)); };
+    var depth = function (els, k) {
+      if (!els.length) { return; }
+      gsap.fromTo(els, { y: 0 }, {
+        y: function () { return k * rigEnd(); }, ease: 'none',
+        scrollTrigger: { start: 0, end: rigEnd, scrub: true, invalidateOnRefresh: true }
+      });
+    };
+    depth($$('.rig__b--back', rig), 0.03);
+    depth($$('.rig__b--front', rig), -0.02);
+
+    /* show the rig (fading the still painting out under it) once every piece has loaded; the gust tweens are made
+       outside the context (on scroll), so kill() ends them here, with the ticker write and the transforms */
+    html.classList.add('rig-wait');
+    Promise.all($$('img', rig).map(imgReady)).then(function (ok) {
+      if (!on || buildId !== rigBuildId || ok.indexOf(false) !== -1) { return; }
+      html.classList.add('rig-on');
+    });
+    rigCleanups.push(function () {
+      run(false);
+      branches.forEach(function (b) {
+        if (b.gTl) { b.gTl.kill(); }
+        b.fruits.forEach(function (f) { if (f.gTl) { f.gTl.kill(); } });
+      });
+      gsap.set($$('.rig__b, .rig__f', rig), { clearProps: 'transform' });
+      html.classList.remove('rig-wait');
+      html.classList.remove('rig-on');
+    });
+  }
+
   function buildAll() {
     /* 1. parallax, desktop only (on phones the layer is the page height × 110vw: promoting it costs memory and jank for
           a drift nobody reads at 390px): y = 0.1 × (scrollY − start) from the end of screen 2 to the bottom of the page */
@@ -266,19 +434,9 @@
         scrollTrigger: { start: parallaxStart, end: 'max', scrub: true, invalidateOnRefresh: true }
       });
     }
-    /* 2. the canopy: ONE connected painting (tree-full rows 0–1200 in .tree__canopy; the tonal-slice stack is retired:
-          moving the slices past each other left a dark "previous mark" where each fruit had been). The only motion is
-          a very gentle whole-canopy sway, ±0.25° about the trunk tops (art row 1200, centre: the junction under the
-          static bark barely moves, < 1px at row 1000; the crown tips ≤ 4px at 1440, inside the img's static 0.6 %
-          horizontal over-scan, canopy.css), 9 s per full cycle, yoyo sine, started mid-stroke at rest (0) so a load
-          or a Play lands on the painting itself; paused off screen. Real per-branch motion will come from separately
-          painted branch sprites */
-    if (canopy) {
-      var CANOPY_SWAY = 0.25, CANOPY_CYCLE = 9;
-      var cTw = gsap.fromTo(canopy, { rotation: -CANOPY_SWAY }, { rotation: CANOPY_SWAY, duration: CANOPY_CYCLE / 2, ease: 'sine.inOut', yoyo: true, repeat: -1 });
-      cTw.totalTime(CANOPY_CYCLE / 4);
-      loopInView(canopy, cTw);
-    }
+    /* 2. the canopy as a branch rig (.tree__rig; the painting itself, .tree__canopy, never moves: no whole-image
+          sway, and no tonal slices sliding past each other, which left a halo where each fruit had been) */
+    buildRig();
 
     /* each shrub sways about the bottom of its crop at the trunk edge, the two out of phase (left ±1.2° / 6 s, right
        ±1.6° / 7 s per full cycle; each starts at rest mid-stroke, the two mirrored). The crop holds no bark
@@ -483,6 +641,9 @@
     if (!on) { return; }
     on = false;
     try { if (ctx) { ctx.revert(); ctx = null; } } catch (e) { /* ignore */ }
+    /* the rig's gusts (made on scroll, outside the context), its ticker write and its transforms */
+    rigCleanups.forEach(function (fn) { try { fn(); } catch (e) { /* ignore */ } });
+    rigCleanups = [];
     /* the morph's x / y / scale are written by gsap.quickSetter (no tween for the context to revert): cleared with
        clearProps, which empties GSAP's transform cache too (an emptied inline style alone left the cached y,
        re-rendered by the next transform write after Play); the copy's img width likewise */
